@@ -1,0 +1,1208 @@
+{% comment %}
+  Timepads Discount Popup
+  Usage: {% render 'timepads-popup' %}
+{% endcomment %}
+
+{% assign popup_image = 'https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Pop-Up-Image.jpg?v=1776490230' %}
+{% assign popup_heading = 'Your period. Your comfort. 5% off with Timepads.' %}
+{% assign popup_subheading = 'Join 10,000+ women choosing comfort with Timepads.' %}
+{% assign coupon_code = 'TIME5' %}
+{% assign discount_amount = '5% OFF' %}
+{% assign formspree_action = 'https://formspree.io/f/mdaygnnd' %}
+
+<style>
+:root {
+  --tp-primary: #e8845f;
+  --tp-primary-dark: #d46a45;
+  --tp-secondary: #f5e6dc;
+  --tp-text: #4a4a4a;
+  --tp-text-light: #777;
+  --tp-white: #fff;
+  --tp-error: #e74c3c;
+  --tp-success: #27ae60;
+  --tp-shadow: rgba(0, 0, 0, 0.15);
+  --tp-radius: 12px;
+  --tp-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tp-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.tp-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.tp-popup-container {
+  background: var(--tp-white);
+  border-radius: var(--tp-radius);
+  box-shadow: 0 25px 50px -12px var(--tp-shadow);
+  max-width: 920px;
+  width: min(92vw, 920px);
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tp-popup-overlay.active .tp-popup-container {
+  transform: scale(1) translateY(0);
+}
+
+.tp-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--tp-transition);
+}
+
+.tp-popup-close:hover {
+  transform: rotate(90deg);
+  background: #fff;
+}
+
+.tp-popup-close svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--tp-text);
+}
+
+.tp-popup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+}
+
+.tp-popup-image-section {
+  background: var(--tp-secondary);
+  overflow: hidden;
+}
+
+.tp-popup-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.tp-popup-container:hover .tp-popup-image {
+  transform: scale(1.05);
+}
+
+.tp-popup-content {
+  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--tp-white);
+}
+
+.tp-popup-brand {
+  margin-bottom: 24px;
+}
+
+.tp-popup-brand-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--tp-primary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.tp-popup-heading {
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--tp-text);
+  font-weight: 900;
+  margin: 0 0 12px;
+}
+
+.tp-popup-subheading {
+  font-size: 16px;
+  color: var(--tp-text-light);
+  margin: 0 0 28px;
+}
+
+.tp-popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tp-form-group {
+  position: relative;
+}
+
+.tp-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tp-text);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tp-form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  color: var(--tp-text);
+  background: #fff;
+  transition: var(--tp-transition);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.tp-form-input:focus {
+  outline: none;
+  border-color: var(--tp-primary);
+  box-shadow: 0 0 0 3px rgba(232, 132, 95, 0.1);
+}
+
+.tp-form-input.error {
+  border-color: var(--tp-error);
+  animation: tpShake 0.45s ease;
+}
+
+.tp-form-input::placeholder {
+  color: #bbb;
+}
+
+@keyframes tpShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.tp-error-message {
+  display: none;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--tp-error);
+}
+
+.tp-error-message.visible {
+  display: block;
+}
+
+.tp-btn-primary,
+.tp-btn-secondary,
+.tp-btn-copy {
+  border: none;
+  cursor: pointer;
+  transition: var(--tp-transition);
+}
+
+.tp-btn-primary {
+  width: 100%;
+  padding: 16px 24px;
+  margin-top: 8px;
+  border-radius: 8px;
+  background: var(--tp-primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tp-btn-primary:hover {
+  background: var(--tp-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(232, 132, 95, 0.3);
+}
+
+.tp-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tp-btn-secondary {
+  width: 100%;
+  background: transparent;
+  color: var(--tp-text-light);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tp-btn-secondary:hover {
+  color: var(--tp-text);
+}
+
+.tp-privacy-text {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #999;
+  text-align: center;
+}
+
+.tp-success-state {
+  display: none;
+  text-align: center;
+  animation: tpFadeInUp 0.45s ease;
+}
+
+.tp-success-state.active {
+  display: block;
+}
+
+@keyframes tpFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tp-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--tp-success), #2ecc71);
+  box-shadow: 0 8px 24px rgba(39, 174, 96, 0.3);
+}
+
+.tp-success-icon svg {
+  width: 40px;
+  height: 40px;
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.tp-success-heading {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--tp-text);
+  margin: 0 0 8px;
+}
+
+.tp-success-text {
+  font-size: 16px;
+  color: var(--tp-text-light);
+  margin: 0 0 24px;
+}
+
+.tp-coupon-box {
+  margin-bottom: 16px;
+  padding: 24px;
+  border: 2px dashed var(--tp-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fff9f5 0%, #fff0e8 100%);
+}
+
+.tp-coupon-label {
+  margin-bottom: 4px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--tp-text-light);
+}
+
+.tp-coupon-code {
+  margin-bottom: 12px;
+  font-family: "Courier New", monospace;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--tp-primary);
+}
+
+.tp-btn-copy {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 6px;
+  background: var(--tp-text);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tp-btn-copy:hover {
+  background: #333;
+}
+
+.tp-btn-copy.copied {
+  background: var(--tp-success);
+}
+
+.tp-btn-copy svg {
+  width: 16px;
+  height: 16px;
+}
+
+.tp-submit-error {
+  display: none;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--tp-error);
+}
+
+.tp-submit-error.visible {
+  display: block;
+}
+
+.tp-sticky-tab {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(calc(100% - 54px));
+  z-index: 999998;
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  background: linear-gradient(135deg, #fdf2ea 0%, #fff 100%);
+  border: 2px solid rgba(232, 132, 95, 0.28);
+  border-right: 0;
+  border-radius: 18px 0 0 18px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tp-sticky-tab:hover {
+  transform: translateY(-50%) translateX(0);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.tp-sticky-tab.active {
+  transform: translateY(-50%) translateX(0);
+}
+
+.tp-sticky-tab.hidden {
+  display: none;
+}
+
+.tp-sticky-accent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 72px;
+  background: linear-gradient(180deg, var(--tp-primary), var(--tp-primary-dark));
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  border-radius: 16px 0 0 16px;
+}
+
+.tp-sticky-content {
+  padding: 12px 16px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tp-sticky-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--tp-text-light);
+}
+
+.tp-sticky-offer {
+  color: var(--tp-primary);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 0 0 rgba(232, 132, 95, 0.35);
+  animation: tpPulse 1.8s ease-in-out infinite;
+}
+
+.tp-sticky-text {
+  font-size: 13px;
+  color: var(--tp-text);
+  font-weight: 600;
+}
+
+@keyframes tpPulse {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 0 0 0 rgba(232, 132, 95, 0.2);
+  }
+  50% {
+    transform: scale(1.08);
+    text-shadow: 0 0 18px rgba(232, 132, 95, 0.3);
+  }
+}
+.tp-popup-form{
+  margin-bottom: 0 !important;
+}
+@media (max-width: 768px) {
+  .tp-popup-overlay {
+    align-items: flex-end;
+  }
+
+  .tp-popup-container {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88vh;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tp-popup-overlay.active .tp-popup-container {
+    transform: translateY(0);
+  }
+
+  .tp-popup-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px 1fr;
+    min-height: auto;
+  }
+
+  .tp-popup-content {
+    padding: 20px 18px 24px;
+    overflow-y: auto;
+  }
+
+  .tp-popup-brand {
+    margin-bottom: 14px;
+  }
+
+  .tp-popup-brand-text {
+    font-size: 22px;
+    letter-spacing: 1.5px;
+  }
+
+  .tp-popup-heading {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .tp-popup-subheading {
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .tp-popup-form {
+    gap: 12px;
+  }
+
+  .tp-form-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .tp-form-input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .tp-btn-primary {
+    padding: 14px 18px;
+    font-size: 14px;
+  }
+
+  .tp-btn-secondary {
+    margin-top: 4px;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .tp-privacy-text {
+
+    font-size: 10px;
+  }
+
+
+  .tp-coupon-code {
+    font-size: 28px;
+  }
+
+  .tp-sticky-tab {
+    right: -19px !important;
+    left: auto;
+    top: 50%;
+    bottom: auto;
+    min-height: 72px;
+    transform: translateY(-50%) translateX(calc(100% - 54px));
+    border-right: 0;
+    border-radius: 18px 0 0 18px;
+    justify-content: flex-start;
+  }
+
+  .tp-sticky-tab:hover,
+  .tp-sticky-tab.active {
+    transform: translateY(-50%) translateX(0);
+  }
+
+  .tp-sticky-accent {
+    width: 54px;
+    min-width: 54px;
+    height: 72px;
+    padding: 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    border-radius: 16px 0 0 16px;
+  }
+
+  .tp-sticky-content {
+    padding: 12px 16px 12px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-popup-overlay,
+  .tp-popup-container,
+  .tp-popup-image,
+  .tp-btn-primary,
+  .tp-btn-secondary,
+  .tp-form-input,
+  .tp-sticky-tab,
+  .tp-sticky-offer {
+    transition: none;
+    animation: none;
+  }
+}
+
+.tp-popup-close:focus-visible,
+.tp-form-input:focus-visible,
+.tp-btn-primary:focus-visible,
+.tp-btn-secondary:focus-visible,
+.tp-btn-copy:focus-visible,
+.tp-sticky-tab:focus-visible {
+  outline: 2px solid var(--tp-primary);
+  outline-offset: 2px;
+}
+
+@media print {
+  .tp-popup-overlay,
+  .tp-sticky-tab {
+    display: none !important;
+  }
+}
+.tp-form-group input{
+ margin-bottom: 0 !important;
+}
+.tp-popup-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+</style>
+
+<button
+  id="tpStickyTab"
+  class="tp-sticky-tab hidden"
+  type="button"
+  aria-label="Open discount popup"
+>
+  <span class="tp-sticky-accent">Offer</span>
+  <span class="tp-sticky-content">
+    <span class="tp-sticky-label">First order special</span>
+    <span class="tp-sticky-offer">{{ discount_amount }}</span>
+    <span class="tp-sticky-text">Tap to claim your code</span>
+  </span>
+</button>
+
+<div id="TimepadsPopup" class="tp-popup-overlay" role="dialog" aria-modal="true" aria-labelledby="tp-heading">
+  <div class="tp-popup-container">
+    <button class="tp-popup-close" type="button" aria-label="Close popup" onclick="TimepadsPopup.close()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="tp-popup-grid">
+      <div class="tp-popup-image-section">
+       
+
+
+     
+  <picture>
+    
+    <!-- Mobile Image -->
+    <source 
+      media="(max-width: 749px)" 
+      srcset="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Pop-Up-Image-Mobile.jpg?v=1776493996"
+    >
+
+    <!-- Desktop Image -->
+    <img
+      src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Pop-Up-Image.jpg?v=1776490230"
+      alt="Timepads - Premium Comfort"
+      class="tp-popup-image"
+      loading="lazy"
+    >
+
+  </picture>
+
+
+
+
+      </div>
+
+      <div class="tp-popup-content">
+        <div class="tp-popup-brand">
+          <span class="tp-popup-brand-text">
+<img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Time-Logo-black2_1_7f4c513f-e3c7-43f8-90b2-9295663af6bf.webp?v=1772434725" alt="Timepads" style="height: 28px; width: auto; vertical-align: middle;"> 
+
+          </span>
+        </div>
+
+        <div id="tpFormState" class="tp-form-state">
+          <h2 id="tp-heading" class="tp-popup-heading">{{ popup_heading }}</h2>
+          <p class="tp-popup-subheading">{{ popup_subheading }}</p>
+
+          <form
+            id="tpPopupForm"
+            class="tp-popup-form"
+            action="{{ formspree_action }}"
+            method="POST"
+            onsubmit="TimepadsPopup.handleSubmit(event)"
+          >
+            <div class="tp-form-group">
+              <label class="tp-form-label" for="tpName">Full Name</label>
+              <input
+                type="text"
+                id="tpName"
+                name="name"
+                class="tp-form-input"
+                placeholder="Enter your name"
+                autocomplete="name"
+                required
+              >
+              <span class="tp-error-message" id="tpNameError">Please enter your name</span>
+            </div>
+
+            <div class="tp-form-group">
+              <label class="tp-form-label" for="tpEmail">Email Address</label>
+              <input
+                type="email"
+                id="tpEmail"
+                name="email"
+                class="tp-form-input"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              >
+              <span class="tp-error-message" id="tpEmailError">Please enter a valid email address</span>
+            </div>
+
+            <div class="tp-form-group">
+              <label class="tp-form-label" for="tpMobile">Mobile Number</label>
+              <input
+                type="tel"
+                id="tpMobile"
+                name="phone"
+                class="tp-form-input"
+                placeholder="10 digit mobile number"
+                autocomplete="tel"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                inputmode="numeric"
+                required
+              >
+              <span class="tp-error-message" id="tpMobileError">Please enter your 10-digit mobile number</span>
+            </div>
+
+            <input type="hidden" name="message" value="Timepads discount popup submission">
+            <input type="hidden" name="_subject" value="Timepads discount popup lead">
+            <input type="hidden" name="coupon_code" value="{{ coupon_code }}">
+            <input type="hidden" name="discount_amount" value="{{ discount_amount }}">
+
+            <button type="submit" class="tp-btn-primary" id="tpSubmitBtn">
+              Claim Discount
+            </button>
+
+            <button type="button" class="tp-btn-secondary" onclick="TimepadsPopup.close()">
+              No, thanks
+            </button>
+
+            <p id="tpSubmitError" class="tp-submit-error">Something went wrong. Please try again.</p>
+          </form>
+
+          <p class="tp-privacy-text">
+            By signing up, you agree to receive promotional messages from Timepads.
+            You can unsubscribe at any time.
+          </p>
+        </div>
+
+        <div id="tpSuccessState" class="tp-success-state">
+          <div class="tp-success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+
+          <h3 class="tp-success-heading">Your {{ discount_amount }} discount is ready!</h3>
+          <p class="tp-success-text">Use this code at checkout</p>
+
+          <div class="tp-coupon-box">
+            <div class="tp-coupon-label">Your Coupon Code</div>
+            <div class="tp-coupon-code" id="tpCouponCode">{{ coupon_code }}</div>
+            <button class="tp-btn-copy" id="tpCopyBtn" type="button" onclick="TimepadsPopup.copyCode()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="tpCopyText">Copy Code</span>
+            </button>
+          </div>
+
+          <button class="tp-btn-secondary" type="button" onclick="TimepadsPopup.close()">
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TimepadsPopup = (function() {
+  'use strict';
+
+  const CONFIG = {
+    delay: 1000,
+storageKey: 'timepads_popup_v2',
+sessionKey: 'timepads_popup_session',
+    couponCode: '{{ coupon_code }}',
+    formAction: '{{ formspree_action }}',
+    highlightDelay: 6000,
+    reshowAfterMs: 10 * 60 * 1000,
+    debug: false
+  };
+
+  let state = {
+    shown: false,
+    submitted: false,
+    dismissed: false,
+    lastShownAt: 0
+  };
+
+  let elements = {};
+
+  function init() {
+    cacheElements();
+    if (!elements.overlay || !elements.stickyTab) return;
+
+    checkStorage();
+    bindEvents();
+    updateStickyVisibility();
+    resetUIForPendingLead();
+
+  // Show popup automatically only once per session
+if (!state.submitted && !state.dismissed) {
+  setTimeout(function() {
+    if (!state.shown) {
+      show();
+    }
+  }, CONFIG.delay);
+}
+
+    log('Initialized');
+  }
+
+  function cacheElements() {
+    elements = {
+      overlay: document.getElementById('TimepadsPopup'),
+      stickyTab: document.getElementById('tpStickyTab'),
+      formState: document.getElementById('tpFormState'),
+      successState: document.getElementById('tpSuccessState'),
+      form: document.getElementById('tpPopupForm'),
+      nameInput: document.getElementById('tpName'),
+      emailInput: document.getElementById('tpEmail'),
+      mobileInput: document.getElementById('tpMobile'),
+      nameError: document.getElementById('tpNameError'),
+      emailError: document.getElementById('tpEmailError'),
+      mobileError: document.getElementById('tpMobileError'),
+      submitBtn: document.getElementById('tpSubmitBtn'),
+      submitError: document.getElementById('tpSubmitError'),
+      copyBtn: document.getElementById('tpCopyBtn'),
+      copyText: document.getElementById('tpCopyText')
+    };
+  }
+
+function checkStorage() {
+  try {
+    // Check if already submitted (persists across sessions via localStorage)
+    const stored = localStorage.getItem(CONFIG.storageKey);
+    if (stored) {
+      const data = JSON.parse(stored);
+      state.submitted = Boolean(data.submitted);
+    }
+
+    // Check if popup was already shown THIS session
+    const shownThisSession = sessionStorage.getItem(CONFIG.sessionKey);
+    state.dismissed = Boolean(shownThisSession);
+    state.lastShownAt = Number(shownThisSession || 0);
+  } catch (error) {
+    log('Storage read error', error);
+  }
+}
+
+function saveStorage() {
+  try {
+    // Only persist submitted state to localStorage (survives across sessions)
+    localStorage.setItem(CONFIG.storageKey, JSON.stringify({
+      submitted: state.submitted
+    }));
+
+    // Track that popup was shown this session (clears on tab/browser close)
+    if (state.dismissed || state.shown) {
+      sessionStorage.setItem(CONFIG.sessionKey, String(Date.now()));
+    }
+  } catch (error) {
+    log('Storage save error', error);
+  }
+}
+
+
+
+
+
+  function clearStorage() {
+    try {
+      localStorage.removeItem(CONFIG.storageKey);
+    } catch (error) {
+      log('Storage clear error', error);
+    }
+  }
+
+  function bindEvents() {
+    elements.overlay.addEventListener('click', function(event) {
+      if (event.target === elements.overlay) {
+        close();
+      }
+    });
+
+    elements.stickyTab.addEventListener('click', function() {
+      show();
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && state.shown) {
+        close();
+      }
+    });
+
+    elements.nameInput.addEventListener('input', function() {
+      clearError(elements.nameInput, elements.nameError);
+    });
+
+    elements.emailInput.addEventListener('input', function() {
+      clearError(elements.emailInput, elements.emailError);
+      hideSubmitError();
+    });
+
+    elements.mobileInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      clearError(elements.mobileInput, elements.mobileError);
+      hideSubmitError();
+    });
+  }
+
+  function resetUIForPendingLead() {
+    if (state.submitted) {
+      elements.formState.style.display = 'none';
+      elements.successState.classList.add('active');
+      elements.stickyTab.classList.add('hidden');
+      return;
+    }
+
+    elements.formState.style.display = '';
+    elements.successState.classList.remove('active');
+  }
+
+function updateStickyVisibility() {
+  if (state.submitted) {
+    elements.stickyTab.classList.add('hidden');
+    return;
+  }
+
+  // Always keep tab visible (just peeking)
+  elements.stickyTab.classList.remove('hidden');
+  elements.stickyTab.classList.remove('active');
+
+  // Auto-expand once, then retract after 2s — only if not already previewed this session
+  const alreadyPreviewed = sessionStorage.getItem('timepads_tab_previewed');
+  if (!alreadyPreviewed && !state.shown) {
+    setTimeout(function() {
+      if (!state.shown) {
+        elements.stickyTab.classList.add('active'); // slide open
+        sessionStorage.setItem('timepads_tab_previewed', '1');
+
+        setTimeout(function() {
+          if (!state.shown) {
+            elements.stickyTab.classList.remove('active'); // slide back after 2s
+          }
+        }, 2000);
+      }
+    }, CONFIG.highlightDelay); // 6s default
+  }
+}
+
+  function show() {
+    if (state.submitted) return;
+
+    state.shown = true;
+    state.dismissed = false;
+    state.lastShownAt = Date.now();
+    saveStorage();
+
+    elements.overlay.classList.add('active');
+    elements.stickyTab.classList.remove('active');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(function() {
+      elements.nameInput.focus();
+    }, 100);
+  }
+
+  function close() {
+    state.shown = false;
+
+    if (!state.submitted) {
+      state.dismissed = true;
+      saveStorage();
+      elements.stickyTab.classList.remove('hidden');
+      elements.stickyTab.classList.remove('active');
+    }
+
+    elements.overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function validate() {
+    let isValid = true;
+    const name = elements.nameInput.value.trim();
+    const email = elements.emailInput.value.trim();
+    const mobile = elements.mobileInput.value.trim();
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!name || name.length < 2) {
+      showError(elements.nameInput, elements.nameError);
+      isValid = false;
+    }
+
+    if (!emailValid) {
+      showError(elements.emailInput, elements.emailError);
+      isValid = false;
+    }
+
+    if (!/^\d{10}$/.test(mobile)) {
+      showError(elements.mobileInput, elements.mobileError);
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    hideSubmitError();
+
+    if (!validate()) return;
+
+    const formData = new FormData(elements.form);
+    formData.set('message',
+      'Name: ' + elements.nameInput.value.trim() +
+      '\nEmail: ' + elements.emailInput.value.trim() +
+      '\nPhone: ' + elements.mobileInput.value.trim() +
+      '\nCoupon: ' + CONFIG.couponCode
+    );
+
+    elements.submitBtn.disabled = true;
+    elements.submitBtn.textContent = 'Sending...';
+
+    fetch(CONFIG.formAction, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+      .then(function(response) {
+        if (!response.ok && response.type !== 'opaque') {
+          throw new Error('Form submission failed');
+        }
+        return response.json().catch(function() {
+          return {};
+        });
+      })
+      .then(function() {
+        state.submitted = true;
+        state.dismissed = false;
+        saveStorage();
+
+        elements.formState.style.display = 'none';
+        elements.successState.classList.add('active');
+        elements.stickyTab.classList.add('hidden');
+
+        try {
+          setTimeout(function() {
+            fetch('https://default564e9e8d25f3494e87ea968af49ef2.2b.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/3616778a0cd24c1eafa2e9ecfda66287/triggers/manual/paths/invoke?api-version=1', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                name: elements.nameInput.value.trim(),
+                mobile: elements.mobileInput.value.trim(),
+                email: elements.emailInput.value.trim()
+              })
+            }).catch(function(error) {
+              log('Power Automate webhook failed', error);
+            });
+          }, 0);
+        } catch (error) {
+          log('Power Automate webhook setup failed', error);
+        }
+
+        try {
+          if (window.gtag) {
+            window.gtag('event', 'popup_signup', {
+              event_category: 'engagement',
+              event_label: 'Timepads Discount'
+            });
+          }
+        } catch (error) {
+          log('Analytics event failed', error);
+        }
+      })
+      .catch(function(error) {
+        log('Submit failed', error);
+        showSubmitError();
+      })
+      .finally(function() {
+        elements.submitBtn.disabled = false;
+        elements.submitBtn.textContent = 'Claim Discount';
+      });
+  }
+
+  function showError(input, errorEl) {
+    input.classList.add('error');
+    errorEl.classList.add('visible');
+  }
+
+  function clearError(input, errorEl) {
+    input.classList.remove('error');
+    errorEl.classList.remove('visible');
+  }
+
+  function showSubmitError() {
+    elements.submitError.classList.add('visible');
+  }
+
+  function hideSubmitError() {
+    elements.submitError.classList.remove('visible');
+  }
+
+  function copyCode() {
+    const code = CONFIG.couponCode;
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(showCopied).catch(function() {
+        fallbackCopy(code);
+      });
+      return;
+    }
+
+    fallbackCopy(code);
+  }
+
+  function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      document.execCommand('copy');
+      showCopied();
+    } catch (error) {
+      log('Copy failed', error);
+      alert('Coupon code: ' + text);
+    }
+
+    document.body.removeChild(textArea);
+  }
+
+  function showCopied() {
+    if (!elements.copyBtn || !elements.copyText) return;
+
+    elements.copyBtn.classList.add('copied');
+    elements.copyText.textContent = 'Copied!';
+
+    setTimeout(function() {
+      elements.copyBtn.classList.remove('copied');
+      elements.copyText.textContent = 'Copy Code';
+    }, 2000);
+  }
+
+  function log() {
+    if (!CONFIG.debug || !window.console) return;
+    window.console.log.apply(window.console, ['[TimepadsPopup]'].concat([].slice.call(arguments)));
+  }
+
+  return {
+    init: init,
+    show: show,
+    close: close,
+    handleSubmit: handleSubmit,
+    copyCode: copyCode,
+    clearStorage: clearStorage
+  };
+})();
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', TimepadsPopup.init);
+} else {
+  TimepadsPopup.init();
+}
+</script>

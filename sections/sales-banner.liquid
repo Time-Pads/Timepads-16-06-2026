@@ -1,0 +1,99 @@
+{%  style  %} 
+.section-padding-{{ section.id }}{
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+@media only screen and (max-width: 767px){
+    .section-padding-{{ section.id }}{
+        padding-top: {{ section.settings.padding_top_mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+}
+{% endstyle %} 
+
+
+<div class="section-padding-{{ section.id }} offer-banner">
+    {%  assign image = section.settings.image  %}
+    <a href="{{ section.settings.image_url }}">
+        <img src="{{ image  | img_url: 'master' }}" alt="image"/>
+    </a>
+</div>
+
+
+
+
+
+{% schema %}
+    {
+        "name":"Offer Banner",
+        "tag":"section",
+        "class": "offer-banner",
+        "settings":[
+            {
+               "type": "header",
+               "content":"Padding settings"
+            },
+            {
+                "type": "range",
+                "id": "padding_top",
+                "min": 0,
+                "max":100,
+                "default": 20,
+                "step": 2,
+                 "unit": "px",
+                 "label": "Padding Top"
+            },
+            {
+                "type": "range",
+                "id": "padding_bottom",
+                "label": "Padding Bottom",
+                "min": 0,
+                "max": 100,
+                "unit": "px",
+                "step": 2,
+                "default": 20
+            },
+            {
+                "type": "range",
+                "id": "padding_top_mobile",
+                "min": 0,
+                "max":100,
+                "default": 20,
+                "step": 2,
+                 "unit": "px",
+                 "label": "Padding Top Mobile"
+            },
+            {
+                "type": "range",
+                "id": "padding_bottom_mobile",
+                "label": "Padding Bottom Mobile",
+                "min": 0,
+                "max": 100,
+                "unit": "px",
+                "step": 2,
+                "default": 20
+            },
+            {
+                "type": "header",
+                "content": "Image Banner"
+            },
+            {
+                "type": "image_picker",
+                "id": "image",
+                "label":"Image"
+            },
+            {
+                "type": "url",
+                "id": "image_url",
+                "label":"URL"
+            }
+        ],
+        "presets": [
+            {
+                "name":"Offer Banner"
+            }
+        ]
+    }
+    
+{% endschema %}
+        

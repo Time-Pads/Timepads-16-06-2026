@@ -1,0 +1,76 @@
+{% comment %}
+  Timepads Popup Section
+  Add to theme.liquid or use as a section
+{% endcomment %}
+
+{% assign popup_image = section.settings.popup_image | default: 'https://cdn.shopify.com/s/files/1/0878/9921/5904/files/timepads-illustration.jpg' %}
+{% assign popup_heading = section.settings.heading | default: 'Your period. Your comfort. 5% off with Timepads.' %}
+{% assign popup_subheading = section.settings.subheading | default: 'Join 10,000+ women choosing comfort with Timepads.' %}
+{% assign coupon_code = section.settings.coupon_code | default: 'TIME10' %}
+{% assign discount_amount = section.settings.discount_amount | default: '10%' %}
+{% assign delay = section.settings.delay | default: 1000 %}
+
+[... paste all the CSS and HTML from above ...]
+
+<script>
+// Update CONFIG to use section settings
+const CONFIG = {
+  delay: {{ delay }},
+  storageKey: 'timepads_popup',
+  couponCode: '{{ coupon_code }}',
+  debug: false
+};
+[... rest of JavaScript ...]
+</script>
+
+{% schema %}
+{
+  "name": "Timepads Discount Popup",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "popup_image",
+      "label": "Popup Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join Timepads to enjoy 5% off on your first order."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Unlock your special reward!"
+    },
+    {
+      "type": "text",
+      "id": "coupon_code",
+      "label": "Coupon Code",
+      "default": "TIME10"
+    },
+    {
+      "type": "text",
+      "id": "discount_amount",
+      "label": "Discount Amount Display",
+      "default": "10%"
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "label": "Show Delay (seconds)",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "default": 1,
+      "unit": "s"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Timepads Discount Popup"
+    }
+  ]
+}
+{% endschema %}

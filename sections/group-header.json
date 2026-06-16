@@ -1,0 +1,407 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement": {
+      "type": "announcement",
+      "blocks": {
+        "text_RnUKCX": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p><strong>Free Shipping on All Orders  </strong></p><p></p>",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
+        },
+        "text_YLwVXL": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p><strong>Get FLAT 75 CASHBACK</strong> on your first ever transaction via MobiKwik UPI valid on transaction above <strong>Rs. 249</strong></p>",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
+        },
+        "announce_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Your period, your comfort Trust Time for the best protection!</p>",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
+        },
+        "announce_shipping": {
+          "type": "message",
+          "settings": {
+            "message": "💥 Crazy Prices! Enjoy discounted rates on all products on Timepads!",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
+        }
+      },
+      "block_order": [
+        "text_RnUKCX",
+        "text_YLwVXL",
+        "announce_text",
+        "announce_shipping"
+      ],
+      "custom_css": [],
+      "settings": {
+        "text_size": 4,
+        "layout": "slider",
+        "speed": 13,
+        "padding_top": 4,
+        "padding_bottom": 4
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "header-block-toolbar": {
+          "type": "toolbar",
+          "disabled": true,
+          "settings": {
+            "announcement_text": "<p>This is announcement <em><strong>richtext</strong></em> from an announcement block</p>",
+            "secondary_linklist": "",
+            "show_menu_desktop": true,
+            "show_menu_mobile": true,
+            "show_locale_desktop": true,
+            "show_locale_mobile": true,
+            "show_currency_desktop": true,
+            "show_currency_mobile": true
+          }
+        },
+        "header-block-image-1": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "1",
+            "wh_ratio": 2,
+            "image": "shopify://shop_images/TSP-UF-280-15-01_time_sanitary_pads_ultra_feather_xl_280mm_medium_flow.jpg",
+            "wide_element": true,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "Pinned to item 1",
+            "title_color": "text--neutral",
+            "button_style": "is-on-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "header-block-image-2": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "2",
+            "wh_ratio": 0.8,
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "Pinned to item 2",
+            "title_color": "text--neutral",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "header-block-image-3": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "2",
+            "wh_ratio": 0.8,
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "Pinned to item 2",
+            "title_color": "text--neutral",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "product_mKt9a4": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "position": "3",
+            "wide_element": false,
+            "product": "us-cotton-comfortable-sanitary-pads-xl",
+            "display": "all"
+          }
+        },
+        "image_J3TAzx": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "4",
+            "wh_ratio": 2.2,
+            "image": "shopify://shop_images/Buy-2-Get-1.png",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_iEjCKz": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "4",
+            "wh_ratio": 2.2,
+            "image": "shopify://shop_images/Combo.png",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_gwxDae": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "1",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/Cuddle_1.png",
+            "wide_element": true,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_WcyzMa": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "2",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/pixelcut-export_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_qGGUUc": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "2",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/TIMEPUF33015-1_1_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_QUi6G6": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "1",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/Web_Sample-03_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop Now",
+            "link": "shopify://collections/cotton-sanitary-pads",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_geKqBc": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "1",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/Web_Sample-02_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop Now",
+            "link": "shopify://collections/comfortable-pads-for-periods",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_n8VrCF": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "1",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/Web_Sample-04_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop Now",
+            "link": "shopify://collections/period-pads-cotton",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_ii8KXA": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "1",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/Web_Sample-05_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop Now",
+            "link": "shopify://collections/soft-cotton-pads-for-periods",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        },
+        "image_k6pRKa": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "position": "2",
+            "wh_ratio": 1.2,
+            "image": "shopify://shop_images/Velvet_1.webp",
+            "wide_element": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "title": "",
+            "title_color": "text--white",
+            "button_style": "is-below-image",
+            "link_text": "Shop All",
+            "link": "shopify://collections/all",
+            "button_color": "btn--neutral",
+            "display": "all"
+          }
+        }
+      },
+      "block_order": [
+        "header-block-toolbar",
+        "header-block-image-1",
+        "header-block-image-2",
+        "header-block-image-3",
+        "product_mKt9a4",
+        "image_J3TAzx",
+        "image_iEjCKz",
+        "image_gwxDae",
+        "image_WcyzMa",
+        "image_qGGUUc",
+        "image_QUi6G6",
+        "image_geKqBc",
+        "image_n8VrCF",
+        "image_ii8KXA",
+        "image_k6pRKa"
+      ],
+      "custom_css": [
+        ".navtext {font-size: 16px; font-weight: 500;}"
+      ],
+      "settings": {
+        "header_style": "menu_center",
+        "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
+        "logo_max_limit": 120,
+        "logo_padding": 15,
+        "logo_text_size": 5,
+        "main_menu_linklist": "header-menu-updated",
+        "mobile_menu_linklist": "",
+        "full_width": true,
+        "underline_current": false,
+        "enable_search": true,
+        "enable_account": true,
+        "use_icons": true,
+        "icons_type": "classic",
+        "cart_icon": "cart",
+        "header_sticky": "directional",
+        "transparent_home": false,
+        "transparent_collection": false,
+        "transparent_blog": false,
+        "transparent_article": false,
+        "transparent_page": false,
+        "transparent_text_color": "#000000",
+        "show_collection_images": true,
+        "collection_wh_ratio": 2.5
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

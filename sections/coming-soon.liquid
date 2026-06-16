@@ -1,0 +1,135 @@
+{% schema %}
+{
+  "name": "What's Coming Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "What's Coming"
+    },
+    {
+      "type": "text",
+      "id": "sub_heading",
+      "label": "Sub Heading",
+      "default": "Three amazing products designed just for you"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "Launching Soon"
+        },
+        {
+          "type": "color",
+          "id": "badge_color",
+          "label": "Badge Background Color",
+          "default": "#f43f5e"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product Title",
+          "default": "Period Pain Relief Cream"
+        },
+        {
+          "type": "textarea",
+          "id": "product_desc",
+          "label": "Product Description",
+          "default": "Soothe cramps naturally with fast-acting comfort."
+        },
+        {
+          "type": "color",
+          "id": "card_bg",
+          "label": "Card Background Color",
+          "default": "#fee2e2"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "What's Coming",
+      "category": "Custom Sections",
+      "blocks": [
+        { "type": "product_card" },
+        { "type": "product_card" },
+        { "type": "product_card" }
+      ]
+    }
+  ]
+}
+
+{% endschema %}
+
+
+{% style %}
+.wellness-heading{
+  font-size: 28px;
+}
+.coming-soon .element-upcoming{
+flex: 0 0 45%;
+/* border: 1px solid gray; */
+}
+.know-more-btn{
+  background: #f83a3a;
+      padding: 10px;
+    text-align: center;
+    margin: auto;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    margin-top: 1rem;
+    color: white;
+    font-weight: 900;
+}
+@media only screen and (max-width: 767px){
+  .coming-soon .element-upcoming{
+flex: 0 0 90%;
+/* border: 1px solid gray; */
+}
+.know-more-btn{
+  width: 45%;
+}
+}
+
+{% endstyle %} 
+
+<section style="padding:40px 0;">
+  <div class="container coming-soon" style="max-width:1200px; margin:0 auto; text-align:center;">
+    <h2 class="wellness-heading" style=" font-weight:700; margin-bottom:10px;">{{ section.settings.main_heading }}</h2>
+    <p style="color:#6b7280; margin-bottom:30px;">{{ section.settings.sub_heading }}</p>
+
+    <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+      {% for block in section.blocks %}
+        <div style=" padding:20px; border-radius:15px; width:300px; text-align:left;" class="element-upcoming">
+          {% if block.settings.icon != blank %}
+            <img src="{{ block.settings.icon | image_url }}" alt="" style="margin-bottom:10px;">
+          {% endif %}
+
+          {% comment %} <span style="background-color:{{ block.settings.badge_color }}; color:#ffffff; padding:5px 12px; border-radius:20px; font-size:0.8rem; display:inline-block; margin-bottom:10px;">
+            {{ block.settings.badge_text }}
+          </span> {% endcomment %}
+
+          <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">{{ block.settings.product_title }}</h3>
+          <p style="color:#4b5563;">{{ block.settings.product_desc }}</p>
+          {% comment %} <a class="know-more-btn">Read more</a> {% endcomment %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</section>

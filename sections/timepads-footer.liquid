@@ -1,0 +1,767 @@
+{% comment %}
+  TIMEPADS Footer Section
+  Shopify Liquid + CSS — Desktop & Mobile Responsive
+  Matches: Dark brown background, orange accents, collapsible mobile accordion
+{% endcomment %}
+
+<style>
+  /* ─── Reset & Variables ─────────────────────────── */
+  :root {
+    --tp-bg:           #f6ead7;
+    --tp-bg-card:     #f6ead7;
+    --tp-border:rgb(4, 4, 3);
+    --tp-orange:       #e8622a;
+    --tp-orange-light: #f07040;
+    --tp-gold:         #c8733a;
+    --tp-text:         #000000;
+    --tp-text-muted:   #000000;
+    --tp-white:        #000000;
+    --tp-green:        #2ecc71;
+    --tp-green-dark:   #27ae60;
+    --tp-radius:       999px;
+    --tp-radius-card:  12px;
+    --tp-font:         'DM Sans', 'Segoe UI', sans-serif;
+  }
+
+  #timepads-footer * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  #timepads-footer {
+    background-color: var(--tp-bg);
+    font-family: var(--tp-font);
+    color: var(--tp-text);
+    border-top: 2px solid var(--tp-orange);
+  }
+
+  /* ─── Top Border Accent ─────────────────────────── */
+  #timepads-footer .tp-top-bar {
+    height: 3px;
+    background: linear-gradient(90deg, var(--tp-orange), #ff9a5c, var(--tp-orange));
+  }
+
+  /* ─── Main Footer Body ──────────────────────────── */
+  #timepads-footer .tp-footer-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 48px 40px;
+    display: grid;
+    grid-template-columns: 320px 1fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  /* ─── Brand Column ──────────────────────────────── */
+  #timepads-footer .tp-brand h2 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--tp-gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  #timepads-footer .tp-brand p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--tp-text);
+    margin-bottom: 28px;
+    max-width: 260px;
+  }
+
+  /* ─── Buttons ───────────────────────────────────── */
+  #timepads-footer .tp-btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--tp-green);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: var(--tp-radius);
+    text-decoration: none;
+    margin-bottom: 14px;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+  #timepads-footer .tp-btn-whatsapp:hover {
+    background: var(--tp-green-dark);
+    transform: translateY(-1px);
+  }
+  #timepads-footer .tp-btn-whatsapp svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  #timepads-footer .tp-btn-period {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--tp-bg-card);
+    border: 1.5px solid var(--tp-border);
+    color: var(--tp-white);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 20px;
+    border-radius: var(--tp-radius-card);
+    text-decoration: none;
+    margin-bottom: 28px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  #timepads-footer .tp-btn-period:hover {
+    border-color: var(--tp-orange);
+  }
+  #timepads-footer .tp-btn-period .tp-period-icon {
+    width: 34px;
+    height: 34px;
+    background: var(--tp-orange);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  #timepads-footer .tp-btn-period .tp-period-icon svg {
+    width: 16px;
+    height: 16px;
+    color: #fff;
+  }
+  #timepads-footer .tp-btn-period .tp-period-text {
+    display: flex;
+    flex-direction: column;
+  }
+  #timepads-footer .tp-btn-period .tp-period-text span:first-child {
+    font-weight: 600;
+    font-size: 14px;
+    color: black;
+  }
+
+
+
+#timepads-footer .tp-nav-col ul li a {
+  display: inline-block;
+  position: relative;
+  z-index: 0;
+  padding: 2px 10px 2px 0;
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.22s ease, padding-left 0.22s ease;
+}
+
+#timepads-footer .tp-nav-col ul li a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: #e8845f;
+  z-index: -1;
+  transition: width 0.22s cubic-bezier(.4, 0, .2, 1);
+}
+
+#timepads-footer .tp-nav-col ul li a:hover {
+  color: #000;
+  padding-left: 10px;
+}
+
+#timepads-footer .tp-nav-col ul li a:hover::before {
+  width: 100%;
+}
+
+
+
+  #timepads-footer .tp-btn-period .tp-period-text span:last-child {
+    font-size: 11.5px;
+    color: var(--tp-text-muted);
+    margin-top: 2px;
+  }
+
+  /* ─── Social Icons ──────────────────────────────── */
+  #timepads-footer .tp-socials {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  #timepads-footer .tp-socials a {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--tp-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--tp-text);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  #timepads-footer .tp-socials a:hover {
+    border-color: var(--tp-orange);
+    color: var(--tp-orange);
+    background: rgba(232,98,42,0.08);
+  }
+  #timepads-footer .tp-socials svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ─── Nav Columns ───────────────────────────────── */
+  #timepads-footer .tp-nav-col h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--tp-orange);
+    margin-bottom: 22px;
+  }
+
+  #timepads-footer .tp-nav-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  #timepads-footer .tp-nav-col ul li a {
+    font-size: 13.5px;
+    color: var(--tp-text);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #timepads-footer .tp-nav-col ul li a:hover {
+    color: var(--tp-white);
+  }
+
+  /* Badges */
+  #timepads-footer .tp-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  #timepads-footer .tp-badge-hiring {
+    background: var(--tp-orange);
+    color: #fff;
+  }
+  #timepads-footer .tp-badge-new {
+    background: var(--tp-orange);
+    color: #fff;
+  }
+
+  /* ─── Contact Column ────────────────────────────── */
+  #timepads-footer .tp-contact-times {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--tp-text);
+    margin-bottom: 18px;
+  }
+
+  #timepads-footer .tp-contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--tp-text);
+    text-decoration: none;
+    font-size: 13.5px;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+  }
+  #timepads-footer .tp-contact-link:hover {
+    color: black;
+    font-weight: 400;
+  }
+  #timepads-footer .tp-contact-link .tp-icon-wrap {
+    width: 36px;
+    height: 36px;
+    background: var(--tp-bg-card);
+    border: 1.5px solid var(--tp-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  #timepads-footer .tp-contact-link .tp-icon-wrap svg {
+    width: 15px;
+    height: 15px;
+    color: var(--tp-orange);
+  }
+
+  /* Desktop: socials in contact column */
+  #timepads-footer .tp-contact-socials {
+    margin-top: 20px;
+  }
+
+  /* ─── Partners Bar ──────────────────────────────── */
+  #timepads-footer .tp-partners {
+    border-top: 1px solid var(--tp-border);
+    padding: 22px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  #timepads-footer .tp-partners-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--tp-text-muted);
+    min-width: 120px;
+    margin-right: 20px;
+    padding-right: 20px;
+    border-right: 1px solid var(--tp-border);
+  }
+  #timepads-footer .tp-partners-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  #timepads-footer .tp-partner-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1.5px solid var(--tp-border);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--tp-text);
+    font-weight: 500;
+  }
+  #timepads-footer .tp-partner-chip::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    background: var(--tp-orange);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── Bottom Bar ────────────────────────────────── */
+  #timepads-footer .tp-bottom-bar {
+    border-top: 1px solid var(--tp-border);
+    padding: 18px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  #timepads-footer .tp-copyright {
+    font-size: 12px;
+    color: var(--tp-text-muted);
+  }
+  #timepads-footer .tp-bottom-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  #timepads-footer .tp-bottom-links a {
+    font-size: 12px;
+    color: var(--tp-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  #timepads-footer .tp-bottom-links a:hover {
+  color: black;
+  }
+
+  @media (min-width: 768px) and (max-width: 1200px) {
+    #timepads-footer .tp-footer-main {
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 60px 30px 40px;
+    }
+
+
+}
+
+
+  /* ════════════════════════════════════════════════
+     MOBILE — Accordion Style (≤ 768px)
+  ════════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    #timepads-footer .tp-footer-main {
+      grid-template-columns: 1fr;
+      padding: 36px 20px 0;
+      gap: 0;
+    }
+
+    /* Brand section stays normal */
+    #timepads-footer .tp-brand {
+      text-align: center;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--tp-border);
+    }
+    #timepads-footer .tp-brand h2 { font-size: 24px; }
+    #timepads-footer .tp-brand p { max-width: 100%; margin-left: auto; margin-right: auto; }
+
+    #timepads-footer .tp-btn-whatsapp {
+      width: 100%;
+      justify-content: center;
+    }
+    #timepads-footer .tp-btn-period {
+      width: 100%;
+    }
+    #timepads-footer .tp-socials {
+      justify-content: center;
+    }
+
+    /* Accordion nav columns */
+    #timepads-footer .tp-nav-col {
+      border-bottom: 1px solid var(--tp-border);
+    }
+
+    #timepads-footer .tp-nav-col h3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0;
+      padding: 18px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #timepads-footer .tp-nav-col h3 .tp-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--tp-orange);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    #timepads-footer .tp-nav-col.is-open h3 .tp-chevron {
+      transform: rotate(180deg);
+    }
+
+    #timepads-footer .tp-nav-col ul,
+    #timepads-footer .tp-contact-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.3s ease;
+    }
+
+    #timepads-footer .tp-nav-col.is-open ul,
+    #timepads-footer .tp-nav-col.is-open .tp-contact-body {
+      max-height: 400px;
+      padding-bottom: 20px;
+    }
+
+    /* Contact column special styling on mobile */
+    #timepads-footer .tp-contact-socials {
+      display: none; /* socials already shown in brand on mobile */
+    }
+
+    /* Partners */
+    #timepads-footer .tp-partners {
+      padding: 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    #timepads-footer .tp-partners-label {
+      border-right: none;
+      padding-right: 0;
+      margin-right: 0;
+    }
+    #timepads-footer .tp-partners-list {
+      gap: 8px;
+    }
+    #timepads-footer .tp-partner-chip {
+      font-size: 12px;
+      padding: 5px 12px;
+    }
+
+    /* Bottom bar */
+    #timepads-footer .tp-bottom-bar {
+      padding: 18px 20px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+    #timepads-footer .tp-bottom-links {
+      gap: 16px;
+    }
+  }
+@media only screen and (min-width: 769px){
+svg.tp-chevron{
+ display: none;
+}
+
+}
+
+</style>
+
+<footer id="timepads-footer" role="contentinfo">
+  <div class="tp-top-bar"></div>
+
+  <!-- ── Main Grid ── -->
+  <div class="tp-footer-main">
+
+    <!-- Brand -->
+    <div class="tp-brand">
+      <h2>TIMEPADS</h2>
+      <p>Crafted for comfort, designed for confidence. Feminine hygiene redefined for the modern woman.</p>
+
+      <a href="https://whatsapp.com/channel/0029Vb7NBPmA89Ml7laBSt3s" class="tp-btn-whatsapp">
+        <!-- WhatsApp Icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.556 4.116 1.527 5.843L.057 23.736a.5.5 0 0 0 .61.632l5.975-1.563A11.937 11.937 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.127-1.415l-.368-.221-3.814.998 1.016-3.72-.241-.383A9.951 9.951 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Join our Community
+      </a>
+
+      <a href="/pages/period-tracker" class="tp-btn-period">
+        <span class="tp-period-icon">
+          <!-- Calendar/period icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </span>
+        <span class="tp-period-text">
+          <span>Period Calculator</span>
+          <span>Track your cycle with ease</span>
+        </span>
+      </a>
+
+      <div class="tp-socials">
+        <a href="https://www.facebook.com/people/Time-sanitary-pads/61566376860338/" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://x.com/biowealproducts" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://in.pinterest.com/biowealproducts/" aria-label="Pinterest" class="tp-desktop-only">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/timepads.in/" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/bioweal/" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Explore -->
+    <div class="tp-nav-col is-open" data-accordion>
+      <h3>
+        EXPLORE
+        <svg class="tp-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </h3>
+      <ul>  
+        <li><a href="/pages/why-time">Why TIMEPADS?</a></li>
+        <li><a href="/pages/faqs">FAQ's</a></li>
+        <li><a href="/pages/media">Media</a></li>
+        <li><a href="/blogs/time-blog">Blogs</a></li>
+        <li><a href="/pages/careers">Careers <span class="tp-badge tp-badge-hiring">HIRING</span></a></li>
+      </ul>
+    </div>
+
+    <!-- Policies -->
+    <div class="tp-nav-col is-open" data-accordion>
+      <h3>
+        POLICIES
+        <svg class="tp-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </h3>
+      <ul>
+        <li><a href="/policies/shipping-policy">Shipping policy</a></li>
+        <li><a href="/policies/refund-policy">Refund policy</a></li>
+        <li><a href="/policies/privacy-policy">Privacy policy</a></li>
+        <li><a href="/policies/terms-of-service">Terms of service</a></li>
+        {% comment %} <li><a href="/pages/bugs-and-suggestions">Bugs &amp; Suggestions <span class="tp-badge tp-badge-new">NEW</span></a></li> {% endcomment %}
+      </ul>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="tp-nav-col is-open" data-accordion>
+      <h3>
+        QUICK LINKS
+        <svg class="tp-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </h3>
+      <ul>
+        <li><a href="/pages/contact">Contact us</a></li>
+        <li><a target="_blank" href="https://forms.office.com/Pages/ResponsePage.aspx?id=jZ5OVvMlTkmH6paK9J7yK31rsX6kLixPqdvL-TKBS5pUOFIySTlPS0xOSkRHUlVKNVhZQ0FQWFZQRS4u">Distributor</a></li>
+        <li><a  target="_blank" href="https://forms.office.com/Pages/ResponsePage.aspx?id=jZ5OVvMlTkmH6paK9J7yK31rsX6kLixPqdvL-TKBS5pUQUQ1R085Q0FJR0VIWVc2RVMzNklET1hBMS4u">Influencer Program</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Us -->
+    <div class="tp-nav-col is-open" data-accordion>
+      <h3>
+        CONTACT US
+        <svg class="tp-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </h3>
+      <div class="tp-contact-body">
+        <div class="tp-contact-times">
+          Mon–Fri: 9:30 AM – 6:30 PM<br>
+          Saturday: 9:30 AM – 6:00 PM
+        </div>
+
+        <a href="tel:+917975421029" class="tp-contact-link">
+          <span class="tp-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.1 6.1l1.07-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </span>
+          +91 79754 21029
+        </a>
+
+        <a href="mailto:business@bioweal.com" class="tp-contact-link">
+          <span class="tp-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </span>
+          business@bioweal.com
+        </a>
+
+        <!-- Desktop-only socials in contact column -->
+  
+      </div>
+    </div>
+
+  </div><!-- /tp-footer-main -->
+
+  <!-- ── Partners ── -->
+  <div class="tp-partners">
+    <span class="tp-partners-label">Service providers</span>
+    <div class="tp-partners-list">
+      <span class="tp-partner-chip">GoKwik</span>
+      <span class="tp-partner-chip">Shiprocket</span>
+      <span class="tp-partner-chip">Razorpay</span>
+      <span class="tp-partner-chip">Shopify</span>
+  <!-- <span class="tp-partner-chip">Klaviyo</span> -->
+
+    </div>
+  </div>
+
+  <!-- ── Bottom Bar ── -->
+  <div class="tp-bottom-bar">
+    <p class="tp-copyright">
+      &copy; 2026 TIMEPADS by Bioweal Products Pvt. Ltd. All rights reserved.
+    </p>
+  </div>
+
+</footer>
+
+<!-- ── Accordion JS (mobile only) ── -->
+<script>
+(function() {
+  var cols = document.querySelectorAll('#timepads-footer [data-accordion]');
+  cols.forEach(function(col) {
+    var heading = col.querySelector('h3');
+    if (!heading) return;
+    heading.addEventListener('click', function() {
+      var isMobile = window.innerWidth <= 768;
+      if (!isMobile) return;
+      col.classList.toggle('is-open');
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Timepads Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_link",
+      "label": "WhatsApp Link"
+    },
+    {
+      "type": "url",
+      "id": "calculator_link",
+      "label": "Period Calculator Link"
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact text",
+      "default": "Mon–Sat: 9:30AM – 6:30PM"
+    },
+    {
+      "type": "url",
+      "id": "privacy",
+      "label": "Privacy Policy Link"
+    },
+    {
+      "type": "url",
+      "id": "terms",
+      "label": "Terms Link"
+    },
+    {
+      "type": "url",
+      "id": "bugs",
+      "label": "Bugs & Suggestions Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    },
+    {
+      "type": "partner",
+      "name": "Partner",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Partner Name"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Timepads Footer"
+    }
+  ]
+}
+{% endschema %}

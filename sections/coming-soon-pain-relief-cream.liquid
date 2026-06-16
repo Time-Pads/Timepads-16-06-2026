@@ -1,0 +1,1113 @@
+{% comment %}
+  TIME Pain Relief Cream - Complete Product Section
+  All 6 sections in one scrollable layout
+{% endcomment %}
+
+<div class="time-pain-relief-wrapper">
+  
+  <!-- SECTION 1: HERO -->
+  <section class="tpr-hero" id="tpr-hero">
+    <div class="tpr-container">
+      <h1 class="tpr-main-title animate-fade-in">Why Time Pain Relief Cream?</h1>
+      <p class="tpr-subtitle animate-fade-in-delay">When period cramps hit, comfort shouldn't wait. <strong> Time Pain Relief Cream </strong> is specially formulated to provide quick, soothing relief from <strong> period pain <strong>  without the mess or side effects of pills.</p>
+      
+      <div class="tpr-product-hero">
+        <img 
+          src="{{ section.settings.product_image | img_url: 'large' }}" 
+          alt="Time Pain Relief Cream"
+          class="tpr-product-img animate-float"
+        />
+        <div class="tpr-glow"></div>
+      </div>
+      
+      <div class="tpr-scroll-indicator">
+        <span>Discover Relief</span>
+        <svg class="tpr-arrow-down" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PAIN RELIEF VISUALIZATION -->
+  <section class="tpr-visualization" id="tpr-relief">
+    <div class="tpr-container">
+      <h2 class="tpr-section-title">Fast-Acting Relief Where You Need It</h2>
+      
+      <div class="tpr-body-diagram">
+        <!-- Female body silhouette -->
+   <svg class="tpr-body-outline" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+          <path class="body-path" d="M100,50 Q95,80 95,120 L95,200 Q95,220 90,240 L85,300 Q85,350 90,380 
+                   M100,50 Q105,80 105,120 L105,200 Q105,220 110,240 L115,300 Q115,350 110,380" 
+                stroke="#E8E8E8" stroke-width="2" fill="none"/>
+          <!-- Head -->
+          <circle cx="100" cy="30" r="20" stroke="#E8E8E8" stroke-width="2" fill="none"/>
+        </svg> 
+
+        {% comment %} <img src="https://cdn.shopify.com/s/files/1/0691/7121/6664/files/images_2_50dab76d-cdb0-4c97-bb33-e2f0cd295ace.jpg?v=1761219732"> {% endcomment %}
+        
+        <!-- Pain zones -->
+        <div class="tpr-pain-zone tpr-zone-abdomen" data-zone="abdomen">
+          <div class="tpr-pulse-ring"></div>
+          <span class="tpr-zone-label">Lower Abdomen</span>
+        </div>
+        
+        <div class="tpr-pain-zone tpr-zone-back" data-zone="back">
+          <div class="tpr-pulse-ring"></div>
+          <span class="tpr-zone-label">Lower Back</span>
+        </div>
+        
+        <!-- Cream tube with connection lines -->
+        <div class="tpr-cream-indicator">
+          <img src="{{ section.settings.product_icon | img_url: 'small' }}" alt="Cream" class="tpr-cream-icon"/>
+          <svg class="tpr-connection-line tpr-line-1" width="150" height="100">
+            <path d="M10,80 Q50,40 120,20" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+          </svg>
+          <svg class="tpr-connection-line tpr-line-2" width="150" height="150">
+            <path d="M10,20 Q50,60 120,100" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      
+      <p class="tpr-relief-tagline">Relief within minutes • Targeted comfort</p>
+    </div>
+  </section>
+
+  <!-- SECTION 3: 5 KEY BENEFITS -->
+  <section class="tpr-benefits" id="tpr-benefits">
+    <div class="tpr-container">
+      <h2 class="tpr-section-title">The Top Benefits</h2>
+      
+      <div class="tpr-benefits-grid">
+        
+        <!-- Benefit 1: Instant Relief -->
+        <div class="tpr-benefit-card" data-benefit="1">
+          <div class="tpr-benefit-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M24 8L28 20H40L30 28L34 40L24 32L14 40L18 28L8 20H20L24 8Z" 
+                    fill="#FFB84D" stroke="#FFB84D" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="tpr-benefit-title">Instant Pain Relief</h3>
+          <p class="tpr-benefit-desc">
+            The fast-absorbing formula penetrates deeply to ease muscle tension and 
+            menstrual discomfort within minutes.
+          </p>
+        </div>
+
+        <!-- Benefit 2: Natural Ingredients -->
+        <div class="tpr-benefit-card" data-benefit="2">
+          <div class="tpr-benefit-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M24 8C24 8 32 12 32 24C32 32 28 40 24 40C20 40 16 32 16 24C16 12 24 8 24 8Z" 
+                    fill="#2D7F5E" stroke="#2D7F5E" stroke-width="2"/>
+              <path d="M24 8V40" stroke="#fff" stroke-width="2"/>
+              <path d="M24 18C20 18 18 20 18 22" stroke="#fff" stroke-width="2" fill="none"/>
+              <path d="M24 18C28 18 30 20 30 22" stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <h3 class="tpr-benefit-title">Natural Ingredients for Gentle Care</h3>
+          <p class="tpr-benefit-desc">
+            Made with Tulasi, Coconut oil, and Neem leaf. Soothes abdominal cramps naturally 
+            while keeping your skin soft and irritation-free.
+          </p>
+        </div>
+
+        <!-- Benefit 3: Targeted Relief -->
+        <div class="tpr-benefit-card" data-benefit="3">
+          <div class="tpr-benefit-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="16" stroke="#FF6B6B" stroke-width="2" fill="none"/>
+              <circle cx="24" cy="24" r="10" stroke="#FF6B6B" stroke-width="2" fill="none"/>
+              <circle cx="24" cy="24" r="3" fill="#FF6B6B"/>
+              <path d="M24 8V16M24 32V40M8 24H16M32 24H40" stroke="#FF6B6B" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="tpr-benefit-title">Targeted Relief for Period Cramps</h3>
+          <p class="tpr-benefit-desc">
+            Simply massage on your lower abdomen or back to experience focused comfort 
+            exactly where you need it most.
+          </p>
+        </div>
+
+        <!-- Benefit 4: Non-Sticky -->
+        <div class="tpr-benefit-card" data-benefit="4">
+          <div class="tpr-benefit-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M16 24C16 24 20 16 24 16C28 16 32 24 32 24C32 24 28 32 24 32C20 32 16 24 16 24Z" 
+                    fill="#5DADE2" stroke="#5DADE2" stroke-width="2"/>
+              <path d="M20 20L22 22M26 22L28 20M24 26V28" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="tpr-benefit-title">Non-Sticky & Easy to Use</h3>
+          <p class="tpr-benefit-desc">
+            Lightweight and non-greasy, absorbs quickly so you can move freely 
+            without stains or stickiness.
+          </p>
+        </div>
+
+        <!-- Benefit 5: Safe Formula -->
+        <div class="tpr-benefit-card" data-benefit="5">
+          <div class="tpr-benefit-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M24 8L8 16V24C8 32 12 38 24 40C36 38 40 32 40 24V16L24 8Z" 
+                    fill="#8E44AD" stroke="#8E44AD" stroke-width="2"/>
+              <path d="M18 24L22 28L30 20" stroke="#fff" stroke-width="3" fill="none"/>
+            </svg>
+          </div>
+          <h3 class="tpr-benefit-title">Safe, Chemical-Free Formula</h3>
+          <p class="tpr-benefit-desc">
+            Designed for daily use during your cycle. Free from harmful chemicals, parabens, 
+            and synthetic fragrances—safe even for sensitive skin.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NATURAL INGREDIENTS -->
+  <section class="tpr-ingredients" id="tpr-ingredients">
+    <div class="tpr-container">
+      <h2 class="tpr-section-title">Powered by Nature</h2>
+      <p class="tpr-section-subtitle">100% Natural Ingredients for Gentle Relief</p>
+      
+      <div class="tpr-ingredients-showcase">
+        
+        <!-- Cream tube center -->
+        <div class="tpr-ingredients-product">
+          <img 
+            src="{{ section.settings.product_image | img_url: 'large' }}" 
+            alt="Time Pain Relief Cream"
+            class="tpr-ingredients-tube"
+          />
+        </div>
+        
+        <!-- Ingredient 1: Tulasi -->
+        <div class="tpr-ingredient-item tpr-ingredient-1">
+          <div class="tpr-ingredient-circle">
+            <img 
+              src="{{ section.settings.tulasi_icon | img_url: 'small' }}" 
+              alt="Tulasi"
+              class="tpr-ingredient-img"
+            />
+          </div>
+          <h4 class="tpr-ingredient-name">Tulasi</h4>
+          <p class="tpr-ingredient-benefit">Anti-inflammatory</p>
+        </div>
+        
+        <!-- Ingredient 2: Coconut Oil -->
+        <div class="tpr-ingredient-item tpr-ingredient-2">
+          <div class="tpr-ingredient-circle">
+            <img 
+              src="{{ section.settings.coconut_icon | img_url: 'small' }}" 
+              alt="Coconut Oil"
+              class="tpr-ingredient-img"
+            />
+          </div>
+          <h4 class="tpr-ingredient-name">Coconut Oil</h4>
+          <p class="tpr-ingredient-benefit">Deep Moisturizing</p>
+        </div>
+        
+        <!-- Ingredient 3: Neem -->
+        <div class="tpr-ingredient-item tpr-ingredient-3">
+          <div class="tpr-ingredient-circle">
+            <img 
+              src="{{ section.settings.neem_icon | img_url: 'small' }}" 
+              alt="Neem Leaf"
+              class="tpr-ingredient-img"
+            />
+          </div>
+          <h4 class="tpr-ingredient-name">Neem Leaf</h4>
+          <p class="tpr-ingredient-benefit">Skin Soothing</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: HOW IT WORKS -->
+  <section class="tpr-how-it-works" id="tpr-howitworks">
+    <div class="tpr-container">
+      <h2 class="tpr-section-title">Your 3-Minute Relief Journey</h2>
+      
+      <div class="tpr-steps-timeline">
+        
+        <!-- Step 1 -->
+        <div class="tpr-step" data-step="1">
+          <div class="tpr-step-number">1</div>
+          <div class="tpr-step-content">
+            <div class="tpr-step-icon">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="#FFF9F3"/>
+                <path d="M28 28C28 28 30 24 32 24C34 24 36 28 36 28L32 40L28 28Z" 
+                      fill="#4ECDC4"/>
+                <circle cx="32" cy="45" r="3" fill="#4ECDC4"/>
+              </svg>
+            </div>
+            <h3 class="tpr-step-title">Apply</h3>
+            <p class="tpr-step-desc">Massage the cream on your lower abdomen or back</p>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="tpr-step-arrow">
+          <svg width="60" height="40" viewBox="0 0 60 40">
+            <path d="M5 20 L55 20 M45 10 L55 20 L45 30" 
+                  stroke="#95E1D3" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="tpr-step" data-step="2">
+          <div class="tpr-step-number">2</div>
+          <div class="tpr-step-content">
+            <div class="tpr-step-icon">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="#FFF9F3"/>
+                <circle cx="32" cy="32" r="12" fill="#4ECDC4" opacity="0.3"/>
+                <circle cx="32" cy="32" r="8" fill="#4ECDC4" opacity="0.5"/>
+                <circle cx="32" cy="32" r="4" fill="#4ECDC4"/>
+              </svg>
+            </div>
+            <h3 class="tpr-step-title">Absorb</h3>
+            <p class="tpr-step-desc">Fast-absorbing formula works deep into muscles</p>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="tpr-step-arrow">
+          <svg width="60" height="40" viewBox="0 0 60 40">
+            <path d="M5 20 L55 20 M45 10 L55 20 L45 30" 
+                  stroke="#95E1D3" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="tpr-step" data-step="3">
+          <div class="tpr-step-number">3</div>
+          <div class="tpr-step-content">
+            <div class="tpr-step-icon">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="#FFF9F3"/>
+                <circle cx="24" cy="28" r="3" fill="#4ECDC4"/>
+                <circle cx="40" cy="28" r="3" fill="#4ECDC4"/>
+                <path d="M20 38 Q32 46 44 38" stroke="#4ECDC4" stroke-width="3" fill="none"/>
+              </svg>
+            </div>
+            <h3 class="tpr-step-title">Relief</h3>
+            <p class="tpr-step-desc">Move freely without pain in just minutes</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: CTA / PURCHASE -->
+  <section class="tpr-cta" id="tpr-cta">
+    <div class="tpr-container">
+      <h2 class="tpr-cta-title">Experience Natural Relief Today</h2>
+      <p class="tpr-cta-subtitle">Join thousands of women who trust Time Pain Relief Cream</p>
+      
+      <div class="tpr-cta-actions">
+        {% if section.settings.product_handle != blank %}
+          <a href="/products/{{ section.settings.product_handle }}" class="tpr-btn-primary">
+            Shop Now
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M5 10H15M15 10L10 5M15 10L10 15" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </a>
+        {% endif %}
+        
+        <a href="#tpr-benefits" class="tpr-btn-secondary">Learn More</a>
+      </div>
+      
+      <div class="tpr-trust-badges">
+        <div class="tpr-badge">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7V12C2 17 5 21 12 22C19 21 22 17 22 12V7L12 2Z" 
+                  fill="#2D7F5E"/>
+            <path d="M9 12L11 14L15 10" stroke="#fff" stroke-width="2" fill="none"/>
+          </svg>
+          <span>100% Natural</span>
+        </div>
+        
+        <div class="tpr-badge">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7V12C2 17 5 21 12 22C19 21 22 17 22 12V7L12 2Z" 
+                  fill="#2D7F5E"/>
+            <path d="M9 12L11 14L15 10" stroke="#fff" stroke-width="2" fill="none"/>
+          </svg>
+          <span>Dermatologically Tested</span>
+        </div>
+        
+        <div class="tpr-badge">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7V12C2 17 5 21 12 22C19 21 22 17 22 12V7L12 2Z" 
+                  fill="#2D7F5E"/>
+            <path d="M9 12L11 14L15 10" stroke="#fff" stroke-width="2" fill="none"/>
+          </svg>
+          <span>Chemical-Free</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+/* ============================================
+   TIME PAIN RELIEF CREAM - COMPLETE STYLES
+   ============================================ */
+
+.time-pain-relief-wrapper {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+  font-display: swap;
+}
+
+.tpr-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Common Section Styles */
+section {
+  position: relative;
+}
+
+.tpr-section-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1A535C;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.tpr-section-subtitle {
+  font-size: 20px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* ============================================
+   SECTION 1: HERO
+   ============================================ */
+
+.tpr-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F7FFF7 0%, #FFF9F3 100%);
+  text-align: center;
+}
+
+.tpr-main-title {
+  font-size: 56px;
+  font-weight: 800;
+  color: #1A535C;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.tpr-subtitle {
+  font-size: 24px;
+  color: #666;
+  margin-bottom: 60px;
+}
+
+.tpr-product-hero {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  margin: 0 auto 60px;
+}
+
+.tpr-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  animation: float 3s ease-in-out infinite;
+}
+
+.tpr-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(78, 205, 196, 0.3) 0%, transparent 70%);
+  animation: pulse-glow 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+.tpr-scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #4ECDC4;
+  cursor: pointer;
+}
+
+.tpr-arrow-down {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+/* ============================================
+   SECTION 2: PAIN RELIEF VISUALIZATION
+   ============================================ */
+
+.tpr-visualization {
+  background: #fff;
+  padding: 100px 0;
+}
+
+.tpr-body-diagram {
+  position: relative;
+  max-width: 600px;
+  height: 600px;
+  margin: 60px auto;
+}
+
+.tpr-body-outline {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 400px;
+}
+
+.body-path {
+  animation: draw-body 2s ease-in-out forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+.tpr-pain-zone {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pain-to-relief 4s ease-in-out infinite;
+}
+
+.tpr-zone-abdomen {
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tpr-zone-back {
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tpr-pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.tpr-zone-label {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A535C;
+}
+
+.tpr-cream-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+}
+
+.tpr-cream-icon {
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow(0 4px 12px rgba(78, 205, 196, 0.4));
+}
+
+.tpr-connection-line {
+  position: absolute;
+  top: -50px;
+  left: 30px;
+  animation: draw-line 1.5s ease-in-out forwards;
+  animation-delay: 2s;
+  opacity: 0;
+}
+
+.tpr-line-2 {
+  top: 10px;
+  animation-delay: 2.3s;
+}
+
+.tpr-relief-tagline {
+  text-align: center;
+  font-size: 18px;
+  color: #4ECDC4;
+  font-weight: 600;
+  margin-top: 40px;
+}
+
+/* ============================================
+   SECTION 3: BENEFITS
+   ============================================ */
+
+.tpr-benefits {
+  background: linear-gradient(to bottom, #fff 0%, #F7FFF7 100%);
+  padding: 100px 0;
+}
+
+.tpr-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.tpr-benefit-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  animation: fade-in-up 0.6s ease forwards;
+}
+
+.tpr-benefit-card:nth-child(1) { animation-delay: 0.1s; }
+.tpr-benefit-card:nth-child(2) { animation-delay: 0.2s; }
+.tpr-benefit-card:nth-child(3) { animation-delay: 0.3s; }
+.tpr-benefit-card:nth-child(4) { animation-delay: 0.4s; }
+.tpr-benefit-card:nth-child(5) { animation-delay: 0.5s; }
+
+.tpr-benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(78, 205, 196, 0.2);
+}
+
+.tpr-benefit-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F7FFF7;
+  border-radius: 50%;
+}
+
+.tpr-benefit-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1A535C;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.tpr-benefit-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  text-align: center;
+}
+
+/* ============================================
+   SECTION 4: INGREDIENTS
+   ============================================ */
+
+.tpr-ingredients {
+  background: #fff;
+  padding: 100px 0;
+  overflow: hidden;
+}
+
+.tpr-ingredients-showcase {
+  position: relative;
+  max-width: 800px;
+  height: 500px;
+  margin: 60px auto;
+}
+
+.tpr-ingredients-product {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.tpr-ingredients-tube {
+  width: 100%;
+  height: auto;
+  {% comment %} animation: float 3s ease-in-out infinite; {% endcomment %}
+}
+
+.tpr-ingredient-item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tpr-ingredient-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #F7FFF7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.tpr-ingredient-circle:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.tpr-ingredient-img {
+  width: 100px;
+  height: 100px;
+  object-fit: fill;
+}
+
+.tpr-ingredient-1 {
+  top: 20%;
+  left: 10%;
+  animation: float-rotate 4s ease-in-out infinite;
+}
+
+.tpr-ingredient-2 {
+  top: 10%;
+  right: 15%;
+  animation: float-rotate 4s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.tpr-ingredient-3 {
+  bottom: 0%;
+  right: 10%;
+  animation: float-rotate 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.tpr-ingredient-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A535C;
+}
+
+.tpr-ingredient-benefit {
+  font-size: 14px;
+  color: #2D7F5E;
+  font-weight: 600;
+}
+
+/* ============================================
+   SECTION 5: HOW IT WORKS
+   ============================================ */
+
+.tpr-how-it-works {
+  background: linear-gradient(135deg, #F7FFF7 0%, #fff 100%);
+  padding: 100px 0;
+}
+
+.tpr-steps-timeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+}
+
+.tpr-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 250px;
+  opacity: 0;
+  animation: fade-in-up 0.8s ease forwards;
+}
+
+.tpr-step:nth-child(1) { animation-delay: 0.2s; }
+.tpr-step:nth-child(3) { animation-delay: 0.6s; }
+.tpr-step:nth-child(5) { animation-delay: 1s; }
+
+.tpr-step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #4ECDC4;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+.tpr-step-content {
+  text-align: center;
+}
+
+.tpr-step-icon {
+  margin-bottom: 20px;
+}
+
+.tpr-step-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1A535C;
+  margin-bottom: 12px;
+}
+
+.tpr-step-desc {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.tpr-step-arrow {
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================
+   SECTION 6: CTA
+   ============================================ */
+
+.tpr-cta {
+  background: linear-gradient(135deg,rgb(144, 244, 237) 0%, #f0c6c6 100%);
+  color: #fff;
+  text-align: center;
+  padding: 100px 0;
+}
+
+.tpr-cta-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.tpr-cta-subtitle {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 60px;
+}
+
+.tpr-cta-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+.tpr-btn-primary,
+.tpr-btn-secondary {
+  padding: 18px 40px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.tpr-btn-primary {
+  background: #fff;
+  color: #4ECDC4;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.tpr-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tpr-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.tpr-btn-secondary:hover {
+  background: #fff;
+  color: #4ECDC4;
+}
+
+.tpr-trust-badges {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tpr-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes draw-body {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pain-to-relief {
+  0%, 40% { color: #FF6B6B; }
+  60%, 100% { color: #4ECDC4; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+@keyframes draw-line {
+  from { 
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    opacity: 0;
+  }
+  to { 
+    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-rotate {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.animate-fade-in {
+  animation: fade-in-up 1s ease forwards;
+}
+
+.animate-fade-in-delay {
+  animation: fade-in-up 1s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .tpr-main-title {
+    font-size: 36px;
+  }
+
+  .tpr-subtitle {
+    font-size: 18px;
+  }
+
+  .tpr-section-title {
+    font-size: 32px;
+  }
+
+  .tpr-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .tpr-steps-timeline {
+    flex-direction: column;
+  }
+
+  .tpr-step-arrow {
+    transform: rotate(90deg);
+  }
+
+  .tpr-ingredient-1,
+  .tpr-ingredient-2,
+  .tpr-ingredient-3 {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+
+  .tpr-ingredients-showcase {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .tpr-ingredients-product {
+    position: relative;
+    transform: none;
+  }
+
+  .tpr-cta-title {
+    font-size: 32px;
+  }
+
+  .tpr-cta-actions {
+    flex-direction: column;
+  }
+}
+</style>
+
+<script>
+// Smooth scroll for internal links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Intersection Observer for scroll animations
+const observerOptions = {
+  threshold: 0.2,
+  rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in-view');
+    }
+  });
+}, observerOptions);
+
+// Observe all sections
+document.querySelectorAll('section').forEach(section => {
+  observer.observe(section);
+});
+
+// Pain zone animation trigger
+const painZones = document.querySelectorAll('.tpr-pain-zone');
+const visualizationSection = document.querySelector('.tpr-visualization');
+
+if (visualizationSection) {
+  const zoneObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        painZones.forEach(zone => {
+          zone.style.animationPlayState = 'running';
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  zoneObserver.observe(visualizationSection);
+}
+</script>
+
+{% schema %}
+{
+  "name": "Time Pain Relief Cream",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image",
+      "info": "Main cream tube image"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_icon",
+      "label": "Product Icon",
+      "info": "Small icon for diagrams"
+    },
+    {
+      "type": "image_picker",
+      "id": "tulasi_icon",
+      "label": "Tulasi Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "coconut_icon",
+      "label": "Coconut Oil Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "neem_icon",
+      "label": "Neem Leaf Icon"
+    },
+    {
+      "type": "text",
+      "id": "product_handle",
+      "label": "Product Handle",
+      "info": "Enter product URL slug (e.g., 'time-pain-relief-cream')"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Time Pain Relief Cream"
+    }
+  ]
+}
+{% endschema %}

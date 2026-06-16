@@ -1,0 +1,423 @@
+{% comment %}
+  Section: Top Selling Products Table
+  Paste into: sections/top-selling-products-table.liquid
+{% endcomment %}
+
+<section class="tsp-section">
+  <div class="tsp-wrap page-width">
+    {% if section.settings.heading != blank %}
+      <div class="tsp-heading">
+        <h2>{{ section.settings.heading }}</h2>
+      </div>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      <div class="tsp-subheading rte">
+        {{ section.settings.subheading }}
+      </div>
+    {% endif %}
+
+    <div class="tsp-table-card">
+      <div class="tsp-table-scroll">
+        <table class="tsp-table" role="table" aria-label="Top selling products">
+          <thead>
+            <tr>
+              <th>Products</th>
+              <th class="tsp-col-price">MRP</th>
+              <th class="tsp-col-price">Selling Price</th>
+              <th class="tsp-col-discount">Discount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for block in section.blocks %}
+              {% assign product = block.settings.product %}
+              {% assign link_override = block.settings.link_override %}
+              {% assign product_link = link_override | default: product.url %}
+              {% assign compare_price = product.selected_or_first_available_variant.compare_at_price | default: product.compare_at_price_max %}
+              {% assign sale_price = product.selected_or_first_available_variant.price | default: product.price %}
+              {% assign discount_amount = compare_price | minus: sale_price %}
+              {% assign discount_percent = 0 %}
+              {% if compare_price and compare_price > sale_price %}
+                {% assign discount_percent = discount_amount | times: 100.0 | divided_by: compare_price | round %}
+              {% endif %}
+
+              <tr class="tsp-row" {{ block.shopify_attributes }}>
+                <td class="tsp-product-cell">
+                  <a class="tsp-product-link" href="{{ product_link }}">
+                    <span class="tsp-product-name">{{ product.title | default: block.settings.title }}</span>
+                    {% if block.settings.badge_text != blank %}
+                      <span class="tsp-badge">{{ block.settings.badge_text }}</span>
+                    {% endif %}
+                  </a>
+                </td>
+
+                <td class="tsp-price-cell tsp-col-price">
+                  {% if compare_price and compare_price > sale_price %}
+                    <span class="tsp-mrp">{{ compare_price | money }}</span>
+                  {% else %}
+                    <span class="tsp-mrp tsp-mrp--empty">—</span>
+                  {% endif %}
+                </td>
+
+                <td class="tsp-price-cell tsp-col-price">
+                  <span class="tsp-sale">{{ sale_price | money }}</span>
+                </td>
+
+                <td class="tsp-discount-cell tsp-col-discount">
+                  {% if discount_percent > 0 %}
+                    <span class="tsp-discount-pill">Save {{ discount_percent }}%</span>
+                  {% else %}
+                    <span class="tsp-discount-pill tsp-discount-pill--empty">No discount</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if section.settings.note_text != blank %}
+        <div class="tsp-note">
+          <span>{{ section.settings.note_text }} {{ 'now' | date: '%d-%m-%Y' }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tsp-section {
+    padding: 48px 0 64px;
+    background: #ffffff;
+  }
+
+  .tsp-wrap {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  @media only screen and (max-width: 749px) {
+    .tsp-wrap {
+          max-width: 95%;
+    }
+    .tsp-product-cell {
+  width: 45%;
+  max-width: 140px;
+}
+
+.tsp-product-link {
+  gap: 8px;
+  width: 100%;
+}
+
+.tsp-product-name {
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+  max-width: 100px;
+}
+
+.tsp-product-link::before {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+}
+
+.tsp-table {
+  min-width: 650px;
+}
+
+.tsp-table th,
+.tsp-table td {
+  padding: 12px 10px;
+}
+  }
+
+  .tsp-heading {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .tsp-heading h2 {
+    margin: 0;
+    font-weight: 500;
+    color: #18384a;
+    font-size: 18px;
+    line-height: 1.1;
+    letter-spacing: 0.2px;
+  }
+
+  .tsp-subheading {
+    max-width: 980px;
+    margin: 0 auto 30px;
+    text-align: center;
+    color: #4d616d;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .tsp-subheading p {
+    margin: 0;
+  }
+
+  .tsp-table-card {
+    border: 1px solid #cdd6dc;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(24, 56, 74, 0.06);
+    overflow: hidden;
+  }
+
+  .tsp-table-scroll {
+    overflow-x: auto;
+  }
+
+  .tsp-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 820px;
+  }
+
+  .tsp-table th,
+  .tsp-table td {
+    border: 1px solid rgba(24, 56, 74, 0.14);
+    padding: 18px 16px;
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  .tsp-table thead th {
+    background: linear-gradient(180deg, #f8fafb 0%, #f3f6f8 100%);
+    color: #18384a;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.2px;
+  }
+
+  .tsp-row {
+    transition: background-color 220ms ease, transform 220ms ease;
+  }
+
+  .tsp-row:hover {
+    background: #f9fbfc;
+  }
+
+  .tsp-product-cell {
+    width: 58%;
+  }
+
+  .tsp-product-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .tsp-product-link::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #18384a;
+    flex: 0 0 10px;
+    box-shadow: 0 0 0 4px rgba(24, 56, 74, 0.08);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  .tsp-row:hover .tsp-product-link::before {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 6px rgba(24, 56, 74, 0.12);
+  }
+
+  .tsp-product-name {
+    font-size: 15px;
+    line-height: 1.45;
+    color: #30363c;
+    font-weight: 500;
+  }
+
+  .tsp-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    margin-left: 2px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eef5f8;
+    color: #18384a;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .tsp-price-cell,
+  .tsp-discount-cell {
+    white-space: nowrap;
+    width: 14%;
+  }
+
+  .tsp-mrp {
+    display: inline-flex;
+    align-items: center;
+    font-size: 15px;
+    color: #6a7680;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+  }
+
+  .tsp-mrp--empty {
+    text-decoration: none;
+  }
+
+  .tsp-sale {
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: #18384a;
+  }
+
+  .tsp-discount-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #eaf7ef 0%, #dcf2e3 100%);
+    color: #166534;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+
+  .tsp-discount-pill--empty {
+    background: linear-gradient(180deg, #f4f5f6 0%, #eceff1 100%);
+    color: #5e6a73;
+  }
+
+  .tsp-note {
+    padding: 14px 18px;
+    text-align: right;
+    font-style: italic;
+    color: #6c757d;
+    font-size: 14px;
+    border-top: 1px solid rgba(24, 56, 74, 0.1);
+    background: #fbfcfd;
+  }
+
+  .tsp-note span {
+    display: inline-block;
+  }
+
+  @media (max-width: 989px) {
+    .tsp-section {
+      padding: 36px 0 50px;
+    }
+
+    .tsp-note {
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .tsp-wrap {
+      padding: 0 16px;
+    }
+
+    .tsp-heading {
+      margin-bottom: 12px;
+    }
+
+    .tsp-subheading {
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+
+    .tsp-table th,
+    .tsp-table td {
+      padding: 14px 12px;
+    }
+
+    .tsp-product-name {
+      font-size: 14px;
+    }
+
+    .tsp-sale {
+      font-size: 15px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Top selling",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Top Products in This Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Explore the most popular products chosen by our customers. Compare the MRP, selling price, and discount in one easy view.</p>"
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "Note text",
+      "default": "This list is updated based on collection performance and product availability."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_row",
+      "name": "Product row",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "Top selling"
+        },
+        {
+          "type": "url",
+          "id": "link_override",
+          "label": "Link override"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Top selling",
+      "blocks": [
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" },
+        { "type": "product_row" }
+      ]
+    }
+  ]
+}
+{% endschema %}

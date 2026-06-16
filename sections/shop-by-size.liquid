@@ -1,0 +1,434 @@
+   {% style %}
+           .hero-section {
+               background: linear-gradient(135deg, #a36076 0%, #ffa8c5 100%);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero-section h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .hero-section p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .size-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .size-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(255,107,157,0.2);
+        }
+        
+        .size-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff5733;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .size-card h2 {
+            font-size: 28px;
+            color: #000000;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .size-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+        
+        .size-details {
+            background: #fef7f7;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .size-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #ffe0ea;
+        }
+        
+        .size-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .size-detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .size-detail-value {
+            color: #ff6b9d;
+            font-weight: 700;
+        }
+        
+        .features-list {
+            margin: 24px 0;
+        }
+        
+        .features-list li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #ff6b9d;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .shop-now-btn {
+            display: block;
+            width: 100%;
+            background: black;
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255,107,157,0.3);
+        }
+        
+        .shop-now-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255,107,157,0.4);
+        }
+        
+        .combo-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .combo-section h2 {
+            font-size: 36px;
+            color: #ff6b9d;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .combo-badge {
+               background: linear-gradient(135deg, #fff7ca 0%, #e5de9e 100%);
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            margin: 30px 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .comparison-table th {
+            background: #ff6b9d;
+            color: white;
+            padding: 16px;
+            font-weight: 600;
+            text-align: left;
+        }
+        
+        .comparison-table td {
+            padding: 16px;
+            border-bottom: 1px solid #ffe0ea;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #fef7f7;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 32px;
+            }
+            .comparison-table td{
+                padding: 10px;
+            }
+            .size-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .combo-section {
+                padding: 24px;
+            }
+            .size-card h2{
+                font-size: 22px;
+            }
+            .combo-section h2{
+                    font-size: 26px;
+                    font-weight: 800;
+            }
+.shop-now-btn{
+    font-size: 14px;
+}
+        }
+   {% endstyle %}
+   
+   
+   <div class="hero-section">
+        <h1>Find Your Perfect Fit</h1>
+        <p>Choose the right size for maximum comfort and protection</p>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Size Cards Grid -->
+        <div class="size-grid">
+            <!-- L - 240mm Card -->
+            <div class="size-card">
+                <span class="size-badge">Regular Flow</span>
+                <h2>L - 240mm</h2>
+                <p class="size-subtitle">Light to Moderate Flow</p>
+                
+                <div class="size-details">
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Length</span>
+                        <span class="size-detail-value">240mm</span>
+                    </div>
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Best For</span>
+                        <span class="size-detail-value">Day Use</span>
+                    </div>
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Absorbency</span>
+                        <span class="size-detail-value">Moderate</span>
+                    </div>
+                </div>
+                
+                <ul class="features-list">
+                    <li>Ideal for regular flow days</li>
+                    <li>Ultra-thin design for comfort</li>
+                    <li>Breathable cotton-soft cover</li>
+                    <li>Leak-proof protection</li>
+                    <li>Perfect for active lifestyles</li>
+                </ul>
+                
+                <a href="https://timepads.in/collections/soft-cotton-pads-for-periods" class="shop-now-btn">Shop Now →</a>
+            </div>
+            
+            <!-- XL - 280mm Card -->
+            <div class="size-card">
+                <span class="size-badge">Heavy Flow</span>
+                <h2>XL - 290mm</h2>
+                <p class="size-subtitle">Moderate to Heavy Flow</p>
+                
+                <div class="size-details">
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Length</span>
+                        <span class="size-detail-value">290mm</span>
+                    </div>
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Best For</span>
+                        <span class="size-detail-value">Night Use</span>
+                    </div>
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Absorbency</span>
+                        <span class="size-detail-value">High</span>
+                    </div>
+                </div>
+                
+                <ul class="features-list">
+                    <li>Extended coverage for heavy flow</li>
+                    <li>Double-layer absorbent core</li>
+                    <li>Extra-wide wings for security</li>
+                    <li>Night-time protection</li>
+                    <li>Prevents overnight leaks</li>
+                </ul>
+                
+                <a href="https://timepads.in/collections/period-sanitary-pads-cotton" class="shop-now-btn">Shop Now →</a>
+            </div>
+            
+            <!-- XXL - 330mm Card -->
+            <div class="size-card">
+                <span class="size-badge">Maximum</span>
+                <h2>XXL - 330mm</h2>
+                <p class="size-subtitle">Very Heavy Flow / Overnight</p>
+                
+                <div class="size-details">
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Length</span>
+                        <span class="size-detail-value">330mm</span>
+                    </div>
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Best For</span>
+                        <span class="size-detail-value">All Night</span>
+                    </div>
+                    <div class="size-detail-item">
+                        <span class="size-detail-label">Absorbency</span>
+                        <span class="size-detail-value">Maximum</span>
+                    </div>
+                </div>
+                
+                <ul class="features-list">
+                    <li>Maximum overnight protection</li>
+                    <li>Triple-layer leak defense system</li>
+                    <li>Extra-long coverage</li>
+                    <li>Secure fit for up to 10 hours</li>
+                    <li>Postpartum recovery friendly</li>
+                </ul>
+                
+                <a href="https://timepads.in/collections/long-sanitary-pads-night" class="shop-now-btn">Shop Now →</a>
+            </div>
+        </div>
+        
+        <!-- Combo Section -->
+        <div class="combo-section">
+            <center><span class="combo-badge">💝 BEST VALUE</span></center>
+            <h2>Complete Protection Combo</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Get both XL & L sizes for day and night coverage
+            </p>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>What's Included</th>
+                        <th>Quantity</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>XL - 280mm Pads</strong></td>
+                        <td>6 Pads & 18 Pads</td>
+                        <td>Night & Medium Flow Days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>L - 240mm Pads</strong></td>
+                        <td>6 Pads & 12 Pads</td>
+                        <td>Day Use & Light Flow</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding-top: 24px;">
+                            <a href="https://timepads.in/collections/soft-cotton-pads-for-periods" class="shop-now-btn" style="max-width: 400px; margin: 0 auto;">
+                                Shop Combo Pack →
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+{% schema %} 
+{
+    "name":"shop by size",
+    "tag":"section",
+    "class": "why-time-image-with-text",
+    "settings":[
+        {
+           "type": "header",
+           "content":"Padding settings"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max":100,
+            "default": 20,
+            "step": 2,
+             "unit": "px",
+             "label": "Padding Top"
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "unit": "px",
+            "step": 2,
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "padding_top_mobile",
+            "min": 0,
+            "max":100,
+            "default": 20,
+            "step": 2,
+             "unit": "px",
+             "label": "Padding Top Mobile"
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom_mobile",
+            "label": "Padding Bottom Mobile",
+            "min": 0,
+            "max": 100,
+            "unit": "px",
+            "step": 2,
+            "default": 20
+        }
+    ],
+    "presets": [
+        {
+            "name":"shop by size"
+        }
+    ]
+}
+{% endschema %} 

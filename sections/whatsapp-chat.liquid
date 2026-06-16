@@ -1,0 +1,54 @@
+<div class="whatsapp__icon">
+    <a {% if template.name == 'product' %} href="https://wa.me/919182945474?text={{ shop.url | append: product.url }} I need to Purchase this product" {% else %} href="https://api.whatsapp.com/send?phone=919182945474&text=Hi I need Support" {% endif %}>
+      {% render 'responsive-picture', desktopImage: section.settings.icon_image %}
+    </a>
+
+  
+</div>
+
+{% schema %}
+{
+  "name": "WhatsApp Chat",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "image_picker",
+      "label": "Icon Image",
+      "id": "icon_image",
+      "info": "Recommended Size 50 x 50 pixels."
+    },
+    {
+      "type": "url",
+      "label": "Icon Link",
+      "id": "icon_link",
+      "info": "Add the link here "
+    },
+    {
+      "type": "select",
+      "label": "Link Target",
+      "id": "link_target",
+      "default": "_blank",
+      "options": [
+        {
+          "label": "Open in new Page",
+          "value": "_blank"
+        },
+        {
+          "label": "Open in the same Page",
+          "value": "_self"
+        }
+      ]
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "WhatsApp Chat"
+    }
+  ]
+}
+{% endschema %}

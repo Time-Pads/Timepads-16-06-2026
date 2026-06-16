@@ -1,0 +1,140 @@
+{% schema %}
+{
+  "name": "Period Benefits Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "A Smarter Way to Experience Period Comfort"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Image Picker"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit Text",
+          "default": "No-Leak Protection"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Period Benefits",
+      "blocks": [
+        { "type": "benefit" },
+        { "type": "benefit" },
+        { "type": "benefit" },
+        { "type": "benefit" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="period-benefits">
+  <div class="page-width">
+    {% if section.settings.heading != blank %}
+      <h2 class="kicker-flourished mb-r11">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <div class="period-benefits__grid">
+      {% for block in section.blocks %}
+        <div class="period-benefits__item" {{ block.shopify_attributes }}>
+          <div class="period-benefits__icon">
+         <img src="{{ block.settings.icon | image_url }}" alt="{{ block.settings.text }}">   
+          </div>
+          <p class="period-benefits__text">
+            {{ block.settings.text }}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.period-benefits {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.period-benefits__heading {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 50px;
+  color: #222;
+}
+
+.period-benefits__grid {
+  display: flex;
+     justify-content: center;
+  gap: 40px;
+}
+
+.period-benefits__item {
+  text-align: center;
+  flex: 0 0 15%;
+}
+
+.period-benefits__icon {
+
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 32px;
+}
+
+.period-benefits__text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  max-width: 160px;
+  margin: 0 auto;
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+  .period-benefits__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .period-benefits__grid{
+   display: flex;
+   overflow: scroll;
+   justify-content: left;
+  }
+  .period-benefits__item{
+   flex: 0 0 30%;
+  }
+  .period-benefits{
+      padding: 5px 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .period-benefits__heading {
+    font-size: 24px;
+  }
+
+  .period-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

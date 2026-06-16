@@ -1,0 +1,78 @@
+
+    {% unless template.name == 'index' or template.name == 'cart' %}
+    <nav class="breadcrumb bread-crubm-container" role="navigation" aria-label="breadcrumbs">
+        <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}" class="{{ template.name}}">{{ 'general.breadcrumbs.home' | t }}</a>
+    
+        {% if template.name == 'product' %}
+          {% if collection %}
+            <span class="breadcrumb__divider" aria-hidden="true">/</span>
+            {% if collection.handle %}
+              {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+              {{ collection.title | link_to: url }} 
+            {% endif %}
+          {% endif %}
+    
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+           <a href="{{ product.url }} " class="collection-page-breadcrum desktop-hide">{{ product.title }}</a>
+    
+        {% elsif template.name == 'collection' %}
+          
+            {%  comment  %} Collection Page Breadcrumbs {% endcomment %}
+          
+           <span><img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/female-hygiene-pad-woman-period-element-sanitary-object-feminine-health-vector.png?v=1732958612" height="32px" width="32px" alt="{{ collection.title }}"/> </span>
+            <a href="{{ routes.collections_url }}" class="collection-page-breadcrum">{{ collection.title}}</a>
+   
+    
+          {% if current_tags %}
+            {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+            {{ collection.title | link_to: url }}
+    
+            <span class="breadcrumb__divider" aria-hidden="true">/</span>
+    
+            {% for tag in current_tags %}
+              {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+              {% assign tag_name = tag | strip %}
+              {% assign tag_text = tag_name | capitalize %}
+              <span>{{ tag_text }}</span>
+    
+              {% unless forloop.last %}
+                <span class="breadcrumb__divider" aria-hidden="true">+</span>
+              {% endunless %}
+    
+            {% endfor %}
+          {% endif %}
+    
+        {% elsif template.name == 'blog' %}
+    
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          {% if current_tags %}
+            {{ blog.title | link_to: blog.url }}
+            <span class="breadcrumb__divider" aria-hidden="true">/</span>
+            <span>{{ current_tags | join: " + " }}</span>
+          {% endif %}
+    
+        {% elsif template.name == 'article' %}
+    
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          {{ blog.title | link_to: blog.url }}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          {{ article.title }} 
+    
+        {% elsif template.name == 'page' %}
+    
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <span>{{ page.title }}</span>
+    
+        {% elsif template.name == 'search' %}
+    
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <span>{{ page_title | replace: '*', '' }}</span>
+    
+        {% else %}
+    
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <span>{{ page_title }}</span>
+    
+        {% endif %}
+      </nav>
+    {% endunless %}   

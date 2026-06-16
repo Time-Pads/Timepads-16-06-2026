@@ -1,0 +1,220 @@
+{% comment %}
+  Dynamic Popular Search SEO Section — Compact Grid Layout
+{% endcomment %}
+
+<div class="ps-wrap">
+
+  <p class="ps-title">Popular Searches</p>
+
+  <div class="ps-grid">
+
+    {%- comment -%} ── COLLECTIONS ── {%- endcomment -%}
+    {% assign main_collections = "sanitary-pads,cotton-sanitary-pads,teen-pads,comfortable-pads-for-periods,soft-cotton-pads-for-periods,high-flow-pads,medium-flow-pads,combo-offers" | split: "," %}
+
+    {% for handle in main_collections %}
+      {% assign col = collections[handle] %}
+      {% if col != blank %}
+      <div class="ps-group">
+        <p class="ps-group__label">{{ col.title }}</p>
+        <p class="ps-group__links">
+          <a href="{{ col.url }}">{{ col.title }}</a>
+          <span class="ps-sep">|</span>
+          <a href="{{ col.url }}">Buy {{ col.title }} Online</a>
+          <span class="ps-sep">|</span>
+          <a href="{{ col.url }}">Best {{ col.title }} India</a>
+          <span class="ps-sep">|</span>
+          <a href="{{ col.url }}">{{ col.title }} for Women</a>
+          <span class="ps-sep">|</span>
+          <a href="{{ col.url }}">Affordable {{ col.title }}</a>
+        </p>
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    {%- comment -%} ── POPULAR PRODUCTS ── {%- endcomment -%}
+    {% assign product_handles = "time-ultra-thin-quality-sanitary-pads,heavy-flow-sanitary-pads,overnight-pads,premium-cotton-top-sheet-ultra-thin-rash-free-pads-xl-21-pads,no-leak-heavy-flow-soft-ultra-thin-pads-xxl-21-pads,period-pain-relief-cream,menstrual-cup" | split: "," %}
+    {% assign valid_products = "" %}
+    {% for handle in product_handles %}
+      {% assign product = all_products[handle] %}
+      {% if product != blank %}
+        {% assign valid_products = valid_products | append: handle | append: "," %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="ps-group ps-group--wide">
+      <p class="ps-group__label">Popular Products</p>
+      <p class="ps-group__links">
+        {% for handle in product_handles %}
+          {% assign product = all_products[handle] %}
+          {% if product != blank %}
+            <a href="{{ product.url }}">{{ product.title }}</a>{% unless forloop.last %}<span class="ps-sep">|</span>{% endunless %}
+          {% endif %}
+        {% endfor %}
+      </p>
+    </div>
+
+    {%- comment -%} ── TOP SEARCHES ── {%- endcomment -%}
+    <div class="ps-group">
+      <p class="ps-group__label">Top Searches</p>
+      <p class="ps-group__links">
+        <a href="/collections/cotton-sanitary-pads">Cotton Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/soft-cotton-pads-for-periods">Cloth Like Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/soft-cotton-pads-for-periods">Soft Cloth Like Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/cotton-sanitary-pads">Rash-Free Cotton Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/cotton-sanitary-pads">Skin Friendly Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/cotton-sanitary-pads">Chemical Free Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/cotton-sanitary-pads">Best Cotton Sanitary Pads India</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/soft-cotton-pads-for-periods">Cloth Like Pads for Periods</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/soft-cotton-pads-for-periods">Soft Pads Like Cloth Feel</a>
+      </p>
+    </div>
+
+    {%- comment -%} ── TRENDING ── {%- endcomment -%}
+    <div class="ps-group">
+      <p class="ps-group__label">Trending Searches</p>
+      <p class="ps-group__links">
+        <a href="/collections/cotton-sanitary-pads">Cotton Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/teen-pads">Teenage Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/comfortable-pads-for-periods">Maternity Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/sanitary-pads">Panty Liners</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/sanitary-pads">Period Panties</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/soft-cotton-pads-for-periods">Menopause Pads</a>
+      </p>
+    </div>
+
+    {%- comment -%} ── BRAND ── {%- endcomment -%}
+    <div class="ps-group">
+      <p class="ps-group__label">Brand &amp; Store</p>
+      <p class="ps-group__links">
+        <a href="/">Timepads</a>
+        <span class="ps-sep">|</span>
+        <a href="/collections/sanitary-pads">TIME Sanitary Pads</a>
+        <span class="ps-sep">|</span>
+        <a href="/blogs/time-blog">Period Care Tips</a>
+        <span class="ps-sep">|</span>
+        <a href="/blogs/time-blog">Feminine Hygiene Blog</a>
+      </p>
+    </div>
+
+  </div>{%- comment -%} /ps-grid {%- endcomment -%}
+</div>
+
+<style>
+.ps-wrap {
+  padding: 28px 24px 24px;
+  border-top: 1px solid #e8e8e1;
+  background: #fff;
+}
+.ps-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #888;
+  text-align: center;
+  margin: 0 0 20px;
+}
+.ps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ps-group {
+  padding: 14px 18px;
+  border-right: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+}
+/* Every 3rd child — no right border */
+.ps-group:nth-child(3n) {
+  border-right: none;
+}
+/* Last row — no bottom border (handled via :last-child trick below) */
+.ps-group--wide {
+  grid-column: 1 / -1;
+  border-right: none;
+}
+.ps-group__label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ps-group__links {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.9;
+}
+.ps-group__links a {
+  color: #666;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: #ccc;
+  white-space: nowrap;
+}
+.ps-group__links a:hover {
+  color: #111;
+  text-decoration-color: #111;
+}
+.ps-sep {
+  color: #ccc;
+  margin: 0 3px;
+  user-select: none;
+}
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .ps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ps-group:nth-child(3n) {
+    border-right: 1px solid #ebebeb;
+  }
+  .ps-group:nth-child(2n) {
+    border-right: none;
+  }
+}
+@media (max-width: 540px) {
+  .ps-grid {
+    grid-template-columns: 1fr;
+  }
+  .ps-group {
+    border-right: none;
+  }
+  .ps-group__links a {
+    white-space: normal;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Popular Search SEO",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Popular Search SEO"
+    }
+  ]
+}
+{% endschema %}

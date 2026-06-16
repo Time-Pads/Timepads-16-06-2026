@@ -1,0 +1,1339 @@
+<style>
+/* ══ VARIABLES ══════════════════════════════════════════════ */
+:root {
+  --rose:      #e8506a;
+  --rose-deep: #c73a55;
+  --rose-soft: #f4a0b0;
+  --blush:     #fde8ec;
+  --blush-mid: #fbd0da;
+  --cream:     #fff8f6;
+  --sand:      #f9ede8;
+  --text:      #2d1a20;
+  --text-mid:  #6b3a48;
+  --text-muted:#a07080;
+  --white:     #ffffff;
+  --fertile:   #6dc8a0;
+  --fertile-bg:#e8f8f0;
+  --period-bg: #fde0e6;
+  --ovul:      #e8a060;
+  --ovul-bg:   #fdf0e0;
+  --shadow:    0 8px 40px rgba(232,80,106,0.12);
+  --shadow-lg: 0 20px 60px rgba(232,80,106,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══ HERO ════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #fce8ed 0%, #fdd5df 40%, #f9c0d0 100%);
+  padding: 70px 24px 100px;
+  text-align: center;
+  overflow: hidden;
+}
+.calc-section {
+  position: relative;
+  z-index: 999;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 90% 80%, rgba(232,80,106,0.15) 0%, transparent 60%);
+}
+
+/* Decorative wave blobs */
+.hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.18;
+  filter: blur(60px);
+}
+.hero-blob-1 { width: 500px; height: 300px; background: var(--rose); top: -80px; left: -100px; transform: rotate(-20deg); }
+.hero-blob-2 { width: 400px; height: 400px; background: #f080a0; bottom: -120px; right: -80px; }
+
+/* Leaf decorations */
+.hero-leaf {
+  position: absolute;
+  opacity: 0.2;
+  font-size: 80px;
+}
+.hero-leaf-l { left: 30px; top: 20px; transform: rotate(-30deg); }
+.hero-leaf-r { right: 30px; bottom: 30px; transform: rotate(20deg); }
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-eyebrow {
+  display: inline-block;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(232,80,106,0.25);
+  color: var(--rose-deep);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 7vw, 76px);
+  color: var(--rose-deep);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--rose);
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--text-mid);
+  max-width: 440px;
+  margin: 0 auto 0;
+  line-height: 1.7;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+/* Moon decoration */
+.moon-ring {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  border: 3px dashed rgba(232,80,106,0.3);
+  border-radius: 50%;
+  animation: spin 20s linear infinite;
+}
+.moon-ring::after {
+  content: '🌸';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+}
+
+/* ══ MAIN LAYOUT ══════════════════════════════════════════════ */
+.page-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ══ CALCULATOR CARD ══════════════════════════════════════════ */
+.calc-section {
+  margin-top: -60px;
+  position: relative;
+  z-index: 10;
+  padding: 0 24px 60px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -60px;
+}
+
+.calc-card {
+  background: var(--white);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg);
+  overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+/* Left form panel */
+.calc-form {
+  padding: 48px 44px;
+  background: var(--white);
+}
+
+.calc-form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: var(--rose-deep);
+  margin-bottom: 6px;
+}
+
+.calc-form-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+.form-group {
+  margin-bottom: 26px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  margin-bottom: 10px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #f0dce0;
+  border-radius: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--sand);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+
+  cursor: pointer;
+}
+
+.form-control:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px rgba(232,80,106,0.10);
+  background: var(--white);
+}
+
+.select-wrap {
+  position: relative;
+}
+.select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-top: 6px solid var(--rose);
+  pointer-events: none;
+}
+
+.calc-btn {
+  width: 100%;
+  padding: 17px;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 24px rgba(232,80,106,0.35);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.calc-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+}
+
+.calc-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(232,80,106,0.45);
+}
+.calc-btn:active { transform: translateY(0); }
+
+.calc-btn .btn-icon { margin-right: 8px; }
+
+/* Right calendar panel */
+.calc-calendar {
+  background: linear-gradient(160deg, #fff5f7 0%, #fde8ed 100%);
+  padding: 48px 44px;
+  border-left: 1px solid #fce0e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.cal-month-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--rose-deep);
+  font-weight: 700;
+}
+
+.cal-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.cal-nav button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--blush-mid);
+  background: var(--white);
+  color: var(--rose);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+.cal-nav button:hover {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: white;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-day-name {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 0;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 10px;
+  color: var(--text);
+  cursor: default;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.cal-day.empty { background: transparent; }
+.cal-day.other-month { color: #ddc0c8; }
+.cal-day.today {
+  font-weight: 700;
+  color: var(--rose);
+  border: 2px solid var(--rose);
+}
+.cal-day.period {
+  background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(232,80,106,0.4);
+}
+.cal-day.fertile {
+  background: var(--fertile-bg);
+  color: #2d8060;
+  font-weight: 600;
+}
+.cal-day.ovulation:first-child,
+.cal-day.ovulation:last-child {
+  opacity: 0.7;
+}
+.cal-day.ovulation {
+  background: linear-gradient(135deg, #f0c070, #e8a040);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(232,160,64,0.4);
+}
+.cal-day.next-period {
+  background: linear-gradient(135deg, #f080a0, var(--rose-soft));
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(232,80,106,0.3);
+  opacity: 0.85;
+}
+
+/* Legend */
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.legend-dot.period  { background: var(--rose); }
+.legend-dot.fertile { background: var(--fertile); }
+.legend-dot.ovulation { background: var(--ovul); }
+.legend-dot.next-period { background: var(--rose-soft); }
+
+/* Results ribbon */
+.results-ribbon {
+  display: none;
+  margin-top: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.results-ribbon.show { display: flex; }
+
+.result-chip {
+  flex: 1;
+  min-width: 130px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 16px rgba(232,80,106,0.1);
+  text-align: center;
+}
+
+.result-chip .chip-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.result-chip .chip-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--rose-deep);
+}
+
+/* ══ INFO SECTIONS ═══════════════════════════════════════════ */
+.info-section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 40px);
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.section-title span { color: var(--rose); font-style: italic; }
+
+/* Why track — 2 col */
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.why-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.why-feat {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(232,80,106,0.07);
+  border: 1px solid #fce8ed;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.why-feat:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.why-feat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.why-feat-text h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.why-feat-text p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Right visual in why section */
+.why-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.why-visual-card {
+  width: 300px;
+  height: 380px;
+  background: linear-gradient(145deg, var(--blush) 0%, #fce0e8 100%);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.why-visual-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: rgba(232,80,106,0.1);
+  border-radius: 50%;
+}
+
+.float-badge {
+  position: absolute;
+  background: white;
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: var(--shadow);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.float-badge.top-left  { top: -20px; left: -30px; }
+.float-badge.bot-right { bottom: -20px; right: -30px; }
+.float-badge .badge-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ══ SYMPTOMS SECTION ════════════════════════════════════════ */
+.symptoms-section {
+  background: linear-gradient(160deg, #fce8ed 0%, #fff5f7 100%);
+  padding: 80px 24px;
+}
+
+.symptoms-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.symptoms-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.symptom-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 20px rgba(232,80,106,0.08);
+  border: 1px solid #fce0e8;
+  transition: transform 0.25s, box-shadow 0.25s;
+  animation: fadeUp 0.6s ease both;
+}
+
+.symptom-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+}
+
+.symptom-icon {
+  font-size: 40px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.symptom-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.symptom-card p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ══ CYCLE EXPLAINER ═════════════════════════════════════════ */
+.cycle-section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* Phase ring */
+.phase-ring-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phase-ring {
+  width: 300px;
+  height: 300px;
+}
+
+.phase-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.phase-info-item {
+  padding: 16px 20px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  border-left: 4px solid;
+}
+
+.phase-info-item.menstrual  { background: var(--period-bg); border-color: var(--rose); color: var(--rose-deep); }
+.phase-info-item.follicular { background: #eef6ff; border-color: #6090e0; color: #304080; }
+.phase-info-item.ovulation  { background: var(--ovul-bg); border-color: var(--ovul); color: #805020; }
+.phase-info-item.luteal     { background: var(--fertile-bg); border-color: var(--fertile); color: #206048; }
+
+.phase-info-item strong { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+
+/* ══ FAQ ═════════════════════════════════════════════════════ */
+.faq-section {
+  background: var(--sand);
+  padding: 80px 24px;
+}
+
+.faq-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.faq-list {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid #fce0e8;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.faq-item:hover { box-shadow: var(--shadow); }
+
+.faq-q {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  gap: 16px;
+}
+
+.faq-q .faq-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--blush);
+  border: 1.5px solid var(--rose-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rose);
+  font-size: 16px;
+  font-weight: 300;
+  flex-shrink: 0;
+  transition: all 0.25s;
+  line-height: 1;
+}
+
+.faq-item.open .faq-q .faq-icon {
+  background: var(--rose);
+  color: white;
+  transform: rotate(45deg);
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.faq-item.open .faq-a { max-height: 200px; }
+
+.faq-a-inner {
+  padding: 0 24px 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ══ ANIMATIONS ══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.why-visual-card { animation: float 4s ease-in-out infinite; }
+
+/* Stagger symptom cards */
+.symptom-card:nth-child(1) { animation-delay: 0.05s; }
+.symptom-card:nth-child(2) { animation-delay: 0.10s; }
+.symptom-card:nth-child(3) { animation-delay: 0.15s; }
+.symptom-card:nth-child(4) { animation-delay: 0.20s; }
+.symptom-card:nth-child(5) { animation-delay: 0.25s; }
+.symptom-card:nth-child(6) { animation-delay: 0.30s; }
+.symptom-card:nth-child(7) { animation-delay: 0.35s; }
+.symptom-card:nth-child(8) { animation-delay: 0.40s; }
+
+/* ══ MOBILE ══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .calc-card { grid-template-columns: 1fr; }
+  .calc-calendar { border-left: none; border-top: 1px solid #fce0e6; padding: 36px 28px; }
+  .why-grid { grid-template-columns: 1fr; gap: 36px; }
+  .why-visual { display: none; }
+  .symptoms-grid { grid-template-columns: repeat(2, 1fr); }
+  .cycle-section { grid-template-columns: 1fr; gap: 40px; }
+  .moon-ring { display: none; }
+}
+
+@media (max-width: 560px) {
+  .calc-form, .calc-calendar { padding: 28px 20px; }
+  .hero { padding: 50px 20px 90px; }
+  .symptoms-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .symptom-card { padding: 20px 14px; }
+  .why-feat { flex-direction: column; gap: 10px; }
+}
+</style>
+
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <span class="hero-leaf hero-leaf-l">🌿</span>
+  <span class="hero-leaf hero-leaf-r">🌸</span>
+  <div class="moon-ring"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">✦ TIMEPADS Period Calculator</div>
+    <h1>Know Your Cycle,<br><em>Own Your Days</em></h1>
+    <p class="hero-sub">Predict your next period, fertile window & ovulation — crafted for the modern woman.</p>
+  </div>
+</section>
+
+<!-- ══ CALCULATOR ═════════════════════════════════════════════ -->
+<section class="calc-section">
+  <div class="calc-card">
+
+    <!-- Form -->
+    <div class="calc-form">
+      <h2 class="calc-form-title">Track Your Cycle</h2>
+      <p class="calc-form-subtitle">Enter your details below and we'll map your entire cycle on the calendar instantly.</p>
+
+      <div class="form-group">
+        <label>First Day of Your Last Period</label>
+        <input type="date" id="lastPeriod" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>How Long Did It Last?</label>
+        <div class="select-wrap">
+          <select id="periodLength" class="form-control">
+            <option value="1">1 day</option>
+            <option value="2">2 days</option>
+            <option value="3">3 days</option>
+            <option value="4">4 days</option>
+            <option value="5" selected>5 days</option>
+            <option value="6">6 days</option>
+            <option value="7">7 days</option>
+            <option value="8">8 days</option>
+            <option value="9">9 days</option>
+            <option value="10">10 days</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Average Length of Your Cycle</label>
+        <div class="select-wrap">
+          <select id="cycleLength" class="form-control">
+            <option value="20">20 days</option>
+            <option value="21">21 days</option>
+            <option value="22">22 days</option>
+            <option value="23">23 days</option>
+            <option value="24">24 days</option>
+            <option value="25">25 days</option>
+            <option value="26">26 days</option>
+            <option value="27">27 days</option>
+            <option value="28" selected>28 days</option>
+            <option value="29">29 days</option>
+            <option value="30">30 days</option>
+            <option value="31">31 days</option>
+            <option value="32">32 days</option>
+            <option value="33">33 days</option>
+            <option value="34">34 days</option>
+            <option value="35">35 days</option>
+            <option value="36">36 days</option>
+            <option value="37">37 days</option>
+            <option value="38">38 days</option>
+            <option value="39">39 days</option>
+            <option value="40">40 days</option>
+            <option value="41">41 days</option>
+            <option value="42">42 days</option>
+            <option value="43">43 days</option>
+            <option value="44">44 days</option>
+            <option value="45">45 days</option>
+            <option value="46">46 days</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">
+        <span class="btn-icon">🌸</span> Calculate My Cycle
+      </button>
+
+      <!-- Results summary chips -->
+      <div class="results-ribbon" id="resultsRibbon">
+        <div class="result-chip">
+          <div class="chip-label">🩸 Next Period</div>
+          <div class="chip-value" id="res-next">—</div>
+        </div>
+        <div class="result-chip">
+          <div class="chip-label">🌿 Fertile Window</div>
+          <div class="chip-value" id="res-fertile">—</div>
+        </div>
+        <div class="result-chip">
+          <div class="chip-label">✨ Ovulation</div>
+          <div class="chip-value" id="res-ovul">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar panel -->
+    <div class="calc-calendar">
+      <div class="calendar-header">
+        <div class="cal-month-label" id="calMonthLabel">—</div>
+        <div class="cal-nav">
+          <button onclick="prevMonth()" title="Previous month">&#8592;</button>
+          <button onclick="nextMonth()" title="Next month">&#8594;</button>
+        </div>
+      </div>
+
+      <div class="cal-grid" id="calGrid">
+        <!-- Day headers -->
+        <div class="cal-day-name">S</div>
+        <div class="cal-day-name">M</div>
+        <div class="cal-day-name">T</div>
+        <div class="cal-day-name">W</div>
+        <div class="cal-day-name">T</div>
+        <div class="cal-day-name">F</div>
+        <div class="cal-day-name">S</div>
+      </div>
+
+      <div class="cal-legend" id="calLegend" style="display:none;">
+        <div class="legend-item"><span class="legend-dot period"></span> Period</div>
+        <div class="legend-item"><span class="legend-dot fertile"></span> Fertile Window</div>
+        <div class="legend-item"><span class="legend-dot ovulation"></span> Ovulation</div>
+        <div class="legend-item"><span class="legend-dot next-period"></span> Next Period</div>
+      </div>
+
+      <!-- Placeholder when not yet calculated -->
+      <div id="calPlaceholder" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px 0;">
+        <div style="font-size:56px;opacity:0.3;">📅</div>
+        <p style="font-size:13px;color:var(--text-muted);text-align:center;line-height:1.6;">Fill in your details and tap<br><strong>Calculate My Cycle</strong> to see your<br>personalized cycle calendar.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ WHY TRACK ══════════════════════════════════════════════ -->
+<section style="padding: 20px 0 0;">
+  <div class="info-section">
+    <div class="why-grid">
+      <div>
+        <div class="section-eyebrow">✦ Why It Matters</div>
+        <h2 class="section-title">Why Track<br><span>Your Cycle?</span></h2>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.8;max-width:420px;">Understanding your cycle is more than knowing when your period arrives — it's your personal health compass, guiding energy, mood, fertility, and wellbeing every single day.</p>
+
+        <div class="why-features">
+          <div class="why-feat">
+            <div class="why-feat-icon" style="background:#fde8ec;">🩸</div>
+            <div class="why-feat-text">
+              <h4>Period Prediction</h4>
+              <p>Plan ahead — never be caught off guard. Stock up on TIMEPADS at the right time, every time.</p>
+            </div>
+          </div>
+          <div class="why-feat">
+            <div class="why-feat-icon" style="background:#e8f8f0;">🌿</div>
+            <div class="why-feat-text">
+              <h4>Fertility Awareness</h4>
+              <p>Know your fertile window — valuable whether you're planning a family or avoiding pregnancy.</p>
+            </div>
+          </div>
+          <div class="why-feat">
+            <div class="why-feat-icon" style="background:#fdf0e0;">⚡</div>
+            <div class="why-feat-text">
+              <h4>Energy & Mood Mapping</h4>
+              <p>Each cycle phase affects your energy and emotions differently. Plan your life accordingly.</p>
+            </div>
+          </div>
+          <div class="why-feat">
+            <div class="why-feat-icon" style="background:#eef3ff;">💊</div>
+            <div class="why-feat-text">
+              <h4>Health Insights</h4>
+              <p>Spot irregularities early and have meaningful conversations with your healthcare provider.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-visual">
+        <div style="position:relative;">
+          <div class="why-visual-card">🌺</div>
+          <div class="float-badge top-left">
+            <span class="badge-dot" style="background:var(--rose);"></span>
+            Period tracked ✓
+          </div>
+          <div class="float-badge bot-right">
+            <span class="badge-dot" style="background:var(--fertile);"></span>
+            Fertile window mapped ✓
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SYMPTOMS ═══════════════════════════════════════════════ -->
+<section class="symptoms-section">
+  <div class="symptoms-inner">
+    <div class="section-eyebrow">✦ Know The Signs</div>
+    <h2 class="section-title" style="text-align:center;">Signs Your <span>Period is Coming</span></h2>
+    <p style="font-size:14px;color:var(--text-muted);max-width:500px;margin:12px auto 0;line-height:1.7;">PMS symptoms usually appear 1–2 weeks before your period. Knowing them helps you prepare with TIMEPADS comfort pads.</p>
+
+    <div class="symptoms-grid">
+      <div class="symptom-card">
+        <span class="symptom-icon">😣</span>
+        <h4>Menstrual Cramps</h4>
+        <p>Lower abdominal pain that signals your uterus is preparing</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">😩</span>
+        <h4>Fatigue</h4>
+        <p>Feeling unusually tired even after a full night's sleep</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">🤢</span>
+        <h4>Bloating</h4>
+        <p>Feeling full or swollen around your abdomen and waist</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">🌡️</span>
+        <h4>Nausea</h4>
+        <p>Stomach discomfort that often accompanies your cycle onset</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">💆</span>
+        <h4>Tender Breasts</h4>
+        <p>Breast sensitivity and soreness due to hormonal shifts</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">😤</span>
+        <h4>Mood Swings</h4>
+        <p>Emotional ups and downs as estrogen and progesterone fluctuate</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">🫧</span>
+        <h4>Acne</h4>
+        <p>Breakouts triggered by hormonal changes before menstruation</p>
+      </div>
+      <div class="symptom-card">
+        <span class="symptom-icon">💧</span>
+        <h4>Discharge Changes</h4>
+        <p>Variations in vaginal discharge signal different cycle phases</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ UNDERSTANDING YOUR CYCLE ═══════════════════════════════ -->
+<section>
+  <div class="cycle-section">
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <!-- SVG Phase Ring -->
+      <svg class="phase-ring" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- Menstrual phase -->
+        <path d="M 150 150 L 150 30 A 120 120 0 0 1 254 90 Z" fill="#f9a0b8" opacity="0.85"/>
+        <!-- Follicular phase -->
+        <path d="M 150 150 L 254 90 A 120 120 0 0 1 270 150 Z" fill="#b0d4f8" opacity="0.75"/>
+        <!-- Ovulation phase -->
+        <path d="M 150 150 L 270 150 A 120 120 0 0 1 210 240 Z" fill="#f8d090" opacity="0.85"/>
+        <!-- Luteal phase -->
+        <path d="M 150 150 L 210 240 A 120 120 0 0 1 150 30 Z" fill="#a0d8b8" opacity="0.75"/>
+        <!-- Inner white circle -->
+        <circle cx="150" cy="150" r="72" fill="white"/>
+        <!-- Center uterus emoji via text -->
+        <text x="150" y="162" font-size="40" text-anchor="middle">🌸</text>
+        <!-- Labels -->
+        <text x="160" y="70" font-size="10" fill="#c03060" font-family="DM Sans" font-weight="700" text-anchor="middle">Menstrual</text>
+        <text x="242" y="118" font-size="9" fill="#3060b0" font-family="DM Sans" font-weight="700" text-anchor="middle">Follicular</text>
+        <text x="242" y="198" font-size="9" fill="#a05010" font-family="DM Sans" font-weight="700" text-anchor="middle">Ovulation</text>
+        <text x="100" y="230" font-size="9" fill="#206040" font-family="DM Sans" font-weight="700" text-anchor="middle">Luteal</text>
+        <!-- Day numbers -->
+        <text x="150" y="38" font-size="8" fill="#c03060" font-family="DM Sans" text-anchor="middle">1–5</text>
+        <text x="264" y="100" font-size="8" fill="#3060b0" font-family="DM Sans" text-anchor="middle">6–13</text>
+        <text x="264" y="178" font-size="8" fill="#a05010" font-family="DM Sans" text-anchor="middle">14</text>
+        <text x="80" y="250" font-size="8" fill="#206040" font-family="DM Sans" text-anchor="middle">15–28</text>
+      </svg>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:12px;text-align:center;max-width:240px;">A typical 28-day menstrual cycle with 4 phases</p>
+    </div>
+
+    <div>
+      <div class="section-eyebrow">✦ Cycle Science</div>
+      <h2 class="section-title">Understanding<br><span>Your Cycle</span></h2>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:24px;">Every cycle is unique. Factors like stress, diet, and exercise can cause natural variations. Our calculator gives you the most accurate personalised predictions possible.</p>
+
+      <div class="phase-info-list">
+        <div class="phase-info-item menstrual">
+          <strong>🩸 Menstrual Phase — Days 1–5</strong>
+          Your uterus sheds its lining. This is when your period occurs. Use your TIMEPADS for comfort and protection.
+        </div>
+        <div class="phase-info-item follicular">
+          <strong>💙 Follicular Phase — Days 6–13</strong>
+          Estrogen rises, energy increases, you feel your best. Great time for new projects and workouts.
+        </div>
+        <div class="phase-info-item ovulation">
+          <strong>✨ Ovulation — Day 14</strong>
+          Your most fertile day. An egg is released and can be fertilised for about 24 hours.
+        </div>
+        <div class="phase-info-item luteal">
+          <strong>🌿 Luteal Phase — Days 15–28</strong>
+          Progesterone rises. PMS symptoms may appear in the second half if pregnancy doesn't occur.
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:var(--text-muted);margin-top:20px;line-height:1.7;padding:14px;background:var(--sand);border-radius:12px;border-left:3px solid var(--rose-soft);">
+        <strong>Disclaimer:</strong> This calculator provides estimates based on the information you provide. It is not a substitute for professional medical advice. If you have concerns, please consult a healthcare provider.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ════════════════════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="section-eyebrow" style="text-align:center;">✦ Questions Answered</div>
+    <h2 class="section-title" style="text-align:center;">FAQs</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Are period calculators accurate?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Period calculators are a helpful estimate tool, not a medical device. They're most accurate when your cycles are regular. Factors like stress, illness, weight changes, or PCOS can affect cycle regularity and prediction accuracy.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I use a period calculator to predict pregnancy?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Yes, you can identify your fertile window to understand when conception is most likely. However, this should not replace proper contraception or medical family planning advice.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I know if my period is late using a calculator?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">If the predicted next period date has passed and your period hasn't arrived, it may be late. Periods are considered late if they're more than 5 days past their expected date. Consider taking a pregnancy test or consulting a doctor if this continues.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I use a safe period calculator effectively?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Track your period start date each month for at least 3–6 cycles. Note the average duration and cycle length. The more data you have, the more accurate your predictions become. Use our TIMEPADS calculator monthly for best results.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What if my cycle length varies every month?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Irregular cycles are common and can be caused by hormonal imbalances, stress, diet, or underlying conditions like PCOS. If your cycle varies by more than 7–9 days regularly, we recommend speaking with a gynaecologist.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ JAVASCRIPT ═════════════════════════════════════════════ -->
+<script>
+  // ── State ──────────────────────────────────────────────────
+  let calYear, calMonth;
+  let periodDates   = new Set();
+  let fertileDates  = new Set();
+  let ovulDates     = new Set();
+  let nextPeriodDates = new Set();
+  let hasCalculated = false;
+
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+
+  // Set default date to today
+  const today = new Date();
+  document.getElementById('lastPeriod').value = today.toISOString().split('T')[0];
+  calYear  = today.getFullYear();
+  calMonth = today.getMonth();
+  renderCalendar();
+
+  // ── Calculate ──────────────────────────────────────────────
+  function calculate() {
+    const lpVal = document.getElementById('lastPeriod').value;
+    if (!lpVal) { alert('Please enter the first day of your last period.'); return; }
+
+    const lastPeriod  = new Date(lpVal);
+    const periodLen   = parseInt(document.getElementById('periodLength').value);
+    const cycleLen    = parseInt(document.getElementById('cycleLength').value);
+    const nextPeriodStart = addDays(lastPeriod, cycleLen);
+
+    // Clear previous
+    periodDates.clear(); fertileDates.clear(); ovulDates.clear(); nextPeriodDates.clear();
+
+    // Current period days
+    for (let i = 0; i < periodLen; i++) {
+      periodDates.add(dateKey(addDays(lastPeriod, i)));
+    }
+
+    // Ovulation = day 14 before next period (cycle - 14)
+ const ovulStart = addDays(lastPeriod, (cycleLen - 16));
+const ovulEnd   = addDays(lastPeriod, (cycleLen - 12));
+
+for (let d = new Date(ovulStart); d <= ovulEnd; d.setDate(d.getDate() + 1)) {
+  ovulDates.add(dateKey(new Date(d)));
+}
+
+    // Fertile window: 5 days before ovulation + ovulation day
+  const fertileStart = addDays(ovulStart, -3);
+const fertileEnd   = ovulEnd;
+
+for (let d = new Date(fertileStart); d <= fertileEnd; d.setDate(d.getDate() + 1)) {
+  if (!periodDates.has(dateKey(d))) {
+    fertileDates.add(dateKey(new Date(d)));
+  }
+}
+
+    // Next period start
+// Generate next 3 cycles
+let tempStart = new Date(lastPeriod);
+
+for (let cycle = 1; cycle <= 3; cycle++) {
+  tempStart = addDays(lastPeriod, cycleLen * cycle);
+
+  for (let i = 0; i < periodLen; i++) {
+    nextPeriodDates.add(dateKey(addDays(tempStart, i)));
+  }
+}
+
+    // Format results
+    document.getElementById('res-next').textContent    = formatDate(nextPeriodStart);
+    document.getElementById('res-fertile').textContent = formatDate(fertileStart) + ' – ' + formatDate(fertileEnd);
+    document.getElementById('res-ovul').textContent = formatDate(ovulStart) + ' – ' + formatDate(ovulEnd);
+    document.getElementById('resultsRibbon').classList.add('show');
+    document.getElementById('calLegend').style.display = 'flex';
+    document.getElementById('calPlaceholder').style.display = 'none';
+    hasCalculated = true;
+
+    // Jump to the month of last period
+     calYear  = lastPeriod.getFullYear();
+     calMonth = lastPeriod.getMonth();
+     renderCalendar();
+
+    // Smooth scroll to calendar on mobile
+    document.querySelector('.calc-calendar').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ── Calendar Render ───
+  function renderCalendar() {
+    document.getElementById('calMonthLabel').textContent = MONTHS[calMonth] + ' ' + calYear;
+
+    const grid = document.getElementById('calGrid');
+    // Keep day name headers (first 7 children)
+    while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(calYear, calMonth, d);
+      const key  = dateKey(date);
+      const el   = document.createElement('div');
+      el.className = 'cal-day';
+      el.textContent = d;
+
+      if (key === dateKey(today)) el.classList.add('today');
+      if (periodDates.has(key))     { el.classList.add('period');      el.title = 'Period day'; }
+      if (fertileDates.has(key))    { el.classList.add('fertile');     el.title = 'Fertile window'; }
+      if (ovulDates.has(key))       { el.classList.add('ovulation');   el.title = 'Ovulation day'; }
+      if (nextPeriodDates.has(key)) { el.classList.add('next-period'); el.title = 'Predicted next period'; }
+
+      grid.appendChild(el);
+    }
+  }
+
+  function prevMonth() {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  }
+
+  function nextMonth() {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  }
+
+  // ── FAQ Toggle ─────────────────────────────────────────────
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ── Helpers ────────────────────────────────────────────────
+  function addDays(date, days) {
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  function dateKey(date) {
+    return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+  }
+
+  function formatDate(date) {
+    return date.toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+  }
+</script>
+
+
+{% schema %}
+{
+  "name": "Period calculator",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline"
+    },
+  
+  ],
+  "presets": [
+    {
+      "name": "Period calculator"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,172 @@
+<!-- /snippets/nav-item.liquid -->
+
+{%- liquid
+  assign parent = false
+  assign grandparent = false
+  if link.levels == 1
+    assign parent = true
+  endif
+  if link.levels == 2
+    assign grandparent = true
+  endif
+
+  assign child_count = 0
+  if grandparent
+    assign child_count = link.links.size
+    if child_count > 10
+      assign child_count = 10
+    endif
+  endif
+
+  assign index = index | append: ""
+  assign block_count = 0
+  assign blocks_count_class = ''
+  for block in section.blocks
+    if block.settings.position == index
+      assign display = block.settings.display | default: 'all'
+      if display == 'mobile'
+        continue
+      endif
+
+      assign grandparent = true
+      if block.type == 'collection'
+        assign block_count = block_count | plus: block.settings.limit
+        assign child_count = child_count | plus: block.settings.limit
+        else
+        assign block_count = block_count | plus: 1
+        assign child_count = child_count | plus: 1
+      endif
+
+      if block.settings.wide_element
+        assign child_count = child_count | plus: 1
+      endif
+    endif
+  endfor
+
+  if parent or grandparent
+    assign expands = true
+    assign key = link.url | append: link.title | append: link.levels | md5
+  endif
+
+  if parent and link.levels == 1
+    assign child_count = child_count | plus: 1
+  endif
+
+  assign link_title_handle = link.title | handle
+  assign highlight_links = 'general.header.highlight_links' | t | strip | split: ',' | join: '___' | handle | replace: '___-', '___' | replace: '-___', '___' | split: '___'
+  assign collections_string = '/collections/'
+
+  if block_count > 0
+    assign blocks_count_class = blocks_count_class | append: 'blocks-' | append: block_count
+  endif
+-%}
+{% capture classes %}{% if grandparent %} grandparent kids-{{ child_count }} {{ blocks_count_class }}{% elsif parent %} parent{% else %} child{% endif %}{% if link.active %} main-menu--active{% endif %}{% endcapture %}
+
+<div class="menu__item {{ classes }}"
+  data-main-menu-text-item
+  {% if expands %}
+    role="button"
+    aria-haspopup="true"
+    aria-expanded="false"
+    data-hover-disclosure-toggle="dropdown-{{ key }}"
+    aria-controls="dropdown-{{ key }}"
+  {% endif %}>
+  <a href="{{ link.url }}" data-top-link class="{{ link.title }} navlink navlink--toplevel{% if highlight_links contains link_title_handle %} highlight--link{% endif %} {% if link.title == 'Subscription' %} Subscription {% endif %}">
+  
+     {% if link.title == 'New Arrivals' %} 
+<div class="combo-highlight-tag">
+ Best Deals
+</div>
+    {% endif %}
+        {% if link.title == 'Upcoming' %} 
+<span class="stay-tuned">Stay Tuned</span>
+    {% endif %}
+  
+  
+    {% if link.title == 'Subscription' %} 
+    <P class="menu-bar-svg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="37" viewBox="0 0 80 37" fill="none">
+    <g clip-path="url(#clip0_3031_9918)">
+    <path d="M46.6702 32.4981C50.8705 30.0382 54.8936 26.8642 58.6706 23.0306C59.4441 21.7714 60.052 20.2769 60.4584 18.6353C60.8648 16.9938 61.0615 15.2386 61.0367 13.4734C61.0119 11.7083 60.7663 9.96895 60.3142 8.35827C59.8622 6.74758 59.2129 5.2982 58.4049 4.09578C56.8459 1.61629 54.7371 0.224563 52.5389 0.224563C50.3408 0.224563 48.2319 1.61629 46.673 4.09578C44.5387 7.53806 41.6071 19.5883 39.7385 27.3323C37.8699 19.5883 34.9383 7.53806 32.804 4.09578C31.2449 1.6149 29.1355 0.22229 26.9366 0.22229C24.7378 0.22229 22.6283 1.6149 21.0693 4.09578C19.5301 6.63207 18.6692 10.0281 18.6692 13.5632C18.6692 17.0983 19.5301 20.4943 21.0693 23.0306C24.754 27.1206 28.7984 30.3113 33.0697 32.4981H0V36.3701H80.0027V32.4981H46.6702ZM23.4694 19.5883C22.4444 17.9254 21.8698 15.6838 21.8698 13.3483C21.8698 11.0129 22.4444 8.77126 23.4694 7.10835C23.9745 6.28803 24.5765 5.63659 25.2404 5.19195C25.9044 4.7473 26.6169 4.51832 27.3366 4.51832C28.0564 4.51832 28.7689 4.7473 29.4329 5.19195C30.0968 5.63659 30.6988 6.28803 31.2039 7.10835C33.9925 14.2033 36.1468 21.8877 37.6041 29.9381C32.0011 26.9026 24.8037 22.1666 23.4694 19.5883ZM48.8045 7.10835C49.3096 6.28803 49.9117 5.63659 50.5756 5.19195C51.2395 4.7473 51.9521 4.51832 52.6718 4.51832C53.3915 4.51832 54.1041 4.7473 54.768 5.19195C55.4319 5.63659 56.034 6.28803 56.5391 7.10835C57.564 8.77126 58.1387 11.0129 58.1387 13.3483C58.1387 15.6838 57.564 17.9254 56.5391 19.5883C52.156 24.087 47.3973 27.5714 42.4043 29.9381C44.1512 22.073 46.2916 14.446 48.8045 7.13121" fill="#C97449"></path>
+    </g>
+    <defs>
+    <clipPath id="clip0_3031_9918">
+    <rect width="80" height="36.1478" fill="white" transform="translate(0 0.22229)"></rect>
+    </clipPath>
+    </defs>
+    </svg></P>
+  {% endif %} 
+  
+    <span class="navtext  {% if link.title == 'Subscription' %} animated-text {% endif %}">{{ link.title | strip_html | escape }}</span>
+  </a>
+  {% if expands %}
+    <div class="header__dropdown"
+      data-hover-disclosure
+      id="dropdown-{{ key }}">
+      <div class="header__dropdown__wrapper">
+        <div class="header__dropdown__inner">
+          {%- if grandparent -%}
+
+            {% if link.levels == 2 %}
+              {% for link in link.links %}
+                <div class="dropdown__family dropdown__family--grandchild">
+                  {%- if section.settings.show_collection_images and link.url contains collections_string -%}
+                    {%- assign collection_string = link.url | split: collections_string | last -%}
+                    {%- assign collection_obj = collections[collection_string] -%}
+
+                    {%- if collection_obj.image != blank -%}
+                      <a href="{{ collection_obj.url }}" class="dropdown__image" aria-label="{{ collection_obj.title | strip_html | escape  }}">
+                        {%- render 'image',
+                          cover: true,
+                          img_object: collection_obj.image,
+                          wh_ratio: section.settings.collection_wh_ratio,
+                          sizes: '25vw',
+                          loading: 'lazy'
+                        -%}
+                      </a>
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {% assign link_title_handle = link.title | handle %}
+                  <a href="{{ link.url }}" data-stagger-first class="navlink navlink--child{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+                    <span class="navtext">{{ link.title | strip_html | escape }}</span>
+                  </a>
+                  {% for link in link.links %}
+                    {% assign link_title_handle = link.title | handle %}
+                    <a href="{{ link.url }}" data-stagger-second class="navlink navlink--grandchild{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+                      <span class="navtext">{{ link.title | strip_html | escape }}</span>
+                    </a>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+            {% elsif link.levels == 1 %}
+              <div class="dropdown__family dropdown__family--child">
+                {% for link in link.links %}
+                  {% assign link_title_handle = link.title | handle %}
+                  <a href="{{ link.url }}" data-stagger class="navlink navlink--grandchild{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+                    <span class="navtext">{{ link.title | strip_html | escape }}</span>
+                  </a>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% for block in section.blocks %}
+              {% comment %} Render block content {% endcomment %}
+              {%- if block.settings.position == index -%}
+                {% render 'header-block', block: block, column_count: child_count %}
+              {%- endif -%}
+            {% endfor %}
+
+          {%- else -%}
+            {% comment %} Simple dropdown {% endcomment %}
+            {% for link in link.links %}
+              {% assign link_title_handle = link.title | handle %}
+              <a href="{{ link.url }}" data-stagger class="navlink navlink--child{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+                <span class="navtext">{{ link.title | strip_html | escape }}</span>
+              </a>
+            {% endfor %}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

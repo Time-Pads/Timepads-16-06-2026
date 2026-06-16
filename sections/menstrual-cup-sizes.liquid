@@ -1,0 +1,212 @@
+{% schema %}
+{
+  "name": "Menstrual Cup Sizes",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Sizes To Suit Everyone"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size",
+      "name": "Cup Size",
+      "settings": [
+        {
+          "type": "text",
+          "id": "size_title",
+          "label": "Size Name",
+          "default": "Medium"
+        },
+        {
+          "type": "image_picker",
+          "id": "cup_image",
+          "label": "Cup Image"
+        },
+        {
+          "type": "text",
+          "id": "height",
+          "label": "Height (mm)",
+          "default": "59mm"
+        },
+        {
+          "type": "text",
+          "id": "width",
+          "label": "Width (mm)",
+          "default": "42mm"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Ideal for regular flow & everyday comfort"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight as Recommended",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Menstrual Cup Sizes"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="tp-sizes">
+  <div class="">
+    <h2 class="kicker-flourished mb-r11">{{ section.settings.heading }}</h2>
+
+    <div class="tp-grid">
+      {% for block in section.blocks %}
+        <div class="tp-card {% if block.settings.highlight %}highlight{% endif %}">
+          
+          {% if block.settings.highlight %}
+            <span class="tp-badge">Most Popular</span>
+          {% endif %}
+
+          {% if block.settings.cup_image %}
+            <img
+              src="{{ block.settings.cup_image | img_url: '300x' }}"
+              alt="{{ block.settings.size_title }}"
+              class="tp-cup-img"
+            >
+          {% endif %}
+
+          <h3 class="tp-size-title">{{ block.settings.size_title }}</h3>
+
+          {% comment %} <div class="tp-dimensions">
+            <span>{{ block.settings.height }} Height</span>
+            <span>{{ block.settings.width }} Width</span>
+          </div> {% endcomment %}
+
+          <p class="tp-desc">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.tp-sizes {
+  padding: 20px 20px;
+  background: #faf7f3;
+}
+
+.tp-container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+.tp-card strong{
+    font-weight: 900;
+}
+.tp-heading {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: #4a4a4a;
+}
+
+.tp-grid {
+  display: flex;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  justify-content: center;
+}
+
+.tp-card {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  position: relative;
+  transition: transform 0.3s ease;
+  flex: 0 0 25%;
+}
+
+.tp-card:hover {
+  transform: translateY(-6px);
+}
+
+.tp-card.highlight {
+  border: 2px solid #ab7841;
+}
+
+
+.tp-cup-img {
+  {% comment %} max-width: 160px; {% endcomment %}
+  margin-bottom: 20px;
+  margin: auto;
+
+}
+
+.tp-size-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.tp-dimensions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+.tp-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+@media only screen and (min-width: 767px){
+
+.tp-cup-img{
+
+}
+}
+
+@media (max-width: 768px) {
+  .tp-sizes h2.kicker-flourished.mb-r11 {
+    margin-bottom: 0;
+}
+  .tp-grid {
+    display: flex;
+    overflow: scroll;
+    grid-template-columns: 1fr;
+    justify-content: flex-start;
+  }
+  .tp-card{
+    padding: 11px 12px;
+}
+.tp-sizes{
+ padding: 5px 10px;
+ padding-bottom: 2rem;
+}
+
+.tp-cup-img{
+max-width: auto;
+border-radius: 1rem;
+}
+  .tp-card{
+    flex: 0 0 64%;
+
+}
+.tp-grid{
+gap: 15px;
+padding-bottom: 1rem;
+}
+}
+</style>

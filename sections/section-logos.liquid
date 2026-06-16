@@ -1,0 +1,239 @@
+<!-- /sections/section-logos.liquid -->
+
+{%- capture lazy_load_section -%}{%- render 'lazy-load-section-validations' -%}{%- endcapture -%}
+
+{%- assign sid = section.id -%}
+{%- assign is_product_or_collection = false -%}
+{%- if product or collection -%}{%- assign is_product_or_collection = true -%}{%- endif -%}
+
+{%- comment -%} ── Styles FIRST — before HTML to prevent layout flash ── {%- endcomment -%}
+{% style %}
+  .section-logos-{{ sid }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 767px) {
+    .section-logos-{{ sid }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+
+{%- if lazy_load_section == blank -%}
+
+  {%- comment -%}
+    Count blocks that have images — must be done OUTSIDE capture
+    because assign inside capture is scoped locally and won't
+    update the outer variable (Liquid scope bug in original).
+  {%- endcomment -%}
+  {%- assign has_block_with_image = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.image != blank -%}
+      {%- assign has_block_with_image = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign hide_section = false -%}
+  {%- if is_product_or_collection and has_block_with_image == false and request.design_mode == false -%}
+    {%- assign hide_section = true -%}
+  {%- endif -%}
+
+  {%- unless hide_section -%}
+
+    {%- comment -%} Build logo markup once for reuse ── {%- endcomment -%}
+    {%- capture logo_markup -%}
+      {%- for block in section.blocks -%}
+        {%- assign img = block.settings.image -%}
+        {%- assign show_item = true -%}
+        {%- if is_product_or_collection and img == blank -%}{%- assign show_item = false -%}{%- endif -%}
+
+        <div
+          class="logo-bar__item{%- unless show_item %} hide{%- endunless -%}"
+          style="--gutter:{{ block.settings.spacing }}px;--width:{{ block.settings.width }}px;"
+          data-slide="{{ block.id }}"
+          data-slide-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.link != blank -%}
+            <a
+              href="{{ block.settings.link }}"
+              class="logo-bar__link"
+              {%- if block.settings.new_tab %} target="_blank" rel="noopener noreferrer"{%- endif %}
+              aria-label="{{ block.settings.alt_text | default: block.settings.link | escape }}"
+            >
+          {%- endif -%}
+
+          {%- if img != blank -%}
+            {%- assign img_w   = img.width | at_most: block.settings.width -%}
+            {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
+            {%- assign img_alt = block.settings.alt_text | default: section.settings.title | escape -%}
+            {%- comment -%} First 5 logos likely visible — eager; rest lazy {%- endcomment -%}
+            {%- assign img_load = 'lazy' -%}
+            {%- if forloop.index <= 5 -%}{%- assign img_load = 'eager' -%}{%- endif -%}
+            <div class="logo-bar__image">
+              <img
+                src="{{ img | image_url: width: img_w }}"
+                srcset="{{ img | image_url: width: img_w }} 1x, {{ img | image_url: width: img_w2x }} 2x"
+                width="{{ img_w }}"
+                height="{{ img_w }}"
+                alt="{{ img_alt }}"
+                loading="{{ img_load }}"
+                decoding="async"
+              >
+            </div>
+          {%- else -%}
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+
+          {%- if block.settings.link != blank -%}</a>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    <div
+      class="section-logos section-logos-{{ sid }} {{ section.settings.bg }}{%- if section.settings.title != blank %} section-logos--tall{%- endif -%}"
+      data-section-id="{{ sid }}"
+      data-section-type="logos"
+    >
+      <div class="{{ section.settings.width }} section-padding">
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="kicker-flourished mb-r11">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          {%- if section.settings.enable_marquee -%}
+            <div class="logo-bar__wrapper">
+              <div class="logo-bar__outer" style="--bg:var(--COLOR-ANNOUNCEMENT-BG);--text:var(--COLOR-ANNOUNCEMENT-TEXT);">
+                <div class="logo-bar__holder">
+                  <div class="logo-bar logo-bar--marquee">
+                    <div data-ticker-frame class="logo-bar__message">
+                      <div data-ticker-scale class="ticker--unloaded logo-bar__scale" style="--animation-duration:{{ section.settings.marquee_speed }}s;">
+                        <div data-ticker-text class="logo-bar__text">
+                          {{ logo_markup }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- else -%}
+            <div class="{{ section.settings.extra_class }} logo-bar ticker--unloaded">
+              {{ logo_markup }}
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+        {%- endif -%}
+
+        {%- if is_product_or_collection and has_block_with_image == false and request.design_mode -%}
+          <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+        {%- endif -%}
+
+      </div>
+    </div>
+
+  {%- endunless -%}
+
+{%- else -%}
+  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
+    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+  </svg>
+{%- endif -%}
+
+{%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
+
+<style>
+/* ── Logo bar mobile override — static ── */
+@media (max-width: 767px) {
+  .buy-from-us.logo-bar.ticker--unloaded {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    gap: 0;
+    margin-bottom: 1rem;
+  }
+  .buy-from-us.logo-bar.ticker--unloaded .logo-bar__item {
+    flex: 0 0 40%;
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .kicker-flourished { margin-bottom: 1.4rem; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Logo list",
+  "settings": [
+    { "type": "header", "content": "Padding settings" },
+    { "type": "range", "id": "padding_top",          "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top" },
+    { "type": "range", "id": "padding_bottom",        "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom" },
+    { "type": "range", "id": "padding_top_mobile",    "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top Mobile" },
+    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom Mobile" },
+    { "type": "text",   "id": "title",       "label": "Title",           "default": "Logo list" },
+    { "type": "text",   "id": "extra_class", "label": "Add Extra class" },
+    {
+      "type": "select", "id": "bg", "label": "Background color", "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral",         "label": "Default" },
+        { "value": "palette--light bg--accent",          "label": "Light" },
+        { "value": "palette--dark bg--invert",           "label": "Dark" },
+        { "value": "palette--dark bg--invert--accent",   "label": "Dark accent" },
+        { "value": "palette--bright bg--bright",         "label": "Bright" },
+        { "value": "palette--bright bg--bright--accent", "label": "Bright accent" }
+      ]
+    },
+    { "type": "header",   "content": "Marquee" },
+    { "type": "checkbox", "id": "enable_marquee",   "label": "Enable animated marquee", "default": true },
+    { "type": "range",    "id": "marquee_speed",    "label": "Marquee animation speed", "unit": "s", "min": 2, "max": 60, "step": 1, "default": 30 },
+    { "type": "header",   "content": "Section spacing" },
+    {
+      "type": "select", "id": "width", "label": "Width", "default": "wrapper--none",
+      "options": [
+        { "value": "wrapper--none",   "label": "Full width" },
+        { "value": "wrapper--full",   "label": "Full width padded" },
+        { "value": "wrapper",         "label": "Page width" },
+        { "value": "wrapper--narrow", "label": "Page width narrow" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo_image",
+      "name": "Logo",
+      "settings": [
+        { "type": "image_picker", "id": "image",   "label": "Image", "info": "640 x 640px .png recommended" },
+        { "type": "text",         "id": "alt_text", "label": "Alt Text" },
+        { "type": "url",          "id": "link",     "label": "Link", "info": "Optional" },
+        { "type": "checkbox",     "id": "new_tab",  "label": "Open in new window", "default": true },
+        { "type": "range",        "id": "width",    "label": "Width",   "unit": "px", "min": 50,  "max": 300, "step": 5,  "default": 140 },
+        { "type": "range",        "id": "spacing",  "label": "Spacing", "unit": "px", "min": 0,   "max": 100, "step": 5,  "default": 50 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo list",
+      "category": "Image",
+      "blocks": [
+        { "type": "logo_image" },
+        { "type": "logo_image" },
+        { "type": "logo_image" },
+        { "type": "logo_image" },
+        { "type": "logo_image" }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "aside"]
+  }
+}
+{% endschema %}

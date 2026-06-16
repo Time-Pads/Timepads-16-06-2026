@@ -1,0 +1,218 @@
+<!-- /sections/reviews-section.liquid -->
+
+{%- capture lazy_load_section -%}{%- render 'lazy-load-section-validations' -%}{%- endcapture -%}
+
+{%- assign sid = section.id -%}
+
+{% style %}
+  .title-{{ sid }} {
+    font-size: {{ section.settings.font_size }}px;
+    margin-bottom: 1rem;
+  }
+  .section-{{ sid }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 767px) {
+    .title-{{ sid }} { font-size: {{ section.settings.font_size_mobile }}px; }
+  }
+  @media (max-width: 749px) {
+    .section-{{ sid }}-padding {
+      padding-top: {{ section.settings.mpadding_top }}px;
+      padding-bottom: {{ section.settings.mpadding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+
+{%- if lazy_load_section == blank -%}
+
+  {%- comment -%}
+    Build star markup once — reused for every block via Liquid variable.
+    Uses a plain <img> instead of responsive-picture to avoid 5 render
+    calls per block (up to 50 render calls total for 10 blocks).
+  {%- endcomment -%}
+  {%- assign star_img = section.settings.testimonial_reviews -%}
+  {%- if star_img != blank -%}
+    {%- assign star_w   = star_img.width | at_most: 20 -%}
+    {%- capture star_markup -%}
+      <div class="icons" aria-label="5 stars">
+        {%- for i in (1..5) -%}
+          <img
+            src="{{ star_img | image_url: width: star_w }}"
+         
+            width="10"
+            height="10"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+            alt="Sanitary pads reviews"
+          >
+        {%- endfor -%}
+      </div>
+    {%- endcapture -%}
+  {%- else -%}
+    {%- comment -%} Fallback: pure CSS/Unicode stars — zero network requests {%- endcomment -%}
+    {%- capture star_markup -%}
+      <div class="icons" aria-label="5 stars">
+        <span aria-hidden="true" style="color:#f5a623;font-size:12px;letter-spacing:2px;">★★★★★</span>
+      </div>
+    {%- endcapture -%}
+  {%- endif -%}
+
+  <div class="section-{{ sid }}-padding page-width">
+    {%- if section.settings.section_heading != blank -%}
+      <div class="reviews-section-text">
+        <h2 class="kicker-flourished title-{{ sid }}">{{ section.settings.section_heading | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="reviews-scroll" aria-label="Customer testimonials">
+        <ul class="reviews-track" role="list">
+          {%- for block in section.blocks -%}
+            <li class="reviews-slide" {{ block.shopify_attributes }}>
+              <div class="testimonial-wrapper">
+                <div class="testimonial-wrapper-content">
+                  <div class="testimonial-name">
+                    {%- if block.settings.name_person != blank -%}
+                      <p>{{ block.settings.name_person | escape }}</p>
+                    {%- endif -%}
+                    {%- if block.settings.person_location != blank -%}
+                      <p>{{ block.settings.person_location | escape }}</p>
+                    {%- endif -%}
+                    {{ star_markup }}
+                  </div>
+                </div>
+                <div class="testimonial-content">
+                  {%- if block.settings.person_content_heading != blank -%}
+                    <h3>{{ block.settings.person_content_heading | escape }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.person_content_subheading != blank -%}
+                    <div>{{ block.settings.person_content_subheading }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+
+{%- else -%}
+  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
+    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+  </svg>
+{%- endif -%}
+
+{%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
+
+<style>
+/* ── Reviews Section — static styles ── */
+.reviews-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.reviews-scroll::-webkit-scrollbar { display: none; }
+
+.reviews-track {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;
+}
+
+.reviews-slide {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  border: 0.5px solid #e2dfdf;
+  margin: 5px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+.testimonial-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 90%;
+  text-align: left;
+}
+
+.testimonial-wrapper-content { display: flex; gap: 1rem; }
+
+.testimonial-name h3 { font-size: 16px; margin-bottom: 0.5rem; }
+.testimonial-name p  { font-size: 12px; }
+
+.testimonial-content h3 { font-size: 16px; margin-top: 1rem; margin-bottom: 0.5rem; }
+.testimonial-content p, .testimonial-content div { font-size: 10px; letter-spacing: 1px; }
+
+.icons { display: flex; gap: 4px; margin-top: 8px; }
+.icons img { height: 10px; width: 10px; }
+
+/* Responsive widths */
+@media (max-width: 767px) {
+ .reviews-slide {
+     flex: 0 0 90%;
+     }
+  .testimonial-wrapper  { max-width: 95%; padding: 10px 0 20px; }
+  .testimonial-name h3  { font-size: 12px; }
+  .testimonial-name p   { font-size: 10px; }
+  .testimonial-content h3 { font-size: 12px; }
+  .testimonial-content p, .testimonial-content div { font-size: 8px; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .reviews-slide {   flex: 0 0 30%; }
+}
+@media (min-width: 1024px) {
+  .reviews-slide { 
+     flex: 0 0 30%; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Reviews section",
+  "tag": "section",
+  "class": "reviews sections",
+  "settings": [
+    { "type": "text",  "id": "section_heading",   "label": "Section heading", "default": "What Our Customers Say" },
+    { "type": "range", "id": "font_size",          "min": 10, "max": 50, "step": 1, "default": 12, "unit": "px", "label": "Font Size" },
+    { "type": "range", "id": "font_size_mobile",   "min": 10, "max": 50, "step": 1, "default": 12, "unit": "px", "label": "Font Size Mobile" },
+    { "type": "header","content": "Padding" },
+    { "type": "range", "id": "padding_top",        "min": 0, "max": 100, "step": 2, "unit": "px", "label": "Padding Top",          "default": 0 },
+    { "type": "range", "id": "padding_bottom",     "min": 0, "max": 100, "step": 2, "unit": "px", "label": "Padding Bottom",       "default": 0 },
+    { "type": "range", "id": "mpadding_top",       "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Mobile Padding Top",   "default": 0 },
+    { "type": "range", "id": "mpadding_bottom",    "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Mobile Padding Bottom","default": 0 },
+    { "type": "image_picker", "id": "testimonial_reviews", "label": "Star icon image" }
+  ],
+  "blocks": [
+    {
+      "type": "images",
+      "name": "Review",
+      "limit": 10,
+      "settings": [
+        { "type": "text",     "id": "name_person",               "label": "Reviewer name",    "default": "Ritu Chopra" },
+        { "type": "text",     "id": "person_location",           "label": "Location",         "default": "Bangalore" },
+        { "type": "text",     "id": "person_content_heading",    "label": "Review heading",   "default": "Time has me for life" },
+        { "type": "richtext", "id": "person_content_subheading", "label": "Review body",      "default": "<p>Best product I have used so far</p>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Reviews Section" }]
+}
+{% endschema %}

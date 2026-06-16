@@ -1,0 +1,517 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "text_size": 8,
+            "product_show_cutline": false,
+            "show_rating": true,
+            "show_rating_count": true,
+            "padding_bottom": 20
+          }
+        },
+        "extrainfo_rjcJNB": {
+          "type": "Extrainfo",
+          "disabled": true,
+          "settings": {}
+        },
+        "text_f9kace": {
+          "type": "text",
+          "settings": {
+            "title": "<p><strong>Ultra-Soft Medical Grade Silicone for All-Day Comfort & Confidence</strong></p>",
+            "padding_bottom": 20
+          }
+        },
+        "product_cup_eXjHex": {
+          "type": "product-cup",
+          "settings": {}
+        },
+        "product_certificates_k9E9iB": {
+          "type": "product-certificates",
+          "settings": {
+            "heading": "Certificates We Have",
+            "image_1": "shopify://shop_images/Gemini_Generated_Image_zfy5qvzfy5qvzfy5-removebg-preview.png",
+            "image_2": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_size": 5,
+            "padding_bottom": 40
+          }
+        },
+        "shipping_text_GRcYBH": {
+          "type": "Shipping-text",
+          "settings": {
+            "shipping_text": "",
+            "shipping_text_url": "shopify://policies/shipping-policy"
+          }
+        },
+        "variants": {
+          "type": "variant-selectors",
+          "settings": {
+            "option_size_swatch": 34,
+            "option_size_radio": 50,
+            "option_space": 30,
+            "padding_bottom": 30
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {
+            "show_quantity": true,
+            "padding_bottom": 20
+          }
+        },
+        "sizing_guide_FqnmVX": {
+          "type": "sizing-guide",
+          "settings": {
+            "heading": ""
+          }
+        },
+        "selling_fast_Nm64Pm": {
+          "type": "selling-fast",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "add-buttons",
+          "settings": {
+            "enable_payment_button": true,
+            "enable_gift_card_recipient": true,
+            "padding_bottom": 20
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "settings": {
+            "share_label": "Share",
+            "target_device": "",
+            "padding_bottom": 20
+          }
+        },
+        "product_view_i8nFPx": {
+          "type": "Product-view",
+          "settings": {
+            "view_text": "Peoples are viewing this right now"
+          }
+        },
+        "icon_FwCCTX": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
+            "padding_bottom": 8
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "disabled": true,
+          "settings": {
+            "title": "Buy it with",
+            "upsell_type": "product_grouping",
+            "product": "",
+            "upsell_product_list": [
+              "time-overnight-sanitary-pads-for-women",
+              "premium-sanitary-pads-with-hight-absorbency",
+              "extra-large-sanitary-pads",
+              "time-ultra-feather-medium-flow-day-sanitary-pads-7-pads",
+              "time-ultra-thin-quality-sanitary-pads",
+              "heavy-flow-sanitary-pads",
+              "time-rash-free-sanitary-pads",
+              "travel-friendly-sanitary-pads",
+              "best-pads-for-women",
+              "time-us-cotton-sanitary-pads",
+              "uniline-sanitary-pads",
+              "us-cotton-comfortable-sanitary-pads-xl",
+              "cotton-sanitary-pads"
+            ],
+            "upsell_list_limit": 3,
+            "padding_bottom": 20
+          }
+        },
+        "complimentary_MHiNjU": {
+          "type": "complimentary",
+          "settings": {
+            "title": "Bought together",
+            "complimentary_list_limit": 3,
+            "padding_bottom": 20
+          }
+        },
+        "variant_descriptions_description_zFaPiT": {
+          "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
+          "settings": {}
+        },
+        "description_product_PrHYrn": {
+          "type": "description-product",
+          "disabled": true,
+          "settings": {}
+        },
+        "icon_d8teE9": {
+          "type": "icon",
+          "disabled": true,
+          "settings": {
+            "icon_name": "icon-payment",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Use Code <strong>\"Welcome5\"</strong> for discount 5% on your first order</p>",
+            "padding_bottom": 8
+          }
+        },
+        "icon_7TtzEd": {
+          "type": "icon",
+          "disabled": true,
+          "settings": {
+            "icon_name": "icon-shipment",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Free shipping </p>",
+            "padding_bottom": 8
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "extrainfo_rjcJNB",
+        "text_f9kace",
+        "product_cup_eXjHex",
+        "product_certificates_k9E9iB",
+        "price",
+        "shipping_text_GRcYBH",
+        "variants",
+        "quantity",
+        "sizing_guide_FqnmVX",
+        "selling_fast_Nm64Pm",
+        "buttons",
+        "sharing",
+        "product_view_i8nFPx",
+        "icon_FwCCTX",
+        "upsell",
+        "complimentary_MHiNjU",
+        "variant_descriptions_description_zFaPiT",
+        "description_product_PrHYrn",
+        "icon_d8teE9",
+        "icon_7TtzEd"
+      ],
+      "settings": {
+        "layout": "thumbnails-left@slides",
+        "image_width": "half",
+        "image_spacing": 0,
+        "align": "left",
+        "bg": "palette--light bg--neutral",
+        "mobile_layout": "thumbs",
+        "enable_video_looping": true,
+        "zoom_enable": true,
+        "alt_text_enable": true,
+        "product_breadcrumbs_enable": true,
+        "product_breadcrumbs_list": [
+          "regular-sanitary-pads"
+        ],
+        "width": "wrapper",
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "menstrual_cup_sizes_mEYnVW": {
+      "type": "menstrual-cup-sizes",
+      "blocks": {
+        "size_hBMwBy": {
+          "type": "size",
+          "settings": {
+            "size_title": "Small",
+            "cup_image": "shopify://shop_images/TIME_Menstrual_Cup_Small_size_dimensions_56mm_height_37mm_width.png",
+            "height": "",
+            "width": "",
+            "description": "Collects Upto  21 ml  For women with low cervix or teen.",
+            "highlight": false
+          }
+        },
+        "size_KtJKgd": {
+          "type": "size",
+          "settings": {
+            "size_title": "Medium",
+            "cup_image": "shopify://shop_images/TIME_Menstrual_Cup_Medium_size_dimensions_63mm_height_43mm_width.png",
+            "height": "",
+            "width": "",
+            "description": "Collects Upto   32 ml   For women under 30 or who have not given birth",
+            "highlight": false
+          }
+        },
+        "size_GQ66NP": {
+          "type": "size",
+          "settings": {
+            "size_title": "Large",
+            "cup_image": "shopify://shop_images/TIME_Menstrual_Cup_Large_size_dimensions_69mm_height_47mm_width.jpg",
+            "height": "",
+            "width": "",
+            "description": "Collects Upto  41 ml   For women over 30 or who have given birth",
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "size_hBMwBy",
+        "size_KtJKgd",
+        "size_GQ66NP"
+      ],
+      "name": "Menstrual Cup Sizes",
+      "settings": {
+        "heading": "Sizes To Suit Everyone"
+      }
+    },
+    "period_benefits_KyAMJE": {
+      "type": "period-benefits",
+      "blocks": {
+        "benefit_CpJ38h": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/Made-in-India.png",
+            "text": "Proudly Made in India"
+          }
+        },
+        "benefit_7Anbd4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/No-Leak.png",
+            "text": "No-Leak Protection"
+          }
+        },
+        "benefit_JxKi4T": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/Simple-_-Comfortable-Use.jpg",
+            "text": "Simple & Comfortable Use"
+          }
+        },
+        "benefit_Xcw3Gw": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/5-Years.png",
+            "text": "Reusable for Years"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_CpJ38h",
+        "benefit_7Anbd4",
+        "benefit_JxKi4T",
+        "benefit_Xcw3Gw"
+      ],
+      "name": "Period Benefits",
+      "settings": {
+        "heading": "A Smarter Way to Experience Period Comfort"
+      }
+    },
+    "gif_images_gb6mrC": {
+      "type": "gif-images",
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 20,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 20,
+        "heading_text": "",
+        "font_size": 12,
+        "font_weight": 400,
+        "text_color": ""
+      }
+    },
+    "counting_number_arqh6C": {
+      "type": "counting-number",
+      "settings": {
+        "heading": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mpadding_top": 100,
+        "mpadding_bottom": 100
+      }
+    },
+    "1734695772f9935df8": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_MD8iFT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_MD8iFT"
+      ],
+      "settings": {
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "product_a_pluse_content_kKtNqB": {
+      "type": "product-A-pluse-content",
+      "settings": {}
+    },
+    "related": {
+      "type": "related",
+      "disabled": true,
+      "settings": {
+        "heading": "You might also like",
+        "bg": "palette--light bg--neutral",
+        "grid_large": 4,
+        "grid_medium": 3,
+        "grid_small": 1.8,
+        "related_products_enable": true,
+        "limit": 6,
+        "product_recommendations_heading": "Related products",
+        "show_recently_viewed": true,
+        "product_recently_limit": 6,
+        "product_recently_minimum": 4,
+        "product_recently_heading": "Recently viewed",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "faq_menstrual_cup_zCE8ct": {
+      "type": "faq-menstrual-cup",
+      "blocks": {
+        "faq_QMfUdQ": {
+          "type": "faq",
+          "settings": {
+            "question": "1. Why should I switch to the TIME Menstrual Cup?",
+            "answer": "TIME Menstrual Cup saves money, prevents rashes, and is eco-friendly. One cup lasts 5\nyears, It’s comfortable for work, travel, and sleep."
+          }
+        },
+        "faq_pQiNBt": {
+          "type": "faq",
+          "settings": {
+            "question": "2. Is TIME Menstrual Cup safe for sensitive skin?",
+            "answer": "Yes 👍 It is made from 100% medical-grade silicone, BPA-free, toxin-free, and dermatologically safe. No smell, no itching, no rashes."
+          }
+        },
+        "faq_DkLWcq": {
+          "type": "faq",
+          "settings": {
+            "question": "3. Can I use it during heavy flow or overnight?",
+            "answer": "Yes. TIME Menstrual cups hold 3× more fluid than pads and can be worn safely for 6–8 hours, even overnight. Just empty earlier on very heavy days."
+          }
+        },
+        "faq_NWCQgK": {
+          "type": "faq",
+          "settings": {
+            "question": "4. How do I clean and maintain the cup?",
+            "answer": "During periods → Wash with clean water or mild soap\nAfter periods → Boil in water for 5 minutes\n\nDry and store in the breathable pouch provided."
+          }
+        },
+        "faq_Y8UPKf": {
+          "type": "faq",
+          "settings": {
+            "question": "5. What if the cup doesn’t fit or I’m not comfortable?",
+            "answer": "Don’t worry 😊 Most users need 1–2 cycles to adjust.\nIf you still feel uncomfortable, try a different fold or size."
+          }
+        },
+        "faq_E7EjGz": {
+          "type": "faq",
+          "settings": {
+            "question": "6. What if cup gets stuck?",
+            "answer": "Don’t worry 😊 A menstrual cup cannot get lost inside your body.\n\nStay calm and try these steps:\n\nRelax your muscles and take slow breaths.\n\nGently pinch the base of the cup to break the suction seal.\n\nIf needed, slide one finger along the side of the cup and press the rim inward to release the seal.\n\nSlowly wiggle and pull the cup downward.\n\nIf it still feels difficult, squat or sit on the toilet to make removal easier.\n\n👉 Most users need a few cycles to get comfortable."
+          }
+        }
+      },
+      "block_order": [
+        "faq_QMfUdQ",
+        "faq_pQiNBt",
+        "faq_DkLWcq",
+        "faq_NWCQgK",
+        "faq_Y8UPKf",
+        "faq_E7EjGz"
+      ],
+      "name": "TIME FAQ Section",
+      "settings": {
+        "heading": "Frequently Asked Questions"
+      }
+    },
+    "section_faq_brbRd3": {
+      "type": "section-faq",
+      "blocks": {
+        "text_adBgjq": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Why Time",
+            "content": "<h6><strong>Clinically Tested , Dermatologically Tested</strong> , <strong>Non - irritant</strong></h6><p><strong><br/></strong></p>"
+          }
+        },
+        "text_a6FKVF": {
+          "type": "text",
+          "settings": {
+            "title": "Additional Information",
+            "content": "{{ product.metafields.custom.product_information | metafield_tag }}"
+          }
+        },
+        "text_jGQCXx": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Caution",
+            "content": "<p>Do not reuse.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_adBgjq",
+        "text_a6FKVF",
+        "text_jGQCXx"
+      ],
+      "name": "Accordion group",
+      "settings": {
+        "title": "",
+        "title_align": "text-left",
+        "title_size": 4,
+        "heading_size": 5,
+        "text_size": 5,
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_liquid_ei7fXL": {
+      "type": "section-liquid",
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "menstrual_cup_sizes_mEYnVW",
+    "period_benefits_KyAMJE",
+    "gif_images_gb6mrC",
+    "counting_number_arqh6C",
+    "1734695772f9935df8",
+    "product_a_pluse_content_kKtNqB",
+    "related",
+    "faq_menstrual_cup_zCE8ct",
+    "section_faq_brbRd3",
+    "section_liquid_ei7fXL"
+  ]
+}

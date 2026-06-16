@@ -1,0 +1,266 @@
+{% schema %}
+{
+  "name": "Bug & Suggestions",
+  "settings": [],
+  "presets": [
+    { "name": "Bug & Suggestions" }
+  ]
+}
+{% endschema %}
+
+<div class="bug-section">
+
+  <!-- OPTIONS -->
+  <div class="bug-options">
+    <div class="bug-card" data-target="bugForm">
+      <div>
+        <h3>🐞 Report a Bug</h3>
+        <p>Something not working?</p>
+      </div>
+      <span>→</span>
+    </div>
+
+    <div class="bug-card" data-target="suggestForm">
+      <div>
+        <h3>💡 Make a Suggestion</h3>
+        <p>Help us improve</p>
+      </div>
+      <span>→</span>
+    </div>
+  </div>
+
+  <!-- BUG FORM -->
+  <div class="form-wrapper" id="bugForm">
+    <button class="back-btn">← Back</button>
+
+  <form id="bugFormSubmit">
+  <h2>Report a Bug</h2>
+
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="tel" name="phone" placeholder="Phone number" required>
+  <input type="email" name="email" placeholder="Email" required>
+
+  <textarea name="message" placeholder="Describe the issue..." required></textarea>
+
+<input type="file" name="file" accept="image/*" required>
+
+  <label class="checkbox">
+    <input type="checkbox" required> I agree to the privacy policy
+  </label>
+
+<button type="submit">Send Message</button>
+<p class="loading-text" style="display:none;">Uploading...</p>
+</form>
+  </div>
+
+  <!-- SUGGESTION FORM -->
+  <div class="form-wrapper" id="suggestForm">
+    <button class="back-btn">← Back</button>
+
+ <form id="suggestFormSubmit">
+  <h2>Make a Suggestion</h2>
+
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="tel" name="phone" placeholder="Phone number" required>
+  <input type="email" name="email" placeholder="Email" required>
+
+  <textarea name="message" placeholder="Share your idea..." required></textarea>
+
+<input type="file" name="file" accept="image/*" required>
+  <label class="checkbox">
+    <input type="checkbox" required> I agree to the privacy policy
+  </label>
+
+<button type="submit">Send Message</button>
+<p class="loading-text" style="display:none;">Uploading...</p>
+</form>
+  </div>
+
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  const section = document.querySelector('.bug-section');
+  const cards = section.querySelectorAll('.bug-card');
+  const forms = section.querySelectorAll('.form-wrapper');
+  const backBtns = section.querySelectorAll('.back-btn');
+  const options = section.querySelector('.bug-options');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      forms.forEach(f => f.classList.remove('active'));
+      section.querySelector('#' + card.dataset.target).classList.add('active');
+      options.style.display = 'none';
+    });
+  });
+
+  backBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      forms.forEach(f => f.classList.remove('active'));
+      options.style.display = 'flex';
+    });
+  });
+
+});
+</script> 
+
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyvEzvWSO8aNJ8gr2k3Gtq_aqJ3O7qo-nY_3qC5ayppExahbCpHJ4b37YJ1_Xii6SC/exec
+v";
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
+  });
+}
+
+async function handleSubmit(formId) {
+  const form = document.getElementById(formId);
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const file = form.querySelector('input[type="file"]').files[0];
+
+    let base64File = "";
+
+    if (file) {
+      base64File = await toBase64(file);
+    }
+
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      message: formData.get("message"),
+      file: base64File
+    };
+
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    alert("Submitted successfully ✅");
+    form.reset();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  handleSubmit("bugFormSubmit");
+  handleSubmit("suggestFormSubmit");
+});
+</script>
+
+
+
+{% style %}
+.bug-section {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+/* OPTIONS */
+.bug-options {
+  display: flex;
+  gap: 20px;
+}
+
+.bug-card {
+  flex: 1;
+  padding: 20px;
+  border-radius: 16px;
+  background: #f9f9f9;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.3s;
+}
+
+.bug-card:hover {
+  background: #e6f4ea;
+  transform: translateY(-3px);
+}
+
+.bug-card h3 {
+  color: #14532d;
+}
+
+.bug-card span {
+  font-size: 22px;
+  color: #22c55e;
+}
+
+/* FORM */
+.form-wrapper {
+  display: none;
+  margin-top: 30px;
+}
+
+.form-wrapper.active {
+  display: block;
+}
+
+form {
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+form input,
+form textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.upload-box {
+  display: block;
+  padding: 12px;
+  border: 2px dashed #22c55e;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  text-align: center;
+  color: #16a34a;
+}
+
+.upload-box input {
+  display: none;
+}
+
+form button {
+  width: 100%;
+  background: #22c55e;
+  color: #fff;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+}
+
+.back-btn {
+  margin-bottom: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.checkbox {
+  font-size: 14px;
+  display: flex;
+  gap: 8px;
+}
+{% endstyle %}

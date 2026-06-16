@@ -1,0 +1,164 @@
+<!-- /sections/gif-images-usp.liquid -->
+
+{%- capture lazy_load_section -%}{%- render 'lazy-load-section-validations' -%}{%- endcapture -%}
+
+{%- comment -%} ── Styles first — before any HTML so browser can apply them immediately ── {%- endcomment -%}
+{%- assign sid  = section.id -%}
+{%- assign pt   = section.settings.padding_top -%}
+{%- assign pb   = section.settings.padding_bottom -%}
+{%- assign mpt  = section.settings.padding_top_mobile -%}
+{%- assign mpb  = section.settings.padding_bottom_mobile -%}
+
+{% style %}
+  .gif-usp-{{ sid }} {
+    padding-top: {{ pt }}px;
+    padding-bottom: {{ pb }}px;
+  }
+  @media (max-width: 767px) {
+    .gif-usp-{{ sid }} {
+      padding-top: {{ mpt }}px;
+      padding-bottom: {{ mpb }}px;
+    }
+  }
+  {%- if section.settings.heading_text != blank -%}
+    .gif-usp-{{ sid }} h2 {
+      font-size: {{ section.settings.font_size }}px;
+      font-weight: {{ section.settings.font_weight }};
+      {%- if section.settings.text_color != blank and section.settings.text_color != 'rgba(0,0,0,0)' -%}
+        color: {{ section.settings.text_color }};
+      {%- endif -%}
+    }
+  {%- endif -%}
+{% endstyle %}
+
+{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+
+{%- if lazy_load_section == blank -%}
+
+  <div class="page-width gif-usp-{{ sid }}">
+    <div class="gif-section--main-content">
+
+      {%- if section.settings.heading_text != blank -%}
+        <h2 class="kicker-flourished mb-r11">{{ section.settings.heading_text | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="gif-section--image-wrapper">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.collection_image != blank -%}
+              {%- assign img      = block.settings.collection_image -%}
+              {%- assign img_alt  = block.settings.alt_text | default: section.settings.heading_text | default: shop.name | escape -%}
+              {%- assign img_w    = img.width | at_most: 210 -%}
+              {%- assign img_w2x  = img_w | times: 2 | at_most: img.width -%}
+              {%- comment -%} First 3 images likely visible — load eagerly {%- endcomment -%}
+              {%- assign img_load = 'lazy' -%}
+              {%- if forloop.index <= 3 -%}{%- assign img_load = 'eager' -%}{%- endif -%}
+
+              {%- render 'responsive-picture',
+                forloop:      forloop,
+                desktopImage: img,
+                mobileImage:  img,
+                img-class:    'tw-w-full tw-max-h-[60rem]',
+                alt:          img_alt,
+                loading:      img_load,
+                width:        img_w,
+                srcset:       img | image_url: width: img_w | append: ' 1x, ' | append: (img | image_url: width: img_w2x) | append: ' 2x'
+              -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+{%- else -%}
+  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
+    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+  </svg>
+{%- endif -%}
+
+{%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
+
+<style>
+/* ── Gif Images USP — static styles ── */
+body.template-product h2.kicker-flourished {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.gif-section--main-content { position: relative; }
+
+.gif-section--image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 45px;
+  padding: 10px 0;
+  overflow-x: auto;        /* only scroll when content overflows */
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gif-section--image-wrapper::-webkit-scrollbar { display: none; }
+
+.gif-section--image-wrapper img {
+  padding: 10px;
+  width: 210px;
+  height: auto;
+}
+
+@media (max-width: 770px) {
+  .gif-section--main-content { margin-bottom: 1rem; }
+
+  .gif-section--image-wrapper {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+  }
+
+  .gif-section--image-wrapper picture {
+    flex: 0 0 30%;
+  }
+
+  .gif-section--image-wrapper img {
+    width: 100%;
+    padding: 0;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Gif Images USP",
+  "tag": "section",
+  "class": "circular-collection",
+  "settings": [
+    { "type": "header", "content": "Padding settings" },
+    { "type": "range", "id": "padding_top",          "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top" },
+    { "type": "range", "id": "padding_bottom",        "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom" },
+    { "type": "range", "id": "padding_top_mobile",    "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top Mobile" },
+    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom Mobile" },
+    { "type": "header", "content": "Heading Settings" },
+    { "type": "text",  "id": "heading_text",  "label": "Heading" },
+    { "type": "range", "id": "font_size",     "min": 12, "max": 50, "default": 12, "step": 2, "unit": "px", "label": "Heading Font Size" },
+    { "type": "range", "id": "font_weight",   "min": 400, "max": 900, "default": 400, "step": 100, "label": "Font Weight" },
+    { "type": "color", "id": "text_color",    "label": "Text Color" }
+  ],
+  "blocks": [
+    {
+      "type": "Collection-Images",
+      "name": "Collection Images",
+      "settings": [
+        { "type": "image_picker", "id": "collection_image", "label": "Collection Image" },
+        { "type": "text",         "id": "alt_text",         "label": "Image Alt text" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Gif Images USP" }
+  ]
+}
+{% endschema %}

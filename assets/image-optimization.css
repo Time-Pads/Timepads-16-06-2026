@@ -1,0 +1,333 @@
+/**
+ * Image Optimization CSS
+ * Styles for image error handling, loading states, and accessibility
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   Image Loading States & Accessibility
+   ═══════════════════════════════════════════════════════════ */
+
+/* Loading state animation (used with loading-shimmer class) */
+.loading-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e0e0e0 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Smooth fade-in when image loads */
+img {
+  transition: opacity 0.3s ease-in-out;
+}
+
+img.loaded {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Error States & Fallbacks
+   ═══════════════════════════════════════════════════════════ */
+
+/* Image with fallback (load was retried) */
+.image-error-fallback {
+  opacity: 0.85;
+  border: 1px solid rgba(200, 200, 200, 0.5);
+  filter: saturate(0.9);
+}
+
+.image-error-fallback::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="rgba(200,200,200,0.3)" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54h2.04l2.25-3 2.25 3h2.04l-3.79-4.71L16.04 6h-2.04l-1.79 2.29L10.42 6H8.38l3.58 4.29z"/></svg>') no-repeat center;
+  background-size: 20px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Image completely failed to load */
+.image-error-failed {
+  background-color: #f8f8f8;
+  background-image: linear-gradient(
+    45deg,
+    #f0f0f0 25%,
+    transparent 25%,
+    transparent 75%,
+    #f0f0f0 75%,
+    #f0f0f0
+  ),
+  linear-gradient(
+    45deg,
+    #f0f0f0 25%,
+    transparent 25%,
+    transparent 75%,
+    #f0f0f0 75%,
+    #f0f0f0
+  );
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  color: #999;
+  border: 1px dashed #ddd;
+  font-size: 13px;
+}
+
+.image-error-failed::before {
+  content: '⚠ ';
+  margin-right: 4px;
+  font-size: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Picture Element Support
+   ═══════════════════════════════════════════════════════════ */
+
+picture {
+  display: contents;
+}
+
+.gif-section--image-wrapper picture{
+ display: block;
+}
+
+
+/* For containers holding picture elements */
+.picture-wrapper {
+  display: block;
+  overflow: hidden;
+}
+
+.picture-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive Image Container
+   ═══════════════════════════════════════════════════════════ */
+
+.responsive-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.responsive-image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Aspect Ratio Helpers
+   ═══════════════════════════════════════════════════════════ */
+
+/* Square images (1:1) */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+/* Portrait (3:4) */
+.aspect-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+/* Landscape (16:9) */
+.aspect-widescreen {
+  aspect-ratio: 16 / 9;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Product Gallery Images
+   ═══════════════════════════════════════════════════════════ */
+
+.product-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.3s ease-in;
+}
+
+.product-image.loading {
+  animation: shimmer 2s infinite;
+}
+
+.product-gallery-thumbnail {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.product-gallery-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease-out;
+}
+
+.product-gallery-thumbnail:hover img {
+  transform: scale(1.05);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Hero & Banner Images
+   ═══════════════════════════════════════════════════════════ */
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Logo & Brand Images
+   ═══════════════════════════════════════════════════════════ */
+
+.header__logo img,
+.brand-logo {
+  display: block;
+  height: auto;
+  transition: opacity 0.2s ease-out;
+}
+
+.header__logo img:not([src]) {
+  background-color: #f0f0f0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Collection Images
+   ═══════════════════════════════════════════════════════════ */
+
+.collection-icon {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.collection-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Mobile Optimization
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Reduce shimmer animation complexity on mobile for better performance */
+  .loading-shimmer {
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Larger touch targets for images on mobile */
+  picture {
+    min-height: 44px;
+  }
+
+  /* Reduce border on error states for mobile */
+  .image-error-fallback {
+    border-color: rgba(200, 200, 200, 0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Respect user's motion preferences */
+  .loading-shimmer {
+    animation: none;
+    background: #f0f0f0;
+  }
+
+  img {
+    transition: none;
+  }
+
+  .product-gallery-thumbnail:hover img {
+    transform: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Print Optimization
+   ═══════════════════════════════════════════════════════════ */
+
+@media print {
+  /* Show images in print, disable animations */
+  .loading-shimmer {
+    animation: none;
+    background: white;
+  }
+
+  /* Remove error indicators in print */
+  .image-error-failed {
+    display: none;
+  }
+
+  /* Force highest quality in print */
+  img {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Accessibility & High Contrast Mode
+   ═══════════════════════════════════════════════════════════ */
+
+@media (prefers-contrast: more) {
+  .image-error-failed {
+    border-color: #333;
+    color: #000;
+  }
+
+  .image-error-fallback {
+    border-color: #666;
+  }
+}
+
+@media (forced-colors: active) {
+  /* Support for forced colors mode (Windows High Contrast) */
+  .image-error-failed {
+    border: 2px solid;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+
+  .loading-shimmer {
+    background: Canvas;
+  }
+}
+button.stain-button-canvas.group\/quick-action-button.add-cart-button-singale-variant.bg-button.flex.items-center.justify-center.type-accent.font-bold.text-r3.transition-opacity.duration-\[--enter-animation-duration\].pointer-events-auto.w-r12.aspect-square.min-w-\[40px\].min-h-\[40px\].md\:min-h-\[48px\].md\:px-r8.md\:py-r5.md\:w-full.md\:aspect-auto{
+    aspect-ratio: auto !important;
+}

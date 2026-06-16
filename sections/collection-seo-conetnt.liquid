@@ -1,0 +1,419 @@
+{% comment %}
+  Section: Timepads Collection SEO Content + Popular Search Chips
+  Paste into: sections/timepads-collection-seo.liquid
+{% endcomment %}
+
+<section class="tp-seo-section">
+  <div class="tp-seo-wrap page-width">
+    {% if section.settings.top_heading != blank %}
+      <div class="tp-seo-top-heading">
+        <h2></h2>
+      </div>
+    {% endif %}
+
+    <div class="tp-chip-row" aria-label="Popular search collections">
+      {% for block in section.blocks %}
+        {% assign collection_obj = block.settings.collection %}
+        {% assign collection_url = collection_obj.url | default: block.settings.link %}
+        {% assign collection_title = block.settings.label | default: collection_obj.title | default: 'Collection' %}
+
+        <a
+          {{ block.shopify_attributes }}
+          class="tp-chip"
+          href="{{ collection_url }}"
+          {% if collection_obj != blank %}aria-label="Go to {{ collection_title }} collection"{% endif %}
+        >
+          <span class="tp-chip__icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+              <path d="M8.3 14.7 3.6 10l1.4-1.4 3.3 3.3 6.8-6.8 1.4 1.4-8.2 8.2Z"></path>
+            </svg>
+          </span>
+          <span class="tp-chip__text">{{ collection_title }}</span>
+          <span class="tp-chip__glow" aria-hidden="true"></span>
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="tp-content-card">
+      {% if section.settings.heading_1 != blank %}
+        <h2>{{ section.settings.heading_1 }}</h2>
+      {% endif %}
+
+      <div class="tp-richtext">
+        {{ section.settings.body_1 }}
+      </div>
+
+      {% if section.settings.heading_2 != blank %}
+        <h3>{{ section.settings.heading_2 }}</h3>
+      {% endif %}
+
+      <div class="tp-richtext">
+        {{ section.settings.body_2 }}
+      </div>
+
+      <div class="tp-richtext tp-richtext--last">
+        {{ section.settings.body_3 }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tp-seo-section {
+    background: #ffffff;
+    padding: 54px 0 70px;
+  }
+
+  .tp-seo-wrap {
+    max-width: 1490px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .tp-seo-top-heading {
+    text-align: center;
+    margin-bottom: 34px;
+  }
+
+  .tp-seo-top-heading h2 {
+    margin: 0;
+    color: #18384a;
+    font-size: clamp(18px, 4vw, 28px);
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .tp-chip-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 8px 0 18px;
+    margin-bottom: 44px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tp-chip-row::-webkit-scrollbar {
+    height: 0;
+  }
+
+  .tp-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    flex: 0 0 auto;
+    padding: 13px 24px;
+    border: 1px solid #dfe4e8;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+    color: #18384a;
+    text-decoration: none;
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 600;
+    box-shadow: 0 1px 0 rgba(15, 40, 55, 0.03);
+    overflow: hidden;
+    transition:
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      border-color 220ms ease,
+      background-color 220ms ease,
+      color 220ms ease;
+    scroll-snap-align: start;
+    isolation: isolate;
+  }
+
+  .tp-chip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0) 100%);
+    transform: translateX(-140%);
+    transition: transform 500ms ease;
+    z-index: -1;
+  }
+
+  .tp-chip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(24,56,74,0.10), transparent 45%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+    z-index: -2;
+  }
+
+  .tp-chip__icon {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(24, 56, 74, 0.06);
+    transition: transform 220ms ease, background-color 220ms ease;
+    flex: 0 0 18px;
+  }
+
+  .tp-chip__icon svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    transform: scale(0.92);
+    transition: transform 220ms ease;
+  }
+
+  .tp-chip__text {
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .tp-chip:hover,
+  .tp-chip:focus-visible {
+    transform: translateY(-4px);
+    border-color: #18384a;
+    box-shadow: 0 14px 30px rgba(24, 56, 74, 0.12);
+    background: linear-gradient(180deg, #ffffff 0%, #f0f6f8 100%);
+    outline: none;
+  }
+
+  .tp-chip:hover::before,
+  .tp-chip:focus-visible::before {
+    transform: translateX(140%);
+  }
+
+  .tp-chip:hover::after,
+  .tp-chip:focus-visible::after {
+    opacity: 1;
+  }
+
+  .tp-chip:hover .tp-chip__icon,
+  .tp-chip:focus-visible .tp-chip__icon {
+    transform: scale(1.08) rotate(-6deg);
+    background: rgba(24, 56, 74, 0.12);
+  }
+
+  .tp-chip:hover .tp-chip__icon svg,
+  .tp-chip:focus-visible .tp-chip__icon svg {
+    transform: scale(1.04);
+  }
+
+  .tp-chip:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+
+  .tp-content-card {
+    background: #f4f4f2;
+    padding: clamp(28px, 5vw, 68px) clamp(20px, 4vw, 58px);
+  }
+
+  .tp-content-card h2,
+  .tp-content-card h3 {
+    margin: 0;
+    color: #18384a;
+
+    font-weight: 600;
+  }
+
+  .tp-content-card h2 {
+    font-size: clamp(18px, 4vw, 28px);
+    line-height: 1.18;
+    margin-bottom: 26px;
+  }
+
+  .tp-content-card h3 {
+    font-size: clamp(18px, 3.5vw, 28px);
+    line-height: 1.2;
+    margin: 56px 0 22px;
+  }
+
+  .tp-richtext {
+    max-width: 1280px;
+  }
+
+  .tp-richtext p {
+    margin: 0 0 22px;
+    color: #18384a;
+    font-size: 14px;
+    line-height: 1.9;
+    font-weight: 400;
+  }
+
+  .tp-richtext--last p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 990px) {
+    .tp-chip-row {
+      flex-wrap: wrap;
+      justify-content: center;
+      overflow-x: visible;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .tp-seo-section {
+      padding: 36px 0 52px;
+    }
+
+    .tp-seo-top-heading {
+      margin-bottom: 22px;
+    }
+
+    .tp-chip-row {
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .tp-chip {
+      padding: 11px 18px;
+      font-size: 14px;
+    }
+
+    .tp-chip__icon {
+      width: 16px;
+      height: 16px;
+      flex-basis: 16px;
+    }
+
+    .tp-chip__icon svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .tp-content-card h3 {
+      margin-top: 34px;
+    }
+
+    .tp-richtext p {
+      margin-bottom: 16px;
+      line-height: 1.75;
+    }
+  }
+  .tp-seo-top-heading h2 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: #18384a;
+  font-size: clamp(18px, 4vw, 28px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.tp-seo-top-heading h2::after {
+  content: 'SEARCH';
+  position: relative;
+  color: #d64b2c;
+  font-style: italic;
+  font-weight: 500;
+  margin-left: 2px;
+  padding: 6px 18px 10px;
+  border: 4px solid #d64b2c;
+  border-radius: 50%;
+  transform: rotate(-7deg);
+  line-height: 0.8;
+}
+
+.tp-seo-top-heading h2 {
+  color: transparent;
+}
+
+.tp-seo-top-heading h2::before {
+  content: 'POPULAR';
+  color: #18384a;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Timepads collection SEO",
+  "settings": [
+    {
+      "type": "text",
+      "id": "top_heading",
+      "label": "Top heading",
+      "default": "POPULAR SEARCH"
+    },
+    {
+      "type": "text",
+      "id": "heading_1",
+      "label": "Heading 1",
+      "default": "Premium Period Care for Everyday Comfort"
+    },
+    {
+      "type": "richtext",
+      "id": "body_1",
+      "label": "Body content 1",
+      "default": "<p>Explore Timepads collections designed to deliver comfort, confidence, and reliable protection throughout the day. From premium sanitary pads to reusable menstrual care, our products are made to support modern period care needs with a soft, skin-friendly feel.</p><p>Every product is crafted to help reduce discomfort and provide leak-proof support when you need it most. Whether you are looking for everyday protection, overnight coverage, or a convenient solution for travel and work, Timepads makes period care easier and more comfortable.</p>"
+    },
+    {
+      "type": "text",
+      "id": "heading_2",
+      "label": "Heading 2",
+      "default": "Shop the Collection That Fits Your Needs"
+    },
+    {
+      "type": "richtext",
+      "id": "body_2",
+      "label": "Body content 2",
+      "default": "<p>Browse collections such as sanitary pads, menstrual cups, period pain relief cream, night pads, and high-absorbency options made for different flow levels. Each range is thoughtfully created to offer lasting freshness, breathable comfort, and dependable performance.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "body_3",
+      "label": "Body content 3",
+      "default": "<p>Find the right product for your routine and discover a smoother, more comfortable period care experience. Choose from Timepads collections that combine quality, convenience, and confidence in one place.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_link",
+      "name": "Collection link",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link override"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Timepads collection SEO",
+      "blocks": [
+        { "type": "collection_link", "settings": { "label": "All Collections" } },
+        { "type": "collection_link", "settings": { "label": "Period Pain Relief Cream" } },
+        { "type": "collection_link", "settings": { "label": "Menstrual Cup" } },
+        { "type": "collection_link", "settings": { "label": "Best Sellers" } },
+        { "type": "collection_link", "settings": { "label": "Best Deals" } },
+        { "type": "collection_link", "settings": { "label": "New Arrivals" } },
+        { "type": "collection_link", "settings": { "label": "Shop All" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

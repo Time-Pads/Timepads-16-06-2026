@@ -1,0 +1,555 @@
+<!doctype html>
+{%- comment -%} ── RTL detection ── {%- endcomment -%}
+{%- capture rtl_codes %},ar,arc,ckb,dv,fa,ha,he,khw,ks,ps,sd,ur,uz_AF,yi,{%- endcapture -%}
+{%- assign is_code_separator = request.locale.iso_code | append: ',' | prepend: ',' -%}
+{%- assign is_rtl = false -%}
+{%- if rtl_codes contains is_code_separator -%}{%- assign is_rtl = true -%}{%- endif -%}
+
+<html class="no-js" lang="{{ request.locale.iso_code }}"{% if is_rtl %} dir="rtl"{% endif %}>
+
+{%- assign title_override    = false -%}
+{%- assign default_description = false -%}
+
+<head>
+  {%- comment -%} 1. Charset + viewport — must be first {%- endcomment -%}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+  {%- comment -%} 2. Flip no-js → js as early as possible {%- endcomment -%}
+  <script>document.documentElement.classList.replace('no-js','js');</script>
+
+  {%- comment -%}
+    3. SINGLE consolidated observer — defers injected storefront/app/PSA scripts.
+       Replaces TWO duplicate observers that were previously in this file.
+       Must run synchronously before Shopify injects scripts.
+  {%- endcomment -%}
+  <script>
+  (function(){
+    // ── Script-deferral observer ──────────────────────────────────────────
+    var obs = new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        m.addedNodes.forEach(function(node){
+          if(node.nodeType !== 1 || node.tagName !== 'SCRIPT') return;
+          if(node.innerHTML.includes('asyncLoad')){
+            node.innerHTML = node.innerHTML
+              .replace('if(window.attachEvent)',
+                "document.addEventListener('asyncLazyLoad',function(event){asyncLoad();});if(window.attachEvent)")
+              .replaceAll(', asyncLoad', ', function(){}');
+          }
+          if(node.innerHTML.includes('PreviewBarInjector')){
+            node.innerHTML = node.innerHTML.replace('DOMContentLoaded','asyncLazyLoad');
+          }
+          if(node.className === 'analytics') node.type = 'text/lazyload';
+          if(node.src && (
+            node.src.includes('assets/storefront/features') ||
+            node.src.includes('assets/shopify_pay') ||
+            node.src.includes('connect.facebook.net')
+          )){
+            node.setAttribute('data-src', node.src);
+            node.removeAttribute('src');
+          }
+        });
+      });
+    });
+    obs.observe(document.documentElement,{childList:true,subtree:true});
+
+    // ── PSA (desktop bot-detection) lazy override ─────────────────────────
+    try {
+      window.__isPSA = navigator.platform.indexOf('x86_64') > -1 &&
+                       navigator.userAgent.indexOf('CrOS') < 0;
+    } catch(e){ window.__isPSA = false; }
+
+    if(window.__isPSA){
+      var imgCount = 0, imgLimit = 20;
+      var psaObs = new MutationObserver(function(mutations){
+        mutations.forEach(function(m){
+          m.addedNodes.forEach(function(node){
+            if(node.nodeType !== 1) return;
+            if(node.tagName === 'IFRAME'){
+              node.setAttribute('loading','lazy');
+              node.setAttribute('data-src', node.src);
+              node.removeAttribute('src');
+            } else if(node.tagName === 'IMG' && ++imgCount > imgLimit){
+              node.setAttribute('loading','lazy');
+            } else if(node.tagName === 'SCRIPT'){
+              node.setAttribute('data-src', node.src);
+              node.removeAttribute('src');
+              node.type = 'text/lazyload';
+            }
+          });
+        });
+      });
+      psaObs.observe(document.documentElement,{childList:true,subtree:true});
+    }
+  })();
+  </script>
+
+  {%- comment -%} 4. Connection hints — deduplicated, ordered by priority {%- endcomment -%}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.shopify.com">
+  <link rel="dns-prefetch" href="//apps.shopify.com">
+  <link rel="dns-prefetch" href="//pdp.gokwik.co">
+  <link rel="dns-prefetch" href="//api.gokwik.co">
+  {%- unless template == 'index' -%}
+    <link rel="dns-prefetch" href="//cdnwidget.judge.me">
+    <link rel="dns-prefetch" href="//cdn.judge.me">
+    <link rel="dns-prefetch" href="//cdn1.judge.me">
+    <link rel="dns-prefetch" href="//api.judge.me">
+  {%- endunless -%}
+
+  {%- comment -%} 5. Judge.me — product pages: dns-prefetch only (settings block moved to </body>) {%- endcomment -%}
+  {%- if request.page_type == 'product' -%}
+    <link rel="dns-prefetch" href="//cdnwidget.judge.me">
+    <link rel="dns-prefetch" href="//cdn.judge.me">
+    <link rel="dns-prefetch" href="//cdn1.judge.me">
+    <link rel="dns-prefetch" href="//api.judge.me">
+  {%- endif -%}
+
+  {%- comment -%} 6. Canonical + theme-color {%- endcomment -%}
+  {%- if canonical_url != blank -%}
+    <link rel="canonical" href="{{ canonical_url }}">
+  {%- endif -%}
+  <meta name="theme-color" content="{{ settings.color_secondary }}">
+
+  <script>
+  if (window.location.pathname === "/blogs/news/time-period-pain-relief-cream-for-working-women") {
+    window.location.href = "https://timepads.in/products/period-pain-relief-cream";
+  }
+</script>
+
+  {%- comment -%} 7. Favicon {%- endcomment -%}
+  <link rel="icon" type="image/png" href="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/32x32-Logo.png?v=1739966329">
+
+  {%- comment -%} 8. Title {%- endcomment -%}
+  {%- capture seo_title -%}
+    {%- assign title_content = page_title -%}
+    {%- if title_override -%}{%- assign title_content = title_override -%}{%- endif -%}
+    {{ title_content }}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
+    {%- endif -%}
+    {%- if current_page != 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
+    {%- assign title_downcase = title_content | downcase | strip -%}
+    {%- assign name_downcase  = shop.name    | downcase | strip -%}
+    {%- unless title_downcase contains name_downcase -%} &ndash; {{ shop.name }}{%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title }}</title>
+
+  {%- comment -%} 9. Meta description {%- endcomment -%}
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- elsif default_description -%}
+    <meta name="description" content="{{ default_description | escape }}">
+  {%- endif -%}
+
+  {%- comment -%} 10. Collection-specific override {%- endcomment -%}
+  {%- if collection.handle == 'all' -%}
+    <title>Buy Sanitary Pads Online, Full Product Range – Time Pads</title>
+    <meta name="description" content="Explore the complete collection of sanitary pads. Shop now for premium comfort, protection, and skin-friendly hygiene essentials.">
+  {%- endif -%}
+
+  {%- comment -%} 11. Social meta {%- endcomment -%}
+  {%- render 'social-meta-tags' -%}
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:url"       content="{{ og_url }}">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="{{ og_title | escape }}">
+  <meta name="twitter:description" content="{{ og_description | escape }}">
+  {%- if page_image -%}
+    <meta property="og:image"        content="https:{{ page_image | image_url }}">
+    <meta property="og:image:width"  content="{{ page_image.width }}">
+    <meta property="og:image:height" content="{{ page_image.height }}">
+  {%- endif -%}
+  {%- if request.page_type == 'product' -%}
+    <meta property="og:price:amount"   content="{{ product.price | money_without_currency | strip_html }}">
+    <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+  {%- endif -%}
+
+  {%- comment -%} 12. Site verifications {%- endcomment -%}
+  <meta name="google-site-verification" content="auh6uDXYwNKEHuqh8X4xHXDs42Yz83l6MMVwlMiVFnk">
+  <meta name="facebook-domain-verification" content="pnpwgd31amqk03srnbewtstzwldvru">
+
+  {%- comment -%} 13. Font preloads — fetchpriority=high on primary body font for LCP {%- endcomment -%}
+  {%- liquid
+    assign body_font_url = settings.font_body_family | font_url
+    assign heading_font_url = settings.font_heading_family | font_url
+    assign accent_font_url = settings.font_accent_family | font_url
+  -%}
+  <link rel="preload" href="{{ body_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  {%- if heading_font_url != body_font_url -%}
+    <link rel="preload" href="{{ heading_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="low">
+  {%- endif -%}
+  {%- if accent_font_url != body_font_url and accent_font_url != heading_font_url -%}
+    <link rel="preload" href="{{ accent_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="low">
+  {%- endif -%}
+
+  {%- comment -%} 14. LCP image preload hint {%- endcomment -%}
+  {%- render 'preload-lcp' -%}
+
+  {%- comment -%} 14a. Image optimization for 4G networks {%- endcomment -%}
+  {%- comment -%}
+    Image Loading Best Practices for 4G Performance:
+    1. Logo uses eager loading + high fetchpriority + WebP/AVIF support
+    2. Hero images use fetchpriority="high" with responsive formats
+    3. Collection icons use eager loading for first 4 + WebP/AVIF
+    4. Product images on PDP use lazy loading with decoding="async"
+    5. All images include explicit width/height to prevent CLS
+    6. Picture elements provide AVIF > WebP > original format fallback
+  {%- endcomment -%}
+
+  {%- comment -%} 15. Critical CSS — render-blocking intentionally for above-fold paint {%- endcomment -%}
+  {{ 'font-settings.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
+  {%- render 'css-variables' -%}
+  {{ 'theme.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
+
+  {%- comment -%} 16. Non-critical CSS — async load, zero render-blocking {%- endcomment -%}
+  <link rel="preload" as="style" href="{{ 'custom.aio.min.css' | asset_url }}" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ 'custom.aio.min.css' | asset_url }}"></noscript>
+
+  {%- comment -%} 16a. Image optimization CSS — async load {%- endcomment -%}
+  <link rel="preload" as="style" href="{{ 'image-optimization.css' | asset_url }}" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ 'image-optimization.css' | asset_url }}"></noscript>
+
+  <link rel="preload" as="style" href="{{ 'quick-view.css' | asset_url }}" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ 'quick-view.css' | asset_url }}"></noscript>
+
+  {%- comment -%} 17. Global inline CSS overrides (kept critical — above fold) {%- endcomment -%}
+  {% style %}
+    lazy-section .spinner {
+      display: none !important;
+    }
+    .tp-card-badges {
+      position: absolute;
+      top: 3px;
+      left: 2px;
+      right: 2px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      z-index: 450;
+      pointer-events: none;
+    }
+    .tp-card-badges > div {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+    .tp-card-badges > div:last-child {
+      align-items: flex-end;
+    }
+   .template-product span.tp-badge.tp-badge--save{
+      display: none;
+    }
+    .tp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.2px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      backdrop-filter: saturate(140%) blur(6px);
+      -webkit-backdrop-filter: saturate(140%) blur(6px);
+      transform: translateZ(0);
+      will-change: transform;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tp-badge--best {
+      background: rgba(214, 255, 214, 0.95);
+      color: #0b3d1a;
+      border: 1px solid rgba(11, 61, 26, 0.12);
+    }
+    .tp-badge--save {
+      background: rgba(238, 61, 67, 0.98);
+      color: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .tp-badge--sold {
+      background: rgba(17, 17, 17, 0.95);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .tp-badge--pulse {
+      animation: tpBadgePulse 1.8s ease-in-out infinite;
+    }
+    .tp-inline-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 8px;
+    }
+    .template-search .product-grid-item__container,
+    .template-search .product-grid-item__container > div,
+    .template-search .search__item__generic {
+      position: relative;
+      z-index: 1 !important;
+    }
+    .template-search .theme__header {
+      position: sticky !important;
+      top: 0;
+      z-index: 9000 !important;
+    }
+    @keyframes tpBadgePulse {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-1px) scale(1.03); }
+      100% { transform: translateY(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tp-badge--pulse { animation: none; }
+    }
+    @media (max-width: 749px) {
+      .tp-card-badges {
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        gap: 8px;
+      }
+      .tp-card-badges > div {
+        gap: 6px;
+      }
+      .tp-badge {
+        font-size: 8px;
+        padding: 5px 9px;
+        letter-spacing: 0;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+      }
+      .tp-inline-badges {
+        gap: 8px;
+        margin: 8px 0 6px;
+      }
+    }
+    button#quick-add-menu-button-1,
+    [id^="quick-add-menu-button"] {
+      display: none !important;
+      visibility: hidden !important;
+    }
+    .media__thumb{
+      margin: 2px!important;
+    }
+    .product-grid-item a{
+      width: 100%;
+    }
+    .variant-label { font-size: 10px; }
+    a.mentsrual-cup-btn { z-index: 999; text-transform: uppercase; }
+    .selector-wrapper:first-child { z-index: 9; }
+    .variant-options.menstrual-variants .option-values { flex-wrap: wrap; }
+    @media only screen and (max-width: 749px) {
+      button.product-price-card-product.advanced-height { height: 47px !important; }
+    }
+  {% endstyle %}
+
+  {%- comment -%} 18. Schema structured data {%- endcomment -%}
+  {%- render 'schema' -%}
+
+  {%- comment -%} 19. Shopify required header (apps etc.) {%- endcomment -%}
+  {%- if tinyscript -%}
+    {{ content_for_header }}
+  {%- else -%}
+    {%- render 'tiny-script-control' -%}
+  {%- endif -%}
+
+  {%- comment -%} 20. App snippets {%- endcomment -%}
+  {%- render 'app-plaza' -%}
+  {%- render 'avada-seo' -%}
+
+  {%- comment -%} 21. GTM head snippet {%- endcomment -%}
+  {%- render 'gtm-head' -%}
+<meta name="msvalidate.01" content="4B78D65C8E6C112F952CD628ABC3E87B" />
+</head>
+
+<body
+  id="{{ page_title | handle }}"
+  class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} class-{{ page.title | handleize }} {{ settings.default_background }}{% if customer %} customer-logged-in{% endif %} {{ page.title }}"
+>
+  {%- comment -%} Facebook noscript pixel {%- endcomment -%}
+  <noscript>
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1291098495481000&ev=PageView&noscript=1" alt="">
+  </noscript>
+
+  {%- render 'gtm-body' -%}
+
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">
+    {{- 'general.accessibility.skip_to_content' | t -}}
+  </a>
+
+  {% sections 'group-header' %}
+  {% sections 'group-overlay' %}
+
+  {%- render 'kwikpass-add-button' -%}
+  {%- render 'load-app-scripts-on-interaction' -%}
+
+  <main class="main-content" id="MainContent">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'group-footer' %}
+
+  <div class="search--popdown">
+    {%- render 'search-predictive', version: 'search-popdown' -%}
+  </div>
+
+  {%- render 'template-swatch' -%}
+  <div class="bg-body-color-gif-opens"></div>
+
+  {%- if request.page_type contains 'customers/' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+  {%- endif -%}
+
+  {%- render 'product-recommendation-quick-view' -%}
+
+  {%- comment -%}
+    JS — all deferred. Loaded in dependency order.
+  {%- endcomment -%}
+  {% render 'quick-view-modal' %}
+  <script>
+    (function() {
+      var loaded = false;
+      var loading = false;
+      function hasQuickViewCss() {
+        var links = document.querySelectorAll('link[rel="stylesheet"]');
+        for (var i = 0; i < links.length; i++) {
+          if ((links[i].href || '').indexOf('quick-view.css') > -1) return true;
+        }
+        return false;
+      }
+      function hasQuickViewJs() {
+        var scripts = document.querySelectorAll('script[src]');
+        for (var i = 0; i < scripts.length; i++) {
+          if ((scripts[i].src || '').indexOf('quick-view.js') > -1) return true;
+        }
+        return false;
+      }
+      function loadStyle(href) {
+        return new Promise(function(resolve, reject) {
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = href;
+          link.onload = resolve;
+          link.onerror = reject;
+          document.head.appendChild(link);
+        });
+      }
+      function loadScript(src) {
+        return new Promise(function(resolve, reject) {
+          var script = document.createElement('script');
+          script.src = src;
+          script.defer = true;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+      document.addEventListener('click', function(event) {
+        var trigger = event.target.closest('[data-qv-trigger]');
+        if (!trigger) return;
+        if (loaded || (hasQuickViewCss() && hasQuickViewJs())) {
+          loaded = true;
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        if (loading) return;
+        loading = true;
+        var promises = [];
+        if (!hasQuickViewCss()) promises.push(loadStyle('{{ "quick-view.css" | asset_url }}'));
+        if (!hasQuickViewJs()) promises.push(loadScript('{{ "quick-view.js" | asset_url }}'));
+        Promise.all(promises).then(function() {
+          loaded = true;
+          loading = false;
+          trigger.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+        }).catch(function() {
+          loaded = true;
+          loading = false;
+          var handle = trigger.getAttribute('data-qv-handle');
+          if (handle) {
+            window.location.href = '/products/' + handle;
+          }
+        });
+      }, true);
+    })();
+  </script>
+
+  <script src="{{ 'vendor.js' | asset_url }}" defer></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  <script src="{{ 'custom.js' | asset_url }}" defer></script>
+  <script>
+    (function() {
+      function loadScript(src) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+      var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      var effectiveType = conn && conn.effectiveType ? String(conn.effectiveType).toLowerCase() : '';
+      var saveData = !!(conn && conn.saveData);
+      var isSlow = /(^|-)2g$|(^|-)3g$/.test(effectiveType);
+
+      if (document.querySelector('dynamic-card')) {
+        loadScript('{{ "varinat-function.js" | asset_url }}');
+      }
+      if (!saveData && !isSlow) {
+        loadScript('{{ "tiny-img-link-preloader.js" | asset_url }}');
+      }
+    })();
+  </script>
+
+  {%- comment -%} Image optimization — error handling and performance monitoring {%- endcomment -%}
+  <script src="{{ 'image-optimization.js' | asset_url }}" defer></script>
+
+  {%- render 'gokwik' -%}
+  {%- render 'kwikpass' -%}
+
+  {%- comment -%}
+    Judge.me settings moved here from <head>.
+    ~15KB of inline JSON — non-blocking when at end of body.
+    noscript CSS also loaded here for same reason.
+  {%- endcomment -%}
+  {%- if request.page_type == 'product' -%}
+    <noscript><link rel="stylesheet" type="text/css" media="all" href="https://cdnwidget.judge.me/shopify_v2.css"></noscript>
+    <script data-cfasync="false" class="jdgm-settings-script">window.jdgmSettings={"pagination":5,"disable_web_reviews":false,"badge_no_review_text":"No reviews","badge_n_reviews_text":"{{ n }} review/reviews","hide_badge_preview_if_no_reviews":true,"badge_hide_text":false,"enforce_center_preview_badge":false,"widget_title":"Customer Reviews","widget_open_form_text":"Write a review","widget_close_form_text":"Cancel review","widget_refresh_page_text":"Refresh page","widget_summary_text":"Based on {{ number_of_reviews }} review/reviews","widget_no_review_text":"Be the first to write a review","widget_name_field_text":"Display name","widget_verified_name_field_text":"Verified Name (public)","widget_name_placeholder_text":"Display name","widget_required_field_error_text":"This field is required.","widget_email_field_text":"Email address","widget_verified_email_field_text":"Verified Email (private, can not be edited)","widget_email_placeholder_text":"Your email address","widget_email_field_error_text":"Please enter a valid email address.","widget_rating_field_text":"Rating","widget_review_title_field_text":"Review Title","widget_review_title_placeholder_text":"Give your review a title","widget_review_body_field_text":"Review content","widget_review_body_placeholder_text":"Start writing here...","widget_pictures_field_text":"Picture/Video (optional)","widget_submit_review_text":"Submit Review","widget_submit_verified_review_text":"Submit Verified Review","widget_submit_success_msg_with_auto_publish":"Thank you! Please refresh the page in a few moments to see your review. You can remove or edit your review by logging into \u003ca href='https://judge.me/login' target='_blank' rel='nofollow noopener'\u003eJudge.me\u003c/a\u003e","widget_submit_success_msg_no_auto_publish":"Thank you! Your review will be published as soon as it is approved by the shop admin. You can remove or edit your review by logging into \u003ca href='https://judge.me/login' target='_blank' rel='nofollow noopener'\u003eJudge.me\u003c/a\u003e","widget_show_default_reviews_out_of_total_text":"Showing {{ n_reviews_shown }} out of {{ n_reviews }} reviews.","widget_show_all_link_text":"Show all","widget_show_less_link_text":"Show less","widget_author_said_text":"{{ reviewer_name }} said:","widget_days_text":"{{ n }} days ago","widget_weeks_text":"{{ n }} week/weeks ago","widget_months_text":"{{ n }} month/months ago","widget_years_text":"{{ n }} year/years ago","widget_yesterday_text":"Yesterday","widget_today_text":"Today","widget_replied_text":"\u003e\u003e {{ shop_name }} replied:","widget_read_more_text":"Read more","widget_reviewer_name_as_initial":"","widget_rating_filter_color":"#fbcd0a","widget_rating_filter_see_all_text":"See all reviews","widget_sorting_most_recent_text":"Most Recent","widget_sorting_highest_rating_text":"Highest Rating","widget_sorting_lowest_rating_text":"Lowest Rating","widget_sorting_with_pictures_text":"Only Pictures","widget_sorting_most_helpful_text":"Most Helpful","widget_open_question_form_text":"Ask a question","widget_reviews_subtab_text":"Reviews","widget_questions_subtab_text":"Questions","widget_question_label_text":"Question","widget_answer_label_text":"Answer","widget_question_placeholder_text":"Write your question here","widget_submit_question_text":"Submit Question","widget_question_submit_success_text":"Thank you for your question! We will notify you once it gets answered.","verified_badge_text":"Verified","verified_badge_bg_color":"","verified_badge_text_color":"","verified_badge_placement":"left-of-reviewer-name","widget_review_max_height":"","widget_hide_border":false,"widget_social_share":false,"widget_thumb":false,"widget_review_location_show":false,"widget_location_format":"","all_reviews_include_out_of_store_products":true,"all_reviews_out_of_store_text":"(out of store)","all_reviews_pagination":100,"all_reviews_product_name_prefix_text":"about","enable_review_pictures":true,"enable_question_anwser":false,"widget_theme":"default","review_date_format":"mm/dd/yyyy","default_sort_method":"most-recent","widget_product_reviews_subtab_text":"Product Reviews","widget_shop_reviews_subtab_text":"Shop Reviews","widget_other_products_reviews_text":"Reviews for other products","widget_store_reviews_subtab_text":"Store reviews","widget_no_store_reviews_text":"This store hasn't received any reviews yet","widget_web_restriction_product_reviews_text":"This product hasn't received any reviews yet","widget_no_items_text":"No items found","widget_show_more_text":"Show more","widget_write_a_store_review_text":"Write a Store Review","widget_other_languages_heading":"Reviews in Other Languages","widget_translate_review_text":"Translate review to {{ language }}","widget_translating_review_text":"Translating...","widget_show_original_translation_text":"Show original ({{ language }})","widget_translate_review_failed_text":"Review couldn't be translated.","widget_translate_review_retry_text":"Retry","widget_translate_review_try_again_later_text":"Try again later","show_product_url_for_grouped_product":false,"widget_sorting_pictures_first_text":"Pictures First","show_pictures_on_all_rev_page_mobile":false,"show_pictures_on_all_rev_page_desktop":false,"floating_tab_hide_mobile_install_preference":false,"floating_tab_button_name":"★ Reviews","floating_tab_title":"Let customers speak for us","floating_tab_button_color":"","floating_tab_button_background_color":"","floating_tab_url":"","floating_tab_url_enabled":false,"floating_tab_tab_style":"text","all_reviews_text_badge_text":"Customers rate us {{ shop.metafields.judgeme.all_reviews_rating | round: 1 }}/5 based on {{ shop.metafields.judgeme.all_reviews_count }} reviews.","all_reviews_text_badge_text_branded_style":"{{ shop.metafields.judgeme.all_reviews_rating | round: 1 }} out of 5 stars based on {{ shop.metafields.judgeme.all_reviews_count }} reviews","is_all_reviews_text_badge_a_link":false,"show_stars_for_all_reviews_text_badge":false,"all_reviews_text_badge_url":"","all_reviews_text_style":"branded","all_reviews_text_color_style":"judgeme_brand_color","all_reviews_text_color":"#108474","all_reviews_text_show_jm_brand":true,"featured_carousel_show_header":true,"featured_carousel_title":"Let customers speak for us","testimonials_carousel_title":"Customers are saying","videos_carousel_title":"Real customer stories","cards_carousel_title":"Customers are saying","featured_carousel_count_text":"from {{ n }} reviews","featured_carousel_add_link_to_all_reviews_page":false,"featured_carousel_url":"","featured_carousel_show_images":true,"featured_carousel_autoslide_interval":5,"featured_carousel_arrows_on_the_sides":false,"featured_carousel_height":250,"featured_carousel_width":80,"featured_carousel_image_size":0,"featured_carousel_image_height":250,"featured_carousel_arrow_color":"#eeeeee","verified_count_badge_style":"branded","verified_count_badge_orientation":"horizontal","verified_count_badge_color_style":"judgeme_brand_color","verified_count_badge_color":"#108474","is_verified_count_badge_a_link":false,"verified_count_badge_url":"","verified_count_badge_show_jm_brand":true,"widget_rating_preset_default":5,"widget_first_sub_tab":"product-reviews","widget_show_histogram":true,"widget_histogram_use_custom_color":false,"widget_pagination_use_custom_color":false,"widget_star_use_custom_color":false,"widget_verified_badge_use_custom_color":false,"widget_write_review_use_custom_color":false,"picture_reminder_submit_button":"Upload Pictures","enable_review_videos":true,"mute_video_by_default":true,"widget_sorting_videos_first_text":"Videos First","widget_review_pending_text":"Pending","featured_carousel_items_for_large_screen":3,"social_share_options_order":"Facebook,Twitter","remove_microdata_snippet":true,"disable_json_ld":false,"enable_json_ld_products":false,"preview_badge_show_question_text":false,"preview_badge_no_question_text":"No questions","preview_badge_n_question_text":"{{ number_of_questions }} question/questions","qa_badge_show_icon":false,"qa_badge_position":"same-row","remove_judgeme_branding":false,"widget_add_search_bar":false,"widget_search_bar_placeholder":"Search","widget_sorting_verified_only_text":"Verified only","featured_carousel_theme":"default","featured_carousel_show_rating":true,"featured_carousel_show_title":true,"featured_carousel_show_body":true,"featured_carousel_show_date":false,"featured_carousel_show_reviewer":true,"featured_carousel_show_product":false,"featured_carousel_header_background_color":"#108474","featured_carousel_header_text_color":"#ffffff","featured_carousel_name_product_separator":"reviewed","featured_carousel_full_star_background":"#108474","featured_carousel_empty_star_background":"#dadada","featured_carousel_vertical_theme_background":"#f9fafb","featured_carousel_verified_badge_enable":true,"featured_carousel_verified_badge_color":"#108474","featured_carousel_border_style":"round","featured_carousel_review_line_length_limit":3,"featured_carousel_more_reviews_button_text":"Read more reviews","featured_carousel_view_product_button_text":"View product","all_reviews_page_load_reviews_on":"scroll","all_reviews_page_load_more_text":"Load More Reviews","disable_fb_tab_reviews":false,"enable_ajax_cdn_cache":false,"widget_advanced_speed_features":5,"widget_public_name_text":"displayed publicly like","default_reviewer_name":"John Smith","default_reviewer_name_has_non_latin":true,"widget_reviewer_anonymous":"Anonymous","medals_widget_title":"Judge.me Review Medals","medals_widget_background_color":"#f9fafb","medals_widget_position":"footer_all_pages","medals_widget_border_color":"#f9fafb","medals_widget_verified_text_position":"left","medals_widget_use_monochromatic_version":false,"medals_widget_elements_color":"#108474","show_reviewer_avatar":true,"widget_invalid_yt_video_url_error_text":"Not a YouTube video URL","widget_max_length_field_error_text":"Please enter no more than {0} characters.","widget_show_country_flag":false,"widget_show_collected_via_shop_app":true,"widget_verified_by_shop_badge_style":"light","widget_verified_by_shop_text":"Verified by Shop","widget_show_photo_gallery":false,"widget_load_with_code_splitting":true,"widget_ugc_install_preference":false,"widget_ugc_title":"Made by us, Shared by you","widget_ugc_subtitle":"Tag us to see your picture featured in our page","widget_ugc_arrows_color":"#ffffff","widget_ugc_primary_button_text":"Buy Now","widget_ugc_primary_button_background_color":"#108474","widget_ugc_primary_button_text_color":"#ffffff","widget_ugc_primary_button_border_width":"0","widget_ugc_primary_button_border_style":"none","widget_ugc_primary_button_border_color":"#108474","widget_ugc_primary_button_border_radius":"25","widget_ugc_secondary_button_text":"Load More","widget_ugc_secondary_button_background_color":"#ffffff","widget_ugc_secondary_button_text_color":"#108474","widget_ugc_secondary_button_border_width":"2","widget_ugc_secondary_button_border_style":"solid","widget_ugc_secondary_button_border_color":"#108474","widget_ugc_secondary_button_border_radius":"25","widget_ugc_reviews_button_text":"View Reviews","widget_ugc_reviews_button_background_color":"#ffffff","widget_ugc_reviews_button_text_color":"#108474","widget_ugc_reviews_button_border_width":"2","widget_ugc_reviews_button_border_style":"solid","widget_ugc_reviews_button_border_color":"#108474","widget_ugc_reviews_button_border_radius":"25","widget_ugc_reviews_button_link_to":"judgeme-reviews-page","widget_ugc_show_post_date":true,"widget_ugc_max_width":"800","widget_rating_metafield_value_type":true,"widget_primary_color":"#000000","widget_enable_secondary_color":false,"widget_secondary_color":"#edf5f5","widget_summary_average_rating_text":"{{ average_rating }} out of 5","widget_media_grid_title":"Customer photos \u0026 videos","widget_media_grid_see_more_text":"See more","widget_round_style":false,"widget_show_product_medals":true,"widget_verified_by_judgeme_text":"Verified by Judge.me","widget_show_store_medals":true,"widget_verified_by_judgeme_text_in_store_medals":"Verified by Judge.me","widget_media_field_exceed_quantity_message":"Sorry, we can only accept {{ max_media }} for one review.","widget_media_field_exceed_limit_message":"{{ file_name }} is too large, please select a {{ media_type }} less than {{ size_limit }}MB.","widget_review_submitted_text":"Review Submitted!","widget_question_submitted_text":"Question Submitted!","widget_close_form_text_question":"Cancel","widget_write_your_answer_here_text":"Write your answer here","widget_enabled_branded_link":true,"widget_show_collected_by_judgeme":true,"widget_reviewer_name_color":"","widget_write_review_text_color":"","widget_write_review_bg_color":"","widget_collected_by_judgeme_text":"collected by Judge.me","widget_pagination_type":"standard","widget_load_more_text":"Load More","widget_load_more_color":"#108474","widget_full_review_text":"Full Review","widget_read_more_reviews_text":"Read More Reviews","widget_read_questions_text":"Read Questions","widget_questions_and_answers_text":"Questions \u0026 Answers","widget_verified_by_text":"Verified by","widget_verified_text":"Verified","widget_number_of_reviews_text":"{{ number_of_reviews }} reviews","widget_back_button_text":"Back","widget_next_button_text":"Next","widget_custom_forms_filter_button":"Filters","custom_forms_style":"horizontal","widget_show_review_information":false,"how_reviews_are_collected":"How reviews are collected?","widget_show_review_keywords":false,"widget_gdpr_statement":"How we use your data: We'll only contact you about the review you left, and only if necessary. By submitting your review, you agree to Judge.me's \u003ca href='https://judge.me/terms' target='_blank' rel='nofollow noopener'\u003eterms\u003c/a\u003e, \u003ca href='https://judge.me/privacy' target='_blank' rel='nofollow noopener'\u003eprivacy\u003c/a\u003e and \u003ca href='https://judge.me/content-policy' target='_blank' rel='nofollow noopener'\u003econtent\u003c/a\u003e policies.","widget_multilingual_sorting_enabled":false,"widget_translate_review_content_enabled":false,"widget_translate_review_content_method":"manual","popup_widget_review_selection":"automatically_with_pictures","popup_widget_round_border_style":true,"popup_widget_show_title":true,"popup_widget_show_body":true,"popup_widget_show_reviewer":false,"popup_widget_show_product":true,"popup_widget_show_pictures":true,"popup_widget_use_review_picture":true,"popup_widget_show_on_home_page":true,"popup_widget_show_on_product_page":true,"popup_widget_show_on_collection_page":true,"popup_widget_show_on_cart_page":true,"popup_widget_position":"bottom_left","popup_widget_first_review_delay":5,"popup_widget_duration":5,"popup_widget_interval":5,"popup_widget_review_count":5,"popup_widget_hide_on_mobile":true,"review_snippet_widget_round_border_style":true,"review_snippet_widget_card_color":"#FFFFFF","review_snippet_widget_slider_arrows_background_color":"#FFFFFF","review_snippet_widget_slider_arrows_color":"#000000","review_snippet_widget_star_color":"#108474","show_product_variant":false,"all_reviews_product_variant_label_text":"Variant: ","widget_show_verified_branding":true,"widget_ai_summary_title":"Customers say","widget_ai_summary_disclaimer":"AI-powered review summary based on recent customer reviews","widget_show_ai_summary":false,"widget_show_ai_summary_bg":false,"widget_show_review_title_input":true,"redirect_reviewers_invited_via_email":"review_widget","request_store_review_after_product_review":false,"request_review_other_products_in_order":false,"review_form_color_scheme":"default","review_form_corner_style":"square","review_form_star_color":{},"review_form_text_color":"#333333","review_form_background_color":"#ffffff","review_form_field_background_color":"#fafafa","review_form_button_color":{},"review_form_button_text_color":"#ffffff","review_form_modal_overlay_color":"#000000","review_content_screen_title_text":"How would you rate this product?","review_content_introduction_text":"We would love it if you would share a bit about your experience.","store_review_form_title_text":"How would you rate this store?","store_review_form_introduction_text":"We would love it if you would share a bit about your experience.","show_review_guidance_text":true,"one_star_review_guidance_text":"Poor","five_star_review_guidance_text":"Great","customer_information_screen_title_text":"About you","customer_information_introduction_text":"Please tell us more about you.","custom_questions_screen_title_text":"Your experience in more detail","custom_questions_introduction_text":"Here are a few questions to help us understand more about your experience.","review_submitted_screen_title_text":"Thanks for your review!","review_submitted_screen_thank_you_text":"We are processing it and it will appear on the store soon.","review_submitted_screen_email_verification_text":"Please confirm your email by clicking the link we just sent you. This helps us keep reviews authentic.","review_submitted_request_store_review_text":"Would you like to share your experience of shopping with us?","review_submitted_review_other_products_text":"Would you like to review these products?","store_review_screen_title_text":"Would you like to share your experience of shopping with us?","store_review_introduction_text":"We value your feedback and use it to improve. Please share any thoughts or suggestions you have.","reviewer_media_screen_title_picture_text":"Share a picture","reviewer_media_introduction_picture_text":"Upload a photo to support your review.","reviewer_media_screen_title_video_text":"Share a video","reviewer_media_introduction_video_text":"Upload a video to support your review.","reviewer_media_screen_title_picture_or_video_text":"Share a picture or video","reviewer_media_introduction_picture_or_video_text":"Upload a photo or video to support your review.","reviewer_media_youtube_url_text":"Paste your Youtube URL here","advanced_settings_next_step_button_text":"Next","advanced_settings_close_review_button_text":"Close","modal_write_review_flow":false,"write_review_flow_required_text":"Required","write_review_flow_privacy_message_text":"We respect your privacy.","write_review_flow_anonymous_text":"Post review as anonymous","write_review_flow_visibility_text":"This won't be visible to other customers.","write_review_flow_multiple_selection_help_text":"Select as many as you like","write_review_flow_single_selection_help_text":"Select one option","write_review_flow_required_field_error_text":"This field is required","write_review_flow_invalid_email_error_text":"Please enter a valid email address","write_review_flow_max_length_error_text":"Max. {{ max_length }} characters.","write_review_flow_media_upload_text":"\u003cb\u003eClick to upload\u003c/b\u003e or drag and drop","write_review_flow_gdpr_statement":"We'll only contact you about your review if necessary. By submitting your review, you agree to our \u003ca href='https://judge.me/terms' target='_blank' rel='nofollow noopener'\u003eterms and conditions\u003c/a\u003e and \u003ca href='https://judge.me/privacy' target='_blank' rel='nofollow noopener'\u003eprivacy policy\u003c/a\u003e.","rating_only_reviews_enabled":false,"show_negative_reviews_help_screen":false,"new_review_flow_help_screen_rating_threshold":3,"negative_review_resolution_screen_title_text":"Tell us more","negative_review_resolution_text":"Your experience matters to us. If there were issues with your purchase, we're here to help. Feel free to reach out to us, we'd love the opportunity to make things right.","negative_review_resolution_button_text":"Contact us","negative_review_resolution_proceed_with_review_text":"Leave a review","negative_review_resolution_subject":"Issue with purchase from {{ shop_name }}.{{ order_name }}","preview_badge_collection_page_install_status":false,"widget_review_custom_css":"","preview_badge_custom_css":"","featured_carousel_custom_css":"","floating_tab_custom_css":"","all_reviews_widget_custom_css":"","medals_widget_custom_css":"","verified_badge_custom_css":"","all_reviews_text_custom_css":"","transparency_badges_collected_via_store_invite":false,"transparency_badges_from_another_provider":false,"transparency_badges_collected_from_store_visitor":false,"transparency_badges_collected_by_verified_review_provider":false,"transparency_badges_earned_reward":false,"transparency_badges_collected_via_store_invite_text":"Review collected via store invitation","transparency_badges_from_another_provider_text":"Review collected from another provider","transparency_badges_collected_from_store_visitor_text":"Review collected from a store visitor","transparency_badges_written_in_google_text":"Review written in Google","transparency_badges_written_in_etsy_text":"Review written in Etsy","transparency_badges_written_in_shop_app_text":"Review written in Shop App","transparency_badges_earned_reward_text":"Review earned a reward for future purchase","product_review_widget_per_page":10,"widget_store_review_label_text":"Review about the store","checkout_comment_extension_title_on_product_page":"Customer Comments","checkout_comment_extension_num_latest_comment_show":5,"checkout_comment_extension_format":"name_and_timestamp","checkout_comment_customer_name":"last_initial","checkout_comment_comment_notification":true,"preview_badge_collection_page_install_preference":false,"preview_badge_home_page_install_preference":false,"preview_badge_product_page_install_preference":false,"review_widget_install_preference":"","review_carousel_install_preference":false,"floating_reviews_tab_install_preference":"none","verified_reviews_count_badge_install_preference":false,"all_reviews_text_install_preference":false,"review_widget_best_location":false,"judgeme_medals_install_preference":false,"review_widget_revamp_enabled":false,"review_widget_qna_enabled":false,"review_widget_header_theme":"minimal","review_widget_widget_title_enabled":true,"review_widget_header_text_size":"medium","review_widget_header_text_weight":"regular","review_widget_average_rating_style":"compact","review_widget_bar_chart_enabled":true,"review_widget_bar_chart_type":"numbers","review_widget_bar_chart_style":"standard","review_widget_expanded_media_gallery_enabled":false,"review_widget_reviews_section_theme":"standard","review_widget_image_style":"thumbnails","review_widget_review_image_ratio":"square","review_widget_stars_size":"medium","review_widget_verified_badge":"standard_text","review_widget_review_title_text_size":"medium","review_widget_review_text_size":"medium","review_widget_review_text_length":"medium","review_widget_number_of_columns_desktop":3,"review_widget_carousel_transition_speed":5,"review_widget_custom_questions_answers_display":"always","review_widget_button_text_color":"#FFFFFF","review_widget_text_color":"#000000","review_widget_lighter_text_color":"#7B7B7B","review_widget_corner_styling":"soft","review_widget_review_word_singular":"review","review_widget_review_word_plural":"reviews","review_widget_voting_label":"Helpful?","review_widget_shop_reply_label":"Reply from {{ shop_name }}:","review_widget_filters_title":"Filters","qna_widget_question_word_singular":"Question","qna_widget_question_word_plural":"Questions","qna_widget_answer_reply_label":"Answer from {{ answerer_name }}:","qna_content_screen_title_text":"Ask a question about this product","qna_widget_question_required_field_error_text":"Please enter your question.","qna_widget_flow_gdpr_statement":"We'll only contact you about your question if necessary. By submitting your question, you agree to our \u003ca href='https://judge.me/terms' target='_blank' rel='nofollow noopener'\u003eterms and conditions\u003c/a\u003e and \u003ca href='https://judge.me/privacy' target='_blank' rel='nofollow noopener'\u003eprivacy policy\u003c/a\u003e.","qna_widget_question_submitted_text":"Thanks for your question!","qna_widget_close_form_text_question":"Close","qna_widget_question_submit_success_text":"We'll notify you by email when your question is answered.","all_reviews_widget_v2025_enabled":false,"all_reviews_widget_v2025_header_theme":"default","all_reviews_widget_v2025_widget_title_enabled":true,"all_reviews_widget_v2025_header_text_size":"medium","all_reviews_widget_v2025_header_text_weight":"regular","all_reviews_widget_v2025_average_rating_style":"compact","all_reviews_widget_v2025_bar_chart_enabled":true,"all_reviews_widget_v2025_bar_chart_type":"numbers","all_reviews_widget_v2025_bar_chart_style":"standard","all_reviews_widget_v2025_expanded_media_gallery_enabled":false,"all_reviews_widget_v2025_show_store_medals":true,"all_reviews_widget_v2025_show_photo_gallery":true,"all_reviews_widget_v2025_show_review_keywords":false,"all_reviews_widget_v2025_show_ai_summary":false,"all_reviews_widget_v2025_show_ai_summary_bg":false,"all_reviews_widget_v2025_add_search_bar":false,"all_reviews_widget_v2025_default_sort_method":"most-recent","all_reviews_widget_v2025_reviews_per_page":10,"all_reviews_widget_v2025_reviews_section_theme":"default","all_reviews_widget_v2025_image_style":"thumbnails","all_reviews_widget_v2025_review_image_ratio":"square","all_reviews_widget_v2025_stars_size":"medium","all_reviews_widget_v2025_verified_badge":"bold_badge","all_reviews_widget_v2025_review_title_text_size":"medium","all_reviews_widget_v2025_review_text_size":"medium","all_reviews_widget_v2025_review_text_length":"medium","all_reviews_widget_v2025_number_of_columns_desktop":3,"all_reviews_widget_v2025_carousel_transition_speed":5,"all_reviews_widget_v2025_custom_questions_answers_display":"always","all_reviews_widget_v2025_show_product_variant":false,"all_reviews_widget_v2025_show_reviewer_avatar":true,"all_reviews_widget_v2025_reviewer_name_as_initial":"","all_reviews_widget_v2025_review_location_show":false,"all_reviews_widget_v2025_location_format":"","all_reviews_widget_v2025_show_country_flag":false,"all_reviews_widget_v2025_verified_by_shop_badge_style":"light","all_reviews_widget_v2025_social_share":false,"all_reviews_widget_v2025_social_share_options_order":"Facebook,Twitter,LinkedIn,Pinterest","all_reviews_widget_v2025_pagination_type":"standard","all_reviews_widget_v2025_button_text_color":"#FFFFFF","all_reviews_widget_v2025_text_color":"#000000","all_reviews_widget_v2025_lighter_text_color":"#7B7B7B","all_reviews_widget_v2025_corner_styling":"soft","all_reviews_widget_v2025_title":"Customer reviews","all_reviews_widget_v2025_ai_summary_title":"Customers say about this store","all_reviews_widget_v2025_no_review_text":"Be the first to write a review","platform":"shopify","branding_url":"https://app.judge.me/reviews","branding_text":"Powered by Judge.me","locale":"en","reply_name":"TIMEPADS","widget_version":"3.0","footer":true,"autopublish":false,"review_dates":true,"enable_custom_form":false,"shop_locale":"en","enable_multi_locales_translations":false,"show_review_title_input":true,"review_verification_email_status":"always","can_be_branded":false,"reply_name_text":"TIMEPADS"};</script>
+    <script>
+      (function() {
+        var jdgmThemeFixes = null;
+        if (!jdgmThemeFixes) return;
+        var thisThemeFix = jdgmThemeFixes[Shopify.theme.id];
+        if (!thisThemeFix) return;
+        if (thisThemeFix.html) {
+          document.addEventListener("DOMContentLoaded", function() {
+            var htmlDiv = document.createElement('div');
+            htmlDiv.classList.add('jdgm-theme-fix-html');
+            htmlDiv.innerHTML = thisThemeFix.html;
+            document.body.append(htmlDiv);
+          });
+        };
+        if (thisThemeFix.css) {
+          var styleTag = document.createElement('style');
+          styleTag.classList.add('jdgm-theme-fix-style');
+          styleTag.innerHTML = thisThemeFix.css;
+          document.head.append(styleTag);
+        };
+        if (thisThemeFix.js) {
+          var scriptTag = document.createElement('script');
+          scriptTag.classList.add('jdgm-theme-fix-script');
+          scriptTag.innerHTML = thisThemeFix.js;
+          document.head.append(scriptTag);
+        };
+      })();
+    </script>
+  {%- endif -%}
+{% comment %} {% unless template == 'pages' or template == 'article' or template == 'blog' %}
+  {% render 'timepads-popup' %}
+{% endunless %} {% endcomment %}
+</body>
+</html>

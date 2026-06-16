@@ -1,0 +1,99 @@
+{% comment %}
+  Generate picture element with WebP and AVIF support for maximum format compatibility
+  
+  Usage:
+  {% render 'image-picture-element', 
+    image: product.featured_image,
+    widths: "400,800,1200",
+    sizes: "100vw",
+    alt: "Product image",
+    loading: "lazy",
+    fetchpriority: "auto",
+    classes: "product-image"
+  %}
+  
+  Parameters:
+    image {object} - The image object
+    widths {string} - Comma-separated widths
+    sizes {string} - Sizes attribute for responsive behavior
+    alt {string} - Alt text for accessibility
+    loading {string} - Loading attribute (lazy, eager, auto)
+    fetchpriority {string} - Fetch priority (high, low, auto)
+    classes {string} - CSS classes for img tag
+    wrapper_class {string} - CSS classes for picture wrapper
+{%- endcomment -%}
+
+{%- liquid
+  assign image_width = image.width | default: image.preview_image.width
+  assign widths = widths | default: "352,400,768,932,1024,1200,1920" | split: ","
+  assign loading = loading | default: "lazy"
+  assign fetchpriority = fetchpriority | default: "auto"
+  assign sizes = sizes | default: "100vw"
+  assign classes = classes | default: "responsive-image"
+  assign wrapper_class = wrapper_class | default: "picture-wrapper"
+-%}
+
+{%- if image != blank and image_width != blank -%}
+  {%- liquid
+    assign webp_srcset = ""
+    assign avif_srcset = ""
+    assign fallback_srcset = ""
+    assign fallback_src = image | image_url: width: 1200
+  -%}
+  
+  {%- comment -%} Generate AVIF srcset {%- endcomment -%}
+  {%- for string_width in widths -%}
+    {% assign width = string_width | times: 1 %}
+    {% if image_width >= width %}
+      {% capture src %}{{ image | image_url: width: width, format: "avif" }} {{ width }}w{% endcapture %}
+      {% assign avif_srcset = avif_srcset | append: src | append: ", " %}
+    {% endif %}
+  {%- endfor -%}
+  
+  {%- comment -%} Generate WebP srcset {%- endcomment -%}
+  {%- for string_width in widths -%}
+    {% assign width = string_width | times: 1 %}
+    {% if image_width >= width %}
+      {% capture src %}{{ image | image_url: width: width, format: "webp" }} {{ width }}w{% endcapture %}
+      {% assign webp_srcset = webp_srcset | append: src | append: ", " %}
+    {% endif %}
+  {%- endfor -%}
+  
+  {%- comment -%} Generate fallback srcset (original format) {%- endcomment -%}
+  {%- for string_width in widths -%}
+    {% assign width = string_width | times: 1 %}
+    {% if image_width >= width %}
+      {% capture src %}{{ image | image_url: width: width }} {{ width }}w{% endcapture %}
+      {% assign fallback_srcset = fallback_srcset | append: src | append: ", " %}
+    {% endif %}
+  {%- endfor -%}
+  
+  <picture class="{{ wrapper_class }}">
+    {%- comment -%} AVIF format (highest priority - best compression) {%- endcomment -%}
+    {%- if avif_srcset != blank -%}
+      <source type="image/avif" sizes="{{ sizes }}" srcset="{{ avif_srcset | strip_html }}">
+    {%- endif -%}
+    
+    {%- comment -%} WebP format (good browser support and compression) {%- endcomment -%}
+    {%- if webp_srcset != blank -%}
+      <source type="image/webp" sizes="{{ sizes }}" srcset="{{ webp_srcset | strip_html }}">
+    {%- endif -%}
+    
+    {%- comment -%} Fallback to original format for older browsers {%- endcomment -%}
+    {%- if fallback_srcset != blank -%}
+      <source sizes="{{ sizes }}" srcset="{{ fallback_srcset | strip_html }}">
+    {%- endif -%}
+    
+    {%- comment -%} Fallback img tag for browsers without picture support {%- endcomment -%}
+    <img
+      src="{{ fallback_src }}"
+      alt="{{ alt | escape }}"
+      class="{{ classes }}"
+      loading="{{ loading }}"
+      fetchpriority="{{ fetchpriority }}"
+      width="{{ image_width | at_most: 1200 }}"
+      height="{% if image.aspect_ratio %}{{ image_width | at_most: 1200 | divided_by: image.aspect_ratio | round }}{% else %}auto{% endif %}"
+      decoding="async"
+    >
+  </picture>
+{%- endif -%}

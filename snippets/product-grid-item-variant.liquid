@@ -1,0 +1,1221 @@
+<!-- /snippets/product-grid-item-variant.liquid -->
+
+<style id="pre-render-hide">
+  .hide-quick-add button[id^="quick-add-menu-button"],
+  .hide-quick-add .quick-add-menu { 
+    display: none !important; 
+  }
+</style>
+<style>
+  {% if product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}
+    button[id^="quick-add-menu-button"] { display: none !important; }
+  {% endif %}
+</style>
+{% unless product.tags contains 'hide' %}
+{% comment %}
+  Inner content for a grid item
+{% endcomment %}
+
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  assign sellout_badge = false
+  if sold_out and settings.badge_sellout
+    assign sellout_badge = true
+  endif
+
+  assign sale_badge = false
+  if on_sale and settings.badge_sale
+    assign sale_badge = true
+    assign sale_badge_content = 'products.product.sale' | t
+    if settings.badge_sale_discount
+      if settings.badge_sale_type == 'dollar'
+        if settings.currency_code_enable
+          assign sale_badge_content = product.compare_at_price | minus: product.price | money_with_currency
+        else
+          assign sale_badge_content = product.compare_at_price | minus: product.price | money_without_trailing_zeros
+        endif
+      else
+        assign difference = product.compare_at_price | minus: product.price
+        assign percent_off = difference | times: 1.0 | divided_by: product.compare_at_price | times: 100
+        assign sale_badge_content = percent_off | floor | append: '%'
+      endif
+      assign save_word = 'products.product.save' | t | append: ' '
+      assign sale_badge_content = sale_badge_content | prepend: save_word
+    endif
+  endif
+
+  assign custom_badge = false
+  if settings.badge_custom
+    if product.metafields.theme.badge != blank and product.metafields.theme.badge.type == 'single_line_text_field'
+      assign custom_badge = true
+      assign custom_badge_content = product.metafields.theme.badge.value
+    endif
+    for tag in product.tags
+      if tag contains "_badge_"
+        assign tag_content = tag | remove: '_badge_' | replace: '_', ' '
+         if tag_content != ''
+          assign custom_badge = true
+          assign custom_badge_content = tag_content
+         endif
+        break
+      endif
+    endfor
+  endif
+
+  if badge_string and badge_string != ''
+    assign custom_badge = true
+    assign custom_badge_content = badge_string
+  endif
+
+  assign tagged = false
+  if sellout_badge or sale_badge or custom_badge
+    assign tagged = true
+  endif
+
+  comment
+    Disqualify options that have more than 15 variants or are a combined length of > 90 characters
+  endcomment
+  if inline_variant_buttons.values.size > 15
+    assign inline_variant_buttons = nil
+  endif
+
+  if inline_variant_buttons
+    assign all_characters = inline_variant_buttons.values | join: ""
+    if all_characters.size >= 90
+      assign inline_variant_buttons = nil
+    endif
+  endif
+
+  # Sellign plans can be added along with inline or instand buttons if
+  # the product has exactly 1 selling plan with subscriptions required
+  assign simple_selling_plan = nil
+
+  if inline_variant_buttons or instant_add_button
+    if product.requires_selling_plan and product.selling_plan_groups.size == 1 and product.selling_plan_groups[0].selling_plans.size == 1
+      # one variant, one required subscription, no choices to make
+      assign simple_selling_plan = product.selected_or_first_available_selling_plan_allocation.selling_plan
+    elsif product.selling_plan_groups.size > 0
+      # Abort instant and inline add buttons, subs choices must be made
+      assign inline_variant_buttons = nil
+      assign instant_add_button = nil
+    endif
+  endif
+
+  # Catch case where first sibling has inline variants and subsequent do not
+  if product.has_only_default_variant and inline_variant_buttons
+    assign inline_variant_buttons = nil
+    assign instant_add_button = true
+  endif
+
+  # Allow configuration of image sizing for different numbers of grid columns
+  # Note: desktop/tablet are set to a default of 3 just in case the grid sizes are not set to prevent accidental gigantic full-width images from being loaded
+  assign columns_desktop = columns_desktop | default: section.settings.grid_large | default: 3
+  assign columns_tablet = columns_tablet | default: section.settings.grid_medium | default: columns_desktop | default: 3
+  assign columns_mobile = columns_mobile | default: section.settings.grid_mobile | default: 1
+  assign section_width = section_width | default: section.settings.width | default: null
+
+  assign left_badge_content = ''
+  if product.metafields.custom.best_seller_tag != blank
+    assign left_badge_content = product.metafields.custom.best_seller_tag
+  elsif custom_badge
+    assign left_badge_content = custom_badge_content
+  endif
+
+  assign show_save_badge = false
+  assign save_percent = 0
+  if on_sale
+    assign difference_amount = product.compare_at_price | minus: product.price
+    assign save_percent = difference_amount | times: 100 | divided_by: product.compare_at_price | round
+    if save_percent > 0
+      assign show_save_badge = true
+    endif
+  endif
+-%}
+{%- capture badge -%}
+{%- endcapture -%}
+
+{%- capture tp_badges -%}
+  {%- if left_badge_content != blank or sold_out or show_save_badge -%}
+    <div class="tp-card-badges">
+      <div>
+        {%- if left_badge_content != blank -%}
+          <span class="tp-badge tp-badge--best tp-badge--pulse">{{ left_badge_content }}</span>
+        {%- endif -%}
+      </div>
+      <div>
+        {%- if sold_out -%}
+          <span class="tp-badge tp-badge--sold">Sold out</span>
+        {%- elsif show_save_badge -%}
+          <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign first_image = product.media[0].preview_image
+  assign container_wh_ratio = settings.product_card_wh_ratio
+  assign image_cover = true
+
+  case settings.product_grid_image
+  when 'crop'
+    assign image_wh_ratio = container_wh_ratio
+  when 'uneven'
+    assign container_wh_ratio = first_image.aspect_ratio | default: settings.product_card_wh_ratio
+  when 'scale'
+    assign image_cover = false
+    assign image_wh_ratio = first_image.aspect_ratio | default: settings.product_card_wh_ratio
+  endcase
+
+  # Behavior is inferred based on setting and passed into JS
+  assign image_hover = 'disabled'
+  assign images_limit = settings.cycle_images_limit
+  case images_limit
+  when 1
+    assign image_hover = 'disabled'
+  when 2
+    assign image_hover = 'second_immediately'
+  else
+    assign image_hover = 'cycle_images'
+  endcase
+-%}
+
+{%- capture sizes -%}
+  {%- render 'image-grid-sizes',
+    columns_desktop: columns_desktop,
+    columns_tablet: columns_tablet,
+    columns_mobile: columns_mobile,
+    section_width: section_width
+  %}
+{%- endcapture -%}
+
+{%- capture card_preview_images -%}
+  [
+    {%- for image in product.images limit: 4 -%}
+      {{ image | image_url: width: 300 | json }}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+{%- endcapture -%}
+
+<product-grid-item-variant
+  class="
+    product-grid-item__content{% if on_sale %} on-sale{% endif %}
+    {% if sold_out %} sold-out{% endif %}
+    {% if tagged %} tagged{% endif %} 
+     {{ product.title | handleize  }}
+    {% comment %} only used to hide badge on hover {% endcomment %}
+    {% if image_hover == 'cycle_images' %} is-slideshow{% endif %}
+  "
+  style="
+    --enter-animation-duration: 225ms;
+    --exit-animation-duration: 400ms;
+  "
+  data-grid-item="{{ product.id }}"
+  data-slideshow-style="{{ image_hover }}"
+  data-grid-item-variant="{{ variant.id }}"
+  data-card-preview-images='{{ card_preview_images | strip }}'
+  data-card-preview-default="{{ product.featured_image | default: first_image | image_url: width: 300 }}"
+  {% if visible != true %} hidden {% endif %}
+  aria-label="{{ variant.title }}"
+>
+
+  {% if product.metafields.custom.offer_text != blank %}
+
+  {% comment %} <div class="sale-badge firebadge">
+    <span class="fire-icon">🔥</span>
+    <span class="badge-text"> {{ product.metafields.custom.offer_text }}</span>
+  </div> {% endcomment %}
+{% endif %}
+  <div class="product-grid-item__container" data-error-boundary>
+    <div data-error-display class="product-grid-item__error-display">&nbsp;</div>
+    {{ tp_badges }}
+    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}">
+      <div
+        class="product-grid-item__images aspect-[--wh-ratio]"
+        data-grid-images data-grid-slide
+        style="
+          --wh-ratio: {{ container_wh_ratio }};
+        "
+      >
+        {%- if product.media.size > 0 -%}
+          {% comment %}
+            Manually store and increment this variable since we start skipping images below when we exceed the allowed images which would
+            make using e.g. forloop.index0 not work since the index of the variant image could be greater than the number of images allowed
+          {% endcomment %}
+          {%- assign image_index = 0 -%}
+
+          {%- for media in product.media -%}
+            {%- liquid
+              # If we've already exceeded the number of allowed images, and this is not the variant featured media, skip it
+              if image_index > images_limit
+                if product.selected_variant and product.selected_variant.featured_media.id != media.id
+                  continue
+                elsif variant.featured_media.id != media.id
+                  continue
+                endif
+              endif
+              assign img_object = media.preview_image
+              assign class = "product-grid-item__image"
+              assign loading = 'lazy'
+              assign fetchpriority = "low"
+              assign visible = false
+              assign active_class = 'is-active'
+              assign is_variant_featured_media = false
+              assign preload_image = false
+              assign loading_image = 'lazy'
+
+              if variant.featured_media and media.id == variant.featured_media.id
+                # Variant image is not necessarily first image or default image
+                assign is_variant_featured_media = true
+              endif
+
+              if product.selected_variant and product.selected_variant.featured_image
+                if product.selected_variant.featured_media.id == media.id
+                  assign is_selected_variant = true
+                  assign is_variant_featured_media = true
+                endif
+
+                # Show variant image is there is a collection filter applied
+                if is_variant_featured_media and is_selected_variant
+                  assign visible = true
+                endif
+              else
+                # If no filters are active show the first image first
+                if forloop.first
+                  assign visible = true
+                endif
+              endif
+
+              if visible
+                assign fetchpriority = "high"
+                if preload
+                  assign loading = 'eager'
+                  assign preload_image = true
+                endif
+                if eagerload
+                  assign loading_image = 'eager'
+                endif
+              endif
+            %}
+
+            {%- capture srcset -%}
+              {%- render 'image-grid-srcset',
+                image: img_object,
+                columns_desktop: columns_desktop,
+                columns_tablet: columns_tablet,
+                columns_mobile: columns_mobile,
+                section_width: section_width,
+                wh_ratio: image_wh_ratio,
+                crop: 'center'
+              %}
+            {%- endcapture -%}
+
+            {% comment %} Use a template to prevent hidden images from loading until user begins slideshow{% endcomment %}
+
+            <product-grid-item-image
+              class="product-grid-item__image-wrapper {% if visible %}{{ active_class }}{% endif %}"
+              data-grid-image-target="{{ media.id }}"
+              {% if visible %}data-grid-current-image{% endif %}
+              {% if is_variant_featured_media and visible %}data-slide-for-filter-selected-variant{% endif %}
+              {% if is_variant_featured_media %}data-slide-for-variant-media{% endif %}
+            >
+              {% unless visible %}<template>{% endunless %}
+              
+              {%- assign img_url = img_object | image_url: width: 400, format: 'webp' -%}
+              <div class="lazy-image-wrapper" style="aspect-ratio: 1 / 1; position: relative; overflow: hidden; background-color: #f5f5f5;">
+                <img 
+                  class="tw-w-full tw-max-h-[60rem] main-image img-object-cover fade-in-image" 
+                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+                  src="{{ img_url }}"
+                  srcset="{{ img_object | image_url: width: 300, format: 'webp' }} 300w, {{ img_object | image_url: width: 400, format: 'webp' }} 400w, {{ img_object | image_url: width: 600, format: 'webp' }} 600w"
+                  loading="{% if eagerload or preload_image %}eager{% else %}lazy{% endif %}"
+                  fetchpriority="{% if eagerload or preload_image %}high{% else %}auto{% endif %}"
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  width="{{ img_object.width | default: 400 }}" 
+                  height="{{ img_object.height | default: 400 }}" 
+                  alt="{{ img_object.alt | default: product.title | escape }}" 
+                  decoding="async"
+                  onload="if(this.complete) this.classList.add('loaded');"
+                >
+                {% if product.images[1] %}
+                  <img 
+                    class="hover-image img-object-cover" 
+                    src="{{ product.images[1] | image_url: width: 400, format: 'webp' }}" 
+                    loading="lazy" 
+                    decoding="async" 
+                    width="{{ product.images[1].width | default: 400 }}"
+                    height="{{ product.images[1].height | default: 400 }}"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.3s ease; z-index: 2;" 
+                    onload="this.classList.add('loaded')"
+                  >
+                {% endif %}
+              </div>
+
+              {% unless visible %}</template>{% endunless %}
+            </product-grid-item-image>
+{% assign max_discount_percentage = 0 %}
+
+{% for variant in product.variants %}
+  {% if variant.compare_at_price > variant.price %}
+    {% assign discount = variant.compare_at_price | minus: variant.price %}
+    {% assign discount_percentage = discount | times: 100 | divided_by: variant.compare_at_price %}
+    
+    {% if discount_percentage > max_discount_percentage %}
+      {% assign max_discount_percentage = discount_percentage %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if max_discount_percentage > 0 %}
+  <div class="product-discount-badge {{ product.id }} product-discount-badge--{{ product.handle }}">
+   Save {{ max_discount_percentage | round }}%
+  </div>
+{% endif %}
+
+
+            {%- assign image_index = image_index | plus: 1 -%}
+          {%- endfor -%}
+        {% else %}
+          <div class="product-grid-item__image-wrapper is-active">
+          {% if product.compare_at_price > product.price %}
+  {%- comment -%}
+    Work in the smallest currency unit (cents/paise) so math filters are precise.
+  {%- endcomment -%}
+
+  {%- assign discount_amount   = product.compare_at_price | minus: product.price -%}
+  {%- assign discount_percent = discount_amount | times: 100 | divided_by: product.compare_at_price | round -%}
+
+  <p class="product-price">
+    
+    <span class="discount text-red-500">{{ discount_percent }}% OFF</span>
+  </p>
+{% else %}
+  <p class="product-price">
+  </p>
+{% endif %}
+
+
+
+            {% render 'image',
+              cover: image_cover,
+              img_object: null,
+              class: class,
+              placeholder: placeholder,
+              wh_ratio: image_wh_ratio
+            %}
+          </div>
+        {%- endif -%}
+      </div>
+    </a>
+
+    {% capture quick_action_toolbar_classes %}
+      group/quick-actions-toolbar aaaaa
+      flex flex-col justify-end items-end overflow-hidden
+      top-[calc(var(--inner)/2)]
+      right-[calc(var(--inner)/2)]
+      bottom-[calc(var(--inner)/2)]
+      left-[calc(var(--inner)/2)]
+      transition duration-[--exit-animation-duration]
+      md:items-normal
+
+      md:translate-y-r4
+      md:group-hover/product-grid-item:opacity-100
+      md:group-hover/product-grid-item:translate-y-0
+      md:group-focus-within/product-grid-item:opacity-100
+      md:group-focus-within/product-grid-item:translate-y-0
+
+      {% comment %}
+      Prevent pointer events on the outer <inline-add-product> element since it covers the whole card
+      and we only want the options menu to show when either the button wrapper or options menu itself
+      are still being hovered
+      {% endcomment %}
+      pointer-events-none
+    {% endcapture %}
+
+    {% capture quick_action_button_classes %}
+      {{ settings.quick_add_button_color }}
+      group/quick-action-button
+      add-cart-button-singale-variant
+      bg-button
+      flex items-center justify-center
+      type-accent font-bold text-r3
+      transition-opacity duration-[--enter-animation-duration]
+      pointer-events-auto
+      w-r12 aspect-square
+      min-w-[40px]
+      min-h-[40px]
+      md:min-h-[48px]
+      md:px-r8 md:py-r5 md:w-full md:aspect-auto
+      {% if sold_out %}opacity-50 !cursor-not-allowed{% endif %}
+    {% endcapture %}
+
+    {%- if instant_add_button %}
+      {% comment %} Allow for shorter default text on longer translations {% endcomment %}
+      {% liquid
+        if product.metafields.theme.preorder.value == true
+          assign button_text = 'products.general.instant_add_pre_order' | t
+        else
+          assign button_text = 'products.general.instant_add' | t
+        endif
+      %}
+
+      {% capture button %}
+        
+
+        <button
+  data-add-to-cart
+  type="submit"
+  name="add"
+  class="{{ quick_action_button_classes }}"
+  :class="{
+    'has-success': isSuccess,
+    'loading': isLoading
+  }"
+  title="{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ button_text }}{% endif %}"
+  :disabled="{{sold_out}} || isDisabled"
+  aria-label="{{ button_text }}"
+>
+  <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap">
+    <span class="hidden md:block">
+      <span class="mobile-hide">
+        {% if sold_out %}
+          Sold Out
+        {% else %}
+          Add to Cart
+        {% endif %}
+      </span>
+      <span class="desktop-hide">
+        {% if sold_out %}
+          Sold
+        {% else %}
+          Add
+        {% endif %}
+      </span>
+    </span>
+    <span aria-hidden class="block md:hidden" style="color: white">
+      {% if sold_out %}
+        Sold
+      {% else %}
+        Add
+      {% endif %}
+    </span>
+  </span>
+  <span class="btn-state-loading">
+    <svg height="18" width="18" class="svg-loader" style="--border: rgb(var(--rgb-button-contrast) / 50%); --text: rgb(var(--rgb-button-contrast));">
+      <circle r="7" cx="9" cy="9" />
+      <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+    </svg>
+  </span>
+  <span class="btn-state-complete" style="--primary: rgb(var(--rgb-button-contrast));">&nbsp;</span>
+</button>
+
+
+
+      {% endcapture %}
+
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('.variant-radio-input');
+    const discountBadge = document.querySelector('.product-discount-badge');
+
+    function updateDiscount() {
+      const checkedInput = document.querySelector('.variant-radio-input:checked');
+      if (checkedInput && discountBadge) {
+        const discount = checkedInput.getAttribute('data-discount');
+        if (discount && parseFloat(discount) > 0) {
+          discountBadge.innerHTML = `${discount}% OFF`;
+        } else {
+          discountBadge.innerHTML = '';
+        }
+      }
+    }
+
+    // Initialize
+    updateDiscount();
+
+    // Add event listener to all variant inputs
+    inputs.forEach(input => {
+      input.addEventListener('change', updateDiscount);
+    });
+  });
+</script>
+
+ {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
+
+
+ {% else %}
+ 
+<div class="{{quick_action_toolbar_classes}}">
+     <a href="{{ product.url }}" >
+   <div class="product__grid__title__wrapper">
+                           
+        <p id="product-{{ product.id }}-title" class="product__grid__title">
+          {{ product.title | strip_html | escape }}
+        </p>
+       
+      {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
+      <div class="rating__wrapper__grid">
+         {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
+      </div>
+      {%- endif -%}
+   </div>
+   </a>
+   {%- assign current_variant = product.selected_or_first_available_variant -%}
+   <noscript>
+      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
+      {%- for variant in product.variants -%}
+      <option
+      {% if variant == current_variant %} selected="selected"{% endif %}
+      {% unless variant.available %} disabled="disabled"{% endunless %}
+      value="{{ variant.id }}">
+      {{ variant.title }}
+      </option>
+      {%- endfor -%}
+      </select>
+   </noscript>
+   <div class="product-card single-variant">
+      <div class="variant-options">
+         <div class="product-card" data-product-id="{{ product.id }}" data-variants="{{ product.variants | json }}">
+            <div class="form__selectors">
+               <!-- Loop through each option (e.g., Size, Packs) -->
+               {% for option in product.options_with_values %}
+               <div class="selector-wrapper selector-wrapper--fullwidth js" data-select-label="{{ option.name }}" data-option-position="{{ forloop.index }}">
+                  <fieldset class="radio__fieldset">
+                     <legend class="radio__legend" aria-label="{{ option.name }}">
+                        <span class="radio__legend__label">{{ option.name }}</span>
+                     </legend>
+                     <div class="radio__inputs bbbbb">
+                        <!-- Loop through values of the current option -->
+                        {% for value in option.values %}
+                        <span class="radio__button">
+                        {% assign is_first = forloop.first %}
+                        {% assign variant = product.variants | where: "option" | append: forloop.index | where: value | first %}
+                        <input 
+                        type="radio" 
+                        name="{{ option.name }}-{{ product.id }}"
+                        value="{{ value }}" 
+                        id="{{ product.id }}-{{ option.name | handleize }}-{{ forloop.index }}" 
+                        data-variant-id="{% if variant %}{{ variant.id }}{% endif %}" 
+                        {% if is_first %} checked = checked {% endif %} 
+                        class="variant-radio-input">  
+                        <label 
+                           for="{{ product.id }}-{{ option.name | handleize }}-{{ forloop.index }}" 
+                           class="variant-label template----{{ template }}" style="background-color: #e3ced0; color: white">
+                        <span>{{ value }}</span>
+                        </label>
+                        </span>
+                        {% endfor %}
+                     </div>
+                  </fieldset>
+               </div>
+               {% endfor %}
+            </div>
+            <!-- Add to Cart Button and Price -->
+            <!-- Popup Message -->
+            {% comment %} 
+            <div class="popup-message"> <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/1_oDqXedYUMyhWzN48pUjHyw.gif?v=1737970819"/> </div>
+            {% endcomment %}
+         </div>
+         <noscript type="application/json">{{ product.variants | json }}</noscript>
+      </div>
+   </div>
+   {%  style %} 
+   {% endstyle %}
+   {% comment %} {% render 'responsive-picture' 
+   forloop: forloop,
+   desktopImage: product.metafields.custom.shipping_free_are_not, 
+   mobileImage: product.metafields.custom.shipping_free_are_not,
+   img-class: 'tw-w-full tw-max-h-[60rem]'
+   alt: 'period pad'
+   %} {% endcomment %}
+   <div class="free-shipping-text-product">
+      {% if product.metafields.custom.shipping_free_are_not != blank %}
+      {% render 'res-imgae',
+      desktopImage: product.metafields.custom.shipping_free_are_not,
+      mobileImage: product.metafields.custom.shipping_free_are_not,
+      desktopWidth: 600,
+      mobileWidth: 360,
+      img_class: 'tw-w-full tw-max-w-[570px]',
+      alt: 'best pads for periods'
+      %}
+      {% endif %}
+   </div>
+   {% comment %} <img src="{{ product.metafields.custom.shipping_free_are_not |  image_url }}"/> {% endcomment %}
+
+{% unless product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
+
+
+   <div class="add-to-cart-button-card {% if product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}hide-quick-add{% endif %}">
+      {%- unless product.title contains 'Gift' or product.title contains 'Gift' -%}
+      <button class="product-price-card-product ccccccc vv  {% if product.title contains 'Period Pain Relief Cream' %} style="display:none !important;" {% endif %}  {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %} advanced-height {% endif %} ">
+         <div class="product__grid__price {% if settings.show_cutline %} product__grid__price--nowrap{% endif %}">
+            {%- if settings.show_cutline -%}
+            <span class="product__grid__cutline">{{ product.metafields.theme.cutline.value }}</span>
+            {%- endif -%}
+            <span class="price{% if on_sale %} on-sale{% endif %}">
+            {%- if settings.currency_code_enable -%}
+            {{ product.price | money_with_currency }}
+            {%- else -%}
+            {{ product.price | money }}
+            {%- endif -%}
+            </span>
+            {% if on_sale %}
+            <span class="compare-at">
+            {%- if settings.currency_code_enable -%}
+            {{ product.compare_at_price | money_with_currency }}
+            {%- else -%}
+            {{ product.compare_at_price | money }}
+            {%- endif -%}
+            </span>
+            {% assign discount = product.compare_at_price | minus: product.price %}
+            {% assign discount_percentage = discount | times: 100 | divided_by: product.compare_at_price %}
+            {% endif %}
+         </div>
+      </button>
+      {% endunless %}
+      {%- assign product = all_products[product.handle] -%}
+      {%- assign variant = product.variants.first -%}
+      {% unless product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}
+  {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
+{% endunless %}
+      {% comment %} {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full" %} {% endcomment %}
+   </div>
+
+{% endunless %}
+
+
+
+
+</div>
+ {% endif %}
+    {%- elsif inline_variant_buttons %}
+    <a href="{{ product.url }}" >
+    <div class="product__grid__title__wrapper">
+                              
+        <p id="product-{{ product.id }}-title" class="product__grid__title">
+          {{ product.title | strip_html | escape }}
+        </p>
+    
+        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
+          <div class="rating__wrapper__grid">
+            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
+          </div>
+        {%- endif -%}
+      </div>
+          </a>
+       {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
+      {% assign current_variant = product.selected_or_first_available_variant %}
+
+    {% if product.has_only_default_variant == false %}
+
+<div class="variant-options menstrual-variants" data-product-id="{{ product.id }}">
+  
+  {% for option in product.options_with_values %}
+    
+    <div class="selector-wrapper">
+      <p class="option-name radio__legend__label">{{ option.name }}</p>
+
+      <div class="option-values">
+        {% for value in option.values %}
+
+          {% assign matched_variant = nil %}
+          {% for v in product.variants %}
+            {% if v.options contains value %}
+              {% assign matched_variant = v %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+     
+          <label class="variant-label">
+            <input
+              type="radio"
+              name="option-{{ option.position }}-{{ product.id }}"
+              value="{{ value }}"
+              data-variant-id="{{ matched_variant.id }}"
+              class="variant-radio-input"
+              {% if forloop.first %}checked{% endif %}
+            >
+             <a href="{{ product.url }}">  {{ value }} </a>
+          </label>
+       
+
+        {% endfor %}
+      </div>
+
+    </div>
+
+  {% endfor %}
+
+</div>
+
+{% endif %}
+
+{% style %}
+product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-safe-menstrual-cup-medical-grade-silicone-12-hours-leak-proof-protection-rash-free.is-slideshow.is-mobile .group\/quick-actions-toolbar.aaaaa.flex.flex-col.justify-end.items-end.overflow-hidden.top-\[calc\(var\(--inner\)\/2\)\].right-\[calc\(var\(--inner\)\/2\)\].bottom-\[calc\(var\(--inner\)\/2\)\].left-\[calc\(var\(--inner\)\/2\)\].transition.duration-\[--exit-animation-duration\].md\:items-normal.md\:translate-y-r4.md\:group-hover\/product-grid-item\:opacity-100.md\:group-hover\/product-grid-item\:translate-y-0.md\:group-focus-within\/product-grid-item\:opacity-100.md\:group-focus-within\/product-grid-item\:translate-y-0.pointer-events-none{
+ display: none;
+}
+product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-safe-menstrual-cup-medical-grade-silicone-12-hours-leak-proof-protection-rash-free.is-slideshow .group\/quick-actions-toolbar.aaaaa.flex.flex-col.justify-end.items-end.overflow-hidden.top-\[calc\(var\(--inner\)\/2\)\].right-\[calc\(var\(--inner\)\/2\)\].bottom-\[calc\(var\(--inner\)\/2\)\].left-\[calc\(var\(--inner\)\/2\)\].transition.duration-\[--exit-animation-duration\].md\:items-normal.md\:translate-y-r4.md\:group-hover\/product-grid-item\:opacity-100.md\:group-hover\/product-grid-item\:translate-y-0.md\:group-focus-within\/product-grid-item\:opacity-100.md\:group-focus-within\/product-grid-item\:translate-y-0.pointer-events-none{
+ display: none;
+}
+.variant-options.menstrual-variants{
+  height: 8.8rem;
+}
+
+@media only screen and (max-width: 767px){
+  .variant-options.menstrual-variants{
+    height: 9.5rem;
+  }
+}
+.variant-options {
+  margin-top: 10px;
+}
+  .variant-options.menstrual-variants input[type=checkbox],
+  .variant-options.menstrual-variants input[type=radio]{
+    opacity: 0;
+    display: none;
+  }
+
+
+.option-values {
+  display: flex;
+  gap: 8px;
+}
+
+.variant-label {
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.variant-radio-input {
+  display: none;
+}
+
+.variant-radio-input:checked + span,
+.variant-label:has(input:checked) {
+  background: rgb(183, 164, 135) !important;   /* your brand color */
+  color: black;
+  font-weight: 700;
+}
+.option-values{
+  padding-left: 5px;
+}
+
+a.mentsrual-cup-btn{
+background: black;
+color: white;
+flex: 0 0 45%;
+padding: 17px;
+font-size: 14px;
+    border-radius: 0 3rem 3rem 0;
+}
+product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-safe-menstrual-cup-medical-grade-silicone-12-hours-leak-proof-protection-rash-free.is-slideshow a.mentsrual-cup-btn,
+product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-safe-menstrual-cup-medical-grade-silicone-12-hours-leak-proof-protection-rash-free.is-slideshow.is-mobile a.mentsrual-cup-btn,
+product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-safe-menstrual-cup-medical-grade-silicone-12-hours-leak-proof-protection-rash-free.is-slideshow.is-mobile .selector-wrapper:first-child,
+product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-safe-menstrual-cup-medical-grade-silicone-12-hours-leak-proof-protection-rash-free.is-slideshow .selector-wrapper:first-child {
+ z-index: 2;
+}
+
+
+{% endstyle %}
+
+<script>
+  document.addEventListener("change", function(e) {
+  if (e.target.classList.contains("variant-radio-input")) {
+    const variantId = e.target.dataset.variantId;
+
+    // example for add to cart button
+    document.querySelectorAll("[name='id']").forEach(el => {
+      el.value = variantId;
+    });
+  }
+});
+</script>
+
+
+
+
+      <div class="add-to-cart-button-card">
+  {%- unless product.title contains 'Gift' or product.title contains 'Gift' -%}
+    <button class="product-price-card-product {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %} advanced-height {% endif %}">
+  <div class="product__grid__price {% if settings.show_cutline %} product__grid__price--nowrap{% endif %}">
+    
+    {%- if settings.show_cutline -%}
+      <span class="product__grid__cutline">{{ product.metafields.theme.cutline.value }}</span>
+    {%- endif -%}
+    
+    <span class="price{% if on_sale %} on-sale{% endif %}">
+      {%- if settings.currency_code_enable -%}
+        {{ product.price | money_with_currency }}
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </span>
+    
+    {% if on_sale %}
+      <span class="compare-at">
+        {%- if settings.currency_code_enable -%}
+          {{ product.compare_at_price | money_with_currency }}
+        {%- else -%}
+          {{ product.compare_at_price | money }}
+        {%- endif -%}
+      </span>
+
+      {% assign discount = product.compare_at_price | minus: product.price %}
+      {% assign discount_percentage = discount | times: 100 | divided_by: product.compare_at_price %}
+  
+    {% endif %}
+    
+  </div>
+</button>
+
+{% endunless %}
+      {%- assign product = all_products[product.handle] -%}
+      {%- assign variant = product.variants.first -%}
+      
+
+<a class="mentsrual-cup-btn" href="{{ product.url }}">
+  <span class="btn-desktop">Add to Cart</span>
+  <span class="btn-mobile">Add</span>
+</a>      </div>
+{% endif %}
+
+
+
+  
+{% style %}
+
+.btn-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .btn-desktop {
+    display: none;
+  }
+  a.mentsrual-cup-btn{
+    padding: 12px;
+  }
+  .btn-mobile {
+    display: inline;
+  }
+}
+{% endstyle %}
+
+
+
+
+
+
+
+{% unless product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}
+
+
+
+
+      <div class="{{quick_action_toolbar_classes}}" x-data="productGridItemQuickAddMenu()">
+        <button
+          class="
+            {{ quick_action_button_classes }}
+            transition-opacity
+          "
+          title="{{ 'products.general.inline_add' | t }}"
+          aria-haspopup="true"
+          :aria-expanded="isOpen"
+          :id="$id('quick-add-menu-button')"
+          :aria-controls="$id('quick-add-menu-slideover')"
+          @click.stop="open()"
+          @mouseover="open()"
+          x-ref="button"
+          :class="
+            isOpen ?
+              'duration-[--enter-animation-duration] delay-0 opacity-0 md:opacity-100' :
+              'duration-[--exit-animation-duration] delay-[--exit-animation-duration] opacity-100'
+          "
+          aria-label="{{ 'products.general.inline_add' | t }}"
+        >
+          <span
+            class="
+              whitespace-nowrap
+              text-button-contrast
+              transition translate-y-0 transform
+            "
+            :class="
+              isOpen ?
+                'duration-[--enter-animation-duration] delay-0 translate-y-full opacity-0' :
+                'duration-[--exit-animation-duration] delay-[calc(var(--exit-animation-duration))] translate-y-0 opacity-100'
+            "
+          >
+            <span class="hidden md:block">
+              {{ 'Add' }}
+            </span>
+            <span aria-hidden class="block md:hidden">
+              {% render 'icon-set-classic-cart' %}
+            </span>
+          </span>
+        </button>
+
+        <div
+          class="absolute top-0 right-0 bottom-0 left-0 overflow-hidden flex flex-col justify-end"
+          role="popover"
+          x-show="isOpen"
+          x-cloak
+          :aria-labelledby="$id('quick-add-menu-button')"
+        >
+          <div
+            class="
+              {{ settings.quick_add_button_color }}
+              top-0 right-0 bottom-0 left-0 top-auto max-h-full overflow-scroll scrollbar-hide
+              pointer-events-auto
+              transition transform
+              absolute
+              origin-bottom
+              bg-button
+              md:opacity-100
+            "
+            x-show="isOpen"
+
+            {% comment %}
+              Animate outer slider up or down
+            {% endcomment %}
+            x-transition:enter="duration-[calc(var(--enter-animation-duration)*2)] delay-[calc(var(--enter-animation-duration)/2)]"
+            x-transition:enter-start="invisible translate-y-full opacity-0 md:opacity-100"
+            x-transition:enter-end="visible translate-y-0 opacity-100 md:opacity-100"
+            x-transition:leave="duration-[calc(var(--exit-animation-duration)*2)] delay-[calc(var(--exit-animation-duration)/4)]"
+            x-transition:leave-start="visible translate-y-0 opacity-100 md:opacity-100"
+            x-transition:leave-end="invisible translate-y-full opacity-0 md:opacity-100"
+          >
+            <div
+              class="transition transform"
+              x-show="isOpen"
+
+              {% comment %}
+                Stagger inner slider up/down animation so it animates _after_ outer slider
+              {% endcomment %}
+              x-transition:enter="duration-[calc(var(--enter-animation-duration)*2)] delay-[calc(var(--enter-animation-duration)/2)]"
+              x-transition:enter-start="translate-y-1/2 opacity-0"
+              x-transition:enter-end="translate-y-0 opacity-full"
+              x-transition:leave="duration-[calc(var(--exit-animation-duration))] delay-0"
+              x-transition:leave-start="translate-y-0 opacity-full"
+              x-transition:leave-end="translate-y-1/2 opacity-0"
+            >
+              {% render 'product-grid-item-quick-add-toolbar',
+                inline_variants: inline_variants,
+                inline_variant_buttons: inline_variant_buttons,
+                simple_selling_plan: simple_selling_plan
+              %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+{% endunless %}
+
+    {%- elsif settings.quickview_enable -%}
+        <a href="{{ product.url }}" >
+      <div class="product__grid__title__wrapper ">
+                              
+        <p id="product-{{ product.id }}-title" class="product__grid__title">
+          {{ product.title | strip_html | escape }}
+        </p>
+       
+        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
+          <div class="rating__wrapper__grid">
+            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
+          </div>
+        {%- endif -%}
+      </div>
+       </a>
+                <!----variants options ----->
+      {%  render 'product-variant-options'  %}
+      <div data-api-content>
+        <div class="drawer__top quickview__modal__top" data-quickview-head>
+
+      <div class="quickview__form__wrapper is-expanded" data-quickview-form-area data-product-form-wrapper>
+        
+      <div class="drawer__top__left">
+        {%- render 'product-price', product: product, block: block, section: section -%}
+        </div>
+        <div class="quickview__form">
+          {%- assign uniq_id = 'quickview-form-' | append: section.id | append: '-' | append: product.id -%}
+      
+          {% capture form_attr %}form="uniq_id"{% endcapture %}
+          {%- render 'sibling-color-as-line-prop' product: product, attributes: form_attr -%}
+      
+          <div class="product__form__outer product__align-left">
+            <button type="button" class="quickview__form__toggle btn standard__cta is-active hide" data-toggle-button>
+              <span>{{ 'products.general.hide_options' | t }}</span>
+              <span>{{ 'products.general.show_options' | t }}</span>
+            </button>
+      
+            <div class="quickview__form__wrapper is-expanded" data-quickview-form-area data-product-form-wrapper>
+          
+            <dynamic-card class="quick-card">
+              <div class="product-card" data-product-id="{{ product.id }}" data-variants="{{ product.variants | json }}">
+                <div class="form__selectors">
+                  <!-- Loop through each option (e.g., Size, Packs) -->
+                 {% for option in product.options_with_values %}
+  <div class="selector-wrapper">
+    <fieldset class="radio__fieldset">
+      <legend>{{ option.name }}</legend>
+
+      <div class="radio__inputs">
+        {% for value in option.values %}
+          
+          {% assign option_index = 'option' | append: forloop.parentloop.index %}
+          {% assign variant = product.variants | where: option_index, value | first %}
+
+          <input
+            type="radio"
+            name="{{ option.name }}-{{ product.id }}"
+            value="{{ value }}"
+            data-variant-id="{{ variant.id }}"
+            {% if forloop.first %}checked{% endif %}
+            class="variant-radio-input"
+          >
+
+          <label>{{ value }}</label>
+
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+{% endfor %}
+                </div>
+                <div class="free-shipping-text-product fffffff">
+               {% if product.metafields.custom.shipping_free_are_not != blank %}
+
+                {% comment %} {% render 'responsive-picture' 
+                forloop: forloop,
+                desktopImage: product.metafields.custom.shipping_free_are_not, 
+                mobileImage: product.metafields.custom.shipping_free_are_not,
+                img-class: 'tw-w-full tw-max-h-[60rem]',
+                alt: 'best pads for periods'
+              %} {% endcomment %}
+                <div class="free-shipping-text-product">
+  {% if product.metafields.custom.shipping_free_are_not != blank %}
+    {% render 'res-imgae',
+      desktopImage: product.metafields.custom.shipping_free_are_not,
+      mobileImage: product.metafields.custom.shipping_free_are_not,
+      desktopWidth: 600,
+      mobileWidth: 360,
+      img_class: 'tw-w-full tw-max-w-[570px]',
+      alt: 'best pads for periods'
+    %}
+  {% endif %}
+</div>
+
+
+              {% comment %} <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/ChatGPT_Image_Nov_21_2025_04_28_25_PM.png?v=1763722821"/> {% endcomment %}
+                
+                  {% comment %} <img src="{{ product.metafields.custom.shipping_free_are_not |  image_url }}"/> {% endcomment %}
+                {% endif %}
+                </div> 
+                {%  style %}
+                .template-collection .radio__legend span{
+                   font-size: 9px;
+                }
+                {% endstyle %} 
+                <!-- Add to Cart Button and Price -->
+        <div class="variants-price-container">
+  {% if product.variants.size > 0 %}
+    {% assign price = product.variants.first.price  %}
+    {% assign compare_at_price = product.variants.first.compare_at_price | plus: 0 %}
+
+    <span class="variant-price-wrapper aaaaaa">
+      <span class="current-price">
+        ₹{{ price | divided_by: 100.0 }}
+      </span>
+
+      {% if compare_at_price > price and compare_at_price != 0 %}
+        <span class="compare-at-price">
+          ₹{{ compare_at_price | money_without_trailing_zeros }}
+        </span>
+
+      {% if product.variants.size > 0 %}
+  {% assign price = product.variants.first.price | plus: 0 %}
+  {% assign compare_at_price = product.variants.first.compare_at_price | plus: 0 %}
+  {% if compare_at_price > price %}
+    {% assign discount = compare_at_price | minus: price %}
+    {% assign discount_percentage = discount | times: 100 | divided_by: compare_at_price %}
+    <div class="offer-percentage">
+      {{ discount_percentage | round }}% OFF
+    </div>
+  {% endif %}
+{% endif %}
+
+      {% endif %}
+    </span>
+  {% endif %}
+
+  <button 
+    type="submit" 
+    add-to-cart 
+    class="add-to-cart-button-for-product-card" 
+    data-selected-value-data-value="{{ product.variants.first.id }}">
+    <span class="mobile-hide">Add to Cart</span>
+    <span class="desktop-hide">Add</span>
+  </button>
+
+</div>
+
+
+
+                
+                <!-- Popup Message -->
+                <!-- <div class="popup-message"><img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Thank_You-1.gif?v=1739599043" alt="thank you"/> </div> -->
+                
+              </div>
+            
+              <noscript type="application/json">{{ product.variants | json }}</noscript>
+            </dynamic-card>
+
+<script>
+  
+</script>
+
+{% style %}
+  .popup-message img{
+   height: 470px;
+   width: 100%;
+   z-index: 99999999999999;
+   /* background: transparent; */
+}
+ {% endstyle %} 
+
+            
+            {%- render 'product-variant-options' product: product, uniq_id: uniq_id -%}
+              
+              {% comment %} <button style="background-color: red; height: 100px; cursor:pointer" data-selected-variant-id="">Add to Cart</button> {% endcomment %}
+              {%- render 'product-buttons' product: product, uniq_id: uniq_id -%}
+            </div>
+
+      
+          </div>
+      
+        </div>
+      </div>
+      </div>
+      </div>
+  
+    {%- endif -%}
+  </div>
+  {% comment %} <div class="popup-message bbbbbb"> <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/1_oDqXedYUMyhWzN48pUjHyw.gif?v=1737970819"/> </div> {% endcomment %}
+
+
+</product-grid-item-variant>
+
+                  
+{% endunless %}

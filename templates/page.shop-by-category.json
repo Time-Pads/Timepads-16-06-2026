@@ -1,0 +1,332 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "kicker_size": 3,
+        "show_title": true,
+        "title_size": 8,
+        "show_content": true,
+        "content_size": 5,
+        "align_text": "text-left",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_columns_Jq6YRN": {
+      "type": "section-columns",
+      "blocks": {
+        "text_block_BrkG3k": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Thoughtful Design</strong></h3><p><strong><br/></strong>Our sanitary pads are crafted with precision and care to provide functionality that complements your lifestyle and Leak-Proof Protection. We understand the importance of details, and that's why every product is designed with you in mind. Whether it is leak guards, higher absorbency, ultra thin design, ultra wide back, extra long pads, we have carefully detailed in our product design.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_Wc8kNC": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Quality and Safety</strong></h3><h3></h3><p>At Time, we prioritize quality above all. Our sanitary pads undergo rigorous testing to ensure they meet the highest standards. You deserve nothing less than the best, and that's exactly what we deliver, Time Ultra-Thin Pads are made from materials that are gentle on your skin, ensuring Period Confidence, worry-free and comfortable experience.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_jWaq8x": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Comfort Redefined</strong></h3><h3></h3><p>Experience a new level of comfort with Time Sanitary Pads. Our products are designed to make you forget you're even wearing them, so you can focus on being the best version of yourself. We have no plasticky top sheets, we have hot pressed / air through non woven top sheets specially chosen with the finest natural materials so your skin attains the comfort it deserves.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_BrkG3k",
+        "text_block_Wc8kNC",
+        "text_block_jWaq8x"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Your haven for Comfort, Confidence, and Care!",
+        "bg": "palette--light bg--neutral",
+        "align_text": "text-center",
+        "scale_image": true,
+        "wh_ratio": 1,
+        "grid_large": 3,
+        "grid_medium": 3,
+        "grid_mobile": 1.2,
+        "progress_bar_mobile": false,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_richtext_xMxmjw": {
+      "type": "section-richtext",
+      "blocks": {
+        "kicker_cMFFkb": {
+          "type": "kicker",
+          "disabled": true,
+          "settings": {
+            "kicker": "Know Our Products:",
+            "enable_line": true,
+            "text_size": 8
+          }
+        },
+        "heading_MUgrfR": {
+          "type": "heading",
+          "settings": {
+            "heading": "Time Sanitary Pads – Key Features",
+            "text_size": 8
+          }
+        },
+        "text_HNKKC7": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Comes in a hygienic, untouched package</p><p>Hypoallergenic and gentle on skin</p><p>Double wings for extra stability</p><p>Made with US cotton top sheet for superior softness</p><p>Dermatologically tested for safety and comfort</p><p> </p>",
+            "text_size": 4,
+            "text_columns": 1
+          }
+        },
+        "button_BzFaVX": {
+          "type": "button",
+          "settings": {
+            "link_text_1": "Shop all",
+            "link_1": "shopify://collections/all",
+            "button_size_1": "btn--medium",
+            "button_style_1": "btn-text-thick-line",
+            "button_color_1": "btn--neutral",
+            "link_text_2": "",
+            "link_2": "",
+            "button_size_2": "btn--medium",
+            "button_style_2": "btn-text-thick-line",
+            "button_color_2": "btn--neutral",
+            "link_text_3": "",
+            "link_3": "",
+            "button_size_3": "btn--long",
+            "button_style_3": "btn-text-thick-line",
+            "button_color_3": "btn--white"
+          }
+        }
+      },
+      "block_order": [
+        "kicker_cMFFkb",
+        "heading_MUgrfR",
+        "text_HNKKC7",
+        "button_BzFaVX"
+      ],
+      "disabled": true,
+      "settings": {
+        "align_text": "text-center",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "content_width": 2000,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "why_time_image_and_text_W6zfAM": {
+      "type": "why-time-image-and-text",
+      "blocks": {
+        "logo_image_pKFnfJ": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/UF-330-15-02.jpg",
+            "heading_text": "Time Ultra Feather",
+            "paragraph_text": "<p>Experience an elevated level of comfort and indulgence with Time's Ultra Feather sanitary pads. Each pad is delicately crafted to offer you unmatched softness, delicate care, and long-lasting protection. The feather-like softness combined with advanced absorption technology ensures a luxurious and comfortable experience, keeping you fresh and dry throughout the day. With Ultra Feather, transcend into a world of utmost comfort and embrace the feeling of lightness.<br/><br/></p>",
+            "direction": "left"
+          }
+        }
+      },
+      "block_order": [
+        "logo_image_pKFnfJ"
+      ],
+      "disabled": true,
+      "name": "Why time image with text",
+      "settings": {
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20
+      }
+    },
+    "shop_by_collections_AmCPAN": {
+      "type": "shop-by-collections",
+      "blocks": {
+        "logo_image_8ATdLm": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Cuddle_7.png",
+            "heading_text": "Time Ultra Cuddle Night Pads",
+            "short_text": "Available in two variants – (XXL) 330 mm Packs of 7 and 15",
+            "urls": "shopify://collections/period-pads-cotton",
+            "paragraph_text": "<ul><li>Longer than the XL pad (330mm) for complete coverage</li><li>Strong no-slip adhesive keeps it securely in place</li><li>Wider back for full overnight protection</li><li>High absorption for all-night comfort</li><li>Enjoy carefree, uninterrupted sleep</li></ul>",
+            "text_alignment": "right",
+            "direction": "right"
+          }
+        },
+        "logo_image_q6brQg": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Feather_7.png",
+            "heading_text": "Time Ultra Feather Day Sanitary Pads",
+            "short_text": "Available in three variants – (XL) 290 mm Packs of 7 and 15 and 330 mm Pack of 15",
+            "urls": "shopify://collections/cotton-sanitary-pads",
+            "paragraph_text": "<ul><li>Ultra-thin design with full absorption</li><li>Double wings for a snug, secure fit</li><li>Ideal for regular flow days</li><li>Each sanitary pad is made to deliver unmatched softness, delicate care, and long-lasting protection</li></ul>",
+            "text_alignment": "left",
+            "direction": "left"
+          }
+        },
+        "logo_image_p8LHtN": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Velvet_2.png",
+            "heading_text": "Time Ultra Velvet Sanitary Pads",
+            "short_text": "Available in four variants – (XL) 290 mm Pack of 15, (XXL) 330 mm Packs of 7, 15 and 30",
+            "urls": "shopify://collections/comfortable-pads-for-periods",
+            "paragraph_text": "<p></p><ul><li>Premium comfort and softness beyond expectations</li><li>Gentle on sensitive skin with a silky touch</li><li>Designed to provide confidence and comfort even on the busiest days</li></ul>",
+            "text_alignment": "right",
+            "direction": "right"
+          }
+        },
+        "logo_image_WK8pAY": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Combo_2_1.jpg",
+            "heading_text": "Time Uniline Sanitary Pads",
+            "short_text": "Available in two sizes (L) 240mm and (XL) 280mm in packs of 6 pads each.",
+            "urls": "shopify://collections/soft-cotton-pads-for-periods",
+            "paragraph_text": "<p></p><ul><li>Designed for reliable, leak-proof protection</li><li>Made from soft, breathable material for maximum comfort</li><li>A high-quality, affordable solution for your everyday hygiene needs</li></ul>",
+            "text_alignment": "left",
+            "direction": "left"
+          }
+        }
+      },
+      "block_order": [
+        "logo_image_8ATdLm",
+        "logo_image_q6brQg",
+        "logo_image_p8LHtN",
+        "logo_image_WK8pAY"
+      ],
+      "name": "shop by collections",
+      "settings": {
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20
+      }
+    },
+    "1762333399416dbc7a": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_2e3452b_qWcmWP": {
+          "type": "ai_gen_block_2e3452b",
+          "settings": {
+            "title": "Time Sanitary Pads – Key Features",
+            "subtitle": "",
+            "title_size": 36,
+            "subtitle_size": 16,
+            "title_spacing": 16,
+            "header_spacing": 48,
+            "text_alignment": "center",
+            "feature_1_enabled": true,
+            "feature_1_title": "Hygienic Package",
+            "feature_1_description": "Comes in a hygienic, untouched package",
+            "feature_2_enabled": true,
+            "feature_2_title": "Hypoallergenic",
+            "feature_2_description": "Hypoallergenic and gentle on skin",
+            "feature_3_enabled": true,
+            "feature_3_title": "Double Wings",
+            "feature_3_description": "Double wings for extra stability",
+            "feature_4_enabled": true,
+            "feature_4_title": "US Cotton Top Sheet",
+            "feature_4_description": "Made with US cotton top sheet for superior softness",
+            "feature_5_enabled": true,
+            "feature_5_title": "Dermatologically Tested",
+            "feature_5_description": "Dermatologically tested for safety and comfort",
+            "columns_desktop": 3,
+            "grid_gap": 30,
+            "container_width": 1200,
+            "feature_text_alignment": "center",
+            "card_padding": 32,
+            "card_border_radius": 12,
+            "card_border_width": 1,
+            "feature_title_size": 18,
+            "feature_description_size": 14,
+            "feature_title_spacing": 12,
+            "icon_size": 64,
+            "icon_spacing": 20,
+            "icon_border_radius": 50,
+            "hover_lift": 8,
+            "hover_shadow": 12,
+            "background_color": "#ffffff",
+            "title_color": "#000000",
+            "subtitle_color": "#616161",
+            "card_background": "#f8f0e7",
+            "card_border_color": "#e0e0e0",
+            "feature_title_color": "#000000",
+            "feature_description_color": "#616161",
+            "icon_background": "#ee3d43",
+            "icon_color": "#ffffff",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "section_padding_horizontal": 20
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_2e3452b_qWcmWP"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "section_columns_Jq6YRN",
+    "section_richtext_xMxmjw",
+    "why_time_image_and_text_W6zfAM",
+    "shop_by_collections_AmCPAN",
+    "1762333399416dbc7a"
+  ]
+}

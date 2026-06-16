@@ -1,0 +1,377 @@
+{% style %}
+/* ── Deal of the Day ── */
+.deal-of-day-section {
+  padding: 40px 0 60px;
+  background: linear-gradient(135deg,#fee 0%,#fee 100%);
+  overflow: hidden;
+}
+
+.deal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.deal-header h2.kicker-flourished {
+  text-align: center;
+  margin: 2rem auto 0;
+}
+
+.deal-products-wrapper {
+  position: relative;
+  padding: 0 60px;
+}
+
+.deal-products-container {
+  overflow: hidden;
+}
+
+.deal-products-slider {
+  display: flex;
+  transition: transform 0.5s ease;
+  gap: 20px;
+}
+
+.deal-product-item {
+  flex: 0 0 calc(25% - 15px);
+  min-width: 0;
+}
+
+.deal-products-container .sale-badge { width: 120px; }
+.deal-products-container product-grid-item.product-grid-item.group\/product-grid-item { border: none; }
+.deal-product-item .free-shipping-text-product { margin-top: 1rem; }
+
+.deal-of-day-section .product__grid__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Nav arrows */
+.deal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transition: background 0.3s ease, color 0.3s ease;
+  z-index: 10;
+}
+.deal-nav:hover { background: #2d3436; color: #fff; }
+.deal-nav-prev { left: 0; }
+.deal-nav-next { right: 0; }
+
+/* Pagination */
+.deal-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+.pagination-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(45,52,54,0.3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, width 0.3s ease;
+  padding: 0;
+}
+.pagination-dot.active {
+  background: #2d3436;
+  width: 30px;
+  border-radius: 6px;
+}
+.pagination-dot:hover { background: #2d3436; }
+
+/* Tablet */
+@media (max-width: 989px) {
+  .deal-product-item { flex: 0 0 calc(33.333% - 14px); }
+}
+
+/* Mobile */
+@media (max-width: 749px) {
+  .deal-of-day-section { padding: 0 0 40px; }
+
+  .deal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .deal-header h2.kicker-flourished {
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    text-transform: capitalize;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 100%;
+  }
+
+  .deal-products-slider {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    transform: none !important;
+  }
+
+  .deal-product-item { flex: none; min-width: auto; }
+  .deal-nav, .deal-pagination { display: none; }
+
+  .deal-products-wrapper { padding: 0 10px; }
+
+  .deal-of-day-section .free-shipping-text-product img {
+    width: 60%;
+    height: 30px;
+    object-fit: contain;
+  }
+}
+
+@media (min-width: 750px) {
+  .deal-header h2 { font-size: 32px !important; }
+}
+{% endstyle %}
+
+<div class="deal-of-day-section color-{{ section.settings.color_scheme }} gradient" data-section-id="{{ section.id }}">
+  <div class="page-width">
+
+    <div class="deal-header">
+      <h2 class="kicker-flourished">Limited-Time Deals for You</h2>
+    </div>
+
+    <div class="deal-products-wrapper">
+      <button class="deal-nav deal-nav-prev" aria-label="Previous">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="deal-products-container">
+        <div class="deal-products-slider">
+          {%- for block in section.blocks -%}
+            {%- assign product = block.settings.product -%}
+            {%- if product != blank -%}
+              <div class="deal-product-item" {{ block.shopify_attributes }}>
+                {%- render 'product-card-home-page',
+                  product: product,
+                  placeholder: false,
+                  columns_desktop: section.settings.columns_desktop,
+                  columns_mobile: section.settings.columns_mobile,
+                  show_discount_badge: true,
+                  show_limited_badge: section.settings.show_limited_badge,
+                  loading: forloop.index <= 4 ? 'eager' : 'lazy'
+                -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <button class="deal-nav deal-nav-next" aria-label="Next">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    {%- if section.settings.show_pagination -%}
+      <div class="deal-pagination" aria-hidden="true"></div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  class DealOfDay {
+    constructor(section) {
+      this.section      = section;
+      this.slider       = section.querySelector('.deal-products-slider');
+      this.prevBtn      = section.querySelector('.deal-nav-prev');
+      this.nextBtn      = section.querySelector('.deal-nav-next');
+      this.pagination   = section.querySelector('.deal-pagination');
+      this.currentIndex = 0;
+      this.colsDesktop  = {{ section.settings.columns_desktop }};
+      this._resizeTimer = null;
+      this._gap         = null; // cached gap value
+
+      if (!this.slider) return;
+      this._buildPagination();
+      this._bindNav();
+      this._bindResize();
+    }
+
+    /* ── helpers ── */
+    _isMobile() { return window.innerWidth < 768; }
+
+    _itemsToShow() { return this._isMobile() ? 1 : this.colsDesktop; }
+
+    _getGap() {
+      // Cache gap so we don't call getComputedStyle on every slide
+      if (this._gap === null) {
+        this._gap = parseInt(getComputedStyle(this.slider).gap) || 0;
+      }
+      return this._gap;
+    }
+
+    _totalSlides() {
+      return Math.ceil(this.slider.querySelectorAll('.deal-product-item').length / this._itemsToShow());
+    }
+
+    /* ── pagination ── */
+    _buildPagination() {
+      if (!this.pagination) return;
+      const total = this._totalSlides();
+      const frag  = document.createDocumentFragment();
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'pagination-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => this._goTo(i));
+        frag.appendChild(dot);
+      }
+      this.pagination.innerHTML = '';
+      this.pagination.appendChild(frag);
+    }
+
+    _updatePagination() {
+      if (!this.pagination) return;
+      this.pagination.querySelectorAll('.pagination-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === this.currentIndex);
+      });
+    }
+
+    /* ── slide ── */
+    _updatePosition() {
+      // On mobile the CSS grid handles layout; slider JS is disabled
+      if (this._isMobile()) return;
+      const firstItem = this.slider.querySelector('.deal-product-item');
+      if (!firstItem) return;
+      const moveX = firstItem.offsetWidth + this._getGap();
+      this.slider.style.transform = `translateX(-${this.currentIndex * moveX}px)`;
+    }
+
+    _goTo(index) {
+      this.currentIndex = index;
+      this._updatePosition();
+      this._updatePagination();
+    }
+
+    _slide(dir) {
+      const max = this._totalSlides() - 1;
+      if (dir === 'next') {
+        this.currentIndex = this.currentIndex >= max ? 0 : this.currentIndex + 1;
+      } else {
+        this.currentIndex = this.currentIndex <= 0 ? max : this.currentIndex - 1;
+      }
+      this._updatePosition();
+      this._updatePagination();
+    }
+
+    /* ── events ── */
+    _bindNav() {
+      this.prevBtn && this.prevBtn.addEventListener('click', () => this._slide('prev'));
+      this.nextBtn && this.nextBtn.addEventListener('click', () => this._slide('next'));
+    }
+
+    _bindResize() {
+      window.addEventListener('resize', () => {
+        clearTimeout(this._resizeTimer);
+        this._resizeTimer = setTimeout(() => {
+          this._gap = null; // invalidate gap cache on resize
+          this.currentIndex = 0;
+          this._buildPagination();
+          this._updatePosition();
+        }, 250);
+      }, { passive: true });
+    }
+  }
+
+  /* ── init on DOMContentLoaded ── */
+  function init() {
+    document.querySelectorAll('.deal-of-day-section').forEach(el => new DealOfDay(el));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Deal of the Day",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_limited_badge",
+      "label": "Show 'Limited Time Offer' badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "1",
+      "label": "Number of columns on mobile"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Deal of the Day",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

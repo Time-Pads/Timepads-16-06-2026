@@ -1,0 +1,503 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "text_size": 8,
+            "product_show_cutline": false,
+            "show_rating": true,
+            "show_rating_count": true,
+            "padding_bottom": 20
+          }
+        },
+        "judge_me_reviews_preview_badge_QNBwHm": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "text_qn3Tef": {
+          "type": "text",
+          "settings": {
+            "title": "<p>{{ product.metafields.custom.short_info_product.value }}</p>",
+            "padding_bottom": 10
+          }
+        },
+        "product_featuress_jLFxUg": {
+          "type": "Product-Featuress",
+          "settings": {
+            "heading1": "Herbal Care",
+            "heading2": "Soothing Effect",
+            "heading3": "Non-Greasy Formula",
+            "heading4": "Quick Absorption",
+            "heading5": "Gentle on Skin",
+            "heading6": "Fast Pain Relief"
+          }
+        },
+        "product_features_tbA4hx": {
+          "type": "Product-Features",
+          "disabled": true,
+          "settings": {}
+        },
+        "product_certificates_QBtkqW": {
+          "type": "product-certificates",
+          "settings": {
+            "heading": "Certificates We Have",
+            "image_1": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png",
+            "image_2": "shopify://shop_images/Gemini_Generated_Image_zfy5qvzfy5qvzfy5-removebg-preview.png",
+            "image_3": "shopify://shop_images/Clinically-Tested.png",
+            "image_4": "shopify://shop_images/Dermatologically-Tested.png"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_size": 5,
+            "padding_bottom": 40
+          }
+        },
+        "shipping_text_GRcYBH": {
+          "type": "Shipping-text",
+          "settings": {
+            "shipping_text": "",
+            "shipping_text_url": "shopify://policies/shipping-policy"
+          }
+        },
+        "variants": {
+          "type": "variant-selectors",
+          "settings": {
+            "option_size_swatch": 34,
+            "option_size_radio": 50,
+            "option_space": 30,
+            "padding_bottom": 30
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "disabled": true,
+          "settings": {
+            "show_quantity": true,
+            "padding_bottom": 20
+          }
+        },
+        "last_houre_sale_eiz4aA": {
+          "type": "last-houre-sale",
+          "settings": {}
+        },
+        "selling_fast_WELGfa": {
+          "type": "selling-fast",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "add-buttons",
+          "settings": {
+            "enable_payment_button": true,
+            "enable_gift_card_recipient": true,
+            "padding_bottom": 20
+          }
+        },
+        "description_GdkpfD": {
+          "type": "description",
+          "disabled": true,
+          "settings": {
+            "style": "accordions",
+            "enable_description": true,
+            "read_more": true,
+            "description_expanded": true,
+            "title_1": "Product",
+            "raw_content_1": "",
+            "title_2": "Details",
+            "raw_content_2": "<p>You can use product metafields to assign content to this tab that is unique to an individual product.  Use tabs to highlight unique features, sizing information, or other sales information.</p>",
+            "title_3": "",
+            "raw_content_3": "",
+            "title_4": "",
+            "raw_content_4": "",
+            "title_5": "",
+            "raw_content_5": "",
+            "padding_bottom": 20
+          }
+        },
+        "variant_descriptions_description_zFaPiT": {
+          "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
+          "disabled": true,
+          "settings": {}
+        },
+        "description_product_PrHYrn": {
+          "type": "description-product",
+          "settings": {}
+        },
+        "icon_FwCCTX": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
+            "padding_bottom": 8
+          }
+        },
+        "icon_d8teE9": {
+          "type": "icon",
+          "disabled": true,
+          "settings": {
+            "icon_name": "icon-payment",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Use Code <strong>\"Welcome5\"</strong> for discount 5% on your first order</p>",
+            "padding_bottom": 8
+          }
+        },
+        "icon_7TtzEd": {
+          "type": "icon",
+          "disabled": true,
+          "settings": {
+            "icon_name": "icon-shipment",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Free shipping </p>",
+            "padding_bottom": 8
+          }
+        },
+        "product_view_i8nFPx": {
+          "type": "Product-view",
+          "settings": {
+            "view_text": "Peoples are viewing this right now"
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "settings": {
+            "share_label": "Share",
+            "target_device": "",
+            "padding_bottom": 20
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "disabled": true,
+          "settings": {
+            "title": "Buy it with",
+            "upsell_type": "product_grouping",
+            "product": "",
+            "upsell_product_list": [
+              "time-overnight-sanitary-pads-for-women",
+              "premium-sanitary-pads-with-hight-absorbency",
+              "extra-large-sanitary-pads",
+              "time-ultra-feather-medium-flow-day-sanitary-pads-7-pads",
+              "time-ultra-thin-quality-sanitary-pads",
+              "heavy-flow-sanitary-pads",
+              "time-rash-free-sanitary-pads",
+              "travel-friendly-sanitary-pads",
+              "best-pads-for-women",
+              "time-us-cotton-sanitary-pads",
+              "uniline-sanitary-pads",
+              "us-cotton-comfortable-sanitary-pads-xl",
+              "cotton-sanitary-pads"
+            ],
+            "upsell_list_limit": 3,
+            "padding_bottom": 20
+          }
+        },
+        "complimentary_3bNLrn": {
+          "type": "complimentary",
+          "settings": {
+            "title": "Bought together",
+            "complimentary_list_limit": 3,
+            "padding_bottom": 20
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "judge_me_reviews_preview_badge_QNBwHm",
+        "text_qn3Tef",
+        "product_featuress_jLFxUg",
+        "product_features_tbA4hx",
+        "product_certificates_QBtkqW",
+        "price",
+        "shipping_text_GRcYBH",
+        "variants",
+        "quantity",
+        "last_houre_sale_eiz4aA",
+        "selling_fast_WELGfa",
+        "buttons",
+        "description_GdkpfD",
+        "variant_descriptions_description_zFaPiT",
+        "description_product_PrHYrn",
+        "icon_FwCCTX",
+        "icon_d8teE9",
+        "icon_7TtzEd",
+        "product_view_i8nFPx",
+        "sharing",
+        "upsell",
+        "complimentary_3bNLrn"
+      ],
+      "settings": {
+        "layout": "thumbnails-left@slides",
+        "image_width": "half",
+        "image_spacing": 0,
+        "align": "left",
+        "bg": "palette--light bg--neutral",
+        "mobile_layout": "thumbs",
+        "enable_video_looping": true,
+        "zoom_enable": true,
+        "alt_text_enable": true,
+        "product_breadcrumbs_enable": true,
+        "product_breadcrumbs_list": [
+          "regular-sanitary-pads"
+        ],
+        "width": "wrapper",
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "gif_images_gb6mrC": {
+      "type": "gif-images",
+      "blocks": {
+        "collection_images_3n7fF4": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Ayurvedic.png",
+            "alt_text": "Ayurvedic"
+          }
+        },
+        "collection_images_dpVGPm": {
+          "type": "Collection-Images",
+          "disabled": true,
+          "settings": {
+            "collection_image": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png",
+            "alt_text": ""
+          }
+        },
+        "collection_images_Akewr6": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Skin-Friendly.png",
+            "alt_text": "Skin Friendly"
+          }
+        },
+        "collection_images_EiH9zQ": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Instant-Relief.png",
+            "alt_text": "Instant Relief"
+          }
+        },
+        "collection_images_EqjAwj": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Mood-Enhancer.png",
+            "alt_text": "Mood Enhancer"
+          }
+        }
+      },
+      "block_order": [
+        "collection_images_3n7fF4",
+        "collection_images_dpVGPm",
+        "collection_images_Akewr6",
+        "collection_images_EiH9zQ",
+        "collection_images_EqjAwj"
+      ],
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 20,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 20,
+        "heading_text": "",
+        "font_size": 12,
+        "font_weight": 400,
+        "text_color": ""
+      }
+    },
+    "counting_number_arqh6C": {
+      "type": "counting-number",
+      "settings": {
+        "heading": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mpadding_top": 100,
+        "mpadding_bottom": 100
+      }
+    },
+    "1734695772f9935df8": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_MD8iFT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_MD8iFT"
+      ],
+      "settings": {
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "product_a_pluse_content_kKtNqB": {
+      "type": "product-A-pluse-content",
+      "settings": {}
+    },
+    "faq_menstrual_cup_R4nb3A": {
+      "type": "faq-menstrual-cup",
+      "blocks": {
+        "faq_xNFBGU": {
+          "type": "faq",
+          "settings": {
+            "question": "How quickly does TIME Period Pain Relief Cream work?",
+            "answer": "Most users feel soothing relief within 10–15 minutes after applying. TIME Period Pain Relief Cream Results may vary depending on pain intensity."
+          }
+        },
+        "faq_6adYYG": {
+          "type": "faq",
+          "settings": {
+            "question": "Is TIME Period Pain Relief Cream safe for daily use?",
+            "answer": "Yes 👍  TIME Period Pain Relief Cream is made with natural ingredients like Satva Pudina, Eucalyptus Oil, and Coconut Milk, making it safe for regular use during periods."
+          }
+        },
+        "faq_TBjH4z": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I use TIME Period Pain Relief Cream for best results?",
+            "answer": "Apply a small amount of  TIME Period Pain Relief Cream on the lower abdomen or back, gently massage in circular motion, and let it absorb. Use 2–3 times a day as needed."
+          }
+        },
+        "faq_LKkbUr": {
+          "type": "faq",
+          "settings": {
+            "question": "Does TIME Period Pain Relief Cream cause stains or stickiness?",
+            "answer": "No 😊  TIME Period Pain Relief Cream is non-sticky and non-staining, so you can use it anytime even before going out."
+          }
+        },
+        "faq_8Cg7dN": {
+          "type": "faq",
+          "settings": {
+            "question": "Is TIME Period Pain Relief Cream suitable for sensitive skin?",
+            "answer": "Yes,  TIME Period Pain Relief Cream is skin-friendly and gentle, but we recommend a patch test before first use if you have very sensitive skin."
+          }
+        },
+        "faq_6THNmQ": {
+          "type": "faq",
+          "settings": {
+            "question": "Can TIME Period Pain Relief Cream be used for back pain or cramps other than periods?",
+            "answer": "Yes, TIME Period Pain Relief Cream can also help with mild muscle cramps and back pain too."
+          }
+        }
+      },
+      "block_order": [
+        "faq_xNFBGU",
+        "faq_6adYYG",
+        "faq_TBjH4z",
+        "faq_LKkbUr",
+        "faq_8Cg7dN",
+        "faq_6THNmQ"
+      ],
+      "name": "TIME FAQ Section",
+      "settings": {
+        "heading": "Frequently Asked Questions"
+      }
+    },
+    "related": {
+      "type": "related",
+      "disabled": true,
+      "settings": {
+        "heading": "You might also like",
+        "bg": "palette--light bg--neutral",
+        "grid_large": 4,
+        "grid_medium": 3,
+        "grid_small": 1.8,
+        "related_products_enable": true,
+        "limit": 6,
+        "product_recommendations_heading": "Related products",
+        "show_recently_viewed": true,
+        "product_recently_limit": 6,
+        "product_recently_minimum": 4,
+        "product_recently_heading": "Recently viewed",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_faq_brbRd3": {
+      "type": "section-faq",
+      "blocks": {
+        "text_adBgjq": {
+          "type": "text",
+          "settings": {
+            "title": "Why Time",
+            "content": "<p><strong>Instant Relief, Mood Enhancer, Skin Friendly, Ayurvedic<br/><br/>Indication:<br/></strong>Usefull in Period Pain and Cramps<strong><br/>Cramp Relief:<br/></strong>Delivers soothing,targeted comfort right to your abdomen and lower back.<strong><br/>Rapid Warmth:<br/></strong>Provides a gentle warming sensation to help relax cramping muscles quickly<strong><br/>Worry-Free Formula:<br/></strong>Non-Greasy and Non-Staining</p>"
+          }
+        },
+        "text_a6FKVF": {
+          "type": "text",
+          "settings": {
+            "title": "Additional Information",
+            "content": "{{ product.metafields.custom.product_information | metafield_tag }}"
+          }
+        },
+        "text_jGQCXx": {
+          "type": "text",
+          "settings": {
+            "title": "Caution",
+            "content": "<p>Store in a cool, dark & dry place. Keep out of reach of children</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_adBgjq",
+        "text_a6FKVF",
+        "text_jGQCXx"
+      ],
+      "name": "Accordion group",
+      "settings": {
+        "title": "",
+        "title_align": "text-left",
+        "title_size": 4,
+        "heading_size": 5,
+        "text_size": 5,
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_liquid_FJ3qmy": {
+      "type": "section-liquid",
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "gif_images_gb6mrC",
+    "counting_number_arqh6C",
+    "1734695772f9935df8",
+    "product_a_pluse_content_kKtNqB",
+    "faq_menstrual_cup_R4nb3A",
+    "related",
+    "section_faq_brbRd3",
+    "section_liquid_FJ3qmy"
+  ]
+}

@@ -1,0 +1,143 @@
+{% schema %}
+{
+  "name": "Wellbeing Promise",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Your Wellbeing, Our Promise"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Natural Ingredients"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Gentle on skin, powerful in effect"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Wellbeing Promise",
+      "category": "Custom Sections",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Natural Ingredients",
+            "subtitle": "Gentle on skin, powerful in effect"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Fast-Acting Relief",
+            "subtitle": "Feel better in minutes"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Designed for You",
+            "subtitle": "Made with comfort in mind"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="wellbeing-promise">
+  <div class="container">
+    <h2 class="section-heading">{{ section.settings.section_heading }}</h2>
+    <div class="benefits-grid">
+      {% for block in section.blocks %}
+        <div class="benefit-item">
+          {% if block.settings.icon != blank %}
+            <img src="{{ block.settings.icon | img_url: '100x' }}" alt="{{ block.settings.title }}">
+          {% endif %}
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.subtitle }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.wellbeing-promise {
+  /* background-color: #fee; */
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.wellbeing-promise .section-heading {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #1a1a1a;
+}
+
+
+.wellbeing-promise .benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+@media only screen and (min-width: 767px){
+ .wellbeing-promise .benefits-grid {
+  display: flex;
+    justify-content: center;
+    gap: 30px;
+    justify-items: center;
+}
+.benefit-item {
+    flex: 0 0 22%;
+}
+}
+
+
+.wellbeing-promise .benefit-item img {
+    display: inline-flex;
+  border-radius: 4%;
+  margin-bottom: 15px;
+}
+
+.wellbeing-promise .benefit-item h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.wellbeing-promise .benefit-item p {
+  font-size: 14px;
+  color: #666;
+}
+@media only screen and (max-width: 767px){
+  .wellbeing-promise .section-heading{
+    font-size: 20px;
+  }
+}
+</style>

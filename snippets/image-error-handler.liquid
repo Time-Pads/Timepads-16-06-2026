@@ -1,0 +1,59 @@
+{% comment %}
+  Error handling for failed image loads with JavaScript-based fallback
+  
+  This snippet adds a simple data attribute that JavaScript can use to handle failed image loads
+  Include this in your theme.js or custom.js:
+  
+  document.addEventListener('error', function(e) {
+    if (e.target.tagName === 'IMG' && e.target.hasAttribute('data-img-error')) {
+      const img = e.target;
+      const fallbackSrc = img.getAttribute('data-img-error');
+      if (fallbackSrc && img.src !== fallbackSrc) {
+        console.warn('Image failed to load, using fallback:', fallbackSrc);
+        img.src = fallbackSrc;
+        img.classList.add('image-error-fallback');
+      } else {
+        img.classList.add('image-error-failed');
+        img.style.opacity = '0.5';
+        img.setAttribute('alt', 'Image failed to load');
+      }
+    }
+  }, true);
+{% endcomment %}
+
+{%- comment -%}
+Usage in snippets:
+  
+  <img
+    src="{{ image | image_url: width: 800 }}"
+    alt="{{ alt }}"
+    data-img-error="{{ image | image_url: width: 200 }}"
+    onerror="this.style.opacity='0.5'; this.classList.add('image-error-failed');"
+  >
+
+This provides:
+1. data-img-error attribute with a smaller fallback image (200px)
+2. Inline onerror handler as immediate feedback
+3. CSS classes for styling failed images
+{%- endcomment -%}
+
+/* CSS for error states - add to your stylesheet */
+.image-error-fallback {
+  opacity: 0.7;
+  border: 1px solid #ddd;
+}
+
+.image-error-failed {
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.image-error-failed::after {
+  content: "⚠ Image not available";
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+}

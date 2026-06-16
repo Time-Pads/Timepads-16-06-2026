@@ -1,0 +1,33 @@
+.pop_wrapper_content_items h3 {
+    padding: 30px;
+    padding-bottom: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .popup_conatiner {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3%;
+    margin: auto;
+    justify-content: center;
+    row-gap: 4rem;
+  }
+  .pop_wrapper_content_items iframe {
+    height: 250px;
+  }
+  .popup_wrapper {
+    width: 40%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+  iframe {
+    width: 100%;
+  }
+  @media only screen and (max-width:749px) {
+    .popup_wrapper {
+      width: 100%;
+    }
+    .popup_conatiner {
+      width: 100%;
+    }
+  }

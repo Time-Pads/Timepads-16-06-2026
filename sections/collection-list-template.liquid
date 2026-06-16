@@ -1,0 +1,162 @@
+
+{% schema %} 
+    {
+      "name": "Reviews section",
+      "tag": "section",
+      "class": "reviews sections",
+      "settings": [
+        {
+          "type": "text",
+          "id": "section_heading",
+          "label": "Section heading",
+          "default": "Shop The Collection"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "default":12,
+          "unit": "px",
+          "label":"Font Size"
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "default":12,
+          "unit": "px",
+          "label":"Font Size Mobile"
+        },
+        {
+          "type": "header",
+          "content": "Padding"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Bottom",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mpadding_top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Padding Top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mpadding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Padding Bottom",
+          "default": 0
+        },
+        {
+            "type": "image_picker",
+            "id": "testimonial_reviews",
+            "label":"Reviews"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "images",
+          "name": "images",
+          "limit": 10,
+          "settings": [
+            {
+              "type": "image_picker",
+              "label": "Person image",
+              "id": "image",
+              "info": "Recommended 690 x 880px"
+            },
+            {
+              "type": "text",
+              "id": "name_person",
+              "label": "Name of the Person",
+              "default": "Ritu Chopra"
+            },
+            {
+              "type": "text",
+              "id": "person_location",
+              "label": "Person location",
+              "default": "Bangalore"
+            },
+            {
+              "type": "text",
+              "label": "Person Content Heading",
+              "id": "person_content_heading",
+              "default": "Time has me for life"
+            },
+            {
+              "type": "richtext",
+              "label": "Person Content subheading",
+              "id": "person_content_subheading",
+              "default": "<p>it's a revolution in the pads industry Best product I have used so far</p>"
+            },
+            {
+      "type": "select",
+      "id": "reviews_select",
+      "label": "Reviews",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ],
+      "default": "5"
+    },
+            {
+              "type": "url",
+              "id": "link",
+              "label": "Link"
+            }
+          ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Collection-list"
+        }
+      ]
+    }
+    {% endschema %}

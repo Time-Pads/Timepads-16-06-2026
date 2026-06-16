@@ -1,0 +1,187 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "kicker_size": 3,
+        "show_title": true,
+        "title_size": 8,
+        "show_content": true,
+        "content_size": 5,
+        "align_text": "text-left",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_columns_Jq6YRN": {
+      "type": "section-columns",
+      "blocks": {
+        "text_block_BrkG3k": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Thoughtful Design</strong></h3><p><strong><br/></strong>Our sanitary pads are crafted with precision and care to provide functionality that complements your lifestyle and Leak-Proof Protection. We understand the importance of details, and that's why every product is designed with you in mind. Whether it is leak guards, higher absorbency, ultra thin design, ultra wide back, extra long pads, we have carefully detailed in our product design.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_Wc8kNC": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Quality and Safety</strong></h3><h3></h3><p>At Time, we prioritize quality above all. Our sanitary pads undergo rigorous testing to ensure they meet the highest standards. You deserve nothing less than the best, and that's exactly what we deliver, Time Ultra-Thin Pads are made from materials that are gentle on your skin, ensuring Period Confidence, worry-free and comfortable experience.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_jWaq8x": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Comfort Redefined</strong></h3><h3></h3><p>Experience a new level of comfort with Time Sanitary Pads. Our products are designed to make you forget you're even wearing them, so you can focus on being the best version of yourself. We have no plasticky top sheets, we have hot pressed / air through non woven top sheets specially chosen with the finest natural materials so your skin attains the comfort it deserves.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_BrkG3k",
+        "text_block_Wc8kNC",
+        "text_block_jWaq8x"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Your haven for Comfort, Confidence, and Care!",
+        "bg": "palette--light bg--neutral",
+        "align_text": "text-center",
+        "scale_image": true,
+        "wh_ratio": 1,
+        "grid_large": 3,
+        "grid_medium": 3,
+        "grid_mobile": 1.2,
+        "progress_bar_mobile": false,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_richtext_xMxmjw": {
+      "type": "section-richtext",
+      "blocks": {
+        "kicker_cMFFkb": {
+          "type": "kicker",
+          "settings": {
+            "kicker": "Know Our Products:",
+            "enable_line": true,
+            "text_size": 8
+          }
+        },
+        "heading_MUgrfR": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "",
+            "text_size": 8
+          }
+        },
+        "text_HNKKC7": {
+          "type": "text",
+          "settings": {
+            "text": "<ol><li><strong>Unleash the power of comfort with our ultra-thin pads that offer maximum protection without the bulk. Move freely and confidently, no matter the activity for Affordable Menstrual Products.<br/></strong></li><li><strong>Embrace the night with confidence. Our overnight pads are designed to provide superior protection so you can rest peacefully and wake up refreshed.<br/></strong></li><li><strong>For light days or everyday freshness, our period care products are discreet, comfortable and Soft Touch Pads, that keeping you feel confident throughout the day.</strong></li></ol><p></p><h4><strong>Discover Your Comfort Zone with Time's Exclusive Range:</strong></h4><h4></h4><h3>✨ <strong>1. Uniline: Your Initial Point of Comfort | Luxury made affordable</strong></h3><h3></h3><ul><li><strong>- Reliable and leak-proof protection</strong></li><li><strong>- Soft, breathable material for everyday use</strong></li><li><strong>- Affordable high-quality solution</strong></li></ul><p></p><p>Introducing Uniline by Time, where comfort meets protection. Crafted with precision, Uniline sanitary pads ensure reliable and leak-proof protection throughout your day. The soft and breathable material offers maximum comfort, making it perfect for everyday use. Uniline provides a high-quality solution at an affordable price, empowering you to feel confident and secure with every step. By far we have the best straight pads offering the Best sanitary products in the market.</p><p><strong>Variants:</strong>Available in two sizes -<br/><strong>(L) 240mm and (XL) 280mm in packs of 6 pads each.</strong></p><p></p><h3>✨<strong> 2.Ultra Feather: Indulge in Luxury and Comfort | Premium Teen Friendly</strong></h3><h3></h3><ul><li><strong>- Unmatched softness and delicate care</strong></li><li><strong>- Advanced absorption technology for a luxurious experience</strong></li></ul><p></p><p>Elevate your comfort with Time's Ultra Feather sanitary pads. Delicately crafted for unmatched softness, delicate care, and long-lasting protection. The feather-like softness, combined with advanced absorption technology, ensures a luxurious and comfortable experience, keeping you fresh and dry throughout the day. Women's sanitary products like Ultra Feather, transcend into a world of utmost comfort and embrace the feeling of lightness. Choose Ultra Feather and you will not go back to anything else you have tried till date.</p><p>Variants: Available in three variants -<br/><strong>(XL) 280mm pads of 7 and 15, and 330mm pads of 15.</strong></p><p></p><h3><strong>✨ 3. Ultra Velvet: Elegance Redefined | All Day Comfort</strong></h3><h3></h3><ul><li><strong>- Premium quality and comfort beyond expectations</strong></li><li><strong>- Velvet-like surface for gentle touch</strong></li><li><strong>- Superior absorption, secure fit</strong></li></ul><p></p><p>Experience the epitome of elegance and refinement with Time's Ultra Velvet sanitary pads. Offering a premium level of quality and comfort beyond expectations, the unique velvet-like surface creates a gentle touch, taking care of your sensitive skin with tenderness and grace. With superior Best absorbency pad and a secure fit, Ultra Velvet ensures utmost confidence and comfort during even the busiest days, Best pad that stays in place. Elevate your feminine care routine with the indulgence you deserve.<br/><br/><strong>Variants:</strong>Available in four variants<br/><strong>(XL) 280mm pads of 15, (XXL) 330mm pads of 7, 15, and 30.</strong></p><p></p><h3>✨ <strong>4. Ultra Cuddle: Embrace Ultimate Comfort | Embrace Ultimate Sleep</strong></h3><h3></h3><ul><li><strong>- Designed for the highest level of comfort- Ultra</strong></li><li><strong>-soft material for a comforting hug</strong></li><li><strong>- Maximum absorption, leakage protection</strong></li></ul><p>Unwind in the ultimate embrace of comfort and protection with Time's Ultra Cuddle sanitary pads. Specifically designed for those seeking the highest level of comfort, these pads redefine your period experience. The ultra-soft material feels like a comforting hug, while advanced technology guarantees maximum absorption and leakage protection. Best overnight pad Ultra Cuddle offers an unparalleled level of comfort, making it ideal for restful nights and moments of relaxation. Embrace comfort like never before with Ultra Cuddle.</p><p><strong>Variants:</strong> Available in two Variants<br/><strong>(XXL) 330mm pads of 7 and 15.</strong></p><p><strong>🛒 Shop Now:</strong></p><p>Experience the Time difference – shop our exclusive range of feminine hygiene products now and redefine your period experience.</p><p>Remember, at <strong>Timepads.in</strong>, we're not just selling products; we're offering you a lifestyle – one that's comfortable, confident, and caring. </p><ul><li><strong>Be Unstoppable With TIME</strong></li><li><strong>Cuddle In Your Dreams With TIME</strong></li><li><strong>Make TIME for Things That Matter</strong></li><li><strong>Protection and Empowerment in Every Move</strong></li><li><strong>Embrace the best version of you with Time!</strong></li></ul>",
+            "text_size": 4,
+            "text_columns": 1
+          }
+        },
+        "button_BzFaVX": {
+          "type": "button",
+          "settings": {
+            "link_text_1": "Shop all",
+            "link_1": "shopify://collections/all",
+            "button_size_1": "btn--medium",
+            "button_style_1": "btn-text-thick-line",
+            "button_color_1": "btn--neutral",
+            "link_text_2": "",
+            "link_2": "",
+            "button_size_2": "btn--medium",
+            "button_style_2": "btn-text-thick-line",
+            "button_color_2": "btn--neutral",
+            "link_text_3": "",
+            "link_3": "",
+            "button_size_3": "btn--long",
+            "button_style_3": "btn-text-thick-line",
+            "button_color_3": "btn--white"
+          }
+        }
+      },
+      "block_order": [
+        "kicker_cMFFkb",
+        "heading_MUgrfR",
+        "text_HNKKC7",
+        "button_BzFaVX"
+      ],
+      "disabled": true,
+      "settings": {
+        "align_text": "text-center",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "content_width": 2000,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "coming_soon_pain_relief_cream_7bePdK": {
+      "type": "coming-soon-pain-relief-cream",
+      "name": "Time Pain Relief Cream",
+      "settings": {
+        "product_image": "shopify://shop_images/PainBalm.png",
+        "product_icon": "shopify://shop_images/PainBalm.png",
+        "tulasi_icon": "shopify://shop_images/583-5839184_tulsi-leaves-png-download-tulasi-leaves-clipart.png",
+        "coconut_icon": "shopify://shop_images/images-removebg-preview.png",
+        "neem_icon": "shopify://shop_images/images_1.jpg",
+        "product_handle": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_columns_Jq6YRN",
+    "section_richtext_xMxmjw",
+    "coming_soon_pain_relief_cream_7bePdK"
+  ]
+}

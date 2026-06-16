@@ -1,0 +1,42 @@
+{% comment %}
+  Enhanced image preload snippet for critical images (logo, hero images, above-the-fold content)
+  
+  This snippet generates preload hints for images that are critical for LCP (Largest Contentful Paint)
+  
+  Usage in theme.liquid <head>:
+  {% render 'image-preload-critical', image: section.settings.hero_image, sizes: "100vw", formats: "avif,webp" %}
+  
+  Parameters:
+    image {object} - The image object to preload
+    sizes {string} - Sizes attribute
+    formats {string} - Comma-separated formats to preload (avif,webp,jpg) - default: all
+    width {number} - Specific width for preload (optional)
+{%- endcomment -%}
+
+{%- liquid
+  assign image_width = image.width | default: image.preview_image.width
+  assign formats = formats | default: "avif,webp,jpg" | split: ","
+  assign sizes = sizes | default: "100vw"
+  assign preload_width = width | default: 1200
+  assign preload_width = preload_width | at_most: image_width
+  assign has_avif = formats | join: "," | downcase | contains: "avif"
+  assign has_webp = formats | join: "," | downcase | contains: "webp"
+  assign has_jpg = formats | join: "," | downcase | contains: "jpg"
+-%}
+
+{%- if image != blank and image_width != blank -%}
+  {%- comment -%} Preload AVIF format (highest priority for modern browsers) {%- endcomment -%}
+  {%- if has_avif -%}
+    <link rel="preload" as="image" href="{{ image | image_url: width: preload_width, format: 'avif' }}" imagesrcset="{{ image | image_url: width: preload_width, format: 'avif' }}" type="image/avif" />
+  {%- endif -%}
+  
+  {%- comment -%} Preload WebP format (good browser support) {%- endcomment -%}
+  {%- if has_webp -%}
+    <link rel="preload" as="image" href="{{ image | image_url: width: preload_width, format: 'webp' }}" imagesrcset="{{ image | image_url: width: preload_width, format: 'webp' }}" type="image/webp" />
+  {%- endif -%}
+  
+  {%- comment -%} Preload original format as ultimate fallback {%- endcomment -%}
+  {%- if has_jpg -%}
+    <link rel="preload" as="image" href="{{ image | image_url: width: preload_width }}" imagesrcset="{{ image | image_url: width: preload_width }}" />
+  {%- endif -%}
+{%- endif -%}

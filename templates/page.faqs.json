@@ -1,0 +1,286 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "kicker_size": 3,
+        "show_title": true,
+        "title_size": 8,
+        "show_content": true,
+        "content_size": 5,
+        "align_text": "text-left",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_faq_cBxAYE": {
+      "type": "section-faq",
+      "blocks": {
+        "text_wqNjED": {
+          "type": "text",
+          "settings": {
+            "title": "What makes Time Sanitary Pads different from other brands?",
+            "content": "<p>Time Sanitary Pads are made by using advanced Japanese technology and hot-pressed manufacturing processes, ensuring superior absorption and leak protection. They are known for being among the <strong>top 10 sanitary pads brands in India</strong>, offering quality and comfort at an affordable price.</p>"
+          }
+        },
+        "text_dniUdQ": {
+          "type": "text",
+          "settings": {
+            "title": "Are Time Sanitary Pads suitable for heavy flow?",
+            "content": "<p>Yes, Time Sanitary Pads are ideal for heavy flow days. Designed with enhanced absorption technology, they are considered some of the <strong>best sanitary pads for heavy bleeding</strong>. Their leak-proof barriers provide added confidence during heavy flow days.</p>"
+          }
+        },
+        "text_767JzY": {
+          "type": "text",
+          "settings": {
+            "title": "How long can I wear a Time Sanitary Pad?",
+            "content": "<p>Time Sanitary Pads are designed to last up to 8 hours, depending on your flow. For heavy flow days, it is recommended to check and change the pad every 4–6 hours for optimal hygiene and comfort.</p>"
+          }
+        },
+        "text_eDjMax": {
+          "type": "text",
+          "settings": {
+            "title": "Are Time Sanitary Pads skin-friendly?",
+            "content": "<p>Yes, Time Sanitary Pads are made from soft, skin-friendly cotton materials, ensuring comfort even for sensitive skin. The <strong>untouched</strong> manufacturing process minimizes potential irritants, making them suitable for all users.</p>"
+          }
+        },
+        "text_HgWB8N": {
+          "type": "text",
+          "settings": {
+            "title": "Can I use Time Sanitary Pads overnight?",
+            "content": "<p>Absolutely! Time Sanitary Pads are perfect for overnight use. Their extra-long design and high-absorption layers ensure uninterrupted sleep, making them the <strong>best pads for heavy flow</strong> and night time use.</p>"
+          }
+        },
+        "text_h4UVdT": {
+          "type": "text",
+          "settings": {
+            "title": "Are Time Sanitary Pads hypoallergenic?",
+            "content": "<p>Yes, they are. Time Sanitary Pads are carefully made to be hypoallergenic, making them suitable for individuals with sensitive skin or allergies.</p>"
+          }
+        },
+        "text_pY6cgJ": {
+          "type": "text",
+          "settings": {
+            "title": "Where can I purchase Time Sanitary Pads?",
+            "content": "<p>Time Sanitary Pads are widely available in stores across India and online platforms, offering easy accessibility for everyone. They are known for being <strong>affordable and best sanitary pads in India</strong>, offering affordability without compromising quality.</p>"
+          }
+        },
+        "text_KmjCwQ": {
+          "type": "text",
+          "settings": {
+            "title": "Do Time Sanitary Pads come in different sizes?",
+            "content": "<p>Yes, Time Sanitary Pads are available in various sizes to cater to light, medium, and heavy flow days. They are also considered among the <strong>best pads for first periods</strong> due to their comfortable and secure fit.</p>"
+          }
+        },
+        "text_WmHHE6": {
+          "type": "text",
+          "settings": {
+            "title": "Do Time sanitary pads have leak protection?",
+            "content": "<p>Yes, Time Sanitary Pads feature superior leak protection technology, ensuring maximum coverage and preventing side leaks during heavy flow.</p>"
+          }
+        },
+        "text_LTW3PG": {
+          "type": "text",
+          "settings": {
+            "title": "Can I use Time sanitary pads if I have sensitive skin or allergies?",
+            "content": "<p>Yes, they are specially designed for users with sensitive skin, featuring a soft, breathable surface. The <strong>untouched</strong> process ensures the pads remain free from irritants.</p>"
+          }
+        },
+        "text_dJiHdB": {
+          "type": "text",
+          "settings": {
+            "title": "Are Time sanitary pads comfortable for exercise and physical activity?",
+            "content": "<p>Definitely! Time Sanitary Pads offer a secure fit and excellent flexibility, making them perfect for sports, exercise, and active days.</p>"
+          }
+        },
+        "text_KGeX3X": {
+          "type": "text",
+          "settings": {
+            "title": "Can I use Time sanitary pads for light flow days?",
+            "content": "<p>Yes, Time Sanitary Pads come in sizes and styles suited for light flow days, offering comfort and discretion.</p><p></p>"
+          }
+        },
+        "text_pUbPJb": {
+          "type": "text",
+          "settings": {
+            "title": "Which brand of pad is best in India?",
+            "content": "<p>There are several quality sanitary pad brands in India, but Time Pads stands out for its comfort, high absorbency, and skin-friendly materials. It is designed keeping in mind the needs of modern Indian women, offering reliable protection during periods without compromising on comfort.</p>"
+          }
+        },
+        "text_VqHq4Y": {
+          "type": "text",
+          "settings": {
+            "title": "Which pad brand is the best?",
+            "content": "<p>The best pad brand depends on your specific needs—whether it's for heavy flow, sensitive skin, or longer wear time. Time Pads offers a range of pads that combine ultra-absorbency with rash-free, breathable layers, making it a trusted choice for many women across India.</p>"
+          }
+        },
+        "text_MQxqNg": {
+          "type": "text",
+          "settings": {
+            "title": "How do I choose a good pad?",
+            "content": "<p>When choosing a good pad, consider the following:</p><p> Absorbency level (regular, heavy flow, overnight)<br/><br/>Length and coverage<br/><br/>Comfort and breathability<br/><br/>Material (rash-free, chemical-free)<br/><br/>Time Pads checks all these boxes, providing superior leak protection and all-day freshness with dermatologically tested materials.</p>"
+          }
+        },
+        "text_QUMzpk": {
+          "type": "text",
+          "settings": {
+            "title": "Can I wear a Sanitary pad for 12 hours?",
+            "content": "<p>While some ultra-absorbent pads, like Time Pads Overnight, are designed to last up to 12 hours, it’s generally recommended to change your pad every 4–6 hours for hygiene reasons. Changing regularly helps prevent infections and skin irritation.</p>"
+          }
+        },
+        "text_ENhMcz": {
+          "type": "text",
+          "settings": {
+            "title": "Which pad is best for leakage?",
+            "content": "<p>For maximum leak protection, choose a pad with wide wings, a longer back, and high absorbency. Time Pads XL and Overnight variants are specially designed with anti-leak channels and extra coverage to prevent leakage, even during heavy flow days or nighttime use.</p>"
+          }
+        },
+        "text_XHjqBV": {
+          "type": "text",
+          "settings": {
+            "title": "Which pad size is bigger?",
+            "content": "<p>Pad sizes vary from regular to XL and XXL. Overnight Timepads are among the largest, offering extended length and back coverage to prevent side and back leaks, ideal for heavy flow or nighttime use.</p>"
+          }
+        },
+        "text_bcmCyj": {
+          "type": "text",
+          "settings": {
+            "title": "How many pads are used per day?",
+            "content": "<p>On average, a person may use 3–6 pads per day during their period, depending on the flow. It’s important to change pads every 4–6 hours, regardless of flow, to maintain hygiene. Time Pads are highly absorbent, which can help reduce the number of changes needed on lighter days.</p>"
+          }
+        },
+        "text_wp367b": {
+          "type": "text",
+          "settings": {
+            "title": "Is cloth better than pads?",
+            "content": "<p>Both have their pros and cons. Cloth is reusable and eco-friendly, but requires thorough washing and drying. Disposable pads like Time Pads offer convenience, better hygiene, and reliable protection, especially during travel or busy routines. Time Pads also use skin-safe, breathable materials to reduce the risk of rashes or irritation.</p>"
+          }
+        },
+        "text_qiTTHh": {
+          "type": "text",
+          "settings": {
+            "title": "Which Sanitary Pad is Best for Heavy Flow?",
+            "content": "<p><strong>Timepads</strong> – designed to handle your heaviest days with ease. With a <strong>super-absorbent core</strong>, <strong>wide wings</strong>, and an <strong>ultra-soft top layer</strong>, Timepads offer <strong>leak-proof protection</strong> without the irritation.<br/>For <strong>comfort that lasts all day</strong>, even on heavy flow – <strong>Timepads has you covered.</strong></p>"
+          }
+        },
+        "text_NJKhh4": {
+          "type": "text",
+          "settings": {
+            "title": "Which are the best sanitary pads in India?",
+            "content": "<p>Timepads is one of the most trusted brands offering organic, ultra-thin, and rash-free sanitary pads for Indian women.</p>"
+          }
+        },
+        "text_Tayyf8": {
+          "type": "text",
+          "settings": {
+            "title": "Are organic sanitary pads really better?",
+            "content": "<p>Yes. Organic pads reduce the chances of rashes, irritation, and allergies. They’re perfect for sensitive skin. <br/><br/></p>"
+          }
+        },
+        "text_wGnDjR": {
+          "type": "text",
+          "settings": {
+            "title": "Can I buy sanitary pads online with discreet packaging?",
+            "content": "<p>Absolutely! All orders are delivered in discreet packaging to maintain your privacy.</p>"
+          }
+        },
+        "text_b98feD": {
+          "type": "text",
+          "settings": {
+            "title": "Are these pads safe for sensitive skin?",
+            "content": "<p>Yes, they are made with a hypoallergenic top layer specially designed for sensitive skin.</p>"
+          }
+        },
+        "text_AXT8kh": {
+          "type": "text",
+          "settings": {
+            "title": "Do they prevent rashes?",
+            "content": "<p>Yes, the ultra-soft cottony surface helps reduce friction and prevent rashes.</p>"
+          }
+        },
+        "text_EezkWy": {
+          "type": "text",
+          "settings": {
+            "title": "Are the pads hygienically packed?",
+            "content": "<p>Absolutely. They are sealed using a zero-touch, untouched hygienic process.</p>"
+          }
+        },
+        "text_wxX4Ef": {
+          "type": "text",
+          "settings": {
+            "title": "What flow level are these suitable for?",
+            "content": "<p>They are ideal for light to medium flow days.</p>"
+          }
+        },
+        "text_CYHttE": {
+          "type": "text",
+          "settings": {
+            "title": "Can teenagers use these pads?",
+            "content": "<p>Yes, they are perfect for teens and beginners because of their soft and gentle feel.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_wqNjED",
+        "text_dniUdQ",
+        "text_767JzY",
+        "text_eDjMax",
+        "text_HgWB8N",
+        "text_h4UVdT",
+        "text_pY6cgJ",
+        "text_KmjCwQ",
+        "text_WmHHE6",
+        "text_LTW3PG",
+        "text_dJiHdB",
+        "text_KGeX3X",
+        "text_pUbPJb",
+        "text_VqHq4Y",
+        "text_MQxqNg",
+        "text_QUMzpk",
+        "text_ENhMcz",
+        "text_XHjqBV",
+        "text_bcmCyj",
+        "text_wp367b",
+        "text_qiTTHh",
+        "text_NJKhh4",
+        "text_Tayyf8",
+        "text_wGnDjR",
+        "text_b98feD",
+        "text_AXT8kh",
+        "text_EezkWy",
+        "text_wxX4Ef",
+        "text_CYHttE"
+      ],
+      "settings": {
+        "title": "Get answers to all your queries",
+        "title_align": "text-center",
+        "title_size": 8,
+        "heading_size": 5,
+        "text_size": 5,
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_faq_cBxAYE"
+  ]
+}

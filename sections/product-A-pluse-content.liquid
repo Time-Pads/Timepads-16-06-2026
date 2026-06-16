@@ -1,0 +1,49 @@
+{% style %}
+.product-meta-images-{{ section.id }} {
+  width: 90%;
+  margin: auto;
+}
+.product-meta-img-item {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.product-meta-img-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+{% endstyle %}
+
+{%- assign icons = product.metafields.custom.product_a_content.value -%}
+
+{%- if icons != blank and icons.size > 0 -%}
+  <div class="metafields_ups_icons">
+    <div class="product-meta-images-{{ section.id }}">
+      {%- for icon in icons -%}
+        {%- assign icon_w   = 600 -%}
+        {%- assign icon_w2x = 1200 -%}
+        <div class="product-meta-img-item">
+          <img
+            src="{{ icon | image_url: width: icon_w }}"
+            srcset="{{ icon | image_url: width: icon_w }} 1x, {{ icon | image_url: width: icon_w2x }} 2x"
+            alt="{{ icon.alt | default: product.title | escape }}"
+            width="{{ icon_w }}"
+            height="{{ icon_w }}"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product meta image",
+  "settings": [],
+  "presets": [{ "name": "Product meta image" }]
+}
+{% endschema %}

@@ -1,0 +1,360 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "kicker_size": 3,
+        "show_title": true,
+        "title_size": 8,
+        "show_content": true,
+        "content_size": 5,
+        "align_text": "text-left",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_richtext_wnCFCr": {
+      "type": "section-richtext",
+      "blocks": {
+        "kicker_kpfJfz": {
+          "type": "kicker",
+          "disabled": true,
+          "settings": {
+            "kicker": "Introducing",
+            "enable_line": true,
+            "text_size": 4
+          }
+        },
+        "heading_7dphbM": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join And Earn Rewards",
+            "text_size": 8
+          }
+        },
+        "text_Ubexad": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Win Coins for every spend to redeem exclusive Rewards and Discounts</p>",
+            "text_size": 6,
+            "text_columns": 1
+          }
+        },
+        "button_p37dBA": {
+          "type": "button",
+          "settings": {
+            "link_text_1": "Sign Up and Get Free Coins",
+            "link_1": "https://timepads.in/account/register",
+            "button_size_1": "btn--small",
+            "button_style_1": "btn",
+            "button_color_1": "btn--secondary",
+            "link_text_2": "Sign in",
+            "link_2": "https://timepads.in/account/login",
+            "button_size_2": "btn--small",
+            "button_style_2": "btn",
+            "button_color_2": "btn--secondary",
+            "link_text_3": "",
+            "link_3": "",
+            "button_size_3": "btn--long",
+            "button_style_3": "btn-text-thick-line",
+            "button_color_3": "btn--white"
+          }
+        }
+      },
+      "block_order": [
+        "kicker_kpfJfz",
+        "heading_7dphbM",
+        "text_Ubexad",
+        "button_p37dBA"
+      ],
+      "settings": {
+        "align_text": "text-left",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "content_width": 2000,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_richtext_z4qAM4": {
+      "type": "section-richtext",
+      "blocks": {
+        "heading_fizD6V": {
+          "type": "heading",
+          "settings": {
+            "heading": "How it Works?",
+            "text_size": 8
+          }
+        },
+        "text_fcwy7i": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Win Coins for every spend to redeem exclusive Rewards and Discounts</p>",
+            "text_size": 4,
+            "text_columns": 1
+          }
+        },
+        "icon_gFJLxH": {
+          "type": "icon",
+          "settings": {
+            "kicker_size": 5,
+            "items_per_row": "3",
+            "icon_color": "#4b4b4b",
+            "icon_size": 50,
+            "icon_name_1": "icon-animal",
+            "icon_image_1": "shopify://shop_images/Screenshot_2024-12-18_150950.png",
+            "icon_kicker_1": "Sign UpCreate an account on our store",
+            "icon_name_2": "icon-animal-paw",
+            "icon_image_2": "shopify://shop_images/Screenshot_2024-12-18_151109.png",
+            "icon_kicker_2": "Earn CoinsEarn coins for shopping",
+            "icon_name_3": "icon-gluten-free",
+            "icon_image_3": "shopify://shop_images/Screenshot_2024-12-18_151127.png",
+            "icon_kicker_3": "RedeemRedeem coins for discounts",
+            "icon_name_4": "none",
+            "icon_kicker_4": "",
+            "icon_name_5": "none",
+            "icon_kicker_5": "",
+            "icon_name_6": "none",
+            "icon_kicker_6": ""
+          }
+        },
+        "button_9jW6jk": {
+          "type": "button",
+          "settings": {
+            "link_text_1": "Shop all",
+            "link_1": "shopify://collections/all",
+            "button_size_1": "btn--medium",
+            "button_style_1": "btn-text-thick-line",
+            "button_color_1": "btn--neutral",
+            "link_text_2": "",
+            "link_2": "",
+            "button_size_2": "btn--medium",
+            "button_style_2": "btn-text-thick-line",
+            "button_color_2": "btn--neutral",
+            "link_text_3": "",
+            "link_3": "",
+            "button_size_3": "btn--long",
+            "button_style_3": "btn-text-thick-line",
+            "button_color_3": "btn--white"
+          }
+        }
+      },
+      "block_order": [
+        "heading_fizD6V",
+        "text_fcwy7i",
+        "icon_gFJLxH",
+        "button_9jW6jk"
+      ],
+      "settings": {
+        "align_text": "text-center",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "content_width": 2000,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "way_to_earn_F46kcT": {
+      "type": "way-to-earn",
+      "blocks": {
+        "blocks_hpeDiR": {
+          "type": "blocks",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2024-12-18_153657.png",
+            "heading_content": "Review Reward",
+            "sub_heading_content": "Get 300 Coin for giving review. Rewarding will happen once a month."
+          }
+        },
+        "blocks_NbEtHL": {
+          "type": "blocks",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2024-12-18_153657.png",
+            "heading_content": "Birthday Reward",
+            "sub_heading_content": "Enjoy your birthday the Carmesi way! 500 coins from us to you on your special day. If birthday is same day as today, rewarding will happen next birthday."
+          }
+        },
+        "blocks_cNtHwW": {
+          "type": "blocks",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2024-12-18_153657.png",
+            "heading_content": "Order Placed",
+            "sub_heading_content": "Get 1 coins for every 1 spent. Rewarding will happen after the order delivery."
+          }
+        },
+        "blocks_tRXeHg": {
+          "type": "blocks",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2024-12-18_153657.png",
+            "heading_content": "Signup Reward",
+            "sub_heading_content": "Get 500 Coins"
+          }
+        }
+      },
+      "block_order": [
+        "blocks_hpeDiR",
+        "blocks_NbEtHL",
+        "blocks_cNtHwW",
+        "blocks_tRXeHg"
+      ],
+      "settings": {
+        "Bg_color": "#f2f2f2",
+        "heading": "Ways To Earn",
+        "Sub_heading": "Win Coins for every spend to redeem exclusive Rewards and Discounts",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mpadding_top": 100,
+        "mpadding_bottom": 100
+      }
+    },
+    "way_to_redeem_xdhfbP": {
+      "type": "way-to-redeem",
+      "blocks": {
+        "blocks_hrXM6P": {
+          "type": "blocks",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2024-12-18_153657.png",
+            "heading_content": "Every 100 Coin = ₹10 Off",
+            "sub_heading_content": "Minimum cart amount of ₹499",
+            "sub_heading_content_start": "Starts at 100 Coin"
+          }
+        }
+      },
+      "block_order": [
+        "blocks_hrXM6P"
+      ],
+      "settings": {
+        "Bg_color": "",
+        "heading": "Ways To Redeem",
+        "Sub_heading": "Spend your coins on any of the amazing rewards below",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mpadding_top": 100,
+        "mpadding_bottom": 100
+      }
+    },
+    "way_to_earn_JVHi8Y": {
+      "type": "way-to-earn",
+      "blocks": {
+        "blocks_KbKA4i": {
+          "type": "blocks",
+          "settings": {
+            "heading_content": "They get",
+            "sub_heading_content": "20% Off coupon"
+          }
+        },
+        "blocks_7Wgd7B": {
+          "type": "blocks",
+          "settings": {
+            "heading_content": "They get",
+            "sub_heading_content": "20% Off coupon"
+          }
+        }
+      },
+      "block_order": [
+        "blocks_KbKA4i",
+        "blocks_7Wgd7B"
+      ],
+      "settings": {
+        "Bg_color": "#f2f2f2",
+        "heading": "Referral Program",
+        "Sub_heading": "Give your friends a reward and claim your own when they make a purchase",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mpadding_top": 100,
+        "mpadding_bottom": 100
+      }
+    },
+    "section_faq_TVWgqy": {
+      "type": "section-faq",
+      "blocks": {
+        "text_khC9EX": {
+          "type": "text",
+          "settings": {
+            "title": "How can I signup for the rewards program?",
+            "content": "<p>Anyone can signup for the rewards program. All you have to do it create an account on this store if you haven't already and then login. You will automatically be enrolled to the rewards program!</p>"
+          }
+        },
+        "text_QharGq": {
+          "type": "text",
+          "settings": {
+            "title": "How can I earn Coin?",
+            "content": "<p>You can earn Coin by signing up, making purchases on the store, following social media, referring your friends and family and more. For a full list of different ways to earn, click </p>"
+          }
+        },
+        "text_g4i6Gh": {
+          "type": "text",
+          "settings": {
+            "title": "How can I use my Coin?",
+            "content": "<p>You can use your Coin to generate discount codes. On your next purchase, you can apply the generated discount code during checkout and get the discount! You can redeem your Coin from </p>"
+          }
+        },
+        "text_nbKdbG": {
+          "type": "text",
+          "settings": {
+            "title": "Why have I still not received coins after placing an order?",
+            "content": "<p>Your Coin will be credited to you after you have paid for the order and it is fulfilled.</p>"
+          }
+        },
+        "text_8bFzye": {
+          "type": "text",
+          "settings": {
+            "title": "Will my Coin expire?",
+            "content": "<p>Yes, your Coin will expire after 2 months from the day they were credited to you, if you haven't used them.</p>"
+          }
+        },
+        "text_e37Gmp": {
+          "type": "text",
+          "settings": {
+            "title": "Will I get rewarded for writing a review?",
+            "content": "<p>Yes, your Coin will expire after 2 months from the day they were credited to you, if you haven't used them.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_khC9EX",
+        "text_QharGq",
+        "text_g4i6Gh",
+        "text_nbKdbG",
+        "text_8bFzye",
+        "text_e37Gmp"
+      ],
+      "settings": {
+        "title": "Find answers to commonly asked questions",
+        "title_align": "text-center",
+        "title_size": 9,
+        "heading_size": 5,
+        "text_size": 5,
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_richtext_wnCFCr",
+    "section_richtext_z4qAM4",
+    "way_to_earn_F46kcT",
+    "way_to_redeem_xdhfbP",
+    "way_to_earn_JVHi8Y",
+    "section_faq_TVWgqy"
+  ]
+}

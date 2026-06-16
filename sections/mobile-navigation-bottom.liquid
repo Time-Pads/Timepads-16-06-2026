@@ -1,0 +1,288 @@
+{% # Kwikpass changes - [Starts] %}
+<script>
+  function autoLogin (){
+        document.getElementById('kwik-pass-text').textContent = "Account";
+      }
+      window.addEventListener('user-loggedin', function(event) {
+         const { token } = event?.detail;
+         if (token){
+           autoLogin();
+         }
+      });
+    document.addEventListener('DOMContentLoaded',function () {
+      var userToken = localStorage.getItem('KWIKSESSIONTOKEN');
+      if (userToken){
+        autoLogin();
+      }
+  })
+</script>
+{% # Kwikpass changes - [Ends] %}
+
+
+
+
+
+
+
+<div class="page-width desktop-hide">
+  <div class="mobile-navigation-bottom">
+    <div class="mobile-navigation-menu">
+
+      <!-- Home Link -->
+      <p>
+        <a href="/" class="mobile-menu__link">
+          {% render 'home-svg' %}
+          <span class="mobile-menu__title">Home</span>
+        </a>
+      </p>
+
+      <!-- Search Link -->
+      <p class="search-icon-opening-menu" id="search-icon">
+        <a href="#" class="mobile-menu__link">
+          {% render 'search-icon' %}
+          <span class="mobile-menu__title">Search</span>
+        </a>
+      </p>
+
+      <!-- Center Cart Icon -->
+      <div class="mobile-center-cart">
+        <a class="header__mobile__button" data-drawer-toggle="drawer-cart" href="{{ routes.cart_url }}">
+          <div class="cart-circle">
+            {% render 'icon-set-mod-cart' %}
+          
+          </div>
+        </a>
+      </div>
+
+      <!-- Offers Link -->
+      <p>
+        <a href="https://timepads.in/collections/all" class="mobile-menu__link">
+          {% render 'offers-svg' %}
+          <span class="mobile-menu__title">Shop all</span>
+        </a>
+      </p>
+
+      <!-- Account Link -->
+      <p>
+                {% comment %}
+        <a href="{{ routes.account_url }}" class="mobile-menu__link">
+          {% render 'icon-set-mod-user' %}
+          <span class="mobile-menu__title">Account</span>
+        </a>
+        {% endcomment %}
+        <a href="javascript:void(0);" class="mobile-menu__link" onclick="kpHandleLogin('/account');">
+        <svg width="20" height="20" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg" id="kpicon">
+      <path d="M22.9129 12.935L13.7571 23.0474C13.5348 23.2929 13.1284 23.1084 13.1669 22.7794L14.0816 14.9731H10.6991C10.4034 14.9731 10.2484 14.6219 10.4478 14.4035L20.3133 3.59739C20.5589 3.32834 20.9984 3.58134 20.8891 3.92887L18.2354 12.3664H22.6607C22.9557 12.3664 23.1109 12.7163 22.9129 12.935Z" fill="#FEA203"/>
+      <path id="svgkp-path" fill-rule="evenodd" clip-rule="evenodd" d="M16.6079 5.35819C16.4805 5.1933 16.3421 5.03582 16.1932 4.8869C15.2702 3.96387 14.0183 3.44531 12.7129 3.44531C11.4075 3.44531 10.1556 3.96387 9.2326 4.8869C8.30957 5.80993 7.79102 7.06183 7.79102 8.36719C7.79102 9.67255 8.30957 10.9244 9.2326 11.8475C9.48368 12.0986 9.75909 12.3197 10.0533 12.5086L11.0235 11.4503C10.7335 11.2914 10.4649 11.0911 10.227 10.8531C9.56766 10.1938 9.19727 9.29959 9.19727 8.36719C9.19727 7.43479 9.56766 6.54057 10.227 5.88127C10.8863 5.22196 11.7805 4.85156 12.7129 4.85156C13.6453 4.85156 14.5395 5.22196 15.1988 5.88127C15.3636 6.04604 15.5103 6.22549 15.6377 6.41654L16.6079 5.35819ZM20.6413 18.6497L19.6746 19.7132C20.1676 20.4122 20.4473 21.2264 20.4473 22.0781V23.8359C20.4473 24.2243 20.7621 24.5391 21.1504 24.5391C21.5387 24.5391 21.8535 24.2243 21.8535 23.8359V22.0781C21.8535 20.7863 21.4016 19.6103 20.6413 18.6497ZM12.3111 17.5078H10.3026C7.27113 17.5078 4.97852 19.6394 4.97852 22.0781V23.8359C4.97852 24.2243 4.66372 24.5391 4.27539 24.5391C3.88707 24.5391 3.57227 24.2243 3.57227 23.8359V22.0781C3.57227 18.6922 6.67684 16.1016 10.3026 16.1016H12.4885L12.3111 17.5078Z" fill="currentColor" stroke="currentColor"/>
+      </svg>
+        <span id="kwik-pass-text">
+           Log in
+        </span>
+        </a>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+{% style %}
+.mobile-navigation-bottom {
+  background: white;
+  color: black;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.mobile-navigation-menu {
+  display: flex;
+  width: 95%;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin: auto;
+}
+
+.mobile-menu__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.mobile-menu__title {
+  margin-top: 4px;
+}
+
+.mobile-center-cart {
+  position: relative;
+}
+
+.cart-circle {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cart-circle svg {
+  fill: #fff;
+  width: 30px;
+  height: 30px;
+}
+.mobile-navigation-menu svg{
+    width: 20px;
+    height: 17px;
+}
+.mobile-center-cart .header__mobile__button{
+    position: absolute;
+    top: -31px;
+    left: -32px;
+}
+@media only screen and (min-width: 768px){
+    .desktop-hide{
+       display: none;
+    }
+}
+
+.mobile-navigation-bottom {
+  background: white;
+  color: black;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  transition: transform 0.3s ease-in-out; /* Smooth slide animation */
+}
+
+.mobile-navigation-bottom{
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+{% endstyle %}
+
+<script>
+
+let lastScrollTop = 0; // Store the last scroll position
+  const bottomNav = document.querySelector(".mobile-navigation-bottom");
+
+  window.addEventListener("scroll", function () {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      // User is scrolling down - SHOW the navigation bar
+      bottomNav.style.transform = "translateY(0)";
+    } else {
+      // User is scrolling up - HIDE the navigation bar
+      bottomNav.style.transform = "translateY(100%)";
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative values
+  });
+
+
+
+  // Add event listener for the search icon click
+  document.getElementById("search-icon").addEventListener("click", function () {
+    const navElement = document.getElementById("header-menu");
+    navElement.classList.toggle("drawer--visible");
+    navElement.classList.toggle("display-none");
+  });
+</script>
+
+
+{% schema %}
+{
+      "name": "Mobile Naviation",
+      "tag": "section",
+      "class": "mobile-navigation",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Padding settings"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "default": 20,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Top"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "label": "Padding Bottom",
+          "min": 0,
+          "max": 100,
+          "unit": "px",
+          "step": 2,
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "padding_top_mobile",
+          "min": 0,
+          "max": 100,
+          "default": 20,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Top Mobile"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom_mobile",
+          "label": "Padding Bottom Mobile",
+          "min": 0,
+          "max": 100,
+          "unit": "px",
+          "step": 2,
+          "default": 20
+        },
+        {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "Images",
+          "name": "Images",
+          "settings": [
+            {
+            "type": "image_picker",
+            "id": "slider_images",
+            "label": "Slider Images"
+            },
+            {
+              "type": "url",
+              "id": "collection_url",
+              "label": "Collection url"
+            }
+          ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Mobile Naviation"
+        }
+      ]
+    }
+{% endschema %}

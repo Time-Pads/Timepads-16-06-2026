@@ -1,0 +1,533 @@
+<!-- /sections/section-faq.liquid-->
+
+<section class="section-faq {{ section.settings.text_color }} {{ section.settings.height }} {{ section.settings.bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="page-faq"
+  style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  <div class="{{ section.settings.width }} section-padding">
+    <div class="text__standard" data-accordion-group>
+      {% if section.settings.title != blank %}
+        {% assign title_size_class = section.settings.title_size | prepend: 'accent-size-' %}
+        <p class="standard__kicker {{ section.settings.title_align }} {{ title_size_class }}">
+          {{ section.settings.title }}
+        </p>
+      {% endif %}
+      {% for block in section.blocks %}
+        {% assign block_id = block.id %}
+
+
+
+
+
+
+        <div class="accordion__wrapper">
+          {% assign heading_size_class = section.settings.heading_size | prepend: 'accent-size-' %}
+          <button class="accordion__title js {{ heading_size_class }}"
+            data-accordion-trigger="accordion-{{ block_id }}"
+            aria-controls="accordion-{{ block_id }}"
+            aria-haspopup="true"
+            aria-expanded="false">
+            {{ block.settings.title }}
+          </button>
+          <input type="checkbox"
+            name="accordion-{{ block_id }}--{{ forloop.index }}"
+            id="accordion-{{ block_id }}--{{ forloop.index }}-checkbox"
+            class="no-js no-js-checkbox"
+            {% if block.settings.description_expanded %}checked{% endif %}>
+
+          <label for="accordion-{{ block_id }}--{{ forloop.index }}-checkbox" class="accordion__title no-js">
+            {{ block.settings.title }}
+          </label>
+
+          {% assign font_size_class = section.settings.text_size | prepend: 'body-size-' %}
+          <div class="accordion__body no-js-accordion rte {{ font_size_class }}"
+            data-accordion-body
+            id="accordion-{{ block_id }}">
+
+            {% if block.settings.title == 'Product Information' %}
+{{ product.metafields.custom.product_information | metafield_tag }}
+          {% else %}
+  <span {{ block.shopify_attributes }}></span>
+              {{ block.settings.content }}
+             {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="rte">
+          {{ 'home_page.onboarding.no_content' | t }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+ .accordion__body{
+  background:rgba(26, 26, 26, 0.05);
+  padding: 10px;
+ }
+ .accordion__body .metafield-rich_text_field{
+   color: black;
+  }
+     .accordion__body .metafield-rich_text_field strong{
+     font-weight: 100;
+  }
+@media only screen and (min-width: 768px){
+ .accordion__body .metafield-rich_text_field{
+  width: 50%;
+  }
+   .accordion__body .metafield-rich_text_field strong{
+   font-size: 14px;
+  }
+
+ .accordion__body .metafield-rich_text_field p{
+   font-size: 12px;
+  }
+
+}
+@media only screen and (max-width: 767px){
+ .accordion__body .metafield-rich_text_field strong{
+   font-size: 12px;
+  }
+
+ .accordion__body .metafield-rich_text_field p{
+   font-size: 10px;
+  }
+}
+
+
+{% endstyle %}
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What makes Time Sanitary Pads different from other brands?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Time Sanitary Pads are made by using advanced Japanese technology and hot-pressed manufacturing processes, ensuring superior absorption and leak protection. They are known for being among the top 10 sanitary pads brands in India, offering quality and comfort at an affordable price."
+    }
+  },{
+    "@type": "Question",
+    "name": "Are Time Sanitary Pads suitable for heavy flow?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, Time Sanitary Pads are ideal for heavy flow days. Designed with enhanced absorption technology, they are considered some of the best sanitary pads for heavy bleeding. Their leak-proof barriers provide added confidence during heavy flow days."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "Which brand of pad is best in India?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "There are several quality sanitary pad brands in India, but Time Pads stands out for its comfort, high absorbency, and skin-friendly materials. It is designed keeping in mind the needs of modern Indian women, offering reliable protection during periods without compromising on comfort."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which pad brand is the best?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The best pad brand depends on your specific needs, whether it's for heavy flow, sensitive skin, or longer wear time. Time Pads offers a range of pads that combine ultra-absorbency with rash-free, breathable layers, making it a trusted choice for many women across India."
+    }
+  },{
+    "@type": "Question",
+    "name": "How do I choose a good pad?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "When choosing a good pad, consider the following:
+ 
+Absorbency level (regular, heavy flow, overnight)
+ 
+Length and coverage
+ 
+Comfort and breathability
+ 
+Material (rash-free, chemical-free)
+ 
+Time Pads checks all these boxes, providing superior leak protection and all-day freshness with dermatologically tested materials."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I wear a Sanitary pad for 12 hours?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "While some ultra-absorbent pads, like Time Pads Overnight, are designed to last up to 12 hours, it’s generally recommended to change your pad every 4–6 hours for hygiene reasons. Changing regularly helps prevent infections and skin irritation."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which pad is best for leakage?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "For maximum leak protection, choose a pad with wide wings, a longer back, and high absorbency. Time Pads XL and Overnight variants are specially designed with anti-leak channels and extra coverage to prevent leakage, even during heavy flow days or nighttime use."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which pad size is bigger?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Pad sizes vary from regular to XL and XXL. Overnight Timepads are among the largest, offering extended length and back coverage to prevent side and back leaks, ideal for heavy flow or nighttime use."
+    }
+  },{
+    "@type": "Question",
+    "name": "How many pads are used per day?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "On average, a person may use 3–6 pads per day during their period, depending on the flow. It’s important to change pads every 4–6 hours, regardless of flow, to maintain hygiene. Time Pads are highly absorbent, which can help reduce the number of changes needed on lighter days."
+    }
+  },{
+    "@type": "Question",
+    "name": "Is cloth better than pads?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Both have their pros and cons. Cloth is reusable and eco-friendly, but requires thorough washing and drying. Disposable pads like Time Pads offer convenience, better hygiene, and reliable protection, especially during travel or busy routines. Time Pads also use skin-safe, breathable materials to reduce the risk of rashes or irritation."
+    }
+  },
+  
+  {
+    "@type": "Question",
+    "name": "How long can I wear a Time Sanitary Pad?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Time Sanitary Pads are designed to last up to 8 hours, depending on your flow. For heavy flow days, it is recommended to check and change the pad every 4–6 hours for optimal hygiene and comfort."
+    }
+  },{
+    "@type": "Question",
+    "name": "Are Time Sanitary Pads skin-friendly?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, Time Sanitary Pads are made from soft, skin-friendly cotton materials, ensuring comfort even for sensitive skin. The untouched manufacturing process minimizes potential irritants, making them suitable for all users."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I use Time Sanitary Pads overnight?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Absolutely! Time Sanitary Pads are perfect for overnight use. Their extra-long design and high-absorption layers ensure uninterrupted sleep, making them the best pads for heavy flow and nighttime use."
+    }
+  },{
+    "@type": "Question",
+    "name": "Are Time Sanitary Pads hypoallergenic?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, they are. Time Sanitary Pads are carefully made to be hypoallergenic, making them suitable for individuals with sensitive skin or allergies."
+    }
+  },{
+    "@type": "Question",
+    "name": "Where can I purchase Time Sanitary Pads?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Time Sanitary Pads are widely available in stores across India and online platforms, offering easy accessibility for everyone. They are known for being affordable and best sanitary pads in India, offering affordability without compromising quality."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do Time Sanitary Pads come in different sizes?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, Time Sanitary Pads are available in various sizes to cater to light, medium, and heavy flow days. They are also considered among the best pads for first periods due to their comfortable and secure fit."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do Time sanitary pads have leak protection?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, Time Sanitary Pads feature superior leak protection technology, ensuring maximum coverage and preventing side leaks during heavy flow."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I use Time sanitary pads if I have sensitive skin or allergies?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, they are specially designed for users with sensitive skin, featuring a soft, breathable surface. The untouched process ensures the pads remain free from irritants."
+    }
+  },{
+    "@type": "Question",
+    "name": "Are Time sanitary pads comfortable for exercise and physical activity?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Definitely! Time Sanitary Pads offer a secure fit and excellent flexibility, making them perfect for sports, exercise, and active days."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I use Time sanitary pads for light flow days?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, Time Sanitary Pads come in sizes and styles suited for light flow days, offering comfort and discretion."
+    }
+  },
+{
+      "@type": "Question",
+      "name": "Are these pads safe for sensitive skin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, these pads are made with a hypoallergenic top layer suitable for sensitive skin."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do they prevent rashes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the ultra-soft cottony surface reduces friction and helps prevent rashes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the pads hygienically packed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, these pads are packed using a zero-touch, untouched hygienic process."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What flow level are these suitable for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They are ideal for light to medium flow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can teenagers use these pads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, these pads are perfect for teens due to their soft, gentle feel."
+      }
+    },
+    {
+    "@type": "Question",
+    "name": "Which brand of pad is best in India?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "There are several quality sanitary pad brands in India, but Time Pads stands out for its comfort, high absorbency, and skin-friendly materials. It is designed keeping in mind the needs of modern Indian women, offering reliable protection during periods without compromising on comfort."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which pad brand is the best?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The best pad brand depends on your specific needs, whether it's for heavy flow, sensitive skin, or longer wear time. Time Pads offers a range of pads that combine ultra-absorbency with rash-free, breathable layers, making it a trusted choice for many women across India."
+    }
+  },{
+    "@type": "Question",
+    "name": "How do I choose a good pad?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "When choosing a good pad, consider the following:
+ 
+Absorbency level (regular, heavy flow, overnight)
+ 
+Length and coverage
+ 
+Comfort and breathability
+ 
+Material (rash-free, chemical-free)
+ 
+Time Pads checks all these boxes, providing superior leak protection and all-day freshness with dermatologically tested materials."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I wear a Sanitary pad for 12 hours?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "While some ultra-absorbent pads, like Time Pads Overnight, are designed to last up to 12 hours, it’s generally recommended to change your pad every 4–6 hours for hygiene reasons. Changing regularly helps prevent infections and skin irritation."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which pad is best for leakage?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "For maximum leak protection, choose a pad with wide wings, a longer back, and high absorbency. Time Pads XL and Overnight variants are specially designed with anti-leak channels and extra coverage to prevent leakage, even during heavy flow days or nighttime use."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which pad size is bigger?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Pad sizes vary from regular to XL and XXL. Overnight Timepads are among the largest, offering extended length and back coverage to prevent side and back leaks, ideal for heavy flow or nighttime use."
+    }
+  },{
+    "@type": "Question",
+    "name": "How many pads are used per day?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "On average, a person may use 3–6 pads per day during their period, depending on the flow. It’s important to change pads every 4–6 hours, regardless of flow, to maintain hygiene. Time Pads are highly absorbent, which can help reduce the number of changes needed on lighter days."
+    }
+  },{
+    "@type": "Question",
+    "name": "Is cloth better than pads?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Both have their pros and cons. Cloth is reusable and eco-friendly, but requires thorough washing and drying. Disposable pads like Time Pads offer convenience, better hygiene, and reliable protection, especially during travel or busy routines. Time Pads also use skin-safe, breathable materials to reduce the risk of rashes or irritation."
+    }
+  }
+
+]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Accordion group",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "title_align",
+      "label": "Title alignment",
+      "default": "text-left",
+      "options": [
+        { "value": "text-left","label": "Left" },
+        { "value": "text-center","label": "Centered" },
+        { "value": "text-right","label": "Right" }
+      ]
+    },
+    {
+      "type":  "range",
+      "id":    "title_size",
+      "label": "Title size",
+      "min":     1,
+      "max":     15,
+      "step":    1,
+      "default": 4
+    },
+    {
+      "type":  "range",
+      "id":    "heading_size",
+      "label": "Heading size",
+      "min":     1,
+      "max":     15,
+      "step":    1,
+      "default": 5
+    },
+    {
+      "type":  "range",
+      "id":    "text_size",
+      "label": "Text size",
+      "min":     1,
+      "max":     15,
+      "step":    1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text",
+      "default": "text--neutral",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"},
+        { "value": "text--bright--primary", "label": "Primary bright accent"},
+        { "value": "text--bright--secondary", "label": "Secondary bright accent"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"},
+        { "value": "palette--bright bg--bright", "label": "Bright"},
+        { "value": "palette--bright bg--bright--accent", "label": "Bright accent"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full", "label": "Full width padded" },
+        { "value": "wrapper", "label": "Page width" },
+        { "value": "wrapper--narrow", "label": "Page width narrow" },
+        { "value": "wrapper--tiny", "label": "Page width extra narrow" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Frequently asked question"
+        },
+        {
+          "id": "content",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>Share details about your shipping policies, item returns, or customer service.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordion group",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header","footer","aside"]
+  }
+}
+{% endschema %}

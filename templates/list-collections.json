@@ -1,0 +1,213 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "section-list-collections",
+      "blocks": {
+        "list-collection-block-0": {
+          "type": "all_collections",
+          "settings": {
+            "overlay_color": "#000000",
+            "overlay_opacity": 15,
+            "text_color": "text--white"
+          }
+        }
+      },
+      "block_order": [
+        "list-collection-block-0"
+      ],
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 100,
+        "mpadding_top": 0,
+        "mpadding_bottom": 0,
+        "title": "Catalog",
+        "font_size": 12,
+        "font_size_mobile": 12,
+        "bg": "palette--light bg--neutral",
+        "carousel_enabled_on": "mobile",
+        "wh_ratio": 0.5,
+        "grid_large": 4,
+        "grid_medium": 3,
+        "grid_mobile": 1.2,
+        "font_family": "body",
+        "title_size": 8,
+        "accent_size": 3,
+        "width": "wrapper"
+      }
+    },
+    "secondary": {
+      "type": "section-list-collections-products",
+      "blocks": {
+        "list-collections-products-block-0": {
+          "type": "all_collections",
+          "settings": {
+            "title": "",
+            "link_text": "View all",
+            "enable_item": true,
+            "item_link_text": "Shop all [name]",
+            "background_color": "#fcfaf7",
+            "text_color": "text--neutral",
+            "link_size": 3
+          }
+        }
+      },
+      "block_order": [
+        "list-collections-products-block-0"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Catalog",
+        "bg": "palette--light bg--neutral",
+        "grid": 3,
+        "rows": 2,
+        "enable_scroll_mobile": true,
+        "grid_small": 1.2,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 108
+      }
+    },
+    "section_list_collections_products_jmGeBe": {
+      "type": "section-list-collections-products",
+      "blocks": {
+        "collection_fNECRx": {
+          "type": "collection",
+          "settings": {
+            "collection": "regular-sanitary-pads",
+            "title": "",
+            "link_text": "",
+            "enable_item": true,
+            "text": "",
+            "background_color": "#fcfaf7",
+            "text_color": "text--neutral",
+            "link_size": 3
+          }
+        },
+        "collection_r7dfGY": {
+          "type": "collection",
+          "settings": {
+            "collection": "good-quality-sanitary-pads",
+            "title": "",
+            "link_text": "",
+            "enable_item": true,
+            "text": "",
+            "background_color": "#fcfaf7",
+            "text_color": "text--neutral",
+            "link_size": 3
+          }
+        }
+      },
+      "block_order": [
+        "collection_fNECRx",
+        "collection_r7dfGY"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Catalog",
+        "bg": "palette--light bg--neutral",
+        "grid": 4,
+        "rows": 1,
+        "enable_scroll_mobile": true,
+        "grid_small": 1.2,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "circular_collection_VBJByp": {
+      "type": "circular-collection",
+      "blocks": {
+        "collection_images_ECJA7Q": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Velvet_4baa1080-9f41-44f7-829c-14ef9ae7a732.png",
+            "image_alt_text": "Ultra Velvet",
+            "collection_title": "Ultra thin Heavy flow pads",
+            "collection_size": "",
+            "font_weight_title": 600,
+            "collection_url": "shopify://collections/comfortable-pads-for-periods"
+          }
+        },
+        "collection_images_AJBtAc": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Feather_15f45db4-0b7a-491a-8f0a-943e41207030.png",
+            "image_alt_text": "",
+            "collection_title": "Ultra thin Regular pads",
+            "collection_size": "",
+            "font_weight_title": 600,
+            "collection_url": "shopify://collections/cotton-sanitary-pads"
+          }
+        },
+        "collection_images_CV4fF3": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Cuddle_35da27d1-4260-4aaa-b9f1-4519ffe67373.png",
+            "image_alt_text": "",
+            "collection_title": "Ultra thin Night pads",
+            "collection_size": "",
+            "font_weight_title": 600,
+            "collection_url": "shopify://collections/period-pads-cotton"
+          }
+        },
+        "collection_images_k7cMhH": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Uniline.png",
+            "image_alt_text": "Uniline",
+            "collection_title": "Classic Straight pad",
+            "collection_size": "",
+            "font_weight_title": 600,
+            "collection_url": "shopify://collections/soft-cotton-pads-for-periods"
+          }
+        },
+        "collection_images_DTFAdw": {
+          "type": "Collection-Images",
+          "disabled": true,
+          "settings": {
+            "collection_image": "shopify://shop_images/Velvet.webp",
+            "image_alt_text": "",
+            "collection_title": "",
+            "collection_size": "",
+            "font_weight_title": 400,
+            "collection_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_images_ECJA7Q",
+        "collection_images_AJBtAc",
+        "collection_images_CV4fF3",
+        "collection_images_k7cMhH",
+        "collection_images_DTFAdw"
+      ],
+      "settings": {
+        "bg_color": "#cfc1c1",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "heading_text": "",
+        "font_size": 12,
+        "font_weight": 400,
+        "text_color": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "secondary",
+    "section_list_collections_products_jmGeBe",
+    "circular_collection_VBJByp"
+  ]
+}

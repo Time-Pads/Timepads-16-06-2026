@@ -1,0 +1,83 @@
+
+<script>
+  let root = '{{ routes.root_url }}';
+  if (root[root.length - 1] !== '/') {
+    root = `${root}/`;
+  }
+  var theme = {
+    routes: {
+      root_url: root,
+      cart: '{{ routes.cart_url }}',
+      cart_add_url: '{{ routes.cart_add_url }}',
+      product_recommendations_url: '{{ routes.product_recommendations_url }}',
+      account_addresses_url: '{{ routes.account_addresses_url }}',
+      predictive_search_url: '{{ routes.predictive_search_url }}'
+    },
+    state: {
+      cartOpen: null,
+    },
+    sizes: {
+      small: 480,
+      medium: 768,
+      large: 1100,
+      widescreen: 1400
+    },
+    assets: {
+      photoswipe: '{{ "photoswipe.js" | asset_url }}',
+      smoothscroll: '{{ "smoothscroll.js" | asset_url }}',
+      swatches: '{{ "swatches.json" | asset_url }}',
+      noImage: '{{ "nil" | img_url: "master" }}',
+      base: '{{ "nil.jpg" | asset_url | split: "nil.jpg" | first }}'
+    },
+    strings: {
+      swatchesKey: {{ 'general.swatches.color' | t | json }},
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      estimateShipping: {{ 'cart.shipping.estimate_shipping' | t | json }},
+      noShippingAvailable: {{ 'cart.shipping.no_shipping_available' | t | json }},
+      free: {{ 'cart.shipping.free' | t | json }},
+      from: {{ 'products.general.from' | t | json }},
+      preOrder: {{ 'products.product.pre_order' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      sale: {{ 'products.product.sale' | t | json }},
+      subscription: {{ 'products.product.subscription' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      unitPrice: {{ 'products.product.unit_price_label' | t | json }},
+      unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},
+      stockout: {{ 'cart.general.stockout' | t | json }},
+      products: {{ 'products.general.products' | t | json }},
+      pages: {{ 'general.page.pages' | t | json }},
+      collections: {{ 'collections.sidebar.collections' | t | json }},
+      resultsFor: {{ 'general.search.results_for' | t | json }},
+      noResultsFor: {{ 'general.search.no_results_for' | t | json }},
+      articles: {{ 'blogs.article.articles' | t | json }},
+      successMessage: {{ 'general.share.success_message' | t | json }},
+    },
+    settings: {
+      badge_sale_type: {{ settings.badge_sale_type | json }},
+      animate_hover: {{ settings.animations_hover_enable | json }},
+      animate_scroll: {{ settings.animations_scroll_enable | json }},
+      show_locale_desktop: {{ settings.show_locale_desktop | json }},
+      show_locale_mobile: {{ settings.show_locale_mobile | json }},
+      show_currency_desktop: {{ settings.show_currency_desktop | json }},
+      show_currency_mobile: {{ settings.show_currency_mobile | json }},
+      currency_select_type: {{ settings.currency_select_type | json }},
+      currency_code_enable: {{ settings.currency_code_enable | json }},
+      cycle_images_hover_delay: {{ settings.cycle_images_hover_delay }}
+    },
+    info: {
+      name: 'pipeline'
+    },
+    version: '7.4.1',
+    moneyFormat: {{ shop.money_format | json }},
+    shopCurrency: {{ shop.currency | json }},
+    currencyCode: {{ cart.currency.iso_code | json }}
+  }
+  let windowInnerHeight = window.innerHeight;
+  document.documentElement.style.setProperty('--full-screen', `${windowInnerHeight}px`);
+  document.documentElement.style.setProperty('--three-quarters', `${windowInnerHeight * 0.75}px`);
+  document.documentElement.style.setProperty('--two-thirds', `${windowInnerHeight * 0.66}px`);
+  document.documentElement.style.setProperty('--one-half', `${windowInnerHeight * 0.5}px`);
+  document.documentElement.style.setProperty('--one-third', `${windowInnerHeight * 0.33}px`);
+  document.documentElement.style.setProperty('--one-fifth', `${windowInnerHeight * 0.2}px`);
+  window.isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+</script>

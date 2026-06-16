@@ -1,0 +1,48 @@
+{% comment %}
+  common srcset values
+  image {object} - the image object (not a url)
+  {% render 'image-default-srcset', image: img_object %}
+{% endcomment %}
+
+{%- comment -%} image.preview_image.width handles the 3D models because they lack the image.width property {%- endcomment -%}
+{%- assign image_width = image.width | default: image.preview_image.width -%}
+
+{%- if image_width != blank -%}
+  {%- liquid
+    assign widths = widths | default: "180,240,320,480,640,750,900,1100,1200,1500,1600" | split: ","
+    assign max_width = widths | last | times: 1
+    assign included_widths = ''
+    assign image_width_str = image_width | append: ''
+
+    for string_width in widths
+      assign width = string_width | times: 1
+      if image_width >= width
+        assign included_widths = included_widths | append: width | append: ','
+      endif
+    endfor
+
+    assign included_widths = ',' | append: included_widths
+    assign included_arr = included_widths | split: ","
+    assign is_first = true
+  -%}
+
+  {%- for string_width in included_arr -%}
+    {%- assign width = string_width | times: 1 -%}
+    {%- if width > 0 -%}
+      {%- unless is_first -%}, {%- endunless -%}
+      {{ image | image_url: width: width, format: format }} {{ width }}w
+      {%- assign is_first = false -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if image_width <= max_width -%}
+    {%- assign needle = ',' | append: image_width_str | append: ',' -%}
+    {%- if included_widths contains needle -%}
+    {%- else -%}
+      {%- unless is_first -%}, {%- endunless -%}
+      {{ image | image_url: width: image_width, format: format }} {{ image_width }}w
+    {%- endif -%}
+  {%- endif -%}
+{%- else -%}
+  {{ image }}
+{%- endif -%}

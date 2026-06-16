@@ -1,0 +1,65 @@
+{% comment %}
+  Generate image srcset with WebP and AVIF format support with fallback to original format
+  
+  Usage:
+  {% render 'image-format-srcset', image: image_object, widths: "400,800,1200", enable_webp: true, enable_avif: true %}
+  
+  Parameters:
+    image {object} - The image object
+    widths {string} - Comma-separated widths (default: "352,400,768,932,1024,1200,1920")
+    enable_webp {boolean} - Enable WebP format (default: true)
+    enable_avif {boolean} - Enable AVIF format (default: true)
+    crop {string} - Image crop setting
+    quality {number} - Image quality 0-100 (default: 85 for better 4G performance)
+{%- endcomment -%}
+
+{%- liquid
+  assign image_width = image.width | default: image.preview_image.width
+  assign enable_webp = enable_webp | default: true
+  assign enable_avif = enable_avif | default: true
+  assign quality = quality | default: 85
+  assign widths = widths | default: "352,400,768,932,1024,1200,1920" | split: ","
+  assign crop = crop | default: "center"
+-%}
+
+{%- if image_width != blank -%}
+  {%- liquid
+    assign srcs = ""
+  -%}
+  
+  {%- comment -%} Generate AVIF format (smallest, best compression) {%- endcomment -%}
+  {%- if enable_avif -%}
+    {%- for string_width in widths -%}
+      {% assign width = string_width | times: 1 %}
+      {% if image_width >= width %}
+        {% capture src %}{{ image | image_url: width: width, format: "avif" }} {{ width }}w{% endcapture %}
+        {% assign srcs = srcs | append: src | append: ", " %}
+      {% endif %}
+    {%- endfor -%}
+  {%- endif -%}
+  
+  {%- comment -%} Generate WebP format (good compression, broader support) {%- endcomment -%}
+  {%- if enable_webp -%}
+    {%- for string_width in widths -%}
+      {% assign width = string_width | times: 1 %}
+      {% if image_width >= width %}
+        {% capture src %}{{ image | image_url: width: width, format: "webp" }} {{ width }}w{% endcapture %}
+        {% assign srcs = srcs | append: src | append: ", " %}
+      {% endif %}
+    {%- endfor -%}
+  {%- endif -%}
+  
+  {%- comment -%} Generate original format as fallback {%- endcomment -%}
+  {%- for string_width in widths -%}
+    {% assign width = string_width | times: 1 %}
+    {% if image_width >= width %}
+      {% capture src %}{{ image | image_url: width: width }} {{ width }}w{% endcapture %}
+      {% assign srcs = srcs | append: src | append: ", " %}
+    {% endif %}
+  {%- endfor -%}
+  
+  {%- comment -%} Add max width as fallback {%- endcomment -%}
+  {{ srcs }}{{ image | image_url: width: image_width }} {{ image_width }}w
+{%- else -%}
+  {{ image }}
+{%- endif -%}

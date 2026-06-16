@@ -1,0 +1,47 @@
+<!-- /snippets/product-quantity.liquid -->
+
+{% comment %} <h3>jkebfviuebfhib</h3> {% endcomment %}
+
+
+{% comment %} <span class="metafield-price">
+  {% for variant in product.variants %}
+    {% if variant.metafields.custom.description %}
+      <p data-value-some-custom="{{ variant.metafields.custom.description |  metafield_text }}" data_custom_value_id="{{ variant.id }}" class="textcustomization {% unless product.selected_or_first_available_variant.id == variant.id  %} hidden {% endunless %}" >{{ variant.metafields.custom.description |  metafield_text   }}</p> 
+    {% else %}
+    {% endif %}          
+  {% endfor %}
+</span> {% endcomment %}
+  
+       
+{% comment %} <span class="metafield-price">
+  {% for variant in product.variants %}
+    {% if variant.metafields.custom.variant_description %}
+      <p data-value-some-custom="{{ variant.metafields.custom.variant_description }}" data_custom_value_id="{{ variant.id }}" class="textcustomization {% unless product.selected_or_first_available_variant.id == variant.id  %} hidden {% endunless %}" >{{ variant.metafields.custom.variant_description |  metafield_tag }}</p> 
+    {% else %}
+    {% endif %}          
+  {% endfor %}
+</span>  {% endcomment %}
+
+
+
+
+{% assign title_to_check = product.title | downcase %}
+
+{% unless title_to_check contains 'gift' %}
+  <div class="product__block__quantity" style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
+    {%- if block.settings.show_quantity -%}
+      <div class="quantity__wrapper" data-quantity-selector>
+        <button class="quantity__button quantity__button--minus" data-decrease-quantity type="button" aria-label="{{ 'general.accessibility.decrease_quantity' | t }}">&minus;</button>
+        <input data-quantity-input
+          aria-label="{{ 'cart.label.quantity' | t }}"
+          class="quantity__input"
+          type="number"
+          min="1"
+          name="quantity"
+          form="{{ uniq_id }}"
+          value="1"/>
+        <button class="quantity__button quantity__button--plus" data-increase-quantity type="button" aria-label="{{ 'general.accessibility.increase_quantity' | t }}">+</button>
+      </div>
+    {%- endif -%}
+  </div>
+{% endunless %}

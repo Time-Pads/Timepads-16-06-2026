@@ -1,0 +1,1417 @@
+
+ <style>
+        :root {
+            --primary-color: #e85d75;
+            --secondary-color: #ff9fb2;
+            --accent-color:rgb(246, 234, 215);
+            --dark-color: #2d1b2e;
+            --light-bg: #fff5f7;
+            --text-color: #333;
+        }
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(135deg, rgb(246, 234, 215) 0%, var(--secondary-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-30px) translateX(20px); }
+            50% { transform: translateY(-60px) translateX(-20px); }
+            75% { transform: translateY(-30px) translateX(10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .feature-card.visible{
+        letter-spacing:0;
+        }
+.benefit-item.visible h4,
+.benefit-item.visible p,
+.sg-desc,
+.cup-text h3,
+.cup-text p{
+ letter-spacing:0;
+}
+        /* What is Section */
+        .section {
+            padding: 5rem 2rem;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .section-title {
+              text-align: center;
+    font-size: 3rem;
+    color: #4b4a4a;
+    margin-bottom: 3rem;
+    position: relative;
+    font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: rgb(183, 164, 135);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .what-is-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card.visible {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(232, 93, 117, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: rgb(183, 164, 135);
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing:0;
+            margin-bottom: 1rem;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: linear-gradient(135deg, rgb(246, 234, 215) 0%, white 100%);
+        }
+
+        .benefit-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+      
+        }
+
+        .benefit-item.visible {
+            animation: slideInLeft 0.6s ease forwards;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        /* How to Use Section */
+        .steps {
+            background: white;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            position: relative;
+            padding: 2rem;
+            border: 3px solid var(--accent-color);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .step-card.visible {
+            animation: scaleIn 0.6s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .step-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(232, 93, 117, 0.2);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step-card h3 {
+            margin-top: 1rem;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* FAQ Section */
+   
+
+        .faq-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 1rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      
+            transform: translateY(20px);
+        }
+
+        .faq-item.visible {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--accent-color);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgb(147 121 80);
+            color: white;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .faq-answer.active {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.active {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        footer h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .benefit-item{
+            
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .section{
+            width: 100%;
+            
+            }
+            .cup-container{
+               max-width: 100% !important;
+            }
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--primary-color);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+.feature-card.visible{
+    display: flex;
+    flex-direction: column;
+}
+        h2.section-title{
+            letter-spacing: 0;
+        margin-bottom: 0;
+        }
+        .size-guide-static .container{
+          max-width: 100%;
+        }
+        /* Default: Desktop */
+.desktop-image {
+  display: block;
+  width: 100%;
+}
+
+.mobile-image {
+  display: none;
+  width: 100%;
+}
+
+/* Mobile view */
+@media screen and (max-width: 767px) {
+  .desktop-image {
+    display: none;
+  }
+
+  .mobile-image {
+    display: block;
+  }
+}
+.cup-text p{
+margin-bottom: 1rem;
+}
+
+    </style>
+<section class="fs-size-section">
+  <div class="fs-size-wrapper">
+
+    <h2 class="fs-size-title">Which Size Should I Choose?</h2>
+    <p class="fs-size-sub">Choose the size that best matches your age, flow, and comfort level.</p>
+
+    <div class="fs-size-grid">
+
+      <!-- SMALL -->
+      <a href="https://timepads.in/products/menstrual-cup">
+      <div class="fs-size-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Small.jpg?v=1766739632" alt="Small menstrual cup">
+        <h3>SMALL <span>(21 ml)</span></h3>
+        <p>Recommended for teenagers or first-time users with lighter flow.</p>
+      </div>
+    </a>
+
+
+  <a href="https://timepads.in/products/menstrual-cup">
+      <!-- MEDIUM -->
+      <div class="fs-size-card highlight">
+        <div class="badge">Most Popular</div>
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Medium.jpg?v=1766739633" alt="Medium menstrual cup">
+        <h3>MEDIUM <span>(32 ml)</span></h3>
+        <p>Best for adults 18–30 who haven’t had vaginal childbirth. Suitable for normal flow.</p>
+      </div>
+    </a>
+
+      <a href="https://timepads.in/products/menstrual-cup">
+
+      <!-- LARGE -->
+      <div class="fs-size-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Large.jpg?v=1766739632" alt="Large menstrual cup">
+        <h3>LARGE <span>(41 ml)</span></h3>
+        <p>Recommended for users above 30 or after vaginal childbirth. Higher capacity.</p>
+      </div>
+    </a>
+    </div>
+
+  </div>
+</section>
+
+{% style %}
+  .fs-size-section{
+  padding:80px 20px;
+  background:linear-gradient(135deg,#fff7ef,#ffffff);
+  text-align:center;
+}
+
+.fs-size-wrapper{
+  max-width:1100px;
+  margin:auto;
+}
+
+.fs-size-title{
+  font-size:36px;
+  color:#77350f;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.fs-size-sub{
+  color:#666;
+  margin-bottom:40px;
+  font-size:17px;
+}
+
+.fs-size-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+}
+
+.fs-size-card{
+  background:#fff;
+  padding:30px 20px;
+  border-radius:20px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.07);
+  border-top:5px solid #AB7841;
+  position:relative;
+  transition:0.3s;
+}
+
+.fs-size-card img{
+
+  margin-bottom:15px;
+}
+
+.fs-size-card h3{
+  color:#77350f;
+  margin-bottom:10px;
+}
+
+.fs-size-card h3 span{
+  color:#AB7841;
+  font-size:16px;
+}
+
+.fs-size-card p{
+  color:#555;
+  font-size:15px;
+}
+
+.fs-size-card.highlight{
+  transform:scale(1.05);
+  border-top:6px solid #77350f;
+}
+
+.badge{
+  position:absolute;
+  top:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#77350f;
+  color:#fff;
+  padding:5px 12px;
+  font-size:12px;
+  border-radius:20px;
+}
+
+.fs-size-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 45px rgba(0,0,0,0.1);
+}
+
+@media only screen and (max-width: 749px){
+  .fs-size-title{
+    font-size: 26px;
+  }
+}
+
+{% endstyle %}
+
+
+<section class="fs-cup-guide">
+  <div class="fs-guide-wrapper">
+
+    <h2 class="fs-guide-title">How to Use Your Time Menstrual Cup</h2>
+
+    <!-- STEP 1 -->
+    <div class="fs-guide-row">
+      <div class="fs-guide-img">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Gemini_Generated_Image_wg5xg6wg5xg6wg5x.png?v=1764998638" alt="Menstrual cup folding styles">
+      </div>
+      <div class="fs-guide-text">
+        <h3>Choose Your Folding Style</h3>
+        <ul>
+          <li><strong>7 Fold</strong> – Fold diagonally to form a “7”.</li>
+          <li><strong>C Fold</strong> – Fold in half to create a “C”.</li>
+          <li><strong>Punch-Down</strong> – Push rim into base for easier insertion.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="fs-guide-row reverse">
+      <div class="fs-guide-img">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Put-It-In.jpg?v=1767357899" alt="Insert menstrual cup">
+      </div>
+      <div class="fs-guide-text">
+        <h3>Insert Comfortably</h3>
+        <p>
+          Fold the cup and insert gently while angling toward your lower back.
+          Once placed correctly, it opens to form a secure, leak-resistant seal.
+        </p>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="fs-guide-row remove">
+      <div class="fs-guide-img">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Meno-Cup--how-to-remove.jpg?v=1767617528" alt="Remove menstrual cup">
+      </div>
+     
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="fs-guide-row reverse">
+      <div class="fs-guide-img">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/The-Don_t_s.jpg?v=1767600994" alt="Menstrual cup do nots">
+      </div>
+      <div class="fs-guide-text">
+        <h3>The Don’ts</h3>
+        <ul>
+          <li>Avoid petroleum jelly or oil-based lubricants</li>
+          <li>Don’t use during postpartum recovery without doctor advice</li>
+          <li>Don’t use during sexual intercourse</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{% style %}
+.fs-cup-guide{
+  padding:80px 20px;
+  background:linear-gradient(135deg,#fff7ef,#ffffff);
+}
+.fs-guide-row.remove img{
+ max-width: 100%;
+}
+.fs-guide-row.remove .fs-guide-img{
+ width: 100%;
+}
+
+.fs-guide-wrapper{
+  max-width:1100px;
+  margin:auto;
+}
+
+.fs-guide-title{
+  text-align:center;
+  font-size:36px;
+  color:#77350f;
+  font-weight:700;
+  margin-bottom:50px;
+}
+
+.fs-guide-row{
+  display:flex;
+  gap:30px;
+  align-items:center;
+  margin-bottom:50px;
+  flex-wrap:wrap;
+}
+
+.fs-guide-row.reverse{
+  flex-direction:row-reverse;
+}
+
+.fs-guide-img img{
+  width:100%;
+  max-width:420px;
+  border-radius:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+}
+
+.fs-guide-text{
+  flex:1;
+}
+
+.fs-guide-text h3{
+  color:#77350f;
+  margin-bottom:12px;
+}
+
+.fs-guide-text p,
+.fs-guide-text li{
+  color:#555;
+  line-height:1.7;
+}
+
+.fs-guide-text ul{
+  padding-left:18px;
+}
+
+@media(max-width:768px){
+  .fs-guide-row,
+  .fs-guide-row.reverse{
+    flex-direction:column;
+    text-align:center;
+  }
+}
+{% endstyle %}
+
+
+
+
+
+
+
+<section class="fs-understand-section" id="what-is">
+  <div class="fs-understand-wrapper">
+
+    <h2 class="fs-understand-title">
+      Understanding the Timepads Menstrual Cup
+    </h2>
+
+    <p class="fs-understand-desc">
+      A menstrual cup is a reusable period-care solution made from
+      <strong>100% medical-grade silicone</strong>. It collects flow safely,
+      adapts to your body for a secure seal, and provides protection for up to
+      <strong>8–12 hours</strong> depending on your flow.
+    </p>
+
+    <div class="fs-understand-grid">
+
+      <div class="fs-feature-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Getting-started.png?v=1766728311">
+        <h3>Before First Use</h3>
+        <p>Sterilize before first use. Clean after every removal and always wash hands before insertion.</p>
+      </div>
+
+      <div class="fs-feature-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/When-To-Wash.png?v=1766728311">
+        <h3>Cleaning During Cycle</h3>
+        <p>Rinse with clean water and mild fragrance-free cleanser every time you empty the cup.</p>
+      </div>
+
+      <div class="fs-feature-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/How-to-sterilize.png?v=1766728310">
+        <h3>Sterilizing the Cup</h3>
+        <p>Boil in water for 3–5 minutes or use a menstrual cup sterilizer. Let it cool before use.</p>
+      </div>
+
+      <div class="fs-feature-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Do-I-ever-need-to-replace-my-cup.png?v=1766728311">
+        <h3>Cup Lifespan</h3>
+        <p>With proper care, the cup lasts up to 5 years. Replace only if cracks or damage appear.</p>
+      </div>
+
+      <div class="fs-feature-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Making-yourself-comfortable.png?v=1766728310">
+        <h3>Comfort Fit</h3>
+        <p>Designed to sit comfortably and move with your body during daily activities.</p>
+      </div>
+
+      <div class="fs-feature-card">
+        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Time-to-put-it-in.png?v=1766728310">
+        <h3>Easy Insertion</h3>
+        <p>Fold, insert gently toward your lower back, and let it open for a secure seal.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .fs-understand-section{
+  padding:80px 20px;
+  background:linear-gradient(135deg,#fff7ef,#ffffff);
+}
+
+.fs-understand-wrapper{
+  max-width:1100px;
+  margin:auto;
+  text-align:center;
+}
+
+.fs-understand-title{
+  font-size:36px;
+  color:#77350f;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+.fs-understand-desc{
+  max-width:800px;
+  margin:auto;
+  font-size:18px;
+  color:#555;
+  margin-bottom:50px;
+}
+
+.fs-understand-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+}
+
+.fs-feature-card{
+  background:#fff;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.07);
+  transition:0.3s;
+  border-top:5px solid #AB7841;
+}
+
+.fs-feature-card img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+  margin-bottom:15px;
+}
+
+.fs-feature-card h3{
+  color:#77350f;
+  margin-bottom:10px;
+}
+
+.fs-feature-card p{
+  font-size:15px;
+  color:#555;
+}
+
+.fs-feature-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 45px rgba(0,0,0,0.1);
+}
+{% endstyle %}
+
+<section class="fs-safety-section">
+  <div class="fs-safety-wrapper">
+
+    <div class="fs-safety-header">
+      <span>🛡️</span>
+      <h2>Important Safety Information – TSS</h2>
+    </div>
+
+    <div class="fs-safety-card">
+
+      <h4>What is TSS?</h4>
+      <p>
+        Toxic Shock Syndrome (TSS) is a <strong>very rare</strong> but serious illness caused by toxins from certain bacteria. It can occur during menstruation with pads, tampons, or menstrual cups. When used correctly, the risk with menstrual cups is extremely low.
+      </p>
+
+      <h4>Should I be worried?</h4>
+      <p>
+        TSS is uncommon and millions safely use menstrual cups every day. Following proper hygiene and not wearing the cup longer than recommended keeps you safe.
+      </p>
+
+      <h4>Symptoms of TSS</h4>
+      <ul class="fs-safety-list">
+        <li>High fever</li>
+        <li>Vomiting or diarrhoea</li>
+        <li>Dizziness or fainting</li>
+        <li>Sunburn-like rash</li>
+        <li>Muscle or body pain</li>
+        <li>Redness of eyes, mouth, or throat</li>
+        <li>Unusual weakness or tiredness</li>
+      </ul>
+
+      <h4>What should I do?</h4>
+      <p>
+        If you notice these symptoms while using a menstrual cup, remove it immediately and seek medical help. If you’ve had TSS before, consult a doctor before using a cup.
+      </p>
+
+      <h4>How to reduce the risk</h4>
+      <ul class="fs-safety-list">
+        <li>Wash hands before inserting/removing</li>
+        <li>Sterilize cup between cycles</li>
+        <li>Do not wear longer than 8–12 hours</li>
+        <li>Store in a clean breathable pouch</li>
+      </ul>
+
+    </div>
+  </div>
+</section>
+
+
+{% style %}
+  .fs-safety-section{
+  padding:70px 20px;
+  background:#fff7ef;
+}
+
+.fs-safety-wrapper{
+  max-width:900px;
+  margin:auto;
+}
+
+.fs-safety-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:30px;
+}
+
+.fs-safety-header span{
+  font-size:28px;
+}
+
+.fs-safety-header h2{
+  color:#77350f;
+  font-size:32px;
+  font-weight:700;
+}
+
+.fs-safety-card{
+  background:#fff;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+  border-left:6px solid #AB7841;
+}
+
+.fs-safety-card h4{
+  color:#77350f;
+  margin-top:20px;
+}
+
+.fs-safety-card p{
+  color:#444;
+  line-height:1.7;
+  margin-top:8px;
+}
+
+.fs-safety-list{
+  margin-top:10px;
+  padding-left:20px;
+}
+
+.fs-safety-list li{
+  margin-bottom:6px;
+  color:#555;
+}
+
+@media only screen and (max-width: 749px){
+  .fs-safety-card{
+    padding: 10px;
+  }
+}
+{% endstyle %}
+
+<section class="fs-benefits-section">
+  <div class="fs-benefits-wrapper">
+
+    <h2 class="fs-benefits-title">Why Make the Switch?</h2>
+
+    <div class="fs-benefits-grid">
+
+      <div class="fs-benefit-card">
+        <span>💰</span>
+        <h4>No More Monthly Purchases</h4>
+        <p>One cup lasts for years, saving money every month.</p>
+      </div>
+
+      <div class="fs-benefit-card">
+        <span>🌱</span>
+        <h4>Eco Friendly</h4>
+        <p>Reduce waste and protect the planet for up to 5 years.</p>
+      </div>
+
+      <div class="fs-benefit-card">
+        <span>⏰</span>
+        <h4>Less Frequent Changes</h4>
+        <p>Wear comfortably for 4–8 hours depending on flow.</p>
+      </div>
+
+      <div class="fs-benefit-card">
+        <span>🛡️</span>
+        <h4>Leak-Proof Protection</h4>
+        <p>Creates a secure seal for worry-free movement.</p>
+      </div>
+
+      <div class="fs-benefit-card">
+        <span>💖</span>
+        <h4>May Reduce Cramps</h4>
+        <p>Many users report more comfortable periods.</p>
+      </div>
+
+      <div class="fs-benefit-card">
+        <span>✈️</span>
+        <h4>Travel Friendly</h4>
+        <p>Compact, portable, no extra products needed.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+   
+<style>
+
+  .fs-benefits-section{
+  padding:70px 20px;
+  background:linear-gradient(135deg,#fff7ef,#ffffff);
+}
+
+.fs-benefits-wrapper{
+  max-width:1100px;
+  margin:auto;
+  text-align:center;
+}
+
+.fs-benefits-title{
+  font-size:34px;
+  color:#77350f;
+  margin-bottom:40px;
+  font-weight:700;
+}
+
+.fs-benefits-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:25px;
+}
+
+.fs-benefit-card{
+  background:#fff;
+  padding:30px 20px;
+  border-radius:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.06);
+  transition:0.3s;
+  border-top:5px solid #AB7841;
+}
+
+.fs-benefit-card span{
+  font-size:34px;
+  display:block;
+  margin-bottom:10px;
+}
+
+.fs-benefit-card h4{
+  color:#77350f;
+  margin-bottom:10px;
+}
+
+.fs-benefit-card p{
+  color:#555;
+  font-size:15px;
+}
+
+.fs-benefit-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 45px rgba(0,0,0,0.1);
+}
+
+
+.size-guide-static {
+  padding: 50px 20px;
+  background: #fff;
+  text-align: center;
+  margin: auto;
+}
+
+.sg-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.sg-grid {
+  display: flex;
+  overflow: scroll;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+}
+
+.sg-card {
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 25px;
+  transition: .3s ease;
+  background: #fafafa;
+}
+
+.sg-card:hover {
+  border-color: rgb(183, 164, 135);
+  transform: translateY(-6px);
+}
+
+.sg-cup-img {
+  margin-bottom: 18px;
+}
+
+.sg-size {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgb(147 121 80);
+  margin-bottom: 10px;
+}
+
+.sg-desc {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* Mobile */
+@media(max-width: 768px){
+  .sg-grid {
+    grid-template-columns: 1fr;
+  }
+  .sg-card{
+  padding: 5px;
+  }
+  .size-guide-static{
+  padding: 10px 20px;
+  }
+  .sg-cup-img{
+  border-radius: 10px;
+  }
+  .sg-card{
+   flex: 0 0 72%;
+  }
+  .sg-grid{
+   gap: 10px;
+  }
+}
+</style>
+
+
+<style>
+.cup-guide {
+  padding: 50px 20px;
+ 
+}
+
+.cup-container {
+  max-width: 80%;
+  margin: auto;
+}
+
+.cup-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+
+.cup-img img {
+  width:100%;
+  border-radius: 10px;
+}
+.cup-img{
+ flex: 0 0 40%;
+}
+
+.cup-text{
+     flex: 0 0 100%;
+}
+.cup-text h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.cup-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cup-img,
+.cup-text {
+  flex: 1 1 45%;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .cup-img,
+  .cup-text {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+  
+  .what-is-grid{
+  display: flex;
+  overflow: scroll;
+      flex-wrap: nowrap;
+  }
+  .section{
+  padding: 1rem;
+  }
+  .feature-card{
+  padding: 1rem;
+  }
+  .feature-card{
+  flex: 0 0 60%;
+  }
+  .feature-card.visible{
+      flex: 0 0 70%;
+  }
+  .what-is-grid{
+  gap: 10px;
+  }
+}
+
+
+.cup-text p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Mobile */
+@media(max-width: 768px){
+  .cup-row, .cup-row.reverse {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .what-is-grid h3{
+   font-size: 12px
+  }
+    .what-is-grid p{
+   font-size: 10px
+  }
+  .cup-img img {
+    width: 100%;
+  }
+}
+</style>
+
+
+    <!-- FAQ Section -->
+
+
+{% comment %}
+Static FAQ Section
+{% endcomment %}
+
+<section class="fs-faq-section">
+  <div class="fs-faq-wrapper">
+
+    <h2 class="fs-faq-title">Frequently Asked Questions</h2>
+
+    <div class="fs-faq-item">
+      <button class="fs-faq-question">
+        Is it easy to use?
+        <span>+</span>
+      </button>
+      <div class="fs-faq-answer">
+        Yes! It may feel new at first, but after 2–3 cycles you'll learn the perfect position. Most users find it very comfortable and easy.
+      </div>
+    </div>
+
+    <div class="fs-faq-item">
+      <button class="fs-faq-question">
+        Will it affect my virginity?
+        <span>+</span>
+      </button>
+      <div class="fs-faq-answer">
+        No. Using a menstrual cup does not affect virginity. It is simply a hygienic menstrual care product.
+      </div>
+    </div>
+
+    <div class="fs-faq-item">
+      <button class="fs-faq-question">
+        Can I wear it overnight?
+        <span>+</span>
+      </button>
+      <div class="fs-faq-answer">
+        Yes, it can be safely worn for up to 8–12 hours depending on flow.
+      </div>
+    </div>
+
+    <div class="fs-faq-item">
+      <button class="fs-faq-question">
+        What if I experience leaking?
+        <span>+</span>
+      </button>
+      <div class="fs-faq-answer">
+        Leaking usually means the cup isn’t fully open. Try adjusting the fold or position until it forms a proper seal.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.fs-faq-section{
+  background: linear-gradient(135deg,#fff7ef,#fff);
+  padding:60px 20px;
+}
+
+.fs-faq-wrapper{
+  max-width:900px;
+  margin:auto;
+}
+
+.fs-faq-title{
+  text-align:center;
+  font-size:34px;
+  color:#77350f;
+  margin-bottom:35px;
+  font-weight:700;
+}
+
+.fs-faq-item{
+  background:#fff;
+  border-radius:14px;
+  margin-bottom:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  overflow:hidden;
+  border-left:6px solid #AB7841;
+}
+
+.fs-faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  padding:20px;
+  font-size:17px;
+  font-weight:600;
+  color:#77350f;
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+}
+
+.fs-faq-question span{
+  font-size:20px;
+  transition:0.3s;
+}
+
+.fs-faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .3s ease;
+  padding:0 20px;
+  color:#444;
+  font-size:15px;
+}
+
+.fs-faq-item.active .fs-faq-answer{
+  max-height:200px;
+  padding-bottom:20px;
+}
+
+.fs-faq-item.active .fs-faq-question span{
+  transform:rotate(45deg);
+}
+</style>
+
+<script>
+document.querySelectorAll(".fs-faq-question").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    btn.parentElement.classList.toggle("active");
+  });
+});
+</script>
+
+
+    
+
+    <!-- Footer -->
+    
+     <section class="fs-cta-section">
+  <div class="fs-cta-box">
+
+    <h3 class="fs-cta-title">Ready to Make the Switch?</h3>
+
+    <p class="fs-cta-sub">
+      Join thousands of women choosing a comfortable, sustainable future.
+    </p>
+
+    <a href="https://timepads.in/products/menstrual-cups" class="fs-cta-btn">
+      Get Your Cup Now →
+    </a>
+
+  </div>
+</section>
+   
+{% style %}
+.fs-cta-section{
+  padding:70px 20px;
+  background:linear-gradient(135deg,#fff7ef,#ffffff);
+  text-align:center;
+}
+
+.fs-cta-box{
+  max-width:800px;
+  margin:auto;
+  padding:50px 30px;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+  border-top:6px solid #AB7841;
+}
+
+.fs-cta-title{
+  font-size:36px;
+  color:#77350f;
+  margin-bottom:15px;
+  font-weight:700;
+}
+
+.fs-cta-sub{
+  font-size:18px;
+  color:#555;
+  margin-bottom:30px;
+}
+
+.fs-cta-btn{
+  display:inline-block;
+  background:#77350f;
+  color:#fff;
+  padding:16px 17px;
+  border-radius:50px;
+  font-size:18px;
+  font-weight:600;
+  text-decoration:none;
+  transition:0.3s;
+  box-shadow:0 10px 20px rgba(119,53,15,0.3);
+}
+
+.fs-cta-btn:hover{
+  background:#AB7841;
+  transform:translateY(-3px);
+}
+
+.fs-cta-note{
+  margin-top:25px;
+  color:#666;
+  font-size:14px;
+}
+
+{% endstyle %}
+
+<script>
+document.querySelector(".fs-cta-btn")?.addEventListener("mouseover",()=>{
+  document.querySelector(".fs-cta-btn").style.letterSpacing="1px";
+});
+</script>
+  
+
+
+
+{% schema %}
+{
+  "name": "menstrual-cup",
+  "settings": [],
+  "presets": [
+    {
+      "name": "menstrual-cup",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

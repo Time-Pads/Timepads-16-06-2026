@@ -1,0 +1,42 @@
+<script>
+  (function () {
+    // Define the array of strings to look for in the script or content
+    const stringsToMatch = ['moengage', 'clarity', 'troopod-widget-build'];
+
+    // Function to check if a script src or content contains any of the strings in the array
+    function scriptContainsString(scriptElement, strings) {
+      const scriptSrc = scriptElement.getAttribute('src') || '';
+      const scriptContent = scriptElement.textContent || '';
+      return strings.some((str) => scriptSrc.includes(str) || scriptContent.includes(str));
+    }
+
+    // Callback function to execute when mutations are observed
+    function mutationCallback(mutationsList) {
+      mutationsList.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.tagName === 'SCRIPT') {
+              if (scriptContainsString(node, stringsToMatch)) {
+                node.setAttribute('type', 'lazy-script');
+              }
+            }
+          });
+        }
+      });
+    }
+
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(mutationCallback);
+
+    // Start observing the document for added script and link tags immediately
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Disconnect the observer after DOMContentLoaded event
+    document.addEventListener('DOMContentLoaded', () => {
+      observer.disconnect();
+    });
+  })(); 
+</script>

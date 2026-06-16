@@ -1,0 +1,222 @@
+<div class="page-width wrapper">
+    <div class="vision-mission-container">
+        {% for block in section.blocks %}
+        <div class="vision-wrapper animate-on-scroll">
+          <a href="{{ block.settings.url }}">
+           <img src="{{ block.settings.image | image_url }}" alt="offers">
+          </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% style %}  
+/* Main Container */
+.vision-mission-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    background-color: #f5f5f5; 
+    padding: 30px 15px;
+}
+
+.vision-wrapper {
+    flex: 1 1 calc(33.333% - 20px); /* Three items per row */
+    max-width: calc(33.333% - 20px);
+   /* Black background */
+    color: #fff; /* White text */
+    text-align: center;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Adjustments for Mobile */
+@media (max-width: 768px) {
+    .vision-wrapper {
+        flex: 1 1 calc(100% - 20px); /* Full width on small screens */
+        max-width: calc(100% - 20px);
+    }
+}
+
+/* Circle Header */
+.circle-header {
+    width: 30%;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #ededed; /* Dark grey */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.circle-header span {
+    color: #000; /* Cyan */
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Sub-heading Style */
+.sub-heading {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #fff; /* White text */
+    margin-top: 10px;
+}
+
+/* Hover Effect */
+.vision-wrapper:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Animation: Fade-in on Scroll */
+.animate-on-scroll.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+{% endstyle %} 
+
+<script>
+
+const scrollAnimations = () => {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+
+    const onScroll = () => {
+        elements.forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 50) {
+                el.classList.add('show');
+            }
+        });
+    };
+
+
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+};
+
+// Initialize animations when DOM content is loaded
+document.addEventListener('DOMContentLoaded', scrollAnimations);
+</script>
+
+
+
+
+{%  schema %}
+    {
+      "name": "Vision Mission",
+      "tag": "section",
+      "class": "grid-stack-slider",
+      "settings": [
+        {
+          "type": "text",
+          "id": "section_heading",
+          "label": "Section heading",
+          "default": "Shop The Collection"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "default":12,
+          "unit": "px",
+          "label":"Font Size"
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "default":12,
+          "unit": "px",
+          "label":"Font Size Mobile"
+        },
+        {
+          "type": "text",
+          "id": "section_sub_heading",
+          "label": "Section Sub heading",
+          "default": "Elevate Your Look, Your Material, Your Way"
+        },
+        {
+          "type": "header",
+          "content": "Padding"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding Bottom",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mpadding_top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Padding Top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mpadding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Padding Bottom",
+          "default": 0
+        }
+      ],
+      "blocks": [
+        {
+          "type": "images",
+          "name": "images",
+          "limit": 10,
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "url",
+              "id": "url",
+              "label": "Url"
+            }
+          ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Vision Mission"
+        }
+      ]
+    }
+    {% endschema %}

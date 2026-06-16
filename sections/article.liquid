@@ -1,0 +1,1345 @@
+<!-- /sections/article.liquid -->
+{% assign number_of_comments = article.comments_count %}
+{% assign show_featured_image = section.settings.show_featured_image %}
+
+{% comment %}
+  If a comment was just submitted and it has no blank fields, we have an extra comment to count.
+{% endcomment %}
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+{% assign sidebar_enable = false %}
+{% if article.tags != blank and section.settings.sidebar_tags %}
+  {% assign sidebar_enable = true %}
+{% elsif section.settings.recent %}
+  {% assign sidebar_enable = true %}
+{% endif %}
+
+
+{% assign blog_grid = 'medium-up--two-thirds medium-up--push-one-sixth' %}
+{% if sidebar_enable %}
+  {% assign blog_grid = 'medium-up--two-thirds' %}
+{% endif %}
+
+
+<div class="{{ section.settings.color_bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="article"
+  style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  {%- if article.image and show_featured_image -%}
+    <div data-overlay-header>
+      {%- assign alt = article.image.alt | default: 'Banner Image' -%}
+      {% render 'image-parallax', img_object: article.image, frame_height_class: section.settings.image_height, bg_position: section.settings.bg_position, preload: true, loading: 'eager', fetchpriority: 'high', alt: alt %}
+    </div>
+  {%- endif -%}
+
+<!-- Mobile Share Bar -->
+
+<!-- SHARE BUTTONS -->
+
+<div class="tp-simple-share desktop-hide">
+
+  <p class="tp-simple-share__title">
+    Share this blog
+  </p>
+
+  <div class="tp-simple-share__icons">
+
+    <!-- WhatsApp -->
+    <a
+      href="https://wa.me/?text={{ article.title }} - {{ shop.url }}{{ article.url }}"
+      target="_blank"
+      class="tp-simple-share__icon tp-simple-share__icon--whatsapp"
+      aria-label="WhatsApp"
+    >
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+    </a>
+
+    <!-- Facebook -->
+    <a
+      href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}"
+      target="_blank"
+      class="tp-simple-share__icon tp-simple-share__icon--facebook"
+      aria-label="Facebook"
+    >
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt="Facebook" />
+    </a>
+
+    <!-- Native Share -->
+    <button
+      type="button"
+      class="tp-simple-share__icon tp-simple-share__icon--share"
+      id="tpNativeShare"
+      aria-label="Share"
+    >
+      <svg viewBox="0 0 24 24" fill="none">
+        <path
+          d="M12 16V4M12 4L7 9M12 4L17 9"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M5 15V18C5 19.1046 5.89543 20 7 20H17C18.1046 20 19 19.1046 19 18V15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+  </div>
+</div>
+
+<style>
+
+.tp-simple-share{
+  margin:24px 0;
+  padding:16px 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border-radius:18px;
+  background:#fff;
+  width: 90%;
+  margin: auto;
+  border:1px solid #ebe6df;
+  box-shadow:0 6px 20px rgba(0,0,0,.04);
+}
+
+.tp-simple-share__title{
+  margin:0;
+
+  font-size:15px;
+  font-weight:600;
+  color:#1f1f1f;
+}
+
+.tp-simple-share__icons{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.tp-simple-share__icon{
+  width:44px;
+  height:44px;
+
+  border:none;
+  cursor:pointer;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  transition:0.25s ease;
+}
+
+.tp-simple-share__icon:hover{
+  transform:translateY(-2px) scale(1.05);
+}
+
+.tp-simple-share__icon img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+}
+
+.tp-simple-share__icon svg{
+  width:20px;
+  height:20px;
+}
+
+/* colors */
+
+.tp-simple-share__icon--whatsapp{
+  background:#e9fff1;
+}
+
+.tp-simple-share__icon--facebook{
+  background:#eef4ff;
+}
+
+.tp-simple-share__icon--share{
+  background:#f5f5f5;
+  color:#222;
+}
+
+@media only screen and (min-width: 768px) {
+  .desktop-hide{
+    display: none;
+  }
+}
+
+/* mobile */
+
+@media(max-width:768px){
+
+  .tp-simple-share{
+    padding:14px 16px;
+    border-radius:16px;
+            margin: auto;
+        margin-top: 1rem;
+  }
+  
+
+  .tp-simple-share__title{
+    font-size:14px;
+  }
+
+  .tp-simple-share__icon{
+    width:40px;
+    height:40px;
+  }
+
+  .tp-simple-share__icon img{
+    width:20px;
+    height:20px;
+  }
+}
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const shareBtn = document.getElementById("tpNativeShare");
+
+  if (!shareBtn) return;
+
+  shareBtn.addEventListener("click", async () => {
+
+    const shareData = {
+      title: document.title,
+      text: "{{ article.title }}",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log("Share cancelled");
+      }
+
+    } else {
+
+      navigator.clipboard.writeText(window.location.href);
+
+      alert("Link copied successfully");
+
+    }
+
+  });
+
+});
+
+</script>
+
+
+  <div class="{{ section.settings.width }} section-padding">
+    <div class="float-grid">
+      <article class="grid__item {{ blog_grid }}">
+        <div class="blog__article{% if article.image and show_featured_image %} blog__article--over-image{% endif %}">
+          <header>
+            <h1 class="blog__article__title heading-size-9">{{ article.title }}</h1>
+            {% if section.settings.blog_show_meta %}
+              {% capture author %}<span class="strong">{{ article.author }}</span>{% endcapture %}
+              {% capture date %}<time>{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+              <p class="blog__article--light">{{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}</p>
+            {% endif %}
+          </header>
+
+          <div class="blog__article__content rte">
+            {{ article.content }}
+          </div>
+
+          {% if section.settings.tags %}
+            {% render 'tags-article', article: article %}
+          {% endif %}
+          {% if section.settings.social %}
+            <div class="text-center">
+              {% render 'share' article: article, label: section.settings.share_label %}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if blog.next_article or blog.previous_article %}
+          <p class="clearfix">
+            {% if blog.previous_article %}
+              <span class="left">
+                <a href="{{ blog.previous_article }}" class="btn--soft">
+                  &larr; {{ 'blogs.article.older_post' | t }}
+                </a>
+              </span>
+            {% endif %}
+            {% if blog.next_article %}
+              <span class="right">
+                <a href="{{ blog.next_article }}" class="btn--soft">
+                  {{ 'blogs.article.newer_post' | t }} &rarr;
+                </a>
+              </span>
+            {% endif %}
+          </p>
+        {% endif %}
+
+        {% if blog.comments_enabled? %}
+          {% paginate article.comments by 10 %}
+            {% comment %}
+              #Comments is required, it is used as an anchor link by Shopify.
+            {% endcomment %}
+            <div class="blog__comments mt-r11" id="Comments">
+
+              {% if article.comments_count > 0 %}
+                <p class="kicker-flourished text-left">{{ 'blogs.comments.comments_with_count' | t: count: number_of_comments }}</p>
+              {% endif %}
+
+              {% if comment and comment.created_at %}
+                <p class="note form-success">
+                  {% if blog.moderated? %}
+                    {{ 'blogs.comments.success_moderated' | t }}
+                  {% else %}
+                    {{ 'blogs.comments.success' | t }}
+                  {% endif %}
+                </p>
+              {% endif %}
+
+              {% if number_of_comments > 0 %}
+                <ul>
+                  {% comment %}
+                    If a comment was just submitted with no blank field, show it.
+                  {% endcomment %}
+                  {% if comment and comment.created_at and blog.moderated? %}
+                    <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
+                        {% render 'comment', comment: comment %}
+                    </li>
+                  {% endif %}
+
+                  {% comment %}
+                    Showing the rest of the comments.
+                  {% endcomment %}
+                  {% for comment in article.comments %}
+                    <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+                        {% render 'comment', comment: comment %}
+                    </li>
+                  {% endfor %}
+                </ul>
+
+                {% if paginate.pages > 1 %}
+                  <hr class="hr--clear">
+                  <div class="text-center">
+                    {% render 'pagination-custom', paginate: paginate %}
+                  </div>
+                {% endif %}
+
+              {% endif %}
+
+
+<section class="tp-social-connect">
+  <div class="tp-social-connect__inner">
+
+    <div class="tp-social-connect__content">
+      <span class="tp-social-connect__label">
+        CONNECT WITH US
+      </span>
+
+      <h2 class="tp-social-connect__title">
+          Stay connected with Time Pads
+      </h2>
+
+      <p class="tp-social-connect__text">
+         Discover wellness tips, product updates, period care guidance,
+  and empowering moments from Time Pads.
+      </p>
+    </div>
+
+    <div class="tp-social-connect__links">
+
+      <a
+        href="https://www.instagram.com/timepads.in/"
+        target="_blank"
+        class="tp-social-connect__item"
+      >
+        <span class="tp-social-connect__icon tp-social-connect__icon--instagram">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" rx="5"
+              stroke="currentColor" stroke-width="2"></rect>
+            <circle cx="12" cy="12" r="4"
+              stroke="currentColor" stroke-width="2"></circle>
+            <circle cx="17.5" cy="6.5" r="1"></circle>
+          </svg>
+        </span>
+
+        <div class="tp-social-connect__details">
+          <small>Instagram</small>
+          <strong>@timepads.in</strong>
+        </div>
+      </a>
+
+      <a
+        href="https://www.facebook.com/people/Time-sanitary-pads/61566376860338/"
+        target="_blank"
+        class="tp-social-connect__item"
+      >
+        <span class="tp-social-connect__icon tp-social-connect__icon--facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v3H7v4h3v5h4v-5h3l1-4h-4V9c0-.6.4-1 1-1z"/>
+          </svg>
+        </span>
+
+        <div class="tp-social-connect__details">
+          <small>Facebook</small>
+          <strong>Time Sanitary Pads</strong>
+        </div>
+      </a>
+
+      <a
+        href="https://www.youtube.com/@timesanitarypads"
+        target="_blank"
+        class="tp-social-connect__item"
+      >
+        <span class="tp-social-connect__icon tp-social-connect__icon--youtube">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21.6 7.2s-.2-1.5-.8-2.1c-.8-.8-1.7-.8-2.1-.9C15.8 4 12 4 12 4s-3.8 0-6.7.2c-.4 0-1.3.1-2.1.9-.6.6-.8 2.1-.8 2.1S2 8.9 2 10.5v1c0 1.6.2 3.3.2 3.3s.2 1.5.8 2.1c.8.8 1.9.8 2.4.9 1.7.2 6.6.2 6.6.2s3.8 0 6.7-.2c.4 0 1.3-.1 2.1-.9.6-.6.8-2.1.8-2.1s.2-1.7.2-3.3v-1c0-1.6-.2-3.3-.2-3.3zM10 14.5v-5l4.5 2.5-4.5 2.5z"/>
+          </svg>
+        </span>
+
+        <div class="tp-social-connect__details">
+          <small>YouTube</small>
+          <strong>@timesanitarypads</strong>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+.tp-social-connect {
+  padding: 24px 16px;
+}
+
+.tp-social-connect__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 42px 48px;
+  border-radius: 24px;
+  background: #faf8f5;
+  border: 1px solid #ebe6df;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.tp-social-connect__content {
+  max-width: 520px;
+}
+
+.tp-social-connect__label {
+  display: inline-block;
+  margin-bottom: 12px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #ab7841;
+}
+
+.tp-social-connect__title {
+  margin: 0 0 14px;
+
+  font-size: 42px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #1f1f1f;
+}
+
+.tp-social-connect__text {
+  margin: 0;
+
+  font-size: 16px;
+  line-height: 1.8;
+  color: #666;
+}
+
+.tp-social-connect__links {
+  width: 100%;
+  max-width: 380px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tp-social-connect__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 18px 20px;
+
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #ece7e0;
+
+  text-decoration: none;
+
+  transition: all 0.25s ease;
+}
+
+.tp-social-connect__item:hover {
+  transform: translateY(-2px);
+  border-color: #d8c9ba;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.tp-social-connect__icon {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.tp-social-connect__icon svg {
+  width: 22px;
+  height: 22px;
+  color: #fff;
+}
+
+.tp-social-connect__icon--instagram {
+  background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af);
+}
+
+.tp-social-connect__icon--facebook {
+  background: #1877f2;
+}
+
+.tp-social-connect__icon--youtube {
+  background: #ff0000;
+}
+
+.tp-social-connect__details small {
+  display: block;
+  margin-bottom: 4px;
+
+  font-size: 12px;
+  color: #888;
+}
+
+.tp-social-connect__details strong {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+@media screen and (max-width: 768px) {
+
+  .tp-social-connect__inner {
+    padding: 28px 22px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  .tp-social-connect__title {
+    font-size: 32px;
+  }
+
+  .tp-social-connect__links {
+    max-width: 100%;
+  }
+
+  .tp-social-connect__item {
+    padding: 16px;
+  }
+}
+
+{% endstyle %}
+
+<div class="comment-form-container">
+
+  {% form 'new_comment', article, id: 'commentForm' %}
+
+<div class="comment-form-container">
+
+  <h2 class="comment-title">Got thoughts? Share them with us 👇</h2>
+
+  {% if form.posted_successfully? %}
+    <div class="comment-success-box">
+      <div class="success-icon">✔</div>
+      <div>
+        <p class="success-title">Comment submitted successfully</p>
+        <p class="success-sub">Thanks for sharing your thoughts. We appreciate it!</p>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if form.errors %}
+    <div class="comment-error">
+      {{ form.errors | default_errors }}
+    </div>
+  {% endif %}
+
+  <div class="comment-form-grid">
+    <div class="comment-field">
+      <input type="text" name="comment[author]" id="CommentAuthor" required placeholder=" ">
+      <label>Name</label>
+    </div>
+
+    <div class="comment-field">
+      <input type="email" name="comment[email]" id="CommentEmail" required placeholder=" ">
+      <label>Email</label>
+    </div>
+  </div>
+
+  <div class="comment-field">
+    <input type="tel" id="CommentPhone" placeholder=" ">
+    <label>Phone Number</label>
+  </div>
+
+  <div class="comment-field comment-message">
+    <textarea name="comment[body]" id="CommentBody" required placeholder=" "></textarea>
+    <label>Message</label>
+  </div>
+
+  <div class="checkbox-field">
+    <input type="checkbox" id="privacyPolicy" required>
+    <label for="privacyPolicy">I agree to the Privacy Policy</label>
+  </div>
+
+  <button type="submit" class="comment-submit-btn" disabled id="submitBtn">
+    Post comment
+  </button>
+
+</div>
+
+{% endform %}
+</div>
+
+{% comment %} <script>
+document.getElementById('commentForm').addEventListener('submit', function(e) {
+
+  const formData = new FormData();
+  formData.append("name", document.getElementById('CommentAuthor')?.value || '');
+  formData.append("email", document.getElementById('CommentEmail')?.value || '');
+  formData.append("phone", document.getElementById('CommentPhone')?.value || '');
+  formData.append("message", document.getElementById('CommentBody')?.value || '');
+
+  fetch("https://formspree.io/f/xdapqekb", {
+    method: "POST",
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+
+});
+</script> {% endcomment %}
+
+<script>
+const form = document.getElementById('commentForm');
+const btn = document.getElementById('submitBtn');
+
+const fields = [
+  document.getElementById('CommentAuthor'),
+  document.getElementById('CommentEmail'),
+  document.getElementById('CommentBody'),
+  document.getElementById('privacyPolicy')
+];
+
+// Enable/Disable button
+function checkForm() {
+  let valid = true;
+
+  fields.forEach(field => {
+    if (field.type === "checkbox") {
+      if (!field.checked) valid = false;
+    } else {
+      if (!field.value.trim()) valid = false;
+    }
+  });
+
+  btn.disabled = !valid;
+}
+
+fields.forEach(field => {
+  field.addEventListener('input', checkForm);
+  field.addEventListener('change', checkForm);
+});
+
+// Formspree trigger
+form.addEventListener('submit', function() {
+
+  const formData = new FormData();
+  formData.append("name", document.getElementById('CommentAuthor').value);
+  formData.append("email", document.getElementById('CommentEmail').value);
+  formData.append("phone", document.getElementById('CommentPhone').value);
+  formData.append("message", document.getElementById('CommentBody').value);
+
+  fetch("https://formspree.io/f/xdapqekb", {
+    method: "POST",
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  });
+
+});
+</script>
+
+            <style>
+.comment-form-container {
+  max-width: 720px;
+  margin: auto;
+  background: #fff;
+  padding: 30px 28px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.comment-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.comment-form-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media(max-width: 768px) {
+  .comment-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .tp-simple-share.mobile-hide{
+    display: none;
+  }
+}
+
+.comment-field {
+  position: relative;
+}
+
+.comment-field input,
+.comment-field textarea {
+  width: 100%;
+  padding: 16px 14px 8px;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 12px;
+  background: #f9f9f9;
+  font-size: 15px;
+  transition: all 0.25s ease;
+}
+
+.comment-field input:focus,
+.comment-field textarea:focus {
+  border-color: #000;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.comment-field textarea {
+  height: 140px;
+  resize: none;
+}
+
+.comment-field label {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  font-size: 14px;
+  color: #777;
+  transition: 0.2s ease;
+  background: #fff;
+  padding: 0 6px;
+}
+
+.comment-field input:focus + label,
+.comment-field input:not(:placeholder-shown) + label,
+.comment-field textarea:focus + label,
+.comment-field textarea:not(:placeholder-shown) + label {
+  top: -8px;
+  font-size: 12px;
+  color: #000;
+  font-weight: 600;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 14px;
+}
+
+.comment-submit-btn {
+  width: 100%;
+  margin-top: 18px;
+  background: linear-gradient(135deg, #000, #333);
+  color: #fff;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+
+.comment-submit-btn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.comment-submit-btn:not(:disabled) {
+  opacity: 1;
+}
+
+.comment-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
+/* SUCCESS BOX */
+.comment-success-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f0fff5;
+  border: 1px solid #b7f5c8;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.success-title {
+  font-weight: 600;
+  color: #166534;
+  margin: 0;
+}
+
+.success-sub {
+  font-size: 13px;
+  color: #4b5563;
+  margin: 0;
+}
+</style>
+            </div>
+          {% endpaginate %}
+        {% endif %}
+      </article>
+
+      {% if sidebar_enable %}
+
+
+
+        
+        <div class="grid__item medium-up--one-third">
+<!-- SHARE BUTTONS -->
+
+<div class="tp-simple-share mobile-hide">
+
+  <p class="tp-simple-share__title">
+    Share this blog
+  </p>
+
+  <div class="tp-simple-share__icons">
+
+    <!-- WhatsApp -->
+    <a
+      href="https://wa.me/?text={{ article.title }} - {{ shop.url }}{{ article.url }}"
+      target="_blank"
+      class="tp-simple-share__icon tp-simple-share__icon--whatsapp"
+      aria-label="WhatsApp"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+        alt="WhatsApp"
+      >
+    </a>
+
+    <!-- Facebook -->
+    <a
+      href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}"
+      target="_blank"
+      class="tp-simple-share__icon tp-simple-share__icon--facebook"
+      aria-label="Facebook"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg"
+        alt="Facebook"
+      >
+    </a>
+
+    <!-- Native Share -->
+    <button
+      type="button"
+      class="tp-simple-share__icon tp-simple-share__icon--share"
+      id="tpNativeShare"
+      aria-label="Share"
+    >
+      <svg viewBox="0 0 24 24" fill="none">
+        <path
+          d="M12 16V4M12 4L7 9M12 4L17 9"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M5 15V18C5 19.1046 5.89543 20 7 20H17C18.1046 20 19 19.1046 19 18V15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+  </div>
+</div>
+
+<style>
+
+.tp-simple-share{
+  margin:24px 0;
+  padding:16px 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border-radius:18px;
+  background:#fff;
+
+  border:1px solid #ebe6df;
+  box-shadow:0 6px 20px rgba(0,0,0,.04);
+}
+
+.tp-simple-share__title{
+  margin:0;
+
+  font-size:15px;
+  font-weight:600;
+  color:#1f1f1f;
+}
+
+.tp-simple-share__icons{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.tp-simple-share__icon{
+  width:44px;
+  height:44px;
+
+  border:none;
+  cursor:pointer;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  transition:0.25s ease;
+}
+
+.tp-simple-share__icon:hover{
+  transform:translateY(-2px) scale(1.05);
+}
+
+.tp-simple-share__icon img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+}
+
+.tp-simple-share__icon svg{
+  width:20px;
+  height:20px;
+}
+
+/* colors */
+
+.tp-simple-share__icon--whatsapp{
+  background:#e9fff1;
+}
+
+.tp-simple-share__icon--facebook{
+  background:#eef4ff;
+}
+
+.tp-simple-share__icon--share{
+  background:#f5f5f5;
+  color:#222;
+}
+
+/* mobile */
+
+@media(max-width:768px){
+
+  .tp-simple-share{
+    padding:14px 16px;
+    border-radius:16px;
+            width: 90%;
+        margin: auto;
+        margin-top: 1rem;
+  }
+
+  .tp-simple-share__title{
+    font-size:14px;
+  }
+
+  .tp-simple-share__icon{
+    width:40px;
+    height:40px;
+  }
+
+  .tp-simple-share__icon img{
+    width:20px;
+    height:20px;
+  }
+}
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const shareBtn = document.getElementById("tpNativeShare");
+
+  if (!shareBtn) return;
+
+  shareBtn.addEventListener("click", async () => {
+
+    const shareData = {
+      title: document.title,
+      text: "{{ article.title }}",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log("Share cancelled");
+      }
+
+    } else {
+
+      navigator.clipboard.writeText(window.location.href);
+
+      alert("Link copied successfully");
+
+    }
+
+  });
+
+});
+
+</script>
+
+          <div class="blog__sidebar">
+            <h2 class="blog__sidebar__title">{{ blog.title }}</h2>
+            <a class="blog__rss" href="{{ blog.url }}.atom" title="{{ shop.name }} RSS" target="_blank">
+
+              <span class="visually-hidden">RSS</span>
+            </a>
+            <hr class="hr--small">
+            {% if blog.all_tags != blank and section.settings.sidebar_tags %}
+              <p class="accent-size-3 strong">{{ 'blogs.article.tags' | t }}</p>
+
+              <div class="blog__tags">
+                {% if blog.all_tags.size > 1 %}
+                  <div class="blog__tags-wrapper">
+                    {% for tag in blog.all_tags %}
+                    <a class="btn--soft btn--primary blog__tag" href="{% unless routes.root_url == '/' %}{{ routes.root_url }}{% endunless %}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="pt-r8"></div>
+            {% endif %}
+            {% if section.settings.recent %}
+              {% assign counter = 0 %}
+              {% assign article_limit = 2 %}
+              {% assign current_article = article %}
+              {% for article in blog.articles %}
+                {% unless article.handle == current_article.handle %}
+                  {% render 'article-grid-item',
+                    article: article,
+                    wh_ratio: section.settings.wh_ratio,
+                    show_author: section.settings.show_author,
+                    show_preview: section.settings.show_preview,
+                    show_link: section.settings.show_link,
+                    show_tags: section.settings.show_tags,
+                    show_date: section.settings.show_date,
+                    section_columns: 3,
+                    section_width: section.settings.width
+                  %}
+                  {% assign counter = counter | plus: 1 %}
+                  {% if counter == article_limit %}
+                    {% break %}
+                  {% endif %}
+                {% endunless %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ shop.url | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      {% assign image_size = article.image.width | append: 'x' %}
+      "image": [
+        {{ article | img_url: image_size | prepend: "https:" | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }}
+    }
+  }
+  </script>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Article"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_meta",
+      "label": "Show date and author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tags",
+      "label": "Show article tags"
+    },
+    {
+      "type": "select",
+      "id": "color_bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"},
+        { "value": "palette--bright bg--bright", "label": "Bright"},
+        { "value": "palette--bright bg--bright--accent", "label": "Bright accent"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Share"
+    },
+    {
+      "type": "checkbox",
+      "id": "social",
+      "label": "Show social sharing"
+    },
+    {
+      "type": "text",
+      "id": "share_label",
+      "label": "Text",
+      "default": "Share"
+    },
+    {
+      "type": "header",
+      "content": "Featured Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "default": "use_screen_one_third",
+      "options": [
+        { "value": "use_screen_full", "label": "Full screen height"},
+        { "value": "use_screen_three_quarters", "label": "Three quarters of screen height"},
+        { "value": "use_screen_two_thirds", "label": "Two thirds of screen height"},
+        { "value": "use_screen_one_half", "label": "One half of screen height"},
+        { "value": "use_screen_one_third", "label": "One third of screen height"},
+        { "value": "use_screen_one_fifth", "label": "One fifth of screen height"},
+        { "value": "use_pixels_800", "label": "800px" },
+        { "value": "use_pixels_650", "label": "650px" },
+        { "value": "use_pixels_500", "label": "500px" },
+        { "value": "use_image", "label": "Image height"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Position",
+      "default": "center-center",
+      "options": [
+        { "label": "Top", "value": "center-top" },
+        { "label": "Right", "value": "right-center" },
+        { "label": "Center", "value": "center-center" },
+        { "label": "Left", "value": "left-center" },
+        { "label": "Bottom", "value": "center-bottom" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "sidebar_tags",
+      "label": "Show all tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "recent",
+      "default": true,
+      "label": "Show recent articles"
+    },
+    {
+      "type": "range",
+      "id": "wh_ratio",
+      "min": 0.5,
+      "max": 5,
+      "step": 0.1,
+      "unit": ":1",
+      "label": "Image scaling ratio",
+      "info": "Tall to wide",
+      "default": 1.7
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview",
+      "label": "Show article excerpt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link",
+      "label": "Show read more link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full", "label": "Full width padded" },
+        { "value": "wrapper", "label": "Page width" },
+        { "value": "wrapper--narrow", "label": "Page width narrow" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

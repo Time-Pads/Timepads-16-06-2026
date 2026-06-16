@@ -1,0 +1,74 @@
+<section class="influencer-form-section">
+  <div class="page-width">
+    <div class="influencer-form-wrapper">
+      <h2 class="influencer-form-title">Join Our Influencer Program</h2>
+      <p class="influencer-form-subtitle">
+        Love our products? Partner with us and grow together. Fill the form below to collaborate with Timepads.
+      </p>
+
+      <div class="form-embed">
+        <iframe
+          src="https://forms.office.com/pages/responsepage.aspx?id=jZ5OVvMlTkmH6paK9J7yKwAQWfkGDddCsQaocetoa4lUNEpHTE8wUDdCQlVLU1dXOU1ORVBQUzFTWi4u&embed=true"
+          title="Influencer form"
+          loading="lazy"
+          frameborder="0"
+          style="border:none;width:100%;min-height:900px;border-radius:12px;"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.influencer-form-section {
+  padding: 60px 0;
+  background: #fffaf5;
+}
+
+.influencer-form-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.influencer-form-title {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #77350f;
+}
+
+.influencer-form-subtitle {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.form-embed {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 768px) {
+  .influencer-form-title {
+    font-size: 24px;
+  }
+  .form-embed iframe {
+    min-height: 1100px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Influencer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Influencer"
+    }
+  ]
+}
+{% endschema %}

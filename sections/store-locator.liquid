@@ -1,0 +1,228 @@
+{{ 'location.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
+
+<div class="section--{{ section.id }}-padding {% if section.settings.full_width == true %} page-width {% endif %}">
+<h2 class="center">{{ section.settings.heading }}</h2>
+<div class="location-main-container">
+<div class="location-main-wrapper">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4180.477471496028!2d77.57723697539258!3d13.039933587281743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17ebf805831b%3A0x501f2c19eb2bf70a!2s108h%2C%205th%20Cross%20Rd%2C%20MLA%20Layout%2C%20Bhoopasandra%2C%20R.M.V.%202nd%20Stage%2C%20Bengaluru%2C%20Karnataka%20560094!5e1!3m2!1sen!2sin!4v1733306873458!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+<div class="container-location-text bg-{{ section.id }}">
+{% for block in section.blocks %}
+{% if block.type == 'heading' %}
+<h2 class="banner-heading h2">{{ block.settings.heading_text }}</h2>
+{% endif %}
+
+    {% if block.type == 'subheading' %}
+      <div>
+        <p class="address-heading">{{ block.settings.address_heading }}</p>
+        <p class="banner-subheading banner-subheading--colored h5">{{ block.settings.subheading_text }}</p>
+      </div>
+    {% endif %}
+
+    {% if block.type == 'Button' %}
+      <a class="button button-small direction-button button-{{ block.id }}" href="{{ block.settings.button_id }}">
+        {{- block.settings.button_text -}}
+      </a>
+    {% endif %}
+
+    {% if block.type == 'custom_liquid' %}
+      <p class="custom-subheading">{{ block.settings.custom_subheading_text }}</p>
+      <div class="banner-text rte">{{ block.settings.custom_liquid }}</div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+</div>
+</div>
+
+{% style %}
+.center{
+    text-align: center;
+}
+.custom-subheading,
+.banner-text.rte{
+    margin-top: 1rem;
+
+}
+.banner-text.rte table:not([class]) td,
+p.banner-subheading.banner-subheading--colored.h5{
+    font-size: 12px;
+}
+h2.banner-heading.h2{
+    font-size: 22px;
+}
+.bg-{{ section.id  }}{
+background: {{ section.settings.content_bg_color}}
+}
+{% for block in section.blocks %}
+.button-{{ block.id }} {
+background: {{ block.settings.button_bg_color }};
+color: {{ block.settings.button_text_color }};
+width: 100%;
+margin-top: 3rem;
+}
+{% endfor %}
+@media screen and (min-width: 750px) {
+.section--{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+}
+
+@media screen and (max-width: 749px) {
+.section--{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+}
+{% endstyle %}
+
+{% schema %}
+{
+"name": "location",
+"settings": [
+{
+"type": "checkbox",
+"id": "full_width",
+"label": "Full width"
+},
+{
+"type": "text",
+"id": "heading",
+"label": "Heading"
+},
+{
+"type": "textarea",
+"id": "iframe_embed_code",
+"label": "Iframe Embed Code"
+},
+{
+"type": "text",
+"id": "iframe_height",
+"label": "Iframe height",
+"default":"450"
+},
+{
+"type": "text",
+"id": "iframe_width",
+"label": "Iframe width",
+"default":"600"
+},
+{
+"type": "header",
+"content": "Section padding"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 2,
+"unit": "px",
+"label": "Padding top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 2,
+"unit": "px",
+"label": "Padding bottom",
+"default": 36
+},
+{
+"type": "color",
+"id":"content_bg_color",
+"label": "Content Background color"
+}
+],
+"blocks": [
+{
+"type": "heading",
+"name": "Heading",
+"settings": [
+{
+"type": "text",
+"id": "heading_text",
+"label": "Heading Text"
+}
+]
+},
+{
+"type": "subheading",
+"name": "Subheading",
+"settings": [
+{
+"type": "text",
+"id":"address_heading",
+"label": "Address Heading",
+"default":"Address"
+},
+{
+"type": "text",
+"id": "subheading_text",
+"label": "Subheading Text"
+}
+]
+},
+{
+"type": "Button",
+"name": "Button",
+"limit": 2,
+"settings": [
+{
+"type": "url",
+"id": "button_id",
+"label": "Button Url"
+},
+{
+"type": "text",
+"id": "button_text",
+"label": "Button Text",
+"default":"Get directions"
+},
+{
+"type": "color",
+"id": "button_text_color",
+"label": "Text color"
+},
+{
+"type": "color",
+"id": "button_bg_color",
+"label": "Background"
+}
+]
+},
+{
+"type": "custom_liquid",
+"name": "Custom Liquid",
+"limit": 2,
+"settings": [
+{
+"type": "text",
+"id":"custom_subheading_text",
+"label": "Opening Hours",
+"default":"Opening hours"
+},
+{
+"type": "liquid",
+"id": "custom_liquid",
+"label": "Enter The Location",
+"info": "Custom Liquid"
+}
+]
+}
+],
+
+"presets": [
+{
+"name": "location",
+"category": "Custom"
+}
+]
+}
+{% endschema %}
+
+

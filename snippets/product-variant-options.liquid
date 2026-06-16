@@ -1,0 +1,770 @@
+
+
+<!-- Timed Popup for Buy Now -->
+{% comment %} 
+<div id="timed-popup" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);justify-content:center;align-items:center;">
+  <div style="background:#fff;padding:40px 32px 32px 32px;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.18);max-width:350px;width:90%;text-align:center;position:relative;">
+    <button id="timed-popup-close" aria-label="Close" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:2rem;line-height:1;color:#888;cursor:pointer;">&times;</button>
+    <div style="font-size:2rem;font-weight:500;margin-bottom:12px;">Complete Your Order Now</div>
+    <div style="font-size:1.1rem;margin-bottom:24px;">Limited stock available</div>
+    <button id="timed-popup-buy" style="background:#000;color:#fff;padding:12px 36px;font-size:1.2rem;border:none;border-radius:8px;cursor:pointer;">Buy Now</button>
+  </div>
+</div> {% endcomment %}
+
+{% comment %} <script>
+
+  // Close button logic
+  var closeBtn = document.getElementById('timed-popup-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      var popup = document.getElementById('timed-popup');
+      if (popup) popup.style.display = 'none';
+    });
+  }
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Existing bundle variant JS ...
+  const bundleProduct = document.querySelector('.bundle-variants-container');
+  if(bundleProduct){
+    const firstVariant = bundleProduct.querySelector('.radio__button:nth-child(1) input');
+    if(firstVariant){
+      firstVariant.checked = true;
+      firstVariant.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  // Timed Popup logic
+  setTimeout(function() {
+    var popup = document.getElementById('timed-popup');
+    if (popup) popup.style.display = 'flex';
+  }, 5000); // 10 seconds
+
+  // Buy Now button logic
+  var buyBtn = document.getElementById('timed-popup-buy');
+  if (buyBtn) {
+    buyBtn.addEventListener('click', function() {
+      // Hide popup
+      var popup = document.getElementById('timed-popup');
+      if (popup) popup.style.display = 'none';
+      // Trigger GoKwik checkout button
+      // Try to find GoKwik checkout button by class or id
+      var gokwikBtn = document.querySelector('.gokwik-checkout-btn, #gokwik-checkout-btn');
+      if (gokwikBtn) {
+        gokwikBtn.click();
+      } else {
+        // fallback: try to click the first visible checkout button
+        var checkoutBtns = document.querySelectorAll('button, a');
+        for (var i = 0; i < checkoutBtns.length; i++) {
+          var el = checkoutBtns[i];
+          if ((el.innerText && el.innerText.toLowerCase().includes('checkout')) && el.offsetParent !== null) {
+            el.click();
+            break;
+          }
+        }
+      }
+    });
+  }
+});
+</script> {% endcomment %}
+{% comment %} <!-- /snippets/product-variant-options.liquid -->
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="product__block__variants"
+  style="
+    --PB: {{ block.settings.padding_bottom }}px;
+    --OPTION-SPACE: {{ block.settings.option_space | default: 30 }}px;
+    --OPTION-SIZE-RADIO: {{ block.settings.option_size_radio | default: 50 }}px;
+    --OPTION-SIZE-SWATCH: {{ block.settings.option_size_swatch | default: 34 }}px;
+    "
+  {{ block.shopify_attributes }}
+>
+  {%- unless product.has_only_default_variant -%}
+    <div class="form__selectors">
+      {%- for option in product.options_with_values -%}
+        {% comment %} Use select over radio for long inputs and mismatched lengths {% endcomment %}
+        {%- liquid
+          assign longest_value = 0
+          assign shortest_value = 100
+          for value in option.values
+            if value.size > longest_value
+              assign longest_value = value.size
+            endif
+
+            if value.size < shortest_value
+              assign shortest_value = value.size
+            endif
+          endfor
+
+          assign lock_width_class = ""
+          assign chars_diff = longest_value | minus: shortest_value
+          if chars_diff < 5 and longest_value < 6
+            assign lock_width_class = "radio__inputs--equal"
+          endif
+
+          assign variant_style = 'dropdown'
+          if settings.variant_form == 'button'
+            assign variant_style = 'button'
+          endif
+          if settings.variant_form == 'auto' and longest_value < 16
+            assign variant_style = 'button'
+          endif
+        -%}
+        {%- if settings.swatches_enable -%}
+          {%- comment -%} Determine if current option matches swatch handle translations {%- endcomment -%}
+          {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
+          {%- assign translation_array = swatch_translation | append: ',' | split: "," | uniq -%}
+          {%- assign is_swatch_option = false -%}
+          {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
+          {%- for translation in translation_array -%}
+            {%- assign translation_handle = translation | downcase | lstrip | rstrip | escape_once -%}
+            {%- if translation_handle == option_handle -%}
+              {%- assign is_swatch_option = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        <div data-swapper-wrapper data-split-select-wrapper
+          class="selector-wrapper {% if is_swatch_option %}selector-wrapper--color{% endif %}{% if is_swatch_option or variant_style == 'button' %} selector-wrapper--fullwidth{% endif %} js"
+          data-select-label="{{ option.name }}"
+          data-option-position="{{ option.position }}"
+        >
+          {%- if variant_style == 'button' or is_swatch_option -%}
+            {%- assign current_value = current_variant.options[forloop.index0] -%}
+            <fieldset class="radio__fieldset">
+              <legend class="radio__legend" aria-label="{{ option.name | escape_once }}">
+                <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+                {% comment %} <span data-option-value data-swapper-target class="product-variant-value">{{ current_value }}</span> {% endcomment %}
+              </legend>
+              {%- if is_swatch_option -%}
+                {%- assign lock_width_class = 'radio__inputs--swatch' -%}
+              {%- endif -%}
+              <div class="radio__inputs {{ lock_width_class }}" data-product-id="{{ product.id }}">
+                {%- for value in option.values -%}
+                  {%- capture input_id -%}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once | handleize }}{%- endcapture -%}
+
+                  {%- if is_swatch_option -%}
+                    <radio-swatch class="swatch__button{% if settings.swatches_squares %} swatch__button--square{% endif %}">
+                    
+                            <input type="radio"
+  data-swatch-input
+  name="options[{{ option.name | escape_once }}]"
+  value="{{ value | escape_once }}" 
+  id="{{ input_id }}"
+  form="{{ uniq_id }}"
+  {% if value == current_value -%}checked{%- endif %}>
+
+                      <label for="{{ input_id }}" data-swatch="{{ value | escape_once }}" data-swapper-hover="{{ value | escape_once }}">
+                        <span class="visually-hidden value">{{ value | escape_once }}</span>
+                        <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
+                      </label>
+                    </radio-swatch>
+
+ 
+                  {%- else -%}
+  {%- comment -%} radio button {%- endcomment -%}
+  {% if option.name  == 'Available In' %}
+    <span class="radio__button aaaaaaaaa">
+  <input
+    type="radio"
+    name="options[{{ option.name | escape_once }}]"
+    value="{{ value | escape_once }}"
+    id="{{ input_id }}-{{ forloop.index }}"
+    form="{{ uniq_id }}"
+    {% if value == current_value -%}checked{%- endif %}
+    data-variant-id-value="{{ variant.id }}"
+    value-of-number="{{ value.id }}" 
+    variant-number-id="{{ variant.id }}"
+    class=""
+  >
+  <label for="{{ input_id }}-{{ forloop.index }}">
+    <span>{{ value | escape_once }}</span>
+    <span class="visually-hidden">
+      {{ 'products.product.variant_sold_out_or_unavailable' | t }}
+    </span>
+  </label>
+</span>
+    {% else %}
+    <span class="radio__button aaaaaaaaa bb">
+  <input
+    type="radio"
+    name="options[{{ option.name | escape_once }}]"
+    value="{{ value | escape_once }}"
+    id="{{ input_id }}-{{ forloop.index }}"
+    form="{{ uniq_id }}"
+    {% if value == current_value -%}checked{%- endif %}
+    data-variant-id-value="{{ variant.id }}"
+    value-of-number="{{ value.id }}" 
+    variant-number-id="{{ variant.id }}"
+    class=""
+  >
+  <label for="{{ input_id }}-{{ forloop.index }}">
+    <span>{{ value | escape_once }}</span>
+    <span class="visually-hidden">
+      {{ 'products.product.variant_sold_out_or_unavailable' | t }}
+    </span>
+  </label>
+</span>
+  {% endif %}
+
+
+
+
+
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </fieldset>
+            
+            
+          {%- else -%}
+            <fieldset class="select__fieldset">
+              {%- capture input_id -%}{{ product.id }}-option-{{ option.position }}{%- endcapture -%}
+              <legend class="radio__legend">
+                <span class="radio__legend__label" id="{{ uniq_id }}-select-{{ option.name | handle }}-label">
+                  {{ option.name | escape_once }}
+                </span>
+              </legend>
+
+              <popout-select>
+                <div class="select-popout" data-popout data-popout-prevent="true">
+                  <button type="button" class="select-popout__toggle" aria-expanded="false" aria-controls="{{ uniq_id }}-select-{{ option.name | handle }}" aria-labelledby="{{ uniq_id }}-select-{{ option.name | handle }}-label" data-popout-toggle>
+                    {{ option.selected_value }}
+                    {%- render 'icon-core-chevron-down' -%}
+                  </button>
+
+                  <ul id="{{ uniq_id }}-select-{{ option.name | handle }}" class="select-popout__list" data-popout-list data-scroll-lock-scrollable>
+                    {%- for value in option.values -%}
+                      <li class="select-popout__item {% if option.selected_value == value %}select-popout__item--current{% endif %}">
+                        <a class="select-popout__option" href="#" {%- if option.selected_value == value -%}aria-current="true"{%- endif -%} data-value="{{ value | escape_once }}" data-popout-option>
+                          <span>
+                            {{ value | escape_once }}
+                          </span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+
+
+                  <input
+                    type="hidden"
+                    name="options[{{ option.name | escape_once }}]"
+                    id="{{ input_id }}"
+                    value="{{ option.selected_value | escape_once }}"
+                    form="{{ uniq_id }}"
+                    data-popout-input
+                    data-single-option-selector
+                    data-index="option{{ option.position }}"/>
+                </div>
+              </popout-select>
+            </fieldset>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>  
+
+
+    <noscript>
+      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
+        {%- for variant in product.variants -%}
+          <option
+            {% if variant == current_variant %} selected="selected"{% endif %}
+            {% unless variant.available %} disabled="disabled"{% endunless %}
+            value="{{ variant.id }}">
+              {{ variant.title }}
+          </option>
+        {%- endfor -%}
+      </select>
+    </noscript>
+  {%- endunless -%}
+</div> {% endcomment %}
+
+
+{% style %}
+
+/* bundle variant layout */
+
+.radio__inputs{
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.bundle-card{
+position:relative;
+border:2px solid #e5e5e5;
+border-radius:14px;
+padding:18px 16px;
+text-align:center;
+width:160px;
+background:#fff;
+cursor:pointer;
+transition:all .25s ease;
+box-shadow:0 6px 12px rgba(0,0,0,0.05);
+}
+
+/* hover effect */
+.bundle-card:hover{
+transform:translateY(-4px);
+box-shadow:0 10px 25px rgba(0,0,0,0.12);
+border-color:#c6a67a;
+}
+
+/* selected variant */
+.radio__button input:checked + label .bundle-card{
+border-color:#b89b73;
+background:#ddd9d3;
+color:#fff;
+box-shadow:0 12px 28px rgba(0,0,0,0.18);
+}
+
+/* title */
+.bundle-title{
+font-size:18px;
+font-weight:700;
+color: black;
+margin-bottom:8px;
+}
+
+/* save badge */
+.bundle-save{
+display:inline-block;
+background:#008E40;
+color:#fff;
+font-size:12px;
+font-weight:600;
+padding:4px 10px;
+border-radius:6px;
+margin-bottom:10px;
+letter-spacing:.5px;
+}
+
+/* price */
+.bundle-price{
+font-size:24px;
+font-weight:700;
+margin-bottom:3px;
+color: black;
+}
+
+/* compare price */
+.bundle-compare{
+font-size:14px;
+color:#000000;
+text-decoration:line-through;
+}
+
+/* highlight middle option */
+.radio__button:nth-child(2) .bundle-card{
+border:2px solid #b89b73;
+}
+
+/* most popular badge */
+.radio__button:nth-child(2) .bundle-card::before{
+content:"MOST POPULAR";
+position:absolute;
+top:-10px;
+left:50%;
+transform:translateX(-50%);
+background:#ff6a3d;
+color:#fff;
+font-size:10px;
+font-weight:700;
+padding:4px 10px;
+width: 100%;
+border-radius:20px;
+letter-spacing:.5px;
+}
+
+@media only screen and (min-width: 768px){
+     .bundle-variants-container .radio__button label{
+    border: none;
+  }
+  body .bundle-variants-container .radio__fieldset .radio__button input:checked ~ label{
+   border: none;
+    padding:0; 
+  }
+    .bundle-variants-container .radio__button label{
+    padding:0; 
+  }
+ .bundle-variants-container .radio__fieldset .radio__button label:hover{
+    border: none;
+  }
+  .bundle-product-heading span.radio__legend__label{
+  width: 77% !important;
+  text-align: center;
+} 
+}
+
+
+@media only screen and (max-width: 767px){
+  .bundle-variants-container .radio__inputs{
+    flex-wrap: nowrap;
+    gap: 0px;
+  }
+  .bundle-product-heading span.radio__legend__label{
+  width: 100% !important;
+  text-align: center;
+} 
+  .bundle-variants-container .radio__button label:hover{
+    border: none;
+    background-color: transparent;
+  }
+.bundle-save{
+border-radius: 5px !important;
+    font-size: 10px;
+    font-weight: 800;
+}
+.radio__button:nth-child(2) .bundle-card::before{
+  font-size: 8px;
+  top: -1.5rem;
+}
+  body .bundle-variants-container .radio__fieldset .radio__button input:checked ~ label{
+      background: transparent !important;  
+  }
+  .bundle-card{
+        padding: 5px 1px;
+  }
+  .bundle-variants-container .radio__button label{
+   padding: 3px 3px !important;
+  }
+.bundle-title{
+     font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+}
+   .bundle-variants-container .radio__button label{
+    border: none;
+  }
+  .bundle-variants-container .radio__button{
+   flex: 0 0 34%;
+  }
+  .bundle-card{
+
+  width: 100%;
+  }
+   /* .bundle-variants-container .bundle-card{
+    width: 97px;
+  } */
+}
+.bundle-size{
+  letter-spacing: -1px;
+  font-size: 10px;
+  color: black;
+}
+
+.bundle-heading-wrapper{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
+width:100%;
+margin-bottom:10px;
+}
+
+.bundle-heading-text{
+font-size:22px;
+font-weight:700;
+color:#1bb3a9;
+text-transform:capitalize;
+}
+
+.bundle-heading-wrapper .line{
+flex:1;
+height:1px;
+background:#dcdcdc;
+}
+
+.bundle-product-heading{
+    width: 100%;
+    margin: auto;
+
+}
+.bundle-product-heading .bundle-heading-text{
+  font-size: 20px !important;
+  margin-bottom: 1rem !important;
+  font-weight:700;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+      border-left: aqua !important;
+}
+
+
+span.bundle-heading-wrapper{
+  border: none !important;
+      margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+.bundle-product-heading .radio__legend span:not(.radio__legend__label){
+    border-left: none !important;
+}
+.line{
+flex:1;
+height:1px;
+background:linear-gradient(to right, transparent, #dcdcdc, transparent);
+}
+
+
+
+.bundle-heading-wrapper{
+display:flex;
+justify-content:center;
+align-items:center;
+margin-bottom:12px;
+overflow:hidden;
+}
+
+.bundle-heading-text{
+font-size:22px;
+font-weight:700;
+color:#1bb3a9;
+position:relative;
+animation:slideFade 1s ease forwards;
+}
+
+/* underline animation */
+.bundle-heading-text::after{
+content:"";
+position:absolute;
+left:50%;
+bottom:-4px;
+height:3px;
+width:0;
+background:#1bb3a9;
+transform:translateX(-50%);
+border-radius:20px;
+animation:underlineGrow 1.2s ease forwards;
+}
+
+/* text slide animation */
+@keyframes slideFade{
+0%{
+opacity:0;
+transform:translateY(10px);
+}
+100%{
+opacity:1;
+transform:translateY(0);
+}
+}
+span.bundle-heading-text{
+  border-bottom: 1px solid ;
+}
+/* underline grow animation */
+@keyframes underlineGrow{
+0%{
+width:0;
+}
+100%{
+width:120%;
+}
+}
+{% endstyle %}
+
+
+
+
+<!-- /snippets/product-variant-options.liquid -->
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="product__block__variants {% if product.handle == 'period-pain-relief-cream' %} bundle-variants-container {% endif %}"
+  style="
+    --PB: {{ block.settings.padding_bottom }}px;
+    --OPTION-SPACE: {{ block.settings.option_space | default: 30 }}px;
+    --OPTION-SIZE-RADIO: {{ block.settings.option_size_radio | default: 50 }}px;
+    --OPTION-SIZE-SWATCH: {{ block.settings.option_size_swatch | default: 34 }}px;
+    "
+  {{ block.shopify_attributes }}
+>
+  {%- unless product.has_only_default_variant -%}
+    <div class="form__selectors">
+      {%- for option in product.options_with_values -%}
+
+        {%- liquid
+          assign longest_value = 0
+          assign shortest_value = 100
+          for value in option.values
+            if value.size > longest_value
+              assign longest_value = value.size
+            endif
+            if value.size < shortest_value
+              assign shortest_value = value.size
+            endif
+          endfor
+
+          assign lock_width_class = ""
+          assign chars_diff = longest_value | minus: shortest_value
+          if chars_diff < 5 and longest_value < 6
+            assign lock_width_class = "radio__inputs--equal"
+          endif
+
+          assign variant_style = 'dropdown'
+          if settings.variant_form == 'button'
+            assign variant_style = 'button'
+          endif
+          if settings.variant_form == 'auto' and longest_value < 16
+            assign variant_style = 'button'
+          endif
+        -%}
+
+        <div data-swapper-wrapper data-split-select-wrapper
+          class="selector-wrapper js"
+          data-select-label="{{ option.name }}"
+          data-option-position="{{ option.position }}"
+        >
+
+          {%- assign current_value = current_variant.options[forloop.index0] -%}
+
+          <fieldset class="radio__fieldset">
+            <legend class="radio__legend  {% if product.handle == 'period-pain-relief-cream' %}  bundle-product-heading {% endif %}" aria-label="{{ option.name | escape_once }}">
+
+
+
+
+              {% comment %} <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+ {% endcomment %}
+
+ <span class="radio__legend__label">
+  {% if product.handle == 'period-pain-relief-cream' %}
+    <span class="bundle-heading-wrapper">
+      
+      <span class="bundle-heading-text">🔥 Buy more save more</span>
+    
+    </span>
+  {% else %}
+    {{ option.name | escape_once }}
+  {% endif %}
+</span>
+
+
+
+
+            </legend>
+
+            <div class="radio__inputs {{ lock_width_class }}" data-product-id="{{ product.id }}">
+
+              {%- for value in option.values -%}
+
+                {%- capture input_id -%}
+                {{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once | handleize }}
+                {%- endcapture -%}
+
+                {%- assign matched_variant = nil -%}
+                {%- for v in product.variants -%}
+                  {%- if v.title contains value -%}
+                    {%- assign matched_variant = v -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                <span class="radio__button aaaaaaaaa bb">
+
+                  <input
+                    type="radio"
+                    name="options[{{ option.name | escape_once }}]"
+                    value="{{ value | escape_once }}"
+                    id="{{ input_id }}-{{ forloop.index }}"
+                    form="{{ uniq_id }}"
+
+                     {% if product.handle == 'period-pain-relief-cream' %}
+    {% if forloop.index == 1 %}checked{% endif %}
+  {% else %}
+    {% if value == current_value %}checked{% endif %}
+  {% endif %}
+                    data-variant-id-value="{{ matched_variant.id }}"
+                    variant-number-id="{{ matched_variant.id }}"
+                  >
+
+                  <label for="{{ input_id }}-{{ forloop.index }}">
+
+                    {%- comment -%}
+                    CUSTOM UI ONLY FOR TEST PRODUCT
+                    {%- endcomment -%}
+
+               {% if product.handle == 'period-pain-relief-cream' and matched_variant %}
+
+{% assign compare_price = matched_variant.compare_at_price %}
+{% assign sale_price = matched_variant.price %}
+
+{% if compare_price > sale_price %}
+{% assign discount = compare_price | minus: sale_price | times: 100 | divided_by: compare_price %}
+{% endif %}
+
+<div class="bundle-card">
+
+  <div class="bundle-title">
+    Buy {{ forloop.index }}
+  </div>
+
+  <!-- NEW LINE -->
+  {% comment %} <div class="bundle-size">
+   ({{ value }})
+  </div> {% endcomment %}
+
+  {% if discount %}
+  <div class="bundle-save">
+    SAVE {{ discount | round }}%
+  </div>
+  {% endif %}
+
+  <div class="bundle-price">
+    {{ sale_price | money }}
+  </div>
+
+  {% if compare_price > sale_price %}
+  <div class="bundle-compare">
+    {{ compare_price | money }}
+  </div>
+  {% endif %}
+
+</div>
+
+{% else %}
+
+                      <span>{{ value | escape_once }}</span>
+
+                    {% endif %}
+
+                    <span class="visually-hidden">
+                      {{ 'products.product.variant_sold_out_or_unavailable' | t }}
+                    </span>
+
+                  </label>
+
+                </span>
+
+              {%- endfor -%}
+
+            </div>
+          </fieldset>
+
+        </div>
+
+      {%- endfor -%}
+    </div>
+
+  {%- endunless -%}
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  const bundleProduct = document.querySelector('.bundle-variants-container');
+
+  if(bundleProduct){
+    const firstVariant = bundleProduct.querySelector('.radio__button:nth-child(1) input');
+
+    if(firstVariant){
+      firstVariant.checked = true;
+
+      // trigger Shopify variant change
+      firstVariant.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+});
+</script>

@@ -1,0 +1,259 @@
+<div class="why-time-image-with-text shop-by-collections">
+  {% for block in section.blocks %}
+  <div class="why-time-item {% if block.settings.direction == 'left' %}direction-left{% else %}direction-right{% endif %}">
+    <div class="image-container">
+      <img src="{{ block.settings.image | img_url: '640x640' }}" alt="Logo">
+    </div>
+    <div class="text-container text-{{ block.settings.text_alignment }}">
+      <h2>{{ block.settings.heading_text }}</h2>
+      <p>{{ block.settings.paragraph_text }}</p>
+      <strong>{{ block.settings.short_text }}</strong>
+      <div>
+        <a href="{{ block.settings.urls}}" class="button btn btn--secondary shop-collection-buy">Shop Now</a>
+        </div>
+    </div>
+  
+  </div>
+  {% endfor %}
+</div>
+<style>
+  .why-time-image-with-text {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .shop-collection-buy{
+    margin-top: 2rem;
+    background: black;
+    color: white;
+}
+
+.text-container.text-left {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.text-container.text-center {
+  text-align: center;
+  align-items: center;
+}
+
+.text-container.text-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+
+  @media (max-width: 768px) {
+    .why-time-image-with-text {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+  }
+
+  .why-time-image-with-text{
+    width: 85%;
+    margin: auto;
+  }
+
+  .text-container h2{
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .why-time-item {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    margin-bottom: 20px;
+  }
+
+  .why-time-item .image-container {
+    flex: 1;
+  }
+
+  .why-time-item .image-container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .why-time-item .text-container {
+    flex: 2;
+  }
+
+  .why-time-item.direction-left {
+    flex-direction: row-reverse;
+  }
+
+  .why-time-item.direction-right {
+    flex-direction: row;
+  }
+  @media only screen and (max-width: 767px){
+    .why-time-item.direction-right,
+    .why-time-item.direction-left{
+        flex-direction: column;
+    }
+    .why-time-image-with-text{
+        width: 90%;
+    }
+    .why-time-item{
+        gap: 2rem;
+    }
+    .text-container h2{
+        font-size: 17px;
+    }
+  }
+  .shop-by-collections .why-time-item{
+  {% comment %} border-top: 1px solid black; {% endcomment %}
+    padding: 1rem;
+  }
+.text-container strong{
+    font-weight: 900;
+    margin-top: 1rem;
+}
+.text-container p{
+  margin-bottom: 1rem;
+}
+
+</style>
+
+
+
+
+{% schema %} 
+{
+    "name":"shop by collections",
+    "tag":"section",
+    "class": "why-time-image-with-text",
+    "settings":[
+        {
+           "type": "header",
+           "content":"Padding settings"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max":100,
+            "default": 20,
+            "step": 2,
+             "unit": "px",
+             "label": "Padding Top"
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "unit": "px",
+            "step": 2,
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "padding_top_mobile",
+            "min": 0,
+            "max":100,
+            "default": 20,
+            "step": 2,
+             "unit": "px",
+             "label": "Padding Top Mobile"
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom_mobile",
+            "label": "Padding Bottom Mobile",
+            "min": 0,
+            "max": 100,
+            "unit": "px",
+            "step": 2,
+            "default": 20
+        }
+    ],
+    "blocks": [
+      {
+        "type": "logo_image",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "640 x 640px .png recommended"
+          },
+          {
+            "type": "header",
+            "content": "Heading Settings"
+        },
+        {
+            "type": "text",
+            "id": "heading_text",
+            "label":"Heading"
+        },
+        {
+        "type": "text",
+            "id": "short_text",
+            "label":"Short text"
+        },
+           {
+        "type": "url",
+            "id": "urls",
+            "label":"collection url"
+        },
+
+        {
+            "type": "richtext",
+            "id": "paragraph_text",
+            "label":"Paragraph"
+        },
+        {
+  "type": "select",
+  "id": "text_alignment",
+  "label": "Text Alignment",
+  "options": [
+    {
+      "value": "left",
+      "label": "Left"
+    },
+    {
+      "value": "center",
+      "label": "Center"
+    },
+    {
+      "value": "right",
+      "label": "Right"
+    }
+  ],
+  "default": "left"
+},
+        {
+  "type": "select",
+  "id": "direction",
+  "label": "Directions Of Image And Text",
+  "options": [
+    {
+      "value": "left",
+      "label": "left"
+    },
+    {
+      "value": "right",
+      "label": "right"
+    }
+  ],
+  "default": "right"
+}
+        ]
+      }
+    ],
+    "presets": [
+        {
+            "name":"shop by collections"
+        }
+    ]
+}
+{% endschema %} 

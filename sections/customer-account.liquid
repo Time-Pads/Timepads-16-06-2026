@@ -1,0 +1,757 @@
+<!-- /sections/customer-account.liquid -->
+{% comment %}
+
+  For all available customer liquid tags:
+    - http://docs.shopify.com/themes/liquid-variables/customer
+
+{% endcomment %}
+
+
+<script>
+  window.addEventListener('load', (ev) => { 
+    const logoutBtn = document.getElementsByClassName('logout-btn')[0];
+    if (logoutBtn) { 
+      logoutBtn.addEventListener('click', (ev) => {
+        window.breeze.logout();
+      })
+    }
+  })
+</script>
+{%- paginate customer.orders by 20 -%}
+{% comment %}=========================================== Account Page Tabs Starting ========================={% endcomment %}
+<div class="faq-section">
+  <div class="faq-container section-{{ section.id }}-padding">
+    <div class="bg-{{section.id}}">
+      <div class="faq_section-list page-width">
+        <div class="faq_section-left ">
+          <h1 class="section-header__title"><span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M23.0335 3.74112C23.0675 3.61421 23.1261 3.49523 23.206 3.39099C23.286 3.28674 23.3857 3.19926 23.4994 3.13356C23.6132 3.06786 23.7388 3.02522 23.869 3.00807C23.9993 2.99092 24.1316 2.9996 24.2585 3.03362C26.246 3.56737 27.8835 4.79737 28.866 6.49987C28.9986 6.72962 29.0345 7.00263 28.9658 7.25885C28.8972 7.51507 28.7295 7.73351 28.4998 7.86612C28.27 7.99873 27.997 8.03464 27.7408 7.96596C27.4846 7.89727 27.2661 7.72962 27.1335 7.49987C26.4185 6.25987 25.2135 5.35987 23.741 4.96612C23.6141 4.93218 23.4951 4.87356 23.3909 4.79362C23.2866 4.71367 23.1992 4.61397 23.1335 4.50021C23.0677 4.38645 23.0251 4.26086 23.008 4.13061C22.9908 4.00036 22.9995 3.86801 23.0335 3.74112ZM9.94726 28.2149C8.77476 27.2899 7.79476 26.1099 6.86601 24.4999C6.80035 24.3861 6.71293 24.2864 6.60873 24.2064C6.50454 24.1265 6.38561 24.0678 6.25874 24.0338C6.13187 23.9998 5.99955 23.9911 5.86932 24.0082C5.7391 24.0254 5.61352 24.068 5.49976 24.1336C5.38601 24.1993 5.2863 24.2867 5.20632 24.3909C5.12635 24.4951 5.06769 24.614 5.03368 24.7409C4.99967 24.8678 4.99098 25.0001 5.00811 25.1303C5.02524 25.2605 5.06785 25.3861 5.13351 25.4999C6.19476 27.3374 7.32976 28.6986 8.70851 29.7849C8.91704 29.9453 9.18039 30.0171 9.44148 29.9847C9.70257 29.9523 9.94038 29.8183 10.1033 29.6117C10.2663 29.4052 10.3413 29.1427 10.3121 28.8813C10.2829 28.6198 10.1518 28.3804 9.94726 28.2149ZM24.5235 7.30237C24.394 7.07151 24.2199 6.86866 24.0114 6.70558C23.8029 6.5425 23.564 6.42244 23.3088 6.35236C23.0535 6.28228 22.7868 6.26357 22.5243 6.29733C22.2617 6.33108 22.0085 6.41663 21.7792 6.549C21.55 6.68137 21.3493 6.85793 21.1888 7.06845C21.0283 7.27897 20.9112 7.51926 20.8443 7.77538C20.7773 8.0315 20.7619 8.29836 20.7989 8.56048C20.8359 8.8226 20.9246 9.07477 21.0598 9.30237L23.0598 12.7661C23.1254 12.8799 23.1681 13.0055 23.1852 13.1357C23.2024 13.2659 23.1937 13.3982 23.1597 13.5251C23.1257 13.652 23.067 13.7709 22.987 13.8751C22.907 13.9793 22.8073 14.0667 22.6935 14.1324C21.7749 14.6629 21.1047 15.5365 20.8302 16.5611C20.5557 17.5858 20.6994 18.6775 21.2298 19.5961C21.3624 19.8259 21.3983 20.0989 21.3296 20.3551C21.2609 20.6113 21.0933 20.8298 20.8635 20.9624C20.6338 21.095 20.3608 21.1309 20.1045 21.0622C19.8483 20.9935 19.6299 20.8259 19.4973 20.5961C18.79 19.3672 18.54 17.9278 18.7917 16.5324C19.0433 15.137 19.7803 13.8756 20.8723 12.9711L15.8285 4.23987C15.5633 3.78039 15.1264 3.44507 14.614 3.3077C14.1015 3.17033 13.5555 3.24216 13.096 3.50737C12.6365 3.77259 12.3012 4.20947 12.1638 4.72192C12.0265 5.23436 12.0983 5.78039 12.3635 6.23987L16.3635 13.1686C16.4879 13.3977 16.5179 13.6663 16.4472 13.9171C16.3765 14.168 16.2106 14.3814 15.9849 14.5117C15.7592 14.6421 15.4915 14.6792 15.2388 14.6151C14.9862 14.551 14.7685 14.3908 14.6323 14.1686L9.63226 5.50737C9.36705 5.04789 8.93016 4.71257 8.41772 4.5752C7.90528 4.43783 7.35925 4.50966 6.89976 4.77487C6.44028 5.04009 6.10497 5.47697 5.96759 5.98942C5.83022 6.50186 5.90205 7.04789 6.16726 7.50737L11.6673 17.0336C11.7371 17.1475 11.7834 17.2741 11.8035 17.4061C11.8235 17.5382 11.8169 17.6729 11.7841 17.8023C11.7513 17.9317 11.6928 18.0533 11.6123 18.1598C11.5317 18.2663 11.4306 18.3556 11.315 18.4223C11.1993 18.4891 11.0715 18.5321 10.939 18.5487C10.8065 18.5653 10.672 18.5551 10.5435 18.5189C10.415 18.4827 10.295 18.4211 10.1907 18.3377C10.0863 18.2544 9.99974 18.151 9.93601 18.0336L6.43601 11.9724C6.30469 11.7449 6.12984 11.5454 5.92145 11.3855C5.71306 11.2256 5.47521 11.1082 5.22147 11.0402C4.96773 10.9722 4.70309 10.9548 4.44263 10.9891C4.18218 11.0233 3.93103 11.1086 3.70351 11.2399C3.476 11.3712 3.27658 11.546 3.11664 11.7544C2.95669 11.9628 2.83936 12.2007 2.77134 12.4544C2.70333 12.7082 2.68595 12.9728 2.72021 13.2333C2.75447 13.4937 2.83969 13.7449 2.97101 13.9724L8.47101 23.4986C9.93308 26.0185 12.335 27.8554 15.1499 28.6064C17.9647 29.3573 20.9625 28.961 23.4854 27.5044C26.0084 26.0477 27.8505 23.6497 28.6075 20.8365C29.3646 18.0233 28.9747 15.0247 27.5235 12.4986L24.5235 7.30237Z" fill="black"></path>
+          </svg></span> Hello, {{ customer.name }}</h1>
+          <div class="main_container_tab_section">
+            <h3 class="tablinks details is--active " data-tab="Tab-{{ section.id }}-1">
+              Account Overview
+            </h3>
+            <h3 class="tablinks details" data-tab="Tab-{{ section.id }}-2">
+              Address
+            </h3>
+            <h3 class="tablinks details" data-tab="Tab-{{ section.id }}-3">
+              Manage Orders
+            </h3>
+            <h3 class="tablinks details whishlist" data-tab="Tab-{{ section.id }}-4" style="cursor: not-allowed;" >
+              Subscription
+            </h3>
+            <h3 class="tablinks details whishlist" data-tab="Tab-{{ section.id }}-5">
+              <a href="https://timepads.shipway.com/track">Track Your Order</a>
+            </h3>
+
+          </div>
+        </div>
+
+        <div class="faq_section-right">
+          {% comment %}=========  Account Overview ============= {% endcomment %}
+          <div id="Tab-{{ section.id }}-1" class="tab-content details question1" data-tab="Tab-{{ section.id }}-1"> {%
+            assign index = forloop.index %} {% if forloop.index == index %} <p class="faq-tab__details">
+            <div class="product-tab__content tab_content_account_page">
+              <div class="account_overview_text">
+                <p class="customer_details_overview cutsomer_name_account"><span><svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+                <path d="M26.5 4H6.5C5.96957 4 5.46086 4.21071 5.08579 4.58579C4.71071 4.96086 4.5 5.46957 4.5 6V26C4.5 26.5304 4.71071 27.0391 5.08579 27.4142C5.46086 27.7893 5.96957 28 6.5 28H26.5C27.0304 28 27.5391 27.7893 27.9142 27.4142C28.2893 27.0391 28.5 26.5304 28.5 26V6C28.5 5.46957 28.2893 4.96086 27.9142 4.58579C27.5391 4.21071 27.0304 4 26.5 4ZM12.5 15C12.5 14.2089 12.7346 13.4355 13.1741 12.7777C13.6136 12.1199 14.2384 11.6072 14.9693 11.3045C15.7002 11.0017 16.5044 10.9225 17.2804 11.0769C18.0563 11.2312 18.769 11.6122 19.3284 12.1716C19.8878 12.731 20.2688 13.4437 20.4231 14.2196C20.5775 14.9956 20.4983 15.7998 20.1955 16.5307C19.8928 17.2616 19.3801 17.8864 18.7223 18.3259C18.0645 18.7654 17.2911 19 16.5 19C15.4391 19 14.4217 18.5786 13.6716 17.8284C12.9214 17.0783 12.5 16.0609 12.5 15ZM9.08375 26C9.59548 24.7402 10.4182 23.6306 11.475 22.775C12.8979 21.6264 14.6714 20.9999 16.5 20.9999C18.3286 20.9999 20.1021 21.6264 21.525 22.775C22.5818 23.6306 23.4045 24.7402 23.9163 26H9.08375ZM26.5 26H26.0413C25.5966 24.5846 24.8422 23.286 23.8329 22.1986C22.8236 21.1113 21.5847 20.2624 20.2062 19.7138C21.1876 18.9429 21.9042 17.8853 22.2562 16.6882C22.6083 15.491 22.5784 14.2139 22.1706 13.0345C21.7628 11.8552 20.9974 10.8323 19.981 10.1083C18.9647 9.38438 17.7479 8.99531 16.5 8.99531C15.2521 8.99531 14.0353 9.38438 13.019 10.1083C12.0026 10.8323 11.2372 11.8552 10.8294 13.0345C10.4216 14.2139 10.3917 15.491 10.7438 16.6882C11.0958 17.8853 11.8124 18.9429 12.7937 19.7138C11.4153 20.2624 10.1764 21.1113 9.16709 22.1986C8.15777 23.286 7.40339 24.5846 6.95875 26H6.5V6H26.5V26Z" fill="black"></path>
+              </svg></span>  {{ customer.name }} </p>
+                <p class="customer_main_id"> Email: {{ customer.email }} </p>
+                <p> Phone: {{ customer.phone }} </p>
+              </div>
+              <div class="address_book_account_page">
+                <p class="address_account"> <span><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <path d="M7.89875 18.8C8.00385 18.879 8.12349 18.9365 8.25082 18.9692C8.37816 19.0019 8.5107 19.0091 8.64085 18.9906C8.771 18.972 8.89621 18.9279 9.00931 18.8609C9.12242 18.7939 9.2212 18.7052 9.3 18.6C9.90546 17.7927 10.6906 17.1375 11.5931 16.6862C12.4957 16.2349 13.4909 16 14.5 16C15.5091 16 16.5043 16.2349 17.4069 16.6862C18.3094 17.1375 19.0945 17.7927 19.7 18.6C19.7788 18.7051 19.8775 18.7936 19.9905 18.8605C20.1035 18.9274 20.2286 18.9714 20.3586 18.99C20.4886 19.0085 20.621 19.0013 20.7482 18.9687C20.8754 18.9361 20.9949 18.8788 21.1 18.8C21.2051 18.7212 21.2936 18.6225 21.3605 18.5095C21.4274 18.3965 21.4714 18.2714 21.49 18.1414C21.5085 18.0114 21.5013 17.879 21.4687 17.7518C21.4361 17.6246 21.3788 17.5051 21.3 17.4C20.4145 16.2128 19.2337 15.2781 17.875 14.6887C18.6196 14.0089 19.1413 13.1199 19.3716 12.1382C19.6019 11.1566 19.53 10.1283 19.1654 9.18828C18.8009 8.24823 18.1606 7.44037 17.3287 6.87072C16.4967 6.30106 15.512 5.99623 14.5037 5.99623C13.4955 5.99623 12.5108 6.30106 11.6788 6.87072C10.8469 7.44037 10.2066 8.24823 9.84207 9.18828C9.47749 10.1283 9.40563 11.1566 9.63592 12.1382C9.86621 13.1199 10.3879 14.0089 11.1325 14.6887C9.77105 15.277 8.58755 16.2118 7.7 17.4C7.54074 17.612 7.47221 17.8786 7.50948 18.1412C7.54675 18.4037 7.68677 18.6407 7.89875 18.8ZM11.5 11C11.5 10.4067 11.6759 9.82664 12.0056 9.33329C12.3352 8.83994 12.8038 8.45542 13.3519 8.22836C13.9001 8.0013 14.5033 7.94189 15.0853 8.05764C15.6672 8.1734 16.2018 8.45912 16.6213 8.87868C17.0409 9.29824 17.3266 9.83279 17.4424 10.4147C17.5581 10.9967 17.4987 11.5999 17.2716 12.1481C17.0446 12.6962 16.6601 13.1648 16.1667 13.4944C15.6734 13.8241 15.0933 14 14.5 14C13.7044 14 12.9413 13.6839 12.3787 13.1213C11.8161 12.5587 11.5 11.7956 11.5 11ZM23.5 0H5.5C4.96957 0 4.46086 0.210714 4.08579 0.585786C3.71071 0.960859 3.5 1.46957 3.5 2V5H1.5C1.23478 5 0.98043 5.10536 0.792893 5.29289C0.605357 5.48043 0.5 5.73478 0.5 6C0.5 6.26522 0.605357 6.51957 0.792893 6.70711C0.98043 6.89464 1.23478 7 1.5 7H3.5V12H1.5C1.23478 12 0.98043 12.1054 0.792893 12.2929C0.605357 12.4804 0.5 12.7348 0.5 13C0.5 13.2652 0.605357 13.5196 0.792893 13.7071C0.98043 13.8946 1.23478 14 1.5 14H3.5V19H1.5C1.23478 19 0.98043 19.1054 0.792893 19.2929C0.605357 19.4804 0.5 19.7348 0.5 20C0.5 20.2652 0.605357 20.5196 0.792893 20.7071C0.98043 20.8946 1.23478 21 1.5 21H3.5V24C3.5 24.5304 3.71071 25.0391 4.08579 25.4142C4.46086 25.7893 4.96957 26 5.5 26H23.5C24.0304 26 24.5391 25.7893 24.9142 25.4142C25.2893 25.0391 25.5 24.5304 25.5 24V2C25.5 1.46957 25.2893 0.960859 24.9142 0.585786C24.5391 0.210714 24.0304 0 23.5 0ZM23.5 24H5.5V2H23.5V24Z" fill="black"></path>
+                </svg></span>   Address Book</p>
+                <p class="address_text_save">Checkout faster with your saved addresses</p>
+                <button class="account_shipping tablinks"  data-tab="Tab-{{ section.id }}-2">Shipping Address</button>
+              </div>
+              <div class="address_whishlist_icon address_book_account_page" >
+                <p class="address_account_wishlist" style="cursor: not-allowed;">Subscription</p>
+                <p class="address_text_save">Subscribed Products</p>
+                  <button class="account_wishlist tablinks" data-tab="Tab-{{ section.id }}-4" style="cursor: not-allowed;">View Items</button>
+              </div>
+              <div class="manage_order_items address_book_account_page">
+                <p class="address_account"><span><svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+                <path d="M17.5014 15V22C17.5014 22.2652 17.396 22.5196 17.2085 22.7071C17.021 22.8946 16.7666 23 16.5014 23C16.2362 23 15.9818 22.8946 15.7943 22.7071C15.6067 22.5196 15.5014 22.2652 15.5014 22V15C15.5014 14.7348 15.6067 14.4804 15.7943 14.2929C15.9818 14.1054 16.2362 14 16.5014 14C16.7666 14 17.021 14.1054 17.2085 14.2929C17.396 14.4804 17.5014 14.7348 17.5014 15ZM30.4839 12.2637L28.7514 25.265C28.6872 25.7455 28.4506 26.1863 28.0857 26.5054C27.7208 26.8246 27.2524 27.0003 26.7676 27H6.23513C5.75037 27.0003 5.28197 26.8246 4.91708 26.5054C4.55218 26.1863 4.31562 25.7455 4.25138 25.265L2.51763 12.265C2.47985 11.9824 2.50294 11.6949 2.58535 11.422C2.66777 11.149 2.8076 10.8968 2.99546 10.6823C3.18333 10.4678 3.4149 10.2959 3.67462 10.1783C3.93435 10.0606 4.21624 9.9998 4.50138 10H9.04763L15.7514 2.34125C15.8452 2.23484 15.9606 2.14962 16.0899 2.09125C16.2193 2.03287 16.3595 2.00269 16.5014 2.00269C16.6433 2.00269 16.7835 2.03287 16.9128 2.09125C17.0421 2.14962 17.1575 2.23484 17.2514 2.34125L23.9551 10H28.5014C28.7862 10.0002 29.0677 10.0612 29.327 10.1789C29.5863 10.2967 29.8175 10.4685 30.0051 10.6828C30.1927 10.8971 30.3323 11.149 30.4147 11.4217C30.497 11.6943 30.5202 11.9814 30.4826 12.2637H30.4839ZM11.7051 10H21.2976L16.5014 4.51875L11.7051 10ZM28.5014 12H4.50138L6.23513 25H26.7676L28.5014 12ZM22.1064 14.9L21.4064 21.9C21.3926 22.0311 21.4048 22.1636 21.4423 22.2899C21.4799 22.4162 21.542 22.5339 21.6252 22.6361C21.7084 22.7383 21.8109 22.8231 21.927 22.8855C22.043 22.948 22.1703 22.9869 22.3014 23C22.3351 23.0018 22.3689 23.0018 22.4026 23C22.6503 22.9997 22.8891 22.9075 23.0727 22.7412C23.2563 22.5749 23.3716 22.3464 23.3964 22.1L24.0964 15.1C24.1229 14.8361 24.0435 14.5725 23.8757 14.3671C23.7078 14.1618 23.4653 14.0315 23.2014 14.005C22.9375 13.9785 22.6739 14.0579 22.4685 14.2257C22.2632 14.3936 22.1329 14.6361 22.1064 14.9ZM10.8964 14.9C10.8699 14.6361 10.7396 14.3936 10.5342 14.2257C10.3289 14.0579 10.0653 13.9785 9.80138 14.005C9.53749 14.0315 9.29495 14.1618 9.1271 14.3671C8.95926 14.5725 8.87986 14.8361 8.90638 15.1L9.60638 22.1C9.63126 22.3475 9.7475 22.5769 9.93241 22.7433C10.1173 22.9097 10.3576 23.0012 10.6064 23C10.6401 23.0018 10.6739 23.0018 10.7076 23C10.8383 22.9869 10.9651 22.9481 11.0808 22.886C11.1965 22.8239 11.2988 22.7395 11.3819 22.6379C11.465 22.5362 11.5273 22.4191 11.5652 22.2934C11.603 22.1676 11.6158 22.0357 11.6026 21.905L10.8964 14.9Z" fill="black"></path>
+                </svg></span> Manage Orders</p>
+                <p class="address_text_save">Your TIMEPADS online orders</p>
+                <button class="account_manage_order tablinks" data-tab="Tab-{{ section.id }}-3">View Orders</button>
+              </div>
+              <a href="{{ routes.account_logout_url }}" class="section-header__link logout_btn_account section-header__link logout-btn" > <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M10.5 20.25C10.5 20.4489 10.421 20.6397 10.2803 20.7803C10.1397 20.921 9.94891 21 9.75 21H4.5C4.10218 21 3.72064 20.842 3.43934 20.5607C3.15804 20.2794 3 19.8978 3 19.5V4.5C3 4.10218 3.15804 3.72064 3.43934 3.43934C3.72064 3.15804 4.10218 3 4.5 3H9.75C9.94891 3 10.1397 3.07902 10.2803 3.21967C10.421 3.36032 10.5 3.55109 10.5 3.75C10.5 3.94891 10.421 4.13968 10.2803 4.28033C10.1397 4.42098 9.94891 4.5 9.75 4.5H4.5V19.5H9.75C9.94891 19.5 10.1397 19.579 10.2803 19.7197C10.421 19.8603 10.5 20.0511 10.5 20.25ZM20.7806 11.4694L17.0306 7.71937C16.8899 7.57864 16.699 7.49958 16.5 7.49958C16.301 7.49958 16.1101 7.57864 15.9694 7.71937C15.8286 7.86011 15.7496 8.05098 15.7496 8.25C15.7496 8.44902 15.8286 8.63989 15.9694 8.78063L18.4397 11.25H9.75C9.55109 11.25 9.36032 11.329 9.21967 11.4697C9.07902 11.6103 9 11.8011 9 12C9 12.1989 9.07902 12.3897 9.21967 12.5303C9.36032 12.671 9.55109 12.75 9.75 12.75H18.4397L15.9694 15.2194C15.8286 15.3601 15.7496 15.551 15.7496 15.75C15.7496 15.949 15.8286 16.1399 15.9694 16.2806C16.1101 16.4214 16.301 16.5004 16.5 16.5004C16.699 16.5004 16.8899 16.4214 17.0306 16.2806L20.7806 12.5306C20.8504 12.461 20.9057 12.3783 20.9434 12.2872C20.9812 12.1962 21.0006 12.0986 21.0006 12C21.0006 11.9014 20.9812 11.8038 20.9434 11.7128C20.9057 11.6217 20.8504 11.539 20.7806 11.4694Z" fill="black"></path>
+              </svg></span>  {{ 'layout.customer.log_out'| t }}</a>
+              </div>
+            </p> {% endif %}
+          </div>
+ {% comment %}=========  End Account Overview ============= {% endcomment %}
+          <div id="Tab-{{ section.id }}-2" class="tab-content details question2" data-tab="Tab-{{ section.id }}-2"> {%
+            assign index = forloop.index %} {% if forloop.index == index %} <p class="faq-tab__details">
+            <div class="product-tab__content addres_form_account">
+              {% comment %}===============Address============================== {% endcomment %}
+              <div class="{{ section.settings.width }} section-padding"
+              style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;"
+              data-address-wrapper>
+            
+              {% paginate customer.addresses by 10 %}
+            
+                <header class="account-header pb-0">
+                  <h1 class="account-header__left body-size-6 strong">{{ 'customer.account.title' | t }}</h1>
+                  <div class="account-header__right">
+                    <a href="#" class="btn--outline address-new-toggle">{{ 'customer.addresses.add_new' | t }}</a>
+                  </div>
+                </header>
+            
+                <hr class="hr mb-r6">
+            
+                <p><a class="btn--soft" href="{{ routes.account_url }}">&larr; {{ 'customer.account.return' | t }}</a></p>
+            
+                <div data-new-address-form>
+                  {% form 'customer_address', customer.new_address, class: 'form--standard max-w-page-narrow' %}
+                    <div new-address-form-inner {% unless form.errors %}class="hide"{% endunless %}>
+                      {{ form.errors | default_errors }}
+            
+                      <p class="kicker-flourished text-left my-r8">{{ 'customer.addresses.add_new' | t }}</p>
+            
+                      <div class="float-grid">
+            
+                        <div class="grid__item one-half mobile--one-whole">
+                          <label for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+                          <input type="text" id="AddressFirstNameNew" class="address_form" name="address[first_name]" value="{{ form.first_name }}">
+                        </div>
+            
+                        <div class="grid__item one-half mobile--one-whole">
+                          <label for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+                          <input type="text" id="AddressLastNameNew" class="address_form" name="address[last_name]" value="{{ form.last_name }}">
+                        </div>
+            
+                      </div>
+            
+                      <label for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+                      <input type="text" id="AddressCompanyNew" class="address_form" name="address[company]" value="{{ form.company }}">
+            
+                      <label for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
+                      <input type="text" id="AddressAddress1New" class="address_form" name="address[address1]" value="{{ form.address1 }}">
+            
+                      <label for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+                      <input type="text" id="AddressAddress2New" class="address_form" name="address[address2]" value="{{ form.address2 }}">
+            
+                      <div class="float-grid">
+                        <div class="grid__item medium-up--one-half">
+                          <label for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
+                          <input type="text" id="AddressCityNew" class="address_form" name="address[city]" value="{{ form.city }}">
+                        </div>
+            
+                        <div class="grid__item medium-up--one-half">
+                          <label for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
+                          <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ country_option_tags }}</select>
+                        </div>
+            
+                        <div class="grid__item" id="AddressProvinceContainerNew" class="hide">
+                          <label for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+                          <select id="AddressProvinceNew" class="address_form" name="address[province]" data-default="{{ form.province }}"></select>
+                        </div>
+            
+                        <div class="grid__item medium-up--one-half">
+                          <label for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
+                          <input type="text" id="AddressZipNew" class="address_form" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+                        </div>
+            
+                        <div class="grid__item medium-up--one-half">
+                          <label for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
+                          <input type="tel" id="AddressPhoneNew" class="address_form" name="address[phone]" value="{{ form.phone }}">
+                        </div>
+                      </div>
+            
+                      <p class="my-r6">
+                        {{ form.set_as_default_checkbox }}
+                        <label for="address_default_address_new">{{ 'customer.addresses.set_default' | t }}</label>
+                      </p>
+            
+                      <button type="submit" class="btn--outline my-r5">
+                        {{ 'customer.addresses.add' | t }}
+                      </button>
+                      <a href="#" class="text-btn-arrow-right address-new-toggle m-r5">{{ 'customer.addresses.cancel' | t }}</a>
+            
+                      <hr>
+                    </div>
+                  {% endform %}
+                </div>
+            
+                <p class="kicker-flourished text-left my-r8">{{ 'customer.addresses.title' | t }}</p>
+            
+                {% comment %}
+                  List all customer addresses with a unique edit form.
+                  Also add pagination in case they have a large number of addresses
+                {% endcomment %}
+                {% for address in customer.addresses %}
+            
+                  <p class="my-r5 default-name">
+                    <strong>
+                    {{ address.first_name | capitalize }} {{ address.last_name | capitalize }}
+                    </strong>
+                    {% if address == customer.default_address %}
+                      <em>({{ 'customer.addresses.default' | t }})</em>
+                    {% endif %}
+                    <br>
+                    {% if address.company != blank %} {{ address.company }}<br> {% endif %}
+                    {{ address.street }}<br>
+                    {{ address.city | capitalize }}<br>
+                    {% if address.province_code %}
+                      {{ address.province_code | upcase }}<br>
+                    {% endif %}
+                    {{ address.zip | upcase }}<br>
+                    {{ address.country }}<br>
+                    {{ address.phone }}
+                  </p>
+                  <p>
+                    <button type="button" class="btn--outline address-edit-toggle my-r5" data-form-id="{{ address.id }}">
+                      {{ 'customer.addresses.edit' | t }}
+                    </button>
+                    <button type="button" class="btn-text-thick-line address-delete my-r5" data-form-id="{{ address.id }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                      {{ 'customer.addresses.delete' | t }}
+                    </button>
+                  </p>
+                  <hr class="hr"/>
+            
+                  <div id="EditAddress_{{ address.id }}" class="hide">
+                    {% form 'customer_address', address, class: 'form--standard  max-w-page-narrow' %}
+            
+                      <p class="kicker-flourished text-left my-r8">{{ 'customer.addresses.edit_address' | t }}</p>
+            
+                      <div class="float-grid">
+                        <div class="grid__item one-half mobile--one-whole">
+                          <label for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+                          <input type="text" id="AddressFirstName_{{ form.id }}" class="address_form" name="address[first_name]" value="{{ form.first_name }}">
+                        </div>
+            
+                        <div class="grid__item one-half mobile--one-whole">
+                          <label for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+                          <input type="text" id="AddressLastName_{{ form.id }}" class="address_form" name="address[last_name]" value="{{ form.last_name }}">
+                        </div>
+                      </div>
+            
+                      <label for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+                      <input type="text" id="AddressCompany_{{ form.id }}" class="address_form" name="address[company]" value="{{ form.company }}">
+            
+                      <label for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
+                      <input type="text" id="AddressAddress1_{{ form.id }}" class="address_form" name="address[address1]" value="{{ form.address1 }}">
+            
+                      <label for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+                      <input type="text" id="AddressAddress2_{{ form.id }}" class="address_form" name="address[address2]" value="{{ form.address2 }}">
+            
+                      <label for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+                      <input type="text" id="AddressCity_{{ form.id }}" class="address_form" name="address[city]" value="{{ form.city }}">
+            
+                      <label for="AddressCountry_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+                      <select id="AddressCountry_{{ form.id }}" name="address[country]" class="address-country-option" data-form-id="{{ form.id }}" data-default="{{ form.country }}">{{ country_option_tags }}</select>
+            
+                      <div id="AddressProvinceContainer_{{ form.id }}" style="display: none">
+                        <label for="AddressProvince_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+                        <select id="AddressProvince_{{ form.id }}" class="address_form" name="address[province]" data-default="{{ form.province }}"></select>
+                      </div>
+            
+                      <div class="float-grid">
+                        <div class="grid__item one-half mobile--one-whole">
+                          <label for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+                          <input type="text" id="AddressZip_{{ form.id }}" class="address_form" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+                        </div>
+            
+                        <div class="grid__item one-half mobile--one-whole">
+                          <label for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+                          <input type="tel" id="AddressPhone_{{ form.id }}" class="address_form" name="address[phone]" value="{{ form.phone }}">
+                        </div>
+                      </div>
+            
+                      <p class="my-r6">
+                        {{ form.set_as_default_checkbox }}
+                        <label for="address_default_address_{{ form.id }}">{{ 'customer.addresses.set_default' | t }}</label>
+                      </p>
+            
+                      <button type="submit" class="btn--outline my-r5">
+                        {{ 'customer.addresses.update' | t }}
+                      </button>
+                      <a href="#" class="text-btn-arrow-right address-edit-toggle m-r5" data-form-id="{{ form.id }}">{{ 'customer.addresses.cancel' | t }}</a>
+            
+                      <hr class="hr">
+                    {% endform %}
+                  </div>
+            
+                {% endfor %}
+            
+                {% if paginate.pages > 1 %}
+                <div class="text-center">
+                  {% render 'pagination-custom', paginate: paginate %}
+                </div>
+                {% endif %}
+            
+                {% endpaginate %}
+              </div>
+            
+              {% comment %}===============END Address============================== {% endcomment %}
+            </div>
+            </p> {% endif %}
+          </div>
+          <div id="Tab-{{ section.id }}-3" class="tab-content details question3" data-tab="Tab-{{ section.id }}-3"> {% assign index = forloop.index %} {% if forloop.index == index %} <p class="faq-tab__details">
+          {%  comment  %}========== Manage Orders==============  {% endcomment %}
+          <div class="product-tab__content">
+            {% if customer.orders.size == 0 %}
+            <p>No orders are there.</p>
+            {% else %}
+            {%- if settings.show_breadcrumbs -%}
+              <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+                <a href="{{ routes.account_url }}">{{ 'customer.account.title' | t }}</a>
+                <span class="divider" aria-hidden="true">></span>
+                Orders
+              </nav>
+            {% endif %}
+            <table class="table--responsive table--small-text">
+               <thead>
+                  <tr>
+                     <th>{{ 'customer.orders.order_number' | t }}</th>
+                     <th>{{ 'customer.orders.date' | t }}</th>
+                     <th>{{ 'Count' }}</th>
+                     <th>{{ 'customer.orders.payment_status' | t }}</th>
+                  
+                     <th>{{ 'customer.orders.total' | t }}</th>
+                   
+                  </tr>
+               </thead>
+               <tbody>
+                  {%- for order in customer.orders -%}
+                  <tr class="table__section">
+                     <td data-label="{{ 'customer.orders.order_number' | t }}">
+                        <span class="order_info_span">{{ order.name }}</span> 
+                     </td>
+                     <td data-label="{{ 'customer.orders.date' | t }}">
+                        <span class="order_info_span_date">   {{ order.created_at | time_tag: format: 'date' }} </span>
+                     </td>
+                     <td data-label="{{ 'Count' }}">
+                        <span class="order_info_span_count">{{ order.item_count }}</span>   
+                     </td>
+                     <td data-label="{{ 'customer.orders.payment_status' | t }}">
+                        <span class="order_info_span"> {{ order.financial_status_label }}  </span>
+                     </td>
+                     <td data-label="View / Track"  class="track-order-button section-header__link address-new-toggle" data-order="{{ order.name }}">
+                        <div class="main-view-order">
+                           {{ 'View Your Order' | link_to: order.customer_url }}
+                        </div>
+                     </td>
+                     <td data-label="{{ 'customer.orders.total' | t }}">
+                        <span class="order_info_span_total">{{ order.total_price | money }}</span>
+                     </td>
+                 
+                  </tr>
+                  {% assign order_status = order.fulfillment_status %}
+                  {% assign cancel_status = order.cancelled_at %}  
+                  </tr>
+                  {%- endfor -%}
+               </tbody>
+            </table>
+            {% endif %}
+         </div>
+         </p> {% endif %}
+         {% comment %} endManage Orders {% endcomment %}
+         </div>
+          {% comment %} Wishlist {% endcomment %}
+          <div id="Tab-{{ section.id }}-4" class="tab-content details question4" data-tab="Tab-{{ section.id }}-4"> {% assign index = forloop.index %} {% if forloop.index == index %} <p class="faq-tab__details">
+            <div class="product-tab__content">
+              Subscribed Products is Loading.......
+            </div>
+            </p> {% endif %}
+          </div>
+            {% comment %} Wishlist {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- liquid
+if paginate.pages > 1
+render 'pagination', paginate: paginate
+endif
+-%}
+</div>
+{%- endpaginate -%}
+
+
+{%  style %} 
+@media only screen and (min-width: 750px) {
+    .product-tab__content .main_account_address p {
+        line-height: normal;
+        margin-bottom: 15px;
+    }
+}
+h1.section-header__title svg {
+    animation: shake .9s ease infinite;
+}
+  h1.section-header__title{
+    text-transform: capitalize;
+  }
+  p.customer_main_id{
+        text-transform: math-auto !important;
+  }
+.product-tab__content p {
+    padding: 0;
+    margin: 0;
+}
+.faq_section-right {
+margin: auto;
+}
+.product-tab__content p {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-transform: capitalize;
+}
+
+
+.tab-content.details{
+   opacity: 1;
+       visibility: visible;
+       position: relative;
+}
+
+.product-tab__content.tab_content_account_page {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+    width: 100%;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.product-tab__content {
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 4.2rem;
+    letter-spacing: .011rem;
+}
+.customer_details_overview.cutsomer_name_account {
+        margin-top: 1rem;
+    }
+    .product-tab__content p:first-child {
+    font-size: 15px;
+    color: #000;
+}
+.faq_section-list.page-width{
+  display: flex;
+}
+.faq_section-left {
+  flex: 0 0 30%;
+}
+h1.section-header__title {
+    border-bottom: 1px solid gray;
+    padding-bottom: .5rem;
+    padding-top: 10px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+@media only screen and (min-width: 750px) {
+    .faq_section-left h3.is--active {
+        font-size: 18px;
+    }
+}
+.faq_section-list.page-width{
+  width: 90%;
+  margin: auto;
+}
+.account_manage_order, .account_shipping, .account_wishlist {
+    border: 1px solid gray;
+    padding: .5rem;
+    background: black;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: 80%;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 35px;
+}
+p.address_text_save {
+    font-size: 12px;
+    line-height: 28px;
+    min-height: 5rem;
+    color: gray;
+}
+.faq_section-left h3.is--active {
+    color: #000;
+    font-weight: 600;
+}
+.faq_section-left .tablinks {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: .11px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+.faq_section-left h3 {
+    display: block;
+    text-align: left;
+    transition: .3s;
+    font-weight: 500;
+    padding: 1.3rem 0;
+    margin: 0;
+}
+ .main_account_address p{
+  font-size: 16px;
+}
+.question2,
+.question3,
+.question4{
+   display: none;
+}
+@media only screen and (min-width: 750px) {
+    .account_overview_text, .address_book_account_page {
+        padding: 2rem;
+    }
+}
+
+@media only screen and (min-width: 750px) {
+    .account_overview_text, .address_book_account_page {
+        width: 45%;
+        border: none;
+        box-shadow: #c4b8af 0 8px 24px;
+        border-radius: 15px;
+    }
+}
+.account_overview_text {
+    font-size: 15px;
+}
+
+@media only screen and (min-width: 990px) {
+    .account-section .faq_section-right {
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .faq_section-list {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .logout-btn {
+   width: 100% !important;
+    }
+}
+@media only screen and (max-width: 989px) {
+    .account-section .faq_section-list {
+        gap: 5%;
+    }
+}
+
+@media only screen and (max-width: 749px) {
+    .faq_section-list {
+        padding-top: 0;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .main_container_tab_section {
+        display: flex;
+        overflow-x: scroll;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .main_container_tab_section {
+        display: flex;
+        overflow-x: scroll;
+        align-items: center;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .faq_section-left .tablinks {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid gray;
+        flex: 0 0 40%;
+        margin-bottom: 1rem;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .account-section .faq_section-right {
+        width: 100%;
+    }
+}
+.faq_section-right .details:first-child {
+    display: block;
+}
+
+@media only screen and (max-width: 749px) {
+    .tab-content {
+        margin-bottom: 1rem;
+    }
+}
+
+@media only screen and (max-width: 749px) {
+    .product-tab__content.tab_content_account_page {
+        gap: 1rem;
+    }
+}
+.product-tab__content.tab_content_account_page {
+    display: flex
+;
+    justify-content: center;
+    padding: 1.5rem;
+    width: 100%;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+@media only screen and (max-width: 749px) {
+    .product-tab__content {
+        font-size: 12px;
+    }
+}
+.faq_section-list.page-width{
+  margin-top: 2rem;
+}
+
+
+@media only screen and (max-width: 749px) {
+    .account_overview_text, .address_book_account_page {
+        width: 100%;
+        border: none;
+        box-shadow: #c4b8af 0 8px 24px;
+        border-radius: 15px;
+    }
+}
+
+@media only screen and (max-width: 749px) {
+    .account_overview_text, .address_book_account_page {
+        padding: 1rem;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .account_overview_text, .address_book_account_page {
+        margin-bottom: 1rem;
+    }
+    .faq_section-left .tablinks{
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    .faq_section-list.page-width {
+     width: 99%;
+}
+    .faq_section-right {
+    padding: 10px !important;
+  }
+}
+
+a.section-header__link.logout_btn_account.section-header__link.logout-btn path{
+  fill: white;
+}
+.logout-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: black;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: 35%;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 48px;
+}
+{% endstyle %} 
+
+
+<script>
+  function openTab(evt, tabId) {
+  document.querySelectorAll(".tab-content").forEach(function (tabContent) {
+    tabContent.style.display = "none";
+  });
+  document.querySelectorAll(".tablinks").forEach(function (tabLink) {
+    tabLink.classList.remove("is--active");
+  });
+
+  var tabElement = document.getElementById(tabId);
+  // Toggle display of selected tab content
+  if (tabElement.style.display !== "block") {
+    tabElement.style.display = "block";
+    evt.currentTarget.classList.add("is--active");
+  } else {
+    tabElement.style.display = "none";
+    evt.currentTarget.classList.remove("is--active");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  var activeElement = document.querySelector(".is--active");
+  if (activeElement) {
+    activeElement.click();
+  }
+
+  var tabLinks = document.querySelectorAll(".tablinks");
+
+  Array.from(tabLinks).forEach(function (tabLink) {
+    tabLink.addEventListener("click", function (event) {
+      var tabId = event.currentTarget.getAttribute("data-tab");
+      openTab(event, tabId);
+    });
+  });
+
+  // document
+  //   .querySelector(".tablinks.details.whishlist")
+  //   .addEventListener("click", function () {
+  //     // Redirect to the desired page
+  //     window.location.href = "apps/subscription";
+  //   });
+
+  // document
+  //   .querySelector(".account_wishlist.tablinks")
+  //   .addEventListener("click", function () {
+  //     // Redirect to the desired page
+  //     window.location.href = "apps/subscription";
+  //   });
+});
+
+</script>
+
+
+
+{% schema %}
+{
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full", "label": "Full width padded" },
+        { "value": "wrapper", "label": "Page width" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}
+

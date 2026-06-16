@@ -1,0 +1,208 @@
+{% comment %} {{ 'splide.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'splide.mins.js' | asset_url }}" defer></script>
+<script src="{{ 'grid-stack.js' | asset_url }}" defer></script>
+{{ 'grid-stack.aio.min.css' | asset_url | stylesheet_tag }} {% endcomment %}
+
+{% assign image_block = section.blocks | where: 'type', 'images' %}
+
+{% if image_block != blank %}
+
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+
+    .section-{{ section.id }} {
+       /* background-image:url({{ section.settings.bg_image | image_url  |  image_tag : 'master' }}); */
+      background: #D5B0A6;
+    }
+    .section-title.h1:empty{
+       display: none;
+    }
+    @media only screen and (max-width: 767px){
+        .image-context-wrapper{
+            display: none;
+        }
+    }
+  {%- endstyle -%}
+  <div class="section-wrapper section-{{ section.id }}">
+    <div class="section-{{ section.id }}-padding">
+      <div class="row">
+        <div class="grid-item">
+          <div class="image-context-wrapper">
+            {% if section.settings.url != blank and section.settings.image != blank %}
+            <a href="{{ section.settings.url }}">
+              {% render 'responsive-picture',
+                mobileImage: section.settings.image,
+                desktopImage: section.settings.image,
+                loading: 'lazy'
+              %}
+            </a>
+            {% endif %}
+            <div class="image-context">
+              <h4 class="heading h1">{{ section.settings.heading }}</h4>
+              <a class="redirect-button" href="{{ section.settings.link }}">{{ section.settings.button }}</a>
+            </div>
+          </div>
+          <div class="grid-stack-block">
+            <div class="grid-stack-container ">
+              <div class="section-title h1">{{ section.settings.caption }}</div>
+              <grid-stack-slider id="image-carousel">
+                <div class="splide__track">
+                  <ul class="splide__list">
+                    {% for block in section.blocks %}
+                      {% if block.settings.image != blank and block.settings.link != blank %}
+                      <li class="splide__slide">
+                        <div class="slide-image">     
+                          <a href="{{ block.settings.link }}">
+                          {{
+                            block.settings.image
+                            | image_url: width: 3200
+                            | image_tag:
+                              widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
+                          }}
+                          </a>
+                          {% if block.settings.heading != blank %}
+                            <h4 class="heading">{{ block.settings.heading }}</h4>
+                          {% endif %}
+                        </div>
+                      </li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="slider-control-wrapper">
+                  <button class="slider-control play"></button>
+                  <button class="slider-control pause hidden"></button>
+                </div>
+                <div class="custom-pagination">
+                  <span class="current-slide"></span> |<span class="total-slides"></span>
+                </div>
+                <div class="splide__progress">
+                  <div class="splide__progress__bar"></div>
+                </div>
+              </grid-stack-slider>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "grid stack slider",
+  "tag": "section",
+  "class": "grid-stack-slider",
+  "settings": [
+    {
+      "type": "image_picker",
+      "label": "Background image",
+      "id": "bg_image",
+      "info": "1440px x 876px recommended"
+    },
+    {
+      "type": "image_picker",
+      "label": "image",
+      "id": "image",
+      "info": "618px x 770px recommended"
+    },
+    {
+      "type": "url",
+      "label": "link",
+      "id": "url"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "collection Tittle"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "slider"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption",
+      "default": "Slide image title"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 0,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "images",
+      "name": "images",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "image",
+          "id": "image",
+          "info": "Recommended 690 x 880px"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "collection Tittle"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grid Stack Slider"
+    }
+  ]
+}
+{% endschema %}
+
+

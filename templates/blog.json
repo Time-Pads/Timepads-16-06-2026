@@ -1,0 +1,163 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "blog-section-featured-article": {
+      "type": "section-featured-article",
+      "blocks": {
+        "blog-section-featured-article-block-0": {
+          "type": "kicker",
+          "disabled": true,
+          "settings": {
+            "show_author": true,
+            "show_date": true
+          }
+        },
+        "blog-section-featured-article-block-1": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "text_size": 8
+          }
+        },
+        "blog-section-featured-article-block-2": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "richtext": "",
+            "text_size": 5
+          }
+        },
+        "blog-section-featured-article-block-3": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn-text-thick-line"
+          }
+        }
+      },
+      "block_order": [
+        "blog-section-featured-article-block-0",
+        "blog-section-featured-article-block-1",
+        "blog-section-featured-article-block-2",
+        "blog-section-featured-article-block-3"
+      ],
+      "disabled": true,
+      "settings": {
+        "article": "time-blog/things-every-newlywed-husband-should-know-about-his-wife-s-period",
+        "image": "shopify://shop_images/Available_81c97e1b-63b3-4f3e-9019-3b87ed638c35.jpg",
+        "image_full_width": true,
+        "height": "use_screen_one_half",
+        "overlay_opacity": 15,
+        "overlay_color": "#000000",
+        "enable_overlay_text": false,
+        "color_bg": "",
+        "text_align": "align--bottom-center",
+        "text_alignment": "text-center",
+        "text_color": "text--neutral",
+        "text_color_bg": "palette--light bg--accent",
+        "width": "wrapper",
+        "padding_top": 64,
+        "padding_bottom": 100
+      }
+    },
+    "custom-content-feature": {
+      "type": "section-custom-content",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "overlay_opacity": 15,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "article": {
+          "type": "article",
+          "settings": {
+            "article": "",
+            "show_tag": true,
+            "show_date": true,
+            "font_size": 4,
+            "show_excerpt": true,
+            "align_text": "text-left",
+            "placement_text": "middle",
+            "show_author_name": true,
+            "show_author_image": true,
+            "button_text": "Read more",
+            "button_color": "btn--neutral",
+            "button_style": "btn-text-thick-line",
+            "text_color": "text--neutral",
+            "bg_color": "#f7f7f7"
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "article"
+      ],
+      "disabled": true,
+      "settings": {
+        "height": "use_screen_one_half",
+        "brick_gutter": 0,
+        "borders": false,
+        "bg_color": "",
+        "preload_image": false,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "main-blog": {
+      "type": "blog",
+      "settings": {
+        "heading": "Blogs",
+        "show_heading": true,
+        "tag_label": "",
+        "tags": false,
+        "text_align": "text-left",
+        "post_grid": 3,
+        "rows": 3,
+        "wh_ratio": 1.7,
+        "show_author": false,
+        "show_tags": true,
+        "show_date": true,
+        "show_preview": false,
+        "show_link": true,
+        "overlay_opacity": 30,
+        "overlay_color": "#000000",
+        "enable_overlay_text": true,
+        "image_height": "use_image",
+        "text_color": "text--white",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "blog-section-featured-article",
+    "custom-content-feature",
+    "main-blog"
+  ]
+}

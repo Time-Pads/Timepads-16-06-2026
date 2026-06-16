@@ -1,0 +1,172 @@
+<div class="info-section-wrapper">
+  {% if section.settings.main_title != blank %}
+    <h2 class="info-main-title">{{ section.settings.main_title }}</h2>
+  {% endif %}
+
+  {% for block in section.blocks %}
+    <div class="info-row fade-in {{ block.settings.layout }}">
+      {% if block.settings.image %}
+        <div class="info-img">
+          <img src="{{ block.settings.image | image_url: width: 600 }}" alt="">
+        </div>
+      {% endif %}
+      <div class="info-text">
+        {% if block.settings.title %}
+          <h3 class="info-title">{{ block.settings.title }}</h3>
+        {% endif %}
+        {% if block.settings.text %}
+          <p class="info-desc">{{ block.settings.text }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if block.settings.divider %}
+      <div class="line-divider"></div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<style>
+.info-section-wrapper {
+  padding: 50px 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Centered main section title */
+.info-main-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+/* Layout wrapper */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+/* Image Left / Right Layout */
+.info-row.left .info-img { order: 1; }
+.info-row.left .info-text { order: 2; }
+
+.info-row.right .info-img { order: 2; }
+.info-row.right .info-text { order: 1; }
+
+/* Image Styling */
+.info-img img {
+  width: 260px;
+  object-fit: contain;
+}
+
+/* Text Styling */
+.info-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.info-desc {
+  font-size: 18px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* Divider */
+.line-divider {
+  height: 3px;
+  width: 100%;
+  background: #b8d66c;
+  margin: 20px 0;
+}
+
+/* Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s forwards;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .info-row {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  .info-img img {
+    width: 200px;
+  }
+
+  .info-main-title { font-size: 26px; }
+  .info-title { font-size: 20px; }
+  .info-desc { font-size: 16px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Menstrual Cup Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Section Main Title",
+      "default": "Everything You Need to Know"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info_block",
+      "name": "Content With Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Upload Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Sample Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Write full paragraph text here..."
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Image Position",
+          "options": [
+            { "value": "left", "label": "Image Left" },
+            { "value": "right", "label": "Image Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "divider",
+          "label": "Show Separator Line"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Menstrual Cup Section"
+    }
+  ]
+}
+{% endschema %}

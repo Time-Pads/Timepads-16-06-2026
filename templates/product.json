@@ -1,0 +1,368 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "text_size": 8,
+            "product_show_cutline": false,
+            "show_rating": true,
+            "show_rating_count": true,
+            "padding_bottom": 20
+          }
+        },
+        "judge_me_reviews_preview_badge_VkJVpQ": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "text_wGQiWR": {
+          "type": "text",
+          "settings": {
+            "title": "<p>Premium quality sanitary pads offering <strong>superior absorption</strong> and <strong>maximum comfort.</strong></p>",
+            "padding_bottom": 20
+          }
+        },
+        "short_info_H3zWWy": {
+          "type": "shortInfo",
+          "disabled": true,
+          "settings": {}
+        },
+        "extrainfo_cEj4pt": {
+          "type": "Extrainfo",
+          "disabled": true,
+          "settings": {}
+        },
+        "product_features_bB8X4A": {
+          "type": "Product-Features",
+          "settings": {}
+        },
+        "product_certificates_VXjA7f": {
+          "type": "product-certificates",
+          "settings": {
+            "heading": "Certificates We Have",
+            "image_1": "shopify://shop_images/Clinically-Tested.png",
+            "image_2": "shopify://shop_images/Dermatologically-Tested.png",
+            "image_3": "shopify://shop_images/Non---irritant.png"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_size": 5,
+            "padding_bottom": 40
+          }
+        },
+        "shipping_text_GRcYBH": {
+          "type": "Shipping-text",
+          "settings": {
+            "shipping_text": "",
+            "shipping_text_url": "shopify://policies/shipping-policy"
+          }
+        },
+        "variants": {
+          "type": "variant-selectors",
+          "settings": {
+            "option_size_swatch": 34,
+            "option_size_radio": 50,
+            "option_space": 30,
+            "padding_bottom": 30
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {
+            "show_quantity": true,
+            "padding_bottom": 20
+          }
+        },
+        "selling_fast_PFkH86": {
+          "type": "selling-fast",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "add-buttons",
+          "settings": {
+            "enable_payment_button": true,
+            "enable_gift_card_recipient": true,
+            "padding_bottom": 20
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "settings": {
+            "share_label": "Share",
+            "target_device": "",
+            "padding_bottom": 20
+          }
+        },
+        "product_view_i8nFPx": {
+          "type": "Product-view",
+          "settings": {
+            "view_text": "Peoples are viewing this right now"
+          }
+        },
+        "icon_FwCCTX": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
+            "padding_bottom": 8
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "disabled": true,
+          "settings": {
+            "title": "Buy it with",
+            "upsell_type": "product_grouping",
+            "product": "",
+            "upsell_product_list": [
+              "time-overnight-sanitary-pads-for-women",
+              "premium-sanitary-pads-with-hight-absorbency",
+              "extra-large-sanitary-pads",
+              "time-ultra-feather-medium-flow-day-sanitary-pads-7-pads",
+              "time-ultra-thin-quality-sanitary-pads",
+              "heavy-flow-sanitary-pads",
+              "time-rash-free-sanitary-pads",
+              "travel-friendly-sanitary-pads",
+              "best-pads-for-women",
+              "time-us-cotton-sanitary-pads",
+              "uniline-sanitary-pads",
+              "us-cotton-comfortable-sanitary-pads-xl",
+              "cotton-sanitary-pads"
+            ],
+            "upsell_list_limit": 3,
+            "padding_bottom": 20
+          }
+        },
+        "complimentary_qpi4yC": {
+          "type": "complimentary",
+          "settings": {
+            "title": "Bought together",
+            "complimentary_list_limit": 3,
+            "padding_bottom": 20
+          }
+        },
+        "variant_descriptions_description_zFaPiT": {
+          "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
+          "settings": {}
+        },
+        "description_product_PrHYrn": {
+          "type": "description-product",
+          "disabled": true,
+          "settings": {}
+        },
+        "icon_d8teE9": {
+          "type": "icon",
+          "disabled": true,
+          "settings": {
+            "icon_name": "icon-payment",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Use Code <strong>\"Welcome5\"</strong> for discount 5% on your first order</p>",
+            "padding_bottom": 8
+          }
+        },
+        "icon_7TtzEd": {
+          "type": "icon",
+          "disabled": true,
+          "settings": {
+            "icon_name": "icon-shipment",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Free shipping </p>",
+            "padding_bottom": 8
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "judge_me_reviews_preview_badge_VkJVpQ",
+        "text_wGQiWR",
+        "short_info_H3zWWy",
+        "extrainfo_cEj4pt",
+        "product_features_bB8X4A",
+        "product_certificates_VXjA7f",
+        "price",
+        "shipping_text_GRcYBH",
+        "variants",
+        "quantity",
+        "selling_fast_PFkH86",
+        "buttons",
+        "sharing",
+        "product_view_i8nFPx",
+        "icon_FwCCTX",
+        "upsell",
+        "complimentary_qpi4yC",
+        "variant_descriptions_description_zFaPiT",
+        "description_product_PrHYrn",
+        "icon_d8teE9",
+        "icon_7TtzEd"
+      ],
+      "settings": {
+        "layout": "thumbnails-left@slides",
+        "image_width": "half",
+        "image_spacing": 0,
+        "align": "left",
+        "bg": "palette--light bg--neutral",
+        "mobile_layout": "thumbs",
+        "enable_video_looping": true,
+        "zoom_enable": true,
+        "alt_text_enable": true,
+        "product_breadcrumbs_enable": true,
+        "product_breadcrumbs_list": [
+          "regular-sanitary-pads"
+        ],
+        "width": "wrapper",
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "gif_images_gb6mrC": {
+      "type": "gif-images",
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 20,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 20,
+        "heading_text": "",
+        "font_size": 12,
+        "font_weight": 400,
+        "text_color": ""
+      }
+    },
+    "counting_number_arqh6C": {
+      "type": "counting-number",
+      "settings": {
+        "heading": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mpadding_top": 100,
+        "mpadding_bottom": 100
+      }
+    },
+    "1734695772f9935df8": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_MD8iFT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "other_products_reviews"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_MD8iFT"
+      ],
+      "settings": {
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "product_a_pluse_content_kKtNqB": {
+      "type": "product-A-pluse-content",
+      "settings": {}
+    },
+    "related": {
+      "type": "related",
+      "disabled": true,
+      "settings": {
+        "heading": "You might also like",
+        "bg": "palette--light bg--neutral",
+        "grid_large": 4,
+        "grid_medium": 3,
+        "grid_small": 1.8,
+        "related_products_enable": true,
+        "limit": 6,
+        "product_recommendations_heading": "Related products",
+        "show_recently_viewed": true,
+        "product_recently_limit": 6,
+        "product_recently_minimum": 4,
+        "product_recently_heading": "Recently viewed",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_faq_brbRd3": {
+      "type": "section-faq",
+      "blocks": {
+        "text_adBgjq": {
+          "type": "text",
+          "settings": {
+            "title": "Why Time",
+            "content": "<h6><strong>Clinically Tested , Dermatologically Tested</strong> , <strong>Non - irritant</strong></h6><p><strong><br/></strong></p>"
+          }
+        },
+        "text_a6FKVF": {
+          "type": "text",
+          "settings": {
+            "title": "Additional Information",
+            "content": "{{ product.metafields.custom.product_information | metafield_tag }}"
+          }
+        },
+        "text_jGQCXx": {
+          "type": "text",
+          "settings": {
+            "title": "Caution",
+            "content": "<p>Do not reuse.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_adBgjq",
+        "text_a6FKVF",
+        "text_jGQCXx"
+      ],
+      "name": "Accordion group",
+      "settings": {
+        "title": "",
+        "title_align": "text-left",
+        "title_size": 4,
+        "heading_size": 5,
+        "text_size": 5,
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_liquid_r9y3aC": {
+      "type": "section-liquid",
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "gif_images_gb6mrC",
+    "counting_number_arqh6C",
+    "1734695772f9935df8",
+    "product_a_pluse_content_kKtNqB",
+    "related",
+    "section_faq_brbRd3",
+    "section_liquid_r9y3aC"
+  ]
+}

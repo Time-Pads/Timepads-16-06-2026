@@ -1,0 +1,31 @@
+{%- liquid
+    # Conditional Block:
+    # This code returns "true" under specific conditions; otherwise, it returns blank.
+
+    # Assign eager_section_count based on the current template:
+    case template.name
+        when 'index'
+            assign eager_section_count = settings.hp_eager_section_count
+        when 'product'
+            assign eager_section_count = settings.pdp_eager_section_count
+        when 'collection'
+            assign eager_section_count = settings.plp_eager_section_count
+    endcase
+
+    assign header_eager_section_count = settings.header_eager_section_count
+
+    # Check if "lazy loading sections" is enabled in global settings:
+    # Verify that the section is not rendered through the Section Rendering API,
+    # and that the section index exceeds the set eager section count for the current template.
+    if section.location == 'header' and settings.enable_lazy_loading_header_sections and section.index != nil and section.index > header_eager_section_count
+        echo 'true'
+    elsif section.location == 'template' and settings.enable_lazy_loading_sections and section.index != nil and section.index > eager_section_count
+        echo 'true'
+    endif
+
+    # Warning:
+    # Both 'index' and 'index0' are nil in the following cases:
+    # 1. For statically rendered sections
+    # 2. For sections rendered using the Section Rendering API
+    # 3. When rendering the Online Store Editor
+-%}

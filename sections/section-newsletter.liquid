@@ -1,0 +1,151 @@
+<!-- /sections/section-newsletter.liquid -->
+
+
+{%- capture lazy_load_section %}
+  {%- render 'lazy-load-section-validations' -%}
+{%- endcapture -%}
+
+{% if lazy_load_section != blank %}
+  <lazy-section>
+{% endif %}
+
+  {% if lazy_load_section == blank %}
+
+
+
+
+<!-- Include Canvas Confetti Library for animation -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer="defer"></script>
+
+<div class="section-newsletter {{ section.settings.bg }}"
+  style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  <div class="{{ section.settings.width }} section-padding">
+    <div class="one-whole text-center">
+      {% if section.settings.title != '' %}
+        <h2 class="kicker-flourished mb-r11">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      {% if section.settings.richtext != blank %}
+        <div class="rte body-size-4">
+          {{ section.settings.richtext }}
+        </div>
+      {% endif %}
+
+      <div class="newsletter__contain">
+        {% assign unique =  'section-newsletter' | append: section.id %}
+        {% render 'newsletter-form', unique: unique %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Wait for the success message to be rendered (after form submission)
+  document.addEventListener("DOMContentLoaded", function () {
+    const successMessageElement = document.getElementById('newsletter-success');
+
+    if (successMessageElement && successMessageElement.offsetParent !== null) {
+      // Trigger the confetti animation when form is successfully submitted
+      const confettiConfig = {
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      };
+      confetti(confettiConfig);
+    }
+  });
+</script>
+
+
+
+{% else %}
+<svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+</svg>
+{% endif %}       
+
+{% if lazy_load_section != blank %}
+</lazy-section>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Newsletter"
+    },
+    {
+      "id": "richtext",
+      "type": "richtext",
+      "label": "Text",
+      "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"},
+        { "value": "palette--bright bg--bright", "label": "Bright"},
+        { "value": "palette--bright bg--bright--accent", "label": "Bright accent"}
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full", "label": "Full width padded" },
+        { "value": "wrapper", "label": "Page width" },
+        { "value": "wrapper--narrow", "label": "Page width narrow" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Text"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header","aside"]
+  }
+}
+{% endschema %}

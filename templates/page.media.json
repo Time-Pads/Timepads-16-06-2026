@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {
+        "kicker": "",
+        "kicker_size": 3,
+        "show_title": true,
+        "title_size": 8,
+        "show_content": true,
+        "content_size": 5,
+        "align_text": "text-left",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "video_popup_DRWwkT": {
+      "type": "video-popup",
+      "blocks": {
+        "heading_WfpViC": {
+          "type": "heading",
+          "settings": {
+            "video_url": "https://youtu.be/GTtj9swpmSI?si=fo_UDu_Fm4zAlZYU",
+            "heading": "Time to break the stigma and embrace every moment with Time"
+          }
+        },
+        "heading_fgCUGr": {
+          "type": "heading",
+          "settings": {
+            "video_url": "https://youtu.be/pP-zoKMxayY?si=BpMkTRrCg4wN4Tmi",
+            "heading": "We’ve got exciting news! 🎉"
+          }
+        }
+      },
+      "block_order": [
+        "heading_WfpViC",
+        "heading_fgCUGr"
+      ],
+      "settings": {
+        "heading_text": "Video",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    }
+  },
+  "order": [
+    "main",
+    "video_popup_DRWwkT"
+  ]
+}

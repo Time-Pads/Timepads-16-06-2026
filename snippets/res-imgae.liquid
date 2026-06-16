@@ -1,0 +1,38 @@
+{%- liquid
+  assign desktop_img = desktopImage
+  assign mobile_img = mobileImage | default: desktopImage
+
+  assign desktop_width = desktopWidth | default: 600
+  assign mobile_width = mobileWidth | default: 360
+
+  assign img_class = img_class | default: ''
+  assign alt_text = alt | default: ''
+-%}
+
+{% if desktop_img != blank %}
+
+  {%- comment -%}
+    Safe aspect ratio calculation
+  {%- endcomment -%}
+  {% if desktop_img.width and desktop_img.height and desktop_img.height != 0 %}
+    {% assign aspect_ratio = desktop_img.width | divided_by: desktop_img.height %}
+  {% else %}
+    {% assign aspect_ratio = 1 %}
+  {% endif %}
+
+  <img
+    src="{{ desktop_img | image_url: width: desktop_width }}"
+    srcset="
+      {{ mobile_img | image_url: width: mobile_width }} {{ mobile_width }}w,
+      {{ desktop_img | image_url: width: desktop_width }} {{ desktop_width }}w
+    "
+    sizes="(max-width: 749px) {{ mobile_width }}px, {{ desktop_width }}px"
+    width="{{ desktop_width }}"
+    height="{{ desktop_width | divided_by: aspect_ratio | round }}"
+    loading="lazy"
+    decoding="async"
+    class="{{ img_class }}"
+    alt="{{ alt_text | escape }}"
+  >
+
+{% endif %}

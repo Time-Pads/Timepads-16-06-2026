@@ -1,0 +1,789 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "section_slideshow_K6XEAq": {
+      "type": "section-slideshow",
+      "blocks": {
+        "image_8hKAHJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/file_0000000008ac720896b1f51e8975647b-1.png",
+            "mobile_image": "shopify://shop_images/WhatsApp_Image_2026-05-11_at_6.18.09_PM.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#ffffff",
+            "enable_overlay_text": true,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "https://timepads.in/products/time-ultra-thin-quality-sanitary-pads",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_7HjkDA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/file_000000002a707208b2b6eaa6b0c920a4.png",
+            "mobile_image": "shopify://shop_images/file_00000000dd047208b95809a615349c85.png",
+            "overlay_opacity": 0,
+            "overlay_color": "#ffffff",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://products/menstrual-cup",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_F64cEx": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "mobile_image": "shopify://shop_images/period_cramp_phone.jpg_1.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://products/period-pain-relief-cream",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_bTfJtJ": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Sanitary-Pads-Banner-Desktop.jpg",
+            "mobile_image": "shopify://shop_images/Sanitary-Pads-Banner-2_1_e0a22bdf-0faa-4051-a048-0cf7c4985ce6.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://collections/all",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_DY9bHr": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/image_3.jpg",
+            "mobile_image": "shopify://shop_images/image_7.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://collections/period-pads-cotton",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_QrDDQw": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/image_2.jpg",
+            "mobile_image": "shopify://shop_images/image_6.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://collections/soft-cotton-pads-for-periods",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_jer7eT": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Banner_04_02.jpg",
+            "mobile_image": "shopify://shop_images/Banner_04_750x600_02.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": true,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "View products",
+            "link": "shopify://collections/all",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        }
+      },
+      "block_order": [
+        "image_8hKAHJ",
+        "image_7HjkDA",
+        "image_F64cEx",
+        "image_bTfJtJ",
+        "image_DY9bHr",
+        "image_QrDDQw",
+        "image_jer7eT"
+      ],
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "preload_first_image": true,
+        "height": "use_image",
+        "color_bg": "palette--light bg--accent",
+        "width": "wrapper--none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "section_announcement_w9yLCp": {
+      "type": "section-announcement",
+      "blocks": {
+        "text_HWbbrX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our Products Are Clinically Tested to Ensure Maximum <strong>Safety and Quality</strong> for Women!</p>"
+          }
+        },
+        "text_GXWpFC": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p><strong>| Free Shipping on All Orders Shop Now</strong></p>"
+          }
+        },
+        "icon_block_BiTUaa": {
+          "type": "icon_block",
+          "settings": {
+            "text": "<p>Safe</p>",
+            "icon_name": "icon-washer",
+            "icon_color": "#aaaaaa",
+            "icon_alt_width": 33
+          }
+        },
+        "icon_block_yaYeeR": {
+          "type": "icon_block",
+          "settings": {
+            "text": "<p> Reliable, and </p>",
+            "icon_name": "icon-thread",
+            "icon_color": "#aaaaaa",
+            "icon_alt_width": 33
+          }
+        },
+        "icon_block_jbaXLz": {
+          "type": "icon_block",
+          "settings": {
+            "text": "<p>Skin-Friendly!</p>",
+            "icon_name": "icon-truck",
+            "icon_color": "#aaaaaa",
+            "icon_alt_width": 33
+          }
+        },
+        "text_4pNnwk": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Afraid to try a new pad? Try Time! One pack, and you'll love it—bet on it!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_HWbbrX",
+        "text_GXWpFC",
+        "icon_block_BiTUaa",
+        "icon_block_yaYeeR",
+        "icon_block_jbaXLz",
+        "text_4pNnwk"
+      ],
+      "settings": {
+        "bg_color": "#000000",
+        "color": "#ffffff",
+        "text_size": 4,
+        "padding_top": 14,
+        "padding_bottom": 14
+      }
+    },
+    "collection_tabs_jwbj9a": {
+      "type": "collection-tabs",
+      "blocks": {
+        "tab_PnMr8r": {
+          "type": "tab",
+          "settings": {
+            "coming_soon_text": "New Arrivals",
+            "header_image": "shopify://shop_images/Cream_1_fbbb9a81-8d73-4bd1-a27d-c378a6e6fa82.png",
+            "header_title": "Period Pain Relief Cream",
+            "tab_label": "Period Pain Relief Cream",
+            "collection": "",
+            "collection_url": "https://timepads.in/products/period-pain-relief-cream-oil"
+          }
+        },
+        "tab_Hm6i8d": {
+          "type": "tab",
+          "settings": {
+            "coming_soon_text": "New Arrivals",
+            "header_image": "shopify://shop_images/Cup_1_21485a91-1b99-489e-8098-2e803deadb03.png",
+            "header_title": "Menstrual Cup",
+            "tab_label": "Menstrual Cup",
+            "collection": "",
+            "collection_url": "shopify://products/menstrual-cup"
+          }
+        },
+        "tab_qNmpaP": {
+          "type": "tab",
+          "settings": {
+            "coming_soon_text": "",
+            "header_image": "shopify://shop_images/Feather_9.png",
+            "header_title": "Ultra Feather",
+            "tab_label": "Day Pads",
+            "collection": "cotton-sanitary-pads",
+            "collection_url": "shopify://collections/cotton-sanitary-pads"
+          }
+        },
+        "tab_UtMXmL": {
+          "type": "tab",
+          "settings": {
+            "coming_soon_text": "",
+            "header_image": "shopify://shop_images/Velvet_4.png",
+            "header_title": "Ultra Velvet",
+            "tab_label": "Day & Night pads",
+            "collection": "comfortable-pads-for-periods",
+            "collection_url": "shopify://collections/comfortable-pads-for-periods"
+          }
+        },
+        "tab_UbehUd": {
+          "type": "tab",
+          "settings": {
+            "coming_soon_text": "",
+            "header_image": "shopify://shop_images/Cuddle_9.png",
+            "header_title": "Ultra cuddle",
+            "tab_label": "Night Pads",
+            "collection": "period-pads-cotton",
+            "collection_url": "shopify://collections/period-pads-cotton"
+          }
+        },
+        "tab_LYdNYW": {
+          "type": "tab",
+          "settings": {
+            "coming_soon_text": "",
+            "header_image": "shopify://shop_images/Uniline_5.png",
+            "header_title": "Uniline",
+            "tab_label": "Straight pads",
+            "collection": "soft-cotton-pads-for-periods",
+            "collection_url": "shopify://collections/soft-cotton-pads-for-periods"
+          }
+        }
+      },
+      "block_order": [
+        "tab_PnMr8r",
+        "tab_Hm6i8d",
+        "tab_qNmpaP",
+        "tab_UtMXmL",
+        "tab_UbehUd",
+        "tab_LYdNYW"
+      ],
+      "name": "Collection Tabs",
+      "settings": {
+        "heading": "Explore Our Collections",
+        "grid": 4,
+        "grid_mobile": 2
+      }
+    },
+    "product-grid": {
+      "type": "section-collection",
+      "custom_css": [],
+      "settings": {
+        "show_announcement_hot_selling": false,
+        "padding_top": 16,
+        "padding_bottom": 20,
+        "mpadding_top": 0,
+        "mpadding_bottom": 0,
+        "title": "",
+        "font_size": 24,
+        "font_size_mobile": 20,
+        "collection": "circular-collection",
+        "grid": 8,
+        "rows": 1,
+        "grid_mobile": "2",
+        "bg": "palette--light bg--neutral",
+        "show_view_all": true,
+        "width": "wrapper"
+      }
+    },
+    "deal_of_the_day_wBf4Px": {
+      "type": "deal-of-the-day",
+      "blocks": {
+        "product_FMWkhn": {
+          "type": "product",
+          "settings": {
+            "product": "time-us-cotton-sanitary-pads"
+          }
+        },
+        "product_yTYtFH": {
+          "type": "product",
+          "settings": {
+            "product": "cotton-sanitary-pads"
+          }
+        },
+        "product_chNCgV": {
+          "type": "product",
+          "settings": {
+            "product": "uniline-240mm-l-3-packs-6-pads-each"
+          }
+        },
+        "product_cYHmGe": {
+          "type": "product",
+          "settings": {
+            "product": "uniline-280mm-xl-3-packs-6-pads-each"
+          }
+        },
+        "product_RYcPDD": {
+          "type": "product",
+          "settings": {
+            "product": "premium-cotton-top-sheet-ultra-thin-rash-free-pads-xl-21-pads"
+          }
+        },
+        "product_UadaNx": {
+          "type": "product",
+          "settings": {
+            "product": "no-leak-heavy-flow-soft-ultra-thin-pads-xxl-21-pads"
+          }
+        },
+        "product_EnGFjH": {
+          "type": "product",
+          "settings": {
+            "product": "extra-wide-soft-comfort-full-night-pads-xxl-21-pads"
+          }
+        },
+        "product_dh6AbQ": {
+          "type": "product",
+          "settings": {
+            "product": "overnight-wider-back-rash-free-heavy-flow-pads-xxl-15-pads"
+          }
+        }
+      },
+      "block_order": [
+        "product_FMWkhn",
+        "product_yTYtFH",
+        "product_chNCgV",
+        "product_cYHmGe",
+        "product_RYcPDD",
+        "product_UadaNx",
+        "product_EnGFjH",
+        "product_dh6AbQ"
+      ],
+      "name": "Deal of the Day",
+      "settings": {
+        "show_limited_badge": true,
+        "show_pagination": true,
+        "columns_desktop": 4,
+        "columns_mobile": "1"
+      }
+    },
+    "trending_this_week_rKUbXd": {
+      "type": "trending-this-week",
+      "blocks": {
+        "product_item_iadLCD": {
+          "type": "product_item",
+          "settings": {
+            "product": "premium-cotton-top-sheet-ultra-thin-rash-free-pads-xl-21-pads"
+          }
+        },
+        "product_item_BweUPc": {
+          "type": "product_item",
+          "settings": {
+            "product": "overnight-wider-back-rash-free-heavy-flow-pads-xxl-15-pads"
+          }
+        },
+        "product_item_WDgDMy": {
+          "type": "product_item",
+          "settings": {
+            "product": "no-leak-heavy-flow-soft-ultra-thin-pads-xxl-21-pads"
+          }
+        },
+        "product_item_FdrhaV": {
+          "type": "product_item",
+          "settings": {
+            "product": "heavy-flow-sanitary-pads"
+          }
+        },
+        "product_item_AfWJqk": {
+          "type": "product_item",
+          "settings": {
+            "product": "cotton-sanitary-pads"
+          }
+        },
+        "product_item_JE4EzB": {
+          "type": "product_item",
+          "settings": {
+            "product": "time-us-cotton-sanitary-pads"
+          }
+        }
+      },
+      "block_order": [
+        "product_item_iadLCD",
+        "product_item_BweUPc",
+        "product_item_WDgDMy",
+        "product_item_FdrhaV",
+        "product_item_AfWJqk",
+        "product_item_JE4EzB"
+      ],
+      "name": "Trending This Week",
+      "settings": {
+        "heading": "Trending This Week",
+        "show_all_link": true,
+        "all_link": ""
+      }
+    },
+    "image_columns_with_text_reLjTW": {
+      "type": "image-columns-with-text",
+      "blocks": {
+        "text_block_BidJgh": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Slide-1_2.jpg",
+            "alt_text": "period pads",
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Designed for Women’s Comfort</strong></h3><p>We believe in saying<strong>'Bye Women' to discomfort and outdated solutions, and 'Hi Women' to confidence, care, and innovation</strong>. Our <strong>sanitary pads </strong>are designed with advanced technology to provide superior absorbency, skin-friendly materials, and ultimate comfort, empowering women to embrace their day with ease and assurance.\"</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_d3KNtU": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Slide-2_7.jpg",
+            "alt_text": "sanitary pads",
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Advanced Hot Air Pressed Technology</strong></h3><p>This process binds layers tightly, eliminating the need for adhesives that could irritate the skin. It also enhances the durability and absorbency of the <strong>pad</strong>, ensuring reliable performance.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_tyCn8K": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Slide-3_7.jpg",
+            "alt_text": "long night time sanitary pads",
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>High-Quality Sanitary Pads</strong></h3><p>Sanitary pads are designed with high absorbency to manage menstrual flow effectively and prevent leaks.<strong>Eco-friendly sanitary pads</strong> with multiple durable layers offer long-lasting protection. Advanced quality checks ensure the<strong>best pads for heavy flow</strong> meet safety and performance standards.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        },
+        "text_block_ECCWgh": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Slide-4_6.jpg",
+            "alt_text": "cotton absorbent sanitary pads",
+            "shape_class": "",
+            "title": "",
+            "text": "<h3><strong>Safe & Gentle on Skin</strong></h3><p>Made with soft, hypoallergenic materials,<strong>TIME pads </strong>are gentle on sensitive skin to prevent rashes or irritation. Dermatologically tested and free from harmful chemicals like chlorine or artificial fragrances. This ensures a comfortable experience throughout the day.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn--soft",
+            "enable_video": false,
+            "video_link": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_button_color": "text--white"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_BidJgh",
+        "text_block_d3KNtU",
+        "text_block_tyCn8K",
+        "text_block_ECCWgh"
+      ],
+      "settings": {
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 0,
+        "title": "Why Choose TIMEPADS Sanitary Pads",
+        "extra_class": "",
+        "bg": "palette--light bg--neutral",
+        "align_text": "text-center",
+        "scale_image": true,
+        "wh_ratio": 1,
+        "grid_large": 4,
+        "grid_medium": 4,
+        "grid_mobile": 1.2,
+        "progress_bar_mobile": false,
+        "width": "wrapper"
+      }
+    },
+    "gif_images_3zqd3g": {
+      "type": "gif-images",
+      "blocks": {
+        "collection_images_EhpP3r": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Cruelty-Free-1_1.webp",
+            "alt_text": "best pads for best pads for periods"
+          }
+        },
+        "collection_images_B93g8J": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Not-Tested-on-Animal-1_1.webp",
+            "alt_text": "feminine hygiene products"
+          }
+        },
+        "collection_images_8kAEGB": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Vegan-1_1.webp",
+            "alt_text": "menstrual pads"
+          }
+        },
+        "collection_images_JkPbCR": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Chemical-Free-1_1.webp",
+            "alt_text": "sanitary pads for heavy flow"
+          }
+        }
+      },
+      "block_order": [
+        "collection_images_EhpP3r",
+        "collection_images_B93g8J",
+        "collection_images_8kAEGB",
+        "collection_images_JkPbCR"
+      ],
+      "settings": {
+        "padding_top": 54,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "heading_text": "",
+        "font_size": 12,
+        "font_weight": 400,
+        "text_color": ""
+      }
+    },
+    "reviews_section_ekCTPn": {
+      "type": "reviews-section",
+      "blocks": {
+        "images_yXgGWq": {
+          "type": "images",
+          "settings": {
+            "name_person": "PRIYA VERMA",
+            "person_location": "Bangalore",
+            "person_content_heading": "Rash-Free Comfort",
+            "person_content_subheading": "<p>I’ve finally found premium affordable sanitary pads that doesn’t cause any irritation! These are completely rash-free and super gentle on the skin. I can wear them all day without any discomfort. Absolutely love them!</p>"
+          }
+        },
+        "images_TwicGP": {
+          "type": "images",
+          "settings": {
+            "name_person": "GEETHA VENKATESHAN",
+            "person_location": "Bangalore",
+            "person_content_heading": "Gynaecologist Approved",
+            "person_content_subheading": "<p>My gynecologist recommended switching to cotton pads, and I’m so glad I did! These TIME pads are safe, organic, and so much better than anything I’ve used before. A great choice for health!</p>"
+          }
+        },
+        "images_eyYp9G": {
+          "type": "images",
+          "settings": {
+            "name_person": "ANJALI MEHTA",
+            "person_location": "Bangalore",
+            "person_content_heading": "Comfortable and Confident",
+            "person_content_subheading": "<p>These Premium sanitary pads are a lifesaver! They are so comfortable, and I feel super confident wearing them all day long. Best pads for heavy flow. NO leaks, NO worries – just comfort and ease.</p>"
+          }
+        },
+        "images_rJaEyR": {
+          "type": "images",
+          "settings": {
+            "name_person": "NEHA SHARMA",
+            "person_location": "Bangalore",
+            "person_content_heading": "Safe on Skin",
+            "person_content_subheading": "<p>I love how gentle these Time Sanitary pads are! They feel so soft and are completely safe on my sensitive skin. I haven’t faced any irritation since I’m using them from past 5 months.  Highly recommended!</p>"
+          }
+        },
+        "images_L7w7Et": {
+          "type": "images",
+          "settings": {
+            "name_person": "TANYA SINGH",
+            "person_location": "Bangalore",
+            "person_content_heading": "Worth Every Penny",
+            "person_content_subheading": "<p>These pads are worth every rupee! The comfort, protection, and quality make them a great investment. I wouldn’t switch back to anything else. Totally worth it!</p><p></p>"
+          }
+        },
+        "images_wLUmUN": {
+          "type": "images",
+          "settings": {
+            "name_person": "SONALI AGARWAL",
+            "person_location": "Bangalore",
+            "person_content_heading": "Highly Recommended",
+            "person_content_subheading": "<p>I can’t recommend these enough! The quality, comfort, and protection are unbeatable. They’ve made my period days so much easier, the best sanitary pads for heavy bleeding. You should definitely give them a try!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "images_yXgGWq",
+        "images_TwicGP",
+        "images_eyYp9G",
+        "images_rJaEyR",
+        "images_L7w7Et",
+        "images_wLUmUN"
+      ],
+      "settings": {
+        "section_heading": "Our Customers Love Us!",
+        "font_size": 24,
+        "font_size_mobile": 20,
+        "padding_top": 54,
+        "padding_bottom": 0,
+        "mpadding_top": 0,
+        "mpadding_bottom": 0,
+        "testimonial_reviews": "shopify://shop_images/icons8-star-50.png"
+      }
+    },
+    "logos": {
+      "type": "section-logos",
+      "blocks": {
+        "logo-0": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Web_Sample-07_1_11_1.webp",
+            "alt_text": "hygiene essentials",
+            "link": "",
+            "new_tab": true,
+            "width": 140,
+            "spacing": 50
+          }
+        },
+        "logo-1": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Web_Sample-08_11_1.webp",
+            "alt_text": "sanitary pads thin",
+            "link": "",
+            "new_tab": true,
+            "width": 140,
+            "spacing": 50
+          }
+        },
+        "logo-2": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Web_Sample-06_11_1.webp",
+            "alt_text": "organic period products",
+            "link": "",
+            "new_tab": true,
+            "width": 140,
+            "spacing": 50
+          }
+        },
+        "logo_image_QFBnLa": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Logo_31_1.webp",
+            "alt_text": "blinkit",
+            "link": "",
+            "new_tab": true,
+            "width": 140,
+            "spacing": 50
+          }
+        },
+        "logo_image_4LBmdc": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Web_Sample-091_1.webp",
+            "alt_text": "best cotton sanitary pads in india",
+            "link": "",
+            "new_tab": true,
+            "width": 140,
+            "spacing": 50
+          }
+        }
+      },
+      "block_order": [
+        "logo-0",
+        "logo-1",
+        "logo-2",
+        "logo_image_QFBnLa",
+        "logo_image_4LBmdc"
+      ],
+      "settings": {
+        "padding_top": 48,
+        "padding_bottom": 22,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "title": "Shop TIMEPADS Online",
+        "extra_class": "buy-from-us",
+        "bg": "palette--light bg--neutral",
+        "enable_marquee": false,
+        "marquee_speed": 30,
+        "width": "wrapper--none"
+      }
+    }
+  },
+  "order": [
+    "section_slideshow_K6XEAq",
+    "section_announcement_w9yLCp",
+    "collection_tabs_jwbj9a",
+    "product-grid",
+    "deal_of_the_day_wBf4Px",
+    "trending_this_week_rKUbXd",
+    "image_columns_with_text_reLjTW",
+    "gif_images_3zqd3g",
+    "reviews_section_ekCTPn",
+    "logos"
+  ]
+}
