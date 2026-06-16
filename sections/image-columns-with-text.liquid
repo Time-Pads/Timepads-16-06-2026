@@ -11,14 +11,14 @@
 {%- assign mpb  = section.settings.padding_bottom_mobile -%}
 
 {% style %}
-  .section-padding-{{ sid }} {
-    padding-top: {{ pt }}px;
-    padding-bottom: {{ pb }}px;
+  #shopify-section-{{ sid }} {
+    padding-top: {{ pt }}px !important;
+    padding-bottom: {{ pb }}px !important;
   }
-  @media (max-width: 767px) {
-    .section-padding-{{ sid }} {
-      padding-top: {{ mpt }}px;
-      padding-bottom: {{ mpb }}px;
+  @media (max-width: 768px) {
+    #shopify-section-{{ sid }} {
+      padding-top: {{ mpt }}px !important;
+      padding-bottom: {{ mpb }}px !important;
     }
   }
   /* Scope read-more styles to this section to avoid cross-section conflicts */
@@ -56,7 +56,7 @@
     data-section-id="{{ sid }}"
     data-section-type="section-columns"
   >
-    <div class="{{ section.settings.width }} section-padding-{{ sid }}">
+    <div class="{{ section.settings.width }}">
 
       {%- if section.settings.title != blank -%}
         <h2 class="kicker-flourished mb-r11">{{ section.settings.title | escape }}</h2>

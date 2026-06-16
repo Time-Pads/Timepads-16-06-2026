@@ -344,7 +344,7 @@
     ${drawerhtmlDesktop}
   `;
   
-  if(!document.getElementsByClassName("header--icon")?.[0]){
+  if(personIconElement && profileButtonElement && !document.getElementsByClassName("header--icon")?.[0]){
     const kwipassDesktopNode = document.createElement('div')
     kwipassDesktopNode.className="header--icon"
     kwipassDesktopNode.innerHTML = html
@@ -359,7 +359,7 @@
     ${drawerhtmlMobile}
   `;
   
-  if(!document.getElementsByClassName("header--icon--mobile")?.[0]){
+  if(personIconElementMbl && profileButtonElementMbl && !document.getElementsByClassName("header--icon--mobile")?.[0]){
     const kwipassMobileNode = document.createElement('div')
     kwipassMobileNode.className="header--icon--mobile"
     kwipassMobileNode.innerHTML = htmlmobile

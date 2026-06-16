@@ -8748,9 +8748,7 @@ input[type="search"]::-webkit-search-decoration {
 [data-grid]:not([data-grid-no-gutters]) [data-item] {
   padding: 0 calc(var(--gutter) / 2);
 }
-[data-grid] [data-item].index__column {
-  padding-bottom: 30px;
-}
+
 [data-grid][data-grid-large] [data-item] {
   width: calc(100% / var(--grid-large-items));
 }
@@ -8816,9 +8814,7 @@ input[type="search"]::-webkit-search-decoration {
   [data-grid][data-grid-no-gutters] .grid__item:last-child {
     margin-right: 0;
   }
-  [data-grid] [data-item].index__column {
-    padding-bottom: 30px;
-  }
+
   [data-grid][data-grid-large] [data-item],
   [data-grid][data-grid-medium] [data-item] {
     width: 50%;

@@ -25,6 +25,46 @@
       "max": 3,
       "step": 1,
       "default": 1
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top mobile",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom mobile",
+      "default": 20
     }
   ],
   "blocks": [
@@ -82,10 +122,19 @@
     --ct-grid: {{ section.settings.grid }};
     --ct-grid-mobile: {{ section.settings.grid_mobile }};
   }
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom }}px !important;
+  }
+  @media (max-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+    }
+  }
 
   /* ── Collection Tabs ── */
   .ct-collection-tabs {
-    margin: 15px 0;
     text-align: center;
   }
 
@@ -332,37 +381,6 @@
         </button>
 
       </div>
-    {%- endfor -%}
-  </div>
-
-  <div class="ct-tabs-content" data-section-ready="false">
-    {%- for block in section.blocks -%}
-      {%- if forloop.first -%}
-        {%- assign active_collection = block.settings.collection -%}
-        {%- assign active_collection_url = block.settings.collection_url | default: active_collection.url -%}
-        <div class="ct-tab-panel ct-active" data-tab-panel="{{ forloop.index0 }}">
-          {%- if active_collection != blank and active_collection.products_count > 0 -%}
-            <div class="ct-products-grid">
-              {%- for product in active_collection.products limit: ct_product_limit -%}
-                {%- render 'product-card-home-page',
-                  product: product,
-                  placeholder: 'product',
-                  columns_desktop: section.settings.grid,
-                  columns_mobile: section.settings.grid_mobile,
-                  preload: forloop.first,
-                  eagerload: forloop.first
-                -%}
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
-
-          {%- if active_collection_url != blank -%}
-            <div class="ct-view-all-wrapper">
-              <a class="ct-view-all-btn" href="{{ active_collection_url }}">View all</a>
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
     {%- endfor -%}
   </div>
 

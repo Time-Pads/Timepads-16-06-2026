@@ -8584,86 +8584,7 @@
   const classes$d = {
       hidden: 'is-hidden'
   };
-  let ShareButton = class ShareButton extends HTMLElement {
-      init() {
-          if (navigator.share) {
-              this.mainDetailsToggle.classList.add(classes$d.hidden);
-              this.shareButton.classList.remove(classes$d.hidden);
-              this.shareButton.addEventListener('click', ()=>{
-                  navigator.share({
-                      url: this.urlToShare,
-                      title: document.title
-                  });
-              });
-          } else {
-              this.mainDetailsToggle.addEventListener('toggle', this.toggleDetails.bind(this));
-              this.mainDetailsToggle.addEventListener('focusout', ()=>{
-                  setTimeout(()=>{
-                      if (!this.contains(document.activeElement)) {
-                          this.close();
-                      }
-                  });
-              });
-              this.shareCopy.addEventListener('click', this.copyToClipboard.bind(this));
-              this.closeButton.addEventListener('click', this.close.bind(this));
-              this.container.addEventListener('keyup', this.keyboardEvents.bind(this));
-          }
-      }
-      updateShareLink() {
-          if (this.container.getAttribute(selectors$j.section) == 'product') {
-              this.container.addEventListener('theme:variant:change', (event)=>{
-                  if (event.detail.variant) {
-                      this.urlToShare = `${this.urlToShare.split('?')[0]}?variant=${event.detail.variant.id}`;
-                      if (this.urlInput) {
-                          this.urlInput.value = `${this.urlToShare.split('?')[0]}?variant=${event.detail.variant.id}`;
-                      }
-                  }
-              });
-          }
-      }
-      toggleDetails() {
-          if (!this.mainDetailsToggle.open) {
-              this.successMessage.classList.add(classes$d.hidden);
-              this.successMessage.textContent = '';
-              this.closeButton.classList.add(classes$d.hidden);
-              this.shareCopy.focus();
-          }
-      }
-      copyToClipboard() {
-          navigator.clipboard.writeText(this.urlInput.value).then(()=>{
-              this.successMessage.classList.remove(classes$d.hidden);
-              this.successMessage.textContent = theme.strings.successMessage;
-              this.closeButton.classList.remove(classes$d.hidden);
-              this.closeButton.focus();
-          });
-      }
-      close() {
-          this.mainDetailsToggle.removeAttribute('open');
-          this.shareSummary.setAttribute('aria-expanded', false);
-      }
-      keyboardEvents(e) {
-          if (e.code !== 'Escape') {
-              return;
-          }
-          this.mainDetailsToggle.focus();
-          this.close();
-      }
-      constructor(){
-          super();
-          this.container = this.closest(`[${selectors$j.section}]`);
-          this.mainDetailsToggle = this.querySelector(selectors$j.shareDetails);
-          this.shareButton = this.querySelector(selectors$j.shareButton);
-          this.shareCopy = this.querySelector(selectors$j.shareCopy);
-          this.shareSummary = this.querySelector(selectors$j.shareSummary);
-          this.closeButton = this.querySelector(selectors$j.closeButton);
-          this.successMessage = this.querySelector(selectors$j.successMessage);
-          this.shareHolder = this.querySelector(selectors$j.shareHolder);
-          this.urlInput = this.querySelector(selectors$j.urlInput);
-          this.urlToShare = this.urlInput ? this.urlInput.value : document.location.href;
-          this.init();
-          this.updateShareLink();
-      }
-  };
+
 
   const selectors$i = {
       groupImage: 'data-image-filter',
@@ -8916,9 +8837,7 @@
   if (!customElements.get('popout-select')) {
       customElements.define('popout-select', PopoutSelect);
   }
-  if (!customElements.get('share-button')) {
-      customElements.define('share-button', ShareButton);
-  }
+
 
   const selectors$f = {
       toggle: 'data-toggle-grid',

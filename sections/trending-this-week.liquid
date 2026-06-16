@@ -1,6 +1,5 @@
 {% stylesheet %}
 .trending-wrapper {
-  padding: 50px 0;
   width: 95%;
   margin: auto;
 }
@@ -121,6 +120,20 @@
 }
 {% endstylesheet %}
 
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom }}px !important;
+  }
+  @media (max-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+    }
+  }
+{% endstyle %}
+
+
 {%- comment -%} Cache arrow SVG once — reused per card via Liquid variable {%- endcomment -%}
 {%- capture arrow_svg -%}
   <div class="trending-arrow" aria-hidden="true">
@@ -210,6 +223,46 @@
       "type": "url",
       "id": "all_link",
       "label": "Shop All Products URL"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top mobile",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom mobile",
+      "default": 32
     }
   ],
   "blocks": [

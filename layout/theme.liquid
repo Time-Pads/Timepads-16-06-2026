@@ -181,6 +181,7 @@
     assign heading_font_url = settings.font_heading_family | font_url
     assign accent_font_url = settings.font_accent_family | font_url
   -%}
+  <link rel="preload" href="https://timepads.in/cdn/fonts/poppins/poppins_n4.0ba78fa5af9b0e1a374041b3ceaadf0a43b41362.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="preload" href="{{ body_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="high">
   {%- if heading_font_url != body_font_url -%}
     <link rel="preload" href="{{ heading_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="low">
@@ -208,6 +209,29 @@
   {%- render 'css-variables' -%}
   {{ 'theme.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
 
+  {% style %}
+    /* Critical Above-The-Fold CSS */
+    body { margin: 0; padding: 0; }
+    .theme__header { position: sticky; top: 0; z-index: 100; width: 100%; }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; }
+    .header__inner--bar { min-height: 48px; }
+    .announcement { text-align: center; font-size: 14px; padding: 8px 0; }
+    .announcement p { margin: 0; }
+    .section-slideshow { position: relative; overflow: hidden; }
+    .hero__content__wrapper { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+    .hero__title { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+    .hero__description { font-size: 16px; margin-bottom: 24px; }
+    .hero__cta__wrapper { display: inline-block; }
+    .logo-bar { display: flex; align-items: center; justify-content: center; }
+    .shopify-section { width: 100%; box-sizing: border-box; }
+    .wrapper { max-width: 1440px; margin: 0 auto; padding: 0 20px; }
+    .wrapper--full { max-width: 100%; padding: 0 20px; }
+    .grid__item { box-sizing: border-box; }
+    .header__backfill{
+      display: none;
+    }
+  {% endstyle %}
+
   {%- comment -%} 16. Non-critical CSS — async load, zero render-blocking {%- endcomment -%}
   <link rel="stylesheet" href="{{ 'custom.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="{{ 'custom.aio.min.css' | asset_url }}"></noscript>
@@ -215,9 +239,6 @@
   {%- comment -%} 16a. Image optimization CSS — async load {%- endcomment -%}
   <link rel="stylesheet" href="{{ 'image-optimization.css' | asset_url }}" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="{{ 'image-optimization.css' | asset_url }}"></noscript>
-
-  <link rel="stylesheet" href="{{ 'quick-view.css' | asset_url }}" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="{{ 'quick-view.css' | asset_url }}"></noscript>
 
   {%- comment -%} 17. Global inline CSS overrides (kept critical — above fold) {%- endcomment -%}
   {% style %}
@@ -365,8 +386,6 @@
   {%- render 'app-plaza' -%}
   {%- render 'avada-seo' -%}
 
-  {%- comment -%} 21. GTM head snippet {%- endcomment -%}
-  {%- render 'gtm-head' -%}
 <meta name="msvalidate.01" content="4B78D65C8E6C112F952CD628ABC3E87B" />
 </head>
 
@@ -413,74 +432,7 @@
   {%- comment -%}
     JS — all deferred. Loaded in dependency order.
   {%- endcomment -%}
-  {% render 'quick-view-modal' %}
-  <script>
-    (function() {
-      var loaded = false;
-      var loading = false;
-      function hasQuickViewCss() {
-        var links = document.querySelectorAll('link[rel="stylesheet"]');
-        for (var i = 0; i < links.length; i++) {
-          if ((links[i].href || '').indexOf('quick-view.css') > -1) return true;
-        }
-        return false;
-      }
-      function hasQuickViewJs() {
-        var scripts = document.querySelectorAll('script[src]');
-        for (var i = 0; i < scripts.length; i++) {
-          if ((scripts[i].src || '').indexOf('quick-view.js') > -1) return true;
-        }
-        return false;
-      }
-      function loadStyle(href) {
-        return new Promise(function(resolve, reject) {
-          var link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = href;
-          link.onload = resolve;
-          link.onerror = reject;
-          document.head.appendChild(link);
-        });
-      }
-      function loadScript(src) {
-        return new Promise(function(resolve, reject) {
-          var script = document.createElement('script');
-          script.src = src;
-          script.defer = true;
-          script.onload = resolve;
-          script.onerror = reject;
-          document.head.appendChild(script);
-        });
-      }
-      document.addEventListener('click', function(event) {
-        var trigger = event.target.closest('[data-qv-trigger]');
-        if (!trigger) return;
-        if (loaded || (hasQuickViewCss() && hasQuickViewJs())) {
-          loaded = true;
-          return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        if (loading) return;
-        loading = true;
-        var promises = [];
-        if (!hasQuickViewCss()) promises.push(loadStyle('{{ "quick-view.css" | asset_url }}'));
-        if (!hasQuickViewJs()) promises.push(loadScript('{{ "quick-view.js" | asset_url }}'));
-        Promise.all(promises).then(function() {
-          loaded = true;
-          loading = false;
-          trigger.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-        }).catch(function() {
-          loaded = true;
-          loading = false;
-          var handle = trigger.getAttribute('data-qv-handle');
-          if (handle) {
-            window.location.href = '/products/' + handle;
-          }
-        });
-      }, true);
-    })();
-  </script>
+
 
   <script src="{{ 'vendor.js' | asset_url }}" defer></script>
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
@@ -550,8 +502,7 @@
       })();
     </script>
   {%- endif -%}
-{% comment %} {% unless template == 'pages' or template == 'article' or template == 'blog' %}
-  {% render 'timepads-popup' %}
-{% endunless %} {% endcomment %}
+  {%- comment -%} 21. GTM head snippet {%- endcomment -%}
+  {%- render 'gtm-head' -%}
 </body>
 </html>

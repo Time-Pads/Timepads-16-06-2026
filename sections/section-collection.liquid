@@ -14,22 +14,22 @@
 {%- assign sid   = section.id -%}
 
 {% style %}
+  #shopify-section-{{ sid }} {
+    padding-top: {{ pt }}px !important;
+    padding-bottom: {{ pb }}px !important;
+  }
+  @media (max-width: 767px) {
+    #shopify-section-{{ sid }} {
+      padding-top: {{ mpt }}px !important;
+      padding-bottom: {{ mpb }}px !important;
+    }
+  }
   .title-{{ sid }} {
     font-size: {{ fs }}px;
     margin-bottom: 1rem;
   }
-  .section-{{ sid }}-padding {
-    padding-top: {{ pt }}px;
-    padding-bottom: {{ pb }}px;
-  }
   @media (max-width: 767px) {
     .title-{{ sid }} { font-size: {{ fs_m }}px; }
-  }
-  @media (max-width: 749px) {
-    .section-{{ sid }}-padding {
-      padding-top: {{ mpt }}px;
-      padding-bottom: {{ mpb }}px;
-    }
   }
 {% endstyle %}
 
@@ -43,7 +43,7 @@
   {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
 
   <div
-    class="section-collection home-collection-list {{ section.settings.bg }} section-{{ sid }}-padding"
+    class="section-collection home-collection-list {{ section.settings.bg }}"
     data-section-id="{{ sid }}"
     data-section-type="collection-row"
   >

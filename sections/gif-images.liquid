@@ -10,14 +10,14 @@
 {%- assign mpb  = section.settings.padding_bottom_mobile -%}
 
 {% style %}
-  .gif-usp-{{ sid }} {
-    padding-top: {{ pt }}px;
-    padding-bottom: {{ pb }}px;
+  #shopify-section-{{ sid }} {
+    padding-top: {{ pt }}px !important;
+    padding-bottom: {{ pb }}px !important;
   }
-  @media (max-width: 767px) {
-    .gif-usp-{{ sid }} {
-      padding-top: {{ mpt }}px;
-      padding-bottom: {{ mpb }}px;
+  @media (max-width: 768px) {
+    #shopify-section-{{ sid }} {
+      padding-top: {{ mpt }}px !important;
+      padding-bottom: {{ mpb }}px !important;
     }
   }
   {%- if section.settings.heading_text != blank -%}

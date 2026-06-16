@@ -137,9 +137,7 @@ assign placeholder = placeholder | default: false
         endif
       -%}
 
-      {%- if visible -%}
-        {%- render 'product-card-icons', product: sib_product, variant: first_sibling_variant -%}
-      {%- endif -%}
+
 
       {% render 'product-grid-item-variant',
         product: sib_product,
@@ -201,9 +199,7 @@ assign placeholder = placeholder | default: false
         endif
       -%}
 
-      {%- if visible -%}
-        {%- render 'product-card-icons', product: product, variant: current_variant -%}
-      {%- endif -%}
+
 
       {% render 'product-grid-item-variant',
         product: product,
@@ -264,7 +260,7 @@ assign placeholder = placeholder | default: false
       endif
     -%}
 
-    {%- render 'product-card-icons', product: product, variant: selected_variant -%}
+
 
     {% render 'product-grid-item-variant',
       product: product,

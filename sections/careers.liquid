@@ -239,8 +239,8 @@ position: relative;
 <!-- HERO -->
 <section class="hero" id="hero">
   <picture class="hero-bg">
-    <source media="(max-width: 768px)" srcset="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Sanitary-Pads-Banner-Mobile_1.jpg?v=1775645832">
-    <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Sanitary-Pads-Banner-Desktop_2.jpg?v=1775645521" alt="Hero Banner">
+    <source media="(max-width: 768px)" srcset="{{ 'Sanitary-Pads-Banner-Mobile_1.jpg' | file_url | image_url: width: 800 }}">
+    <img src="{{ 'Sanitary-Pads-Banner-Desktop_2.jpg' | file_url | image_url: width: 1200 }}" alt="Hero Banner">
   </picture>
 
 </section>
@@ -399,7 +399,7 @@ position: relative;
 
 <!-- CTA -->
 <div class="outer right-role">
-  <img src="https://cdn.shopify.com/s/files/1/0639/3515/2267/files/Gif-Animation.gif?v=1775643243" alt="careers"/>
+  <img src="{{ 'Gif-Animation.gif' | file_url | image_url: width: 800 }}" alt="careers"/>
   <div class="cta-wrap">
   <div class="cta">
     <div class="cta-orb cta-orb1"></div>

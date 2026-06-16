@@ -181,13 +181,17 @@
 
   {% endstyle %}
         <script>
-document.querySelector('.video-autoplay-wrapper').addEventListener('click', function () {
-    let link = this.closest('a');
-    if (link) {
+(function() {
+  var wrapper = document.querySelector('.video-autoplay-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('click', function () {
+      let link = this.closest('a');
+      if (link) {
         window.location.href = link.href;
-    }
-});
-
+      }
+    });
+  }
+})();
         </script>
       {%- else -%}
         {%- assign alt = section.settings.image.alt | default: 'Banner Image' -%}

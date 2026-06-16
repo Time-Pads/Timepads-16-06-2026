@@ -310,8 +310,7 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
     {%- capture breadcrumbs_markup -%}
       {%- for bc_collection in section.settings.product_breadcrumbs_list -%}
         <a href="{{ bc_collection.url }}" title="{{ bc_collection.title }}">{{ bc_collection.title }}</a>
-        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/female-hygiene-pad-woman-period-element-sanitary-object-feminine-health-vector.png?v=1732958612"
-          width="32" height="32" loading="lazy" decoding="async" alt="{{ bc_collection.title}}">
+       -
       {%- endfor -%}
       <span>{{ product.title | escape }}</span>
     {%- endcapture -%}

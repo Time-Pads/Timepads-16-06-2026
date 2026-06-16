@@ -5,22 +5,22 @@
 {%- assign sid = section.id -%}
 
 {% style %}
+  #shopify-section-{{ sid }} {
+    padding-top: {{ section.settings.padding_top }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom }}px !important;
+  }
+  @media (max-width: 768px) {
+    #shopify-section-{{ sid }} {
+      padding-top: {{ section.settings.mpadding_top }}px !important;
+      padding-bottom: {{ section.settings.mpadding_bottom }}px !important;
+    }
+  }
   .title-{{ sid }} {
     font-size: {{ section.settings.font_size }}px;
     margin-bottom: 1rem;
   }
-  .section-{{ sid }}-padding {
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-  }
   @media (max-width: 767px) {
     .title-{{ sid }} { font-size: {{ section.settings.font_size_mobile }}px; }
-  }
-  @media (max-width: 749px) {
-    .section-{{ sid }}-padding {
-      padding-top: {{ section.settings.mpadding_top }}px;
-      padding-bottom: {{ section.settings.mpadding_bottom }}px;
-    }
   }
 {% endstyle %}
 
@@ -50,7 +50,7 @@
     {%- endcapture -%}
   {%- endif -%}
 
-  <div class="section-{{ sid }}-padding page-width">
+  <div class="page-width">
     {%- if section.settings.section_heading != blank -%}
       <div class="reviews-section-text">
         <h2 class="kicker-flourished title-{{ sid }}">{{ section.settings.section_heading | escape }}</h2>

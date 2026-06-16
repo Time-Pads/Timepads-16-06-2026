@@ -3,9 +3,18 @@ class GridStackSlider extends HTMLElement {
     super();
     this.autoplayInterval = 4000;
     this.progressElement = document.querySelector(".splide__progress__bar");//timer
-    this.initSlider();//init slider
-    this.initControls();// pause/play buttons
-    this.initStackSlide();//fade effect and stacking image effect
+    
+    const init = () => {
+      this.initSlider();//init slider
+      this.initControls();// pause/play buttons
+      this.initStackSlide();//fade effect and stacking image effect
+    };
+
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      window.addEventListener('load', init);
+    }
   }
 
   initSlider() {

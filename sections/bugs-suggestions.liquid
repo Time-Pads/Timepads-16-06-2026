@@ -84,6 +84,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   const section = document.querySelector('.bug-section');
+  if (!section) return;
   const cards = section.querySelectorAll('.bug-card');
   const forms = section.querySelectorAll('.form-wrapper');
   const backBtns = section.querySelectorAll('.back-btn');
@@ -92,15 +93,16 @@ document.addEventListener('DOMContentLoaded', function() {
   cards.forEach(card => {
     card.addEventListener('click', () => {
       forms.forEach(f => f.classList.remove('active'));
-      section.querySelector('#' + card.dataset.target).classList.add('active');
-      options.style.display = 'none';
+      const targetForm = section.querySelector('#' + card.dataset.target);
+      if (targetForm) targetForm.classList.add('active');
+      if (options) options.style.display = 'none';
     });
   });
 
   backBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       forms.forEach(f => f.classList.remove('active'));
-      options.style.display = 'flex';
+      if (options) options.style.display = 'flex';
     });
   });
 
@@ -123,12 +125,14 @@ function toBase64(file) {
 
 async function handleSubmit(formId) {
   const form = document.getElementById(formId);
+  if (!form) return;
 
   form.addEventListener("submit", async function(e) {
     e.preventDefault();
 
     const formData = new FormData(form);
-    const file = form.querySelector('input[type="file"]').files[0];
+    const fileInput = form.querySelector('input[type="file"]');
+    const file = fileInput ? fileInput.files[0] : null;
 
     let base64File = "";
 

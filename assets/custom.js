@@ -13,64 +13,7 @@
   // Keep custom theme hooks lightweight in production.
 })();
 
-(function() {
-  let isHandling = false;
-
-  async function onShareClick(event) {
-    const btn = event.target.closest('[data-share-trigger]');
-    if (!btn) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (isHandling) return;
-    isHandling = true;
-
-    try {
-      const title = btn.getAttribute('data-share-title') || document.title;
-      const url = btn.getAttribute('data-share-url') || window.location.href;
-
-      if (navigator.share) {
-        await navigator.share({ title, url });
-        return;
-      }
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(url);
-        alert('Product link copied!');
-        return;
-      }
-
-      window.prompt('Copy this link:', url);
-    } catch (error) {
-    } finally {
-      isHandling = false;
-    }
-  }
-
-  document.addEventListener('click', onShareClick, true);
-})();
-
-(function() {
-  function cssEscape(value) {
-    if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(value);
-    return String(value).replace(/["\\]/g, '\\$&');
-  }
-
-  document.addEventListener('click', function(event) {
-    const label = event.target.closest('.button-for-open-quick-view');
-    if (!label) return;
-
-    const targetId = label.getAttribute('data-target');
-    if (!targetId) return;
-
-    const button = document.querySelector('.button-selector[data-target="' + cssEscape(targetId) + '"]');
-    if (!button) return;
-
-    const clickEvent = new Event('click', { bubbles: true, cancelable: true });
-    button.dispatchEvent(clickEvent);
-  }, true);
-})();
+// Share and Quick View logic removed
 
 (function() {
   const CARD_SELECTOR = '[data-card-preview-images]';
@@ -482,39 +425,7 @@ function searchFunction() {
   resultsContainer.style.display = resultsContainer.children.length > 0 ? "block" : "none";
 }
 
-// Share Button Logic (Native Share API + Clipboard Fallback)
-document.addEventListener('click', (event) => {
-  const shareBtn = event.target.closest('[data-share-trigger]');
-  if (shareBtn) {
-    event.preventDefault();
-    
-    const url = shareBtn.dataset.shareUrl || window.location.href;
-    const title = shareBtn.dataset.shareTitle || document.title;
-
-    if (navigator.share) {
-      // Native mobile share sheet
-      navigator.share({ title: title, url: url }).catch(console.error);
-    } else {
-      // Fallback: Copy to clipboard and show toast
-      navigator.clipboard.writeText(url).then(() => {
-        let toast = document.getElementById('share-toast');
-        if (!toast) {
-          toast = document.createElement('div');
-          toast.id = 'share-toast';
-          toast.style.cssText = 'position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background-color: #000; color: #fff; padding: 12px 24px; border-radius: 40px; font-size: 14px; font-weight: 600; z-index: 999999; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
-          document.body.appendChild(toast);
-        }
-        toast.textContent = 'Link copied';
-        toast.style.opacity = '1';
-        toast.style.transform = 'translate(-50%, -8px)';
-        setTimeout(() => {
-          toast.style.opacity = '0';
-          toast.style.transform = 'translate(-50%, 0)';
-        }, 3000);
-      });
-    }
-  }
-});
+// Mobile share logic removed
 
 
 // document.querySelectorAll('.add-to-cart-button-for-product-card').forEach(button => {

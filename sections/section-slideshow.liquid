@@ -5,6 +5,16 @@
   position: absolute;
   z-index: -1;
 }
+#shopify-section-{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}px !important;
+  padding-bottom: {{ section.settings.padding_bottom }}px !important;
+}
+@media (max-width: 768px) {
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top_mobile }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+  }
+}
 {% endstyle %}
 
 {%- capture lazy_load_section %}
@@ -40,8 +50,7 @@
 <h1 class="homepage-h1-tag">Premium Sanitary Pads for Rash-Free & Leak-Proof Comfort</h1>
 <div class="section-slideshow {{ section.settings.color_bg }}"
   data-section-id="{{ section.id }}"
-  data-section-type="slideshow"
-  style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  data-section-type="slideshow">
   {% if section.blocks.size > 0 %}
     <div class="{{ section.settings.width }} section-padding">
       <div class="slideshow__wrapper js-overflow-container flickity-badge-dots {{ scroll_class }}"
@@ -265,6 +274,26 @@
       "step": 2,
       "unit": "px",
       "label": "Padding bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top mobile",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom mobile",
       "default": 0
     }
   ],

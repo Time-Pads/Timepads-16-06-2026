@@ -1262,3 +1262,27 @@ button#quick-add-menu-button-1{
     display: none;
   }
 }
+
+/* Desktop — uniform section spacing */
+
+
+/* Mobile */
+@media (max-width: 768px) {
+}
+
+/* Hero slideshow — full bleed, no padding */
+/* Header and announcement bar — no padding */
+#shopify-section-header,
+#shopify-section-announcement,
+#shopify-section-section-announcement,
+.shopify-section-group-header-group {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Footer — top only */
+#shopify-section-timepads-footer {
+  padding-top: 60px !important;
+  padding-bottom: 0 !important;
+}
+

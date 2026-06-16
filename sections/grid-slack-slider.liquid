@@ -1,7 +1,9 @@
- {{ 'splide.min.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'splide.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'splide.min.css' | asset_url }}"></noscript>
 <script src="{{ 'splide.mins.js' | asset_url }}" defer></script>
 <script src="{{ 'grid-stack.js' | asset_url }}" defer></script>
-{{ 'grid-stack.aio.min.css' | asset_url | stylesheet_tag }} 
+<link rel="stylesheet" href="{{ 'grid-stack.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'grid-stack.aio.min.css' | asset_url }}"></noscript> 
 
 {% assign image_block = section.blocks | where: 'type', 'images' %}
 

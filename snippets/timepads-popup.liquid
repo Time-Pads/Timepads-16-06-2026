@@ -3,7 +3,7 @@
   Usage: {% render 'timepads-popup' %}
 {% endcomment %}
 
-{% assign popup_image = 'https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Pop-Up-Image.jpg?v=1776490230' %}
+{% assign popup_image = 'Pop-Up-Image.jpg' | file_url | image_url: width: 800 %}
 {% assign popup_heading = 'Your period. Your comfort. 5% off with Timepads.' %}
 {% assign popup_subheading = 'Join 10,000+ women choosing comfort with Timepads.' %}
 {% assign coupon_code = 'TIME5' %}
@@ -665,12 +665,12 @@
     <!-- Mobile Image -->
     <source 
       media="(max-width: 749px)" 
-      srcset="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Pop-Up-Image-Mobile.jpg?v=1776493996"
+      srcset="{{ 'Pop-Up-Image-Mobile.jpg' | file_url | image_url: width: 400 }}"
     >
 
     <!-- Desktop Image -->
     <img
-      src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Pop-Up-Image.jpg?v=1776490230"
+      src="{{ 'Pop-Up-Image.jpg' | file_url | image_url: width: 800 }}"
       alt="Timepads - Premium Comfort"
       class="tp-popup-image"
       loading="lazy"
@@ -686,7 +686,7 @@
       <div class="tp-popup-content">
         <div class="tp-popup-brand">
           <span class="tp-popup-brand-text">
-<img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Time-Logo-black2_1_7f4c513f-e3c7-43f8-90b2-9295663af6bf.webp?v=1772434725" alt="Timepads" style="height: 28px; width: auto; vertical-align: middle;"> 
+<img src="{{ 'Time-Logo-black2_1_7f4c513f-e3c7-43f8-90b2-9295663af6bf.webp' | file_url | image_url: width: 400 }}" alt="Timepads" style="height: 28px; width: auto; vertical-align: middle;"> 
 
           </span>
         </div>
@@ -1200,9 +1200,15 @@ function updateStickyVisibility() {
   };
 })();
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', TimepadsPopup.init);
+function delayInit() {
+  setTimeout(function() {
+    TimepadsPopup.init();
+  }, 5000);
+}
+
+if (document.readyState === 'complete') {
+  delayInit();
 } else {
-  TimepadsPopup.init();
+  window.addEventListener('load', delayInit);
 }
 </script>
