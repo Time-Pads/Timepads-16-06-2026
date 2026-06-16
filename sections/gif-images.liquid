@@ -50,17 +50,13 @@
               {%- assign img_alt  = block.settings.alt_text | default: section.settings.heading_text | default: shop.name | escape -%}
               {%- assign img_w    = img.width | at_most: 210 -%}
               {%- assign img_w2x  = img_w | times: 2 | at_most: img.width -%}
-              {%- comment -%} First 3 images likely visible — load eagerly {%- endcomment -%}
-              {%- assign img_load = 'lazy' -%}
-              {%- if forloop.index <= 3 -%}{%- assign img_load = 'eager' -%}{%- endif -%}
-
               {%- render 'responsive-picture',
                 forloop:      forloop,
                 desktopImage: img,
                 mobileImage:  img,
                 img-class:    'tw-w-full tw-max-h-[60rem]',
                 alt:          img_alt,
-                loading:      img_load,
+                loading:      'lazy',
                 width:        img_w,
                 srcset:       img | image_url: width: img_w | append: ' 1x, ' | append: (img | image_url: width: img_w2x) | append: ' 2x'
               -%}

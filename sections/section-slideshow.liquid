@@ -101,13 +101,14 @@
           {% endunless %}
 
 
-          {% if section.settings.preload_first_image and forloop.first %}
+          {% if request.page_type == 'index' and forloop.first %}
             {%- assign preload = true -%}
             {%- assign loading = 'eager' -%}
             {%- assign fetchpriority = 'high' -%}
           {% else %}
             {%- assign preload = false -%}
             {%- assign loading = 'lazy' -%}
+            {%- assign fetchpriority = 'low' -%}
           {% endif %}
 
 

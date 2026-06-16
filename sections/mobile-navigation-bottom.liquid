@@ -1,20 +1,33 @@
 {% # Kwikpass changes - [Starts] %}
 <script>
-  function autoLogin (){
-        document.getElementById('kwik-pass-text').textContent = "Account";
+  (function () {
+    function autoLogin() {
+      var accountText = document.getElementById('kwik-pass-text');
+      if (accountText) {
+        accountText.textContent = 'Account';
       }
-      window.addEventListener('user-loggedin', function(event) {
-         const { token } = event?.detail;
-         if (token){
-           autoLogin();
-         }
-      });
-    document.addEventListener('DOMContentLoaded',function () {
-      var userToken = localStorage.getItem('KWIKSESSIONTOKEN');
-      if (userToken){
+    }
+
+    window.addEventListener('user-loggedin', function (event) {
+      var token = event && event.detail ? event.detail.token : '';
+      if (token) {
         autoLogin();
       }
-  })
+    });
+
+    function syncLoginState() {
+      var userToken = localStorage.getItem('KWIKSESSIONTOKEN');
+      if (userToken) {
+        autoLogin();
+      }
+    }
+
+    if (document.readyState === 'complete') {
+      syncLoginState();
+    } else {
+      window.addEventListener('load', syncLoginState, { once: true });
+    }
+  }());
 </script>
 {% # Kwikpass changes - [Ends] %}
 
@@ -25,7 +38,7 @@
 
 
 <div class="page-width desktop-hide">
-  <div class="mobile-navigation-bottom">
+  <div class="mobile-navigation-bottom is-deferred" data-mobile-sticky-nav>
     <div class="mobile-navigation-menu">
 
       <!-- Home Link -->
@@ -96,6 +109,13 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
+  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.mobile-navigation-bottom.is-deferred {
+  transform: translateY(100%);
+  visibility: hidden;
 }
 
 .mobile-navigation-menu {
@@ -156,52 +176,50 @@
     }
 }
 
-.mobile-navigation-bottom {
-  background: white;
-  color: black;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 9999;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  transition: transform 0.3s ease-in-out; /* Smooth slide animation */
-}
-
-.mobile-navigation-bottom{
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-}
-
 {% endstyle %}
 
 <script>
+  (function () {
+    function initMobileStickyNav() {
+      var bottomNav = document.querySelector('[data-mobile-sticky-nav]');
+      var searchIcon = document.getElementById('search-icon');
+      if (!bottomNav) return;
 
-let lastScrollTop = 0; // Store the last scroll position
-  const bottomNav = document.querySelector(".mobile-navigation-bottom");
+      var lastScrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      var ticking = false;
 
-  window.addEventListener("scroll", function () {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      bottomNav.classList.remove('is-deferred');
 
-    if (scrollTop > lastScrollTop) {
-      // User is scrolling down - SHOW the navigation bar
-      bottomNav.style.transform = "translateY(0)";
-    } else {
-      // User is scrolling up - HIDE the navigation bar
-      bottomNav.style.transform = "translateY(100%)";
+      function updateNav() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        bottomNav.style.transform = scrollTop > lastScrollTop ? 'translateY(0)' : 'translateY(100%)';
+        bottomNav.style.visibility = 'visible';
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(updateNav);
+      }, { passive: true });
+
+      if (searchIcon) {
+        searchIcon.addEventListener('click', function () {
+          var navElement = document.getElementById('header-menu');
+          if (!navElement) return;
+          navElement.classList.toggle('drawer--visible');
+          navElement.classList.toggle('display-none');
+        });
+      }
     }
 
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative values
-  });
-
-
-
-  // Add event listener for the search icon click
-  document.getElementById("search-icon").addEventListener("click", function () {
-    const navElement = document.getElementById("header-menu");
-    navElement.classList.toggle("drawer--visible");
-    navElement.classList.toggle("display-none");
-  });
+    if (document.readyState === 'complete') {
+      initMobileStickyNav();
+    } else {
+      window.addEventListener('load', initMobileStickyNav, { once: true });
+    }
+  }());
 </script>
 
 

@@ -75,6 +75,8 @@
 }
 {% endschema %}
 
+{%- assign ct_product_limit = section.settings.grid | times: 2 -%}
+
 <style>
   #ct-section-{{ section.id }} {
     --ct-grid: {{ section.settings.grid }};
@@ -297,10 +299,6 @@
 
             <picture>
               <source
-                type="image/avif"
-                srcset="{{ img | image_url: width: img_w, format: 'avif' }} 1x, {{ img | image_url: width: img_w2x, format: 'avif' }} 2x"
-              >
-              <source
                 type="image/webp"
                 srcset="{{ img | image_url: width: img_w, format: 'webp' }} 1x, {{ img | image_url: width: img_w2x, format: 'webp' }} 2x"
               >
@@ -338,7 +336,124 @@
   </div>
 
   <div class="ct-tabs-content" data-section-ready="false">
-    {%- comment -%} Tab panels rendered by JS {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- if forloop.first -%}
+        {%- assign active_collection = block.settings.collection -%}
+        {%- assign active_collection_url = block.settings.collection_url | default: active_collection.url -%}
+        <div class="ct-tab-panel ct-active" data-tab-panel="{{ forloop.index0 }}">
+          {%- if active_collection != blank and active_collection.products_count > 0 -%}
+            <div class="ct-products-grid">
+              {%- for product in active_collection.products limit: ct_product_limit -%}
+                {%- render 'product-card-home-page',
+                  product: product,
+                  placeholder: 'product',
+                  columns_desktop: section.settings.grid,
+                  columns_mobile: section.settings.grid_mobile,
+                  preload: forloop.first,
+                  eagerload: forloop.first
+                -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- if active_collection_url != blank -%}
+            <div class="ct-view-all-wrapper">
+              <a class="ct-view-all-btn" href="{{ active_collection_url }}">View all</a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 
+  {%- for block in section.blocks -%}
+    {%- unless forloop.first -%}
+      {%- assign inactive_collection = block.settings.collection -%}
+      {%- assign inactive_collection_url = block.settings.collection_url | default: inactive_collection.url -%}
+      <template data-ct-tab-template="{{ forloop.index0 }}">
+        <div class="ct-tab-panel" data-tab-panel="{{ forloop.index0 }}">
+          {%- if inactive_collection != blank and inactive_collection.products_count > 0 -%}
+            <div class="ct-products-grid">
+              {%- for product in inactive_collection.products limit: ct_product_limit -%}
+                {%- render 'product-card-home-page',
+                  product: product,
+                  placeholder: 'product',
+                  columns_desktop: section.settings.grid,
+                  columns_mobile: section.settings.grid_mobile
+                -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- if inactive_collection_url != blank -%}
+            <div class="ct-view-all-wrapper">
+              <a class="ct-view-all-btn" href="{{ inactive_collection_url }}">View all</a>
+            </div>
+          {%- endif -%}
+        </div>
+      </template>
+    {%- endunless -%}
+  {%- endfor -%}
+
 </div>
+
+<script>
+  (function () {
+    function initCollectionTabs(section) {
+      if (!section || section.hasAttribute('data-ct-tabs-bound')) return;
+
+      var buttons = Array.prototype.slice.call(section.querySelectorAll('.ct-tab-btn'));
+      var content = section.querySelector('.ct-tabs-content');
+      if (!buttons.length || !content) return;
+
+      section.setAttribute('data-ct-tabs-bound', 'true');
+
+      function ensurePanel(index) {
+        var existingPanel = content.querySelector('[data-tab-panel="' + index + '"]');
+        if (existingPanel) return existingPanel;
+
+        var template = section.querySelector('template[data-ct-tab-template="' + index + '"]');
+        if (!template) return null;
+
+        var fragment = template.content.cloneNode(true);
+        content.innerHTML = '';
+        content.appendChild(fragment);
+        return content.querySelector('[data-tab-panel="' + index + '"]');
+      }
+
+      function activateTab(index) {
+        buttons.forEach(function (button) {
+          var isActive = button.getAttribute('data-tab-index') === String(index);
+          button.classList.toggle('ct-active', isActive);
+          button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        content.querySelectorAll('.ct-tab-panel').forEach(function (panel) {
+          panel.classList.remove('ct-active');
+        });
+
+        var panel = ensurePanel(index);
+        if (panel) {
+          panel.classList.add('ct-active');
+          document.dispatchEvent(new CustomEvent('theme:tab:change', { bubbles: true }));
+        }
+
+        content.setAttribute('data-section-ready', 'true');
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          activateTab(button.getAttribute('data-tab-index'));
+        });
+      });
+
+      activateTab(buttons[0].getAttribute('data-tab-index'));
+    }
+
+    document.querySelectorAll('.ct-collection-tabs').forEach(initCollectionTabs);
+
+    document.addEventListener('shopify:section:load', function (event) {
+      initCollectionTabs(event.target.querySelector('.ct-collection-tabs'));
+    });
+  }());
+</script>

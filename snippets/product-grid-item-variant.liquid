@@ -296,15 +296,14 @@
                 endif
               endif
 
-              if visible
+              if visible and preload
                 assign fetchpriority = "high"
-                if preload
-                  assign loading = 'eager'
-                  assign preload_image = true
-                endif
-                if eagerload
-                  assign loading_image = 'eager'
-                endif
+                assign loading = 'eager'
+                assign preload_image = true
+              endif
+              if visible and eagerload
+                assign fetchpriority = "high"
+                assign loading_image = 'eager'
               endif
             %}
 
@@ -355,6 +354,7 @@
                     decoding="async" 
                     width="{{ product.images[1].width | default: 400 }}"
                     height="{{ product.images[1].height | default: 400 }}"
+                    alt="{{ product.images[1].alt | default: product.title | escape }}"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.3s ease; z-index: 2;" 
                     onload="this.classList.add('loaded')"
                   >
@@ -524,31 +524,53 @@
       {% endcapture %}
 
     <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const inputs = document.querySelectorAll('.variant-radio-input');
-    const discountBadge = document.querySelector('.product-discount-badge');
+      (function () {
+        if (window.__tpCardDiscountInit) return;
+        window.__tpCardDiscountInit = true;
 
-    function updateDiscount() {
-      const checkedInput = document.querySelector('.variant-radio-input:checked');
-      if (checkedInput && discountBadge) {
-        const discount = checkedInput.getAttribute('data-discount');
-        if (discount && parseFloat(discount) > 0) {
-          discountBadge.innerHTML = `${discount}% OFF`;
-        } else {
-          discountBadge.innerHTML = '';
+        function updateDiscount(container) {
+          if (!container) return;
+          var discountBadge = container.querySelector('.product-discount-badge');
+          var checkedInput = container.querySelector('.variant-radio-input:checked');
+          if (!discountBadge || !checkedInput) return;
+
+          var discount = checkedInput.getAttribute('data-discount');
+          discountBadge.innerHTML = discount && parseFloat(discount) > 0 ? discount + '% OFF' : '';
         }
-      }
-    }
 
-    // Initialize
-    updateDiscount();
+        function initDiscounts(root) {
+          root.querySelectorAll('product-grid-item, product-grid-item-variant, .product-grid-item').forEach(function (container) {
+            updateDiscount(container);
+          });
+        }
 
-    // Add event listener to all variant inputs
-    inputs.forEach(input => {
-      input.addEventListener('change', updateDiscount);
-    });
-  });
-</script>
+        document.addEventListener('change', function (event) {
+          var input = event.target.closest('.variant-radio-input');
+          if (!input) return;
+          updateDiscount(input.closest('product-grid-item, product-grid-item-variant, .product-grid-item'));
+        });
+
+        function scheduleInit(root) {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(function () {
+              initDiscounts(root);
+            }, { timeout: 1500 });
+            return;
+          }
+          window.setTimeout(function () {
+            initDiscounts(root);
+          }, 0);
+        }
+
+        if (document.readyState === 'complete') {
+          scheduleInit(document);
+        } else {
+          window.addEventListener('load', function () {
+            scheduleInit(document);
+          }, { once: true });
+        }
+      }());
+    </script>
 
  {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
 
@@ -620,11 +642,6 @@
                </div>
                {% endfor %}
             </div>
-            <!-- Add to Cart Button and Price -->
-            <!-- Popup Message -->
-            {% comment %} 
-            <div class="popup-message"> <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/1_oDqXedYUMyhWzN48pUjHyw.gif?v=1737970819"/> </div>
-            {% endcomment %}
          </div>
          <noscript type="application/json">{{ product.variants | json }}</noscript>
       </div>
@@ -650,8 +667,6 @@
       %}
       {% endif %}
    </div>
-   {% comment %} <img src="{{ product.metafields.custom.shipping_free_are_not |  image_url }}"/> {% endcomment %}
-
 {% unless product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
 
 
@@ -832,16 +847,23 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
 {% endstyle %}
 
 <script>
-  document.addEventListener("change", function(e) {
-  if (e.target.classList.contains("variant-radio-input")) {
-    const variantId = e.target.dataset.variantId;
+  (function () {
+    if (window.__tpVariantRadioInit) return;
+    window.__tpVariantRadioInit = true;
 
-    // example for add to cart button
-    document.querySelectorAll("[name='id']").forEach(el => {
-      el.value = variantId;
+    document.addEventListener('change', function (event) {
+      var input = event.target.closest('.variant-radio-input');
+      if (!input) return;
+
+      var variantId = input.dataset.variantId;
+      var container = input.closest('product-grid-item, product-grid-item-variant, .product-grid-item, .product-card');
+      if (!variantId || !container) return;
+
+      container.querySelectorAll("[name='id']").forEach(function (field) {
+        field.value = variantId;
+      });
     });
-  }
-});
+  }());
 </script>
 
 
@@ -1174,17 +1196,10 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
 
 
                 
-                <!-- Popup Message -->
-                <!-- <div class="popup-message"><img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Thank_You-1.gif?v=1739599043" alt="thank you"/> </div> -->
-                
               </div>
             
               <noscript type="application/json">{{ product.variants | json }}</noscript>
             </dynamic-card>
-
-<script>
-  
-</script>
 
 {% style %}
   .popup-message img{
@@ -1212,9 +1227,6 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
   
     {%- endif -%}
   </div>
-  {% comment %} <div class="popup-message bbbbbb"> <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/1_oDqXedYUMyhWzN48pUjHyw.gif?v=1737970819"/> </div> {% endcomment %}
-
-
 </product-grid-item-variant>
 
                   

@@ -71,9 +71,6 @@
             {%- assign img_w   = img.width | at_most: block.settings.width -%}
             {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
             {%- assign img_alt = block.settings.alt_text | default: section.settings.title | escape -%}
-            {%- comment -%} First 5 logos likely visible — eager; rest lazy {%- endcomment -%}
-            {%- assign img_load = 'lazy' -%}
-            {%- if forloop.index <= 5 -%}{%- assign img_load = 'eager' -%}{%- endif -%}
             <div class="logo-bar__image">
               <img
                 src="{{ img | image_url: width: img_w }}"
@@ -81,7 +78,7 @@
                 width="{{ img_w }}"
                 height="{{ img_w }}"
                 alt="{{ img_alt }}"
-                loading="{{ img_load }}"
+                loading="lazy"
                 decoding="async"
               >
             </div>

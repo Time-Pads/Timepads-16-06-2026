@@ -72,9 +72,6 @@
         style="--grid-large-items:{{ section.settings.grid_large }};--grid-medium-items:{{ section.settings.grid_medium }};--grid-small-items:{{ section.settings.grid_mobile }};"
       >
         {%- for block in section.blocks -%}
-          {%- comment -%} First block is above the fold — load eagerly {%- endcomment -%}
-          {%- assign img_loading = forloop.first | iif: 'eager', 'lazy' -%}
-
           <div
             class="index__column grid__item slide-item {{ section.settings.align_text }}"
             data-item
@@ -113,7 +110,7 @@
                   srcset:       srcset,
                   sizes:        sizes,
                   alt:          block.settings.alt_text,
-                  loading:      img_loading,
+                  loading:      'lazy',
                   class:        block.settings.shape_class,
                   wh_ratio:     section.settings.wh_ratio,
                   img-class:    'tw-w-full tw-max-h-[60rem]'
@@ -214,16 +211,29 @@
     btn.setAttribute('aria-expanded', String(expanded));
   }, { passive: true });
 
-  /* ── run on initial load ── */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { initButtons(document); }, { once: true });
+  function scheduleInit(root) {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(function () {
+        initButtons(root);
+      }, { timeout: 1200 });
+      return;
+    }
+    window.setTimeout(function () {
+      initButtons(root);
+    }, 0);
+  }
+
+  if (document.readyState === 'complete') {
+    scheduleInit(document);
   } else {
-    initButtons(document);
+    window.addEventListener('load', function () {
+      scheduleInit(document);
+    }, { once: true });
   }
 
   /* ── re-run when a lazy section loads ── */
   document.addEventListener('shopify:section:load', function (e) {
-    initButtons(e.target);
+    scheduleInit(e.target);
   });
 }());
 </script>

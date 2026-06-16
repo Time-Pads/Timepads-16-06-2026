@@ -88,6 +88,8 @@
   {%- comment -%} 4. Connection hints — deduplicated, ordered by priority {%- endcomment -%}
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
   <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
   <link rel="dns-prefetch" href="//cdn.shopify.com">
@@ -207,14 +209,14 @@
   {{ 'theme.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
 
   {%- comment -%} 16. Non-critical CSS — async load, zero render-blocking {%- endcomment -%}
-  <link rel="preload" as="style" href="{{ 'custom.aio.min.css' | asset_url }}" onload="this.rel='stylesheet'">
+  <link rel="stylesheet" href="{{ 'custom.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="{{ 'custom.aio.min.css' | asset_url }}"></noscript>
 
   {%- comment -%} 16a. Image optimization CSS — async load {%- endcomment -%}
-  <link rel="preload" as="style" href="{{ 'image-optimization.css' | asset_url }}" onload="this.rel='stylesheet'">
+  <link rel="stylesheet" href="{{ 'image-optimization.css' | asset_url }}" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="{{ 'image-optimization.css' | asset_url }}"></noscript>
 
-  <link rel="preload" as="style" href="{{ 'quick-view.css' | asset_url }}" onload="this.rel='stylesheet'">
+  <link rel="stylesheet" href="{{ 'quick-view.css' | asset_url }}" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="{{ 'quick-view.css' | asset_url }}"></noscript>
 
   {%- comment -%} 17. Global inline CSS overrides (kept critical — above fold) {%- endcomment -%}

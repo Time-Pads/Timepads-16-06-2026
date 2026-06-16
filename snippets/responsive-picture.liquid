@@ -16,11 +16,18 @@
 {% endcomment %}
 
 {%- liquid
-  assign loading = "lazy"
-  assign fetchpriority = "auto"
+  assign loading = loading | default: "lazy"
+  assign fetchpriority = fetchpriority | default: "auto"
   assign forloop_index = forloop.index | default: 1
 
-  if forloop.first 
+  if loading == blank
+    assign loading = "lazy"
+  endif
+  if fetchpriority == blank
+    assign fetchpriority = "auto"
+  endif
+
+  if forloop.first and loading == 'lazy' and fetchpriority == 'auto'
     assign loading = "eager"
     assign fetchpriority = "high"
   endif
@@ -37,12 +44,12 @@
   # You can hint to the browser as to which resources are most important via the fetchpriority attribute.
   # You can use fetchpriority="low" to lower the priority of above-the-fold images that may not be important for example in an image carousel.
   # Deprioritizing certain resources can afford more bandwidth to resources that need it more.
-  if section.location == 'template' and section.index == section_lcp_index and forloop_index == 1
+  if section.location == 'template' and section.index == section_lcp_index and forloop_index == 1 and fetchpriority == 'auto'
     assign fetchpriority = "high"
     assign loading = "eager"
-  elsif section.index == section_lcp_index and forloop_index > 1
+  elsif section.index == section_lcp_index and forloop_index > 1 and fetchpriority == 'auto'
     assign fetchpriority = "low"
-  elsif section.location == 'template' and section.index < 3
+  elsif section.location == 'template' and section.index < 3 and loading == 'lazy'
     assign loading = "eager"
   endif
 -%}

@@ -171,7 +171,7 @@
                   columns_mobile: section.settings.columns_mobile,
                   show_discount_badge: true,
                   show_limited_badge: section.settings.show_limited_badge,
-                  loading: forloop.index <= 4 ? 'eager' : 'lazy'
+                  loading: 'lazy'
                 -%}
               </div>
             {%- endif -%}
@@ -300,15 +300,22 @@
     }
   }
 
-  /* ── init on DOMContentLoaded ── */
   function init() {
     document.querySelectorAll('.deal-of-day-section').forEach(el => new DealOfDay(el));
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
+  function scheduleInit() {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(init, { timeout: 1200 });
+      return;
+    }
+    window.setTimeout(init, 0);
+  }
+
+  if (document.readyState === 'complete') {
+    scheduleInit();
   } else {
-    init();
+    window.addEventListener('load', scheduleInit, { once: true });
   }
 }());
 </script>

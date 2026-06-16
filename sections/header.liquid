@@ -392,7 +392,8 @@
           width: logo_width,
           srcset: srcset,
           alt: alt,
-          preload: true,
+          loading: 'lazy',
+          fetchpriority: 'low',
           img-class: 'tw-w-full tw-max-h-[60rem]'
         %}
         {% else %}
@@ -434,7 +435,8 @@
             class: "logo__img logo__img--transparent",
             srcset: srcset,
             alt: alt,
-            preload: true
+            loading: 'lazy',
+            fetchpriority: 'low'
           }}
         {% endif %}
       </a>

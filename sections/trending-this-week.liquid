@@ -149,10 +149,6 @@
         {%- assign img     = product.featured_image -%}
         {%- assign img_w   = img.width | at_most: 200 -%}
         {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
-        {%- comment -%} Eager-load first 3 cards (likely above the fold on all breakpoints) {%- endcomment -%}
-        {%- assign img_loading = 'lazy' -%}
-        {%- if forloop.index <= 3 -%}{%- assign img_loading = 'eager' -%}{%- endif -%}
-
         <a
           href="{{ product.url }}"
           class="trending-card"
@@ -166,7 +162,7 @@
               alt="{{ img.alt | default: product.title | escape }}"
               width="85"
               height="85"
-              loading="{{ img_loading }}"
+              loading="lazy"
               decoding="async"
             >
           </div>

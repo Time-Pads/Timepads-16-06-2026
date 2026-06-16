@@ -53,7 +53,7 @@
       class="tp-simple-share__icon tp-simple-share__icon--whatsapp"
       aria-label="WhatsApp"
     >
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="24" height="24" loading="lazy" decoding="async" />
     </a>
 
     <!-- Facebook -->
@@ -63,7 +63,7 @@
       class="tp-simple-share__icon tp-simple-share__icon--facebook"
       aria-label="Facebook"
     >
-      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt="Facebook" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt="Facebook" width="24" height="24" loading="lazy" decoding="async" />
     </a>
 
     <!-- Native Share -->
@@ -227,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await navigator.share(shareData);
       } catch (err) {
-        console.log("Share cancelled");
       }
 
     } else {
@@ -1058,7 +1057,6 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await navigator.share(shareData);
       } catch (err) {
-        console.log("Share cancelled");
       }
 
     } else {

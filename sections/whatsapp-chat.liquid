@@ -1,6 +1,13 @@
 <div class="whatsapp__icon">
-    <a {% if template.name == 'product' %} href="https://wa.me/919182945474?text={{ shop.url | append: product.url }} I need to Purchase this product" {% else %} href="https://api.whatsapp.com/send?phone=919182945474&text=Hi I need Support" {% endif %}>
-      {% render 'responsive-picture', desktopImage: section.settings.icon_image %}
+    <a {% if template.name == 'product' %} href="https://wa.me/919182945474?text={{ shop.url | append: product.url }} I need to Purchase this product" {% else %} href="https://api.whatsapp.com/send?phone=919182945474&text=Hi I need Support" {% endif %} target="{{ section.settings.link_target }}" rel="noopener noreferrer">
+      {% render 'responsive-picture',
+        desktopImage: section.settings.icon_image,
+        mobileImage: section.settings.icon_image,
+        alt: 'WhatsApp chat',
+        width: 50,
+        loading: 'lazy',
+        fetchpriority: 'low'
+      %}
     </a>
 
   

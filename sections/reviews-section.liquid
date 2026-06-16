@@ -29,27 +29,16 @@
 {%- if lazy_load_section == blank -%}
 
   {%- comment -%}
-    Build star markup once — reused for every block via Liquid variable.
-    Uses a plain <img> instead of responsive-picture to avoid 5 render
-    calls per block (up to 50 render calls total for 10 blocks).
+    Build star markup once and reuse it for every review.
+    Inline SVG avoids repeated star image requests entirely.
   {%- endcomment -%}
   {%- assign star_img = section.settings.testimonial_reviews -%}
   {%- if star_img != blank -%}
-    {%- assign star_w   = star_img.width | at_most: 20 -%}
     {%- capture star_markup -%}
       <div class="icons" aria-label="5 stars">
-        {%- for i in (1..5) -%}
-          <img
-            src="{{ star_img | image_url: width: star_w }}"
-         
-            width="10"
-            height="10"
-            loading="lazy"
-            decoding="async"
-            aria-hidden="true"
-            alt="Sanitary pads reviews"
-          >
-        {%- endfor -%}
+        <svg viewBox="0 0 60 12" width="60" height="12" aria-hidden="true" focusable="false">
+          <path fill="#f5a623" d="M6 0.8l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L6 8.1 3.16 9.55l0.54-3.17-2.3-2.24 3.18-0.46L6 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L18 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L18 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L30 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L30 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L42 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L42 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L54 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L54 0.8z"/>
+        </svg>
       </div>
     {%- endcapture -%}
   {%- else -%}
@@ -162,7 +151,7 @@
 .testimonial-content p, .testimonial-content div { font-size: 10px; letter-spacing: 1px; }
 
 .icons { display: flex; gap: 4px; margin-top: 8px; }
-.icons img { height: 10px; width: 10px; }
+.icons svg { display: block; }
 
 /* Responsive widths */
 @media (max-width: 767px) {

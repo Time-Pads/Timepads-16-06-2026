@@ -62,19 +62,12 @@
       >
         {%- if collection.products.size > 0 -%}
           {%- for product in collection.products limit: product_limit -%}
-            {%- comment -%}
-              First product is likely above the fold — pass eager flag.
-              Remaining products lazy-load to save bandwidth.
-            {%- endcomment -%}
-            {%- assign loading_strategy = 'lazy' -%}
-            {%- if forloop.first -%}{%- assign loading_strategy = 'eager' -%}{%- endif -%}
-
             {%- render 'product-card-home-page',
               product: product,
               placeholder: 'product',
               columns_desktop: section.settings.grid,
               columns_mobile: section.settings.grid_mobile,
-              loading: loading_strategy
+              loading: 'lazy'
             -%}
           {%- endfor -%}
         {%- else -%}

@@ -138,42 +138,6 @@
     font-size: 14px;
     color: black;
   }
-
-
-
-#timepads-footer .tp-nav-col ul li a {
-  display: inline-block;
-  position: relative;
-  z-index: 0;
-  padding: 2px 10px 2px 0;
-  color: #aaa;
-  text-decoration: none;
-  transition: color 0.22s ease, padding-left 0.22s ease;
-}
-
-#timepads-footer .tp-nav-col ul li a::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 0;
-  background: #e8845f;
-  z-index: -1;
-  transition: width 0.22s cubic-bezier(.4, 0, .2, 1);
-}
-
-#timepads-footer .tp-nav-col ul li a:hover {
-  color: #000;
-  padding-left: 10px;
-}
-
-#timepads-footer .tp-nav-col ul li a:hover::before {
-  width: 100%;
-}
-
-
-
   #timepads-footer .tp-btn-period .tp-period-text span:last-child {
     font-size: 11.5px;
     color: var(--tp-text-muted);
@@ -233,9 +197,28 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    position: relative;
+    z-index: 0;
+    padding: 2px 10px 2px 0;
+    transition: color 0.22s ease, padding-left 0.22s ease;
+  }
+  #timepads-footer .tp-nav-col ul li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: #e8845f;
+    z-index: -1;
+    transition: width 0.22s cubic-bezier(.4, 0, .2, 1);
   }
   #timepads-footer .tp-nav-col ul li a:hover {
-    color: var(--tp-white);
+    color: #000;
+    padding-left: 10px;
+  }
+  #timepads-footer .tp-nav-col ul li a:hover::before {
+    width: 100%;
   }
 
   /* Badges */
@@ -590,7 +573,6 @@ svg.tp-chevron{
         <li><a href="/policies/refund-policy">Refund policy</a></li>
         <li><a href="/policies/privacy-policy">Privacy policy</a></li>
         <li><a href="/policies/terms-of-service">Terms of service</a></li>
-        {% comment %} <li><a href="/pages/bugs-and-suggestions">Bugs &amp; Suggestions <span class="tp-badge tp-badge-new">NEW</span></a></li> {% endcomment %}
       </ul>
     </div>
 
@@ -645,9 +627,8 @@ svg.tp-chevron{
         <!-- Desktop-only socials in contact column -->
   
       </div>
+      </div>
     </div>
-
-  </div><!-- /tp-footer-main -->
 
   <!-- ── Partners ── -->
   <div class="tp-partners">
@@ -657,8 +638,6 @@ svg.tp-chevron{
       <span class="tp-partner-chip">Shiprocket</span>
       <span class="tp-partner-chip">Razorpay</span>
       <span class="tp-partner-chip">Shopify</span>
-  <!-- <span class="tp-partner-chip">Klaviyo</span> -->
-
     </div>
   </div>
 
@@ -671,20 +650,35 @@ svg.tp-chevron{
 
 </footer>
 
-<!-- ── Accordion JS (mobile only) ── -->
 <script>
-(function() {
-  var cols = document.querySelectorAll('#timepads-footer [data-accordion]');
-  cols.forEach(function(col) {
-    var heading = col.querySelector('h3');
-    if (!heading) return;
-    heading.addEventListener('click', function() {
-      var isMobile = window.innerWidth <= 768;
-      if (!isMobile) return;
-      col.classList.toggle('is-open');
+(function () {
+  function initFooterAccordions() {
+    var cols = document.querySelectorAll('#timepads-footer [data-accordion]');
+    cols.forEach(function (col) {
+      var heading = col.querySelector('h3');
+      if (!heading || heading.hasAttribute('data-accordion-bound')) return;
+      heading.setAttribute('data-accordion-bound', 'true');
+      heading.addEventListener('click', function () {
+        if (window.innerWidth > 768) return;
+        col.classList.toggle('is-open');
+      });
     });
-  });
-})();
+  }
+
+  function scheduleFooterInit() {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(initFooterAccordions, { timeout: 1500 });
+      return;
+    }
+    window.setTimeout(initFooterAccordions, 0);
+  }
+
+  if (document.readyState === 'complete') {
+    scheduleFooterInit();
+  } else {
+    window.addEventListener('load', scheduleFooterInit, { once: true });
+  }
+}());
 </script>
 
 {% schema %}

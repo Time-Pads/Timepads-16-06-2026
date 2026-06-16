@@ -12130,8 +12130,26 @@
           const menuHeight = menuEl.clientHeight || 0;
           document.documentElement.style.setProperty('--menu-height', `${menuHeight}px`);
       }
-      // Load all registered sections on the page.
-      load('*');
+      // Load all registered sections except the homepage hero immediately.
+      // The slideshow remains renderable without JS, so we can defer Flickity setup until idle time.
+      const sectionContainers = Array.from(document.querySelectorAll('[' + selectors$_.type + ']'));
+      const slideshowContainers = sectionContainers.filter((container)=>container.getAttribute(selectors$_.type) === 'slideshow'
+      );
+      const immediateContainers = sectionContainers.filter((container)=>container.getAttribute(selectors$_.type) !== 'slideshow'
+      );
+      load('*', immediateContainers);
+      if (slideshowContainers.length) {
+          const loadSlideshows = ()=>{
+              load('slideshow', slideshowContainers);
+          };
+          if ('requestIdleCallback' in window) {
+              window.requestIdleCallback(loadSlideshows, {
+                  timeout: 1200
+              });
+          } else {
+              window.setTimeout(loadSlideshows, 0);
+          }
+      }
       // Animate on hover
       if (window.theme.settings.animate_hover) {
           document.body.classList.add('theme-animate-hover');
