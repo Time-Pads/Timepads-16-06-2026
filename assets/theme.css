@@ -13812,7 +13812,7 @@ body .shopify-email-marketing-confirmation__container {
   text-decoration: none;
   color: var(--text);
   position: relative;
-  max-width: 50vw;
+  max-width: 30vw;
   width: var(--LOGO-WIDTH, auto);
 }
 .header__logo__link img {
