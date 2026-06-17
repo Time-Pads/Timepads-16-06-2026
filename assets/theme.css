@@ -20097,11 +20097,7 @@ a.product__form__link:after {
   padding-right: var(--outer);
   padding-left: var(--outer);
 }
-@media only screen and (max-width: 767px) {
-  .product__inner {
-    padding-top: 30px;
-  }
-}
+
 .product-single .is-sticky {
   position: sticky;
   top: 30px;
