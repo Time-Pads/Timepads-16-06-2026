@@ -27,6 +27,10 @@
           "disabled": true,
           "settings": {}
         },
+        "judge_me_reviews_preview_badge_bcEbpN": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "text_f9kace": {
           "type": "text",
           "settings": {
@@ -187,6 +191,7 @@
       "block_order": [
         "title",
         "extrainfo_rjcJNB",
+        "judge_me_reviews_preview_badge_bcEbpN",
         "text_f9kace",
         "product_cup_eXjHex",
         "product_certificates_k9E9iB",
