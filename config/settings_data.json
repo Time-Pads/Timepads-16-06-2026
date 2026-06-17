@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
     "enable_lazy_loading_sections": false,
     "hp_eager_section_count": 50,
     "pdp_eager_section_count": 50,

@@ -67,9 +67,17 @@
         {%- for block in section.blocks -%}
           {%- assign img      = block.settings.collection_image -%}
           {%- assign img_alt  = block.settings.image_alt_text | default: block.settings.collection_title | escape -%}
-          {%- comment -%} Eager-load first 4 — visible on all screen sizes {%- endcomment -%}
-          {%- assign img_load = 'lazy' -%}
-          {%- if forloop.index <= 4 -%}{%- assign img_load = 'eager' -%}{%- endif -%}
+          {%- liquid
+            assign img_load = 'lazy'
+            assign img_fetch = 'low'
+            assign img_w = img.width | at_most: 300
+            if forloop.first
+              assign img_load = 'eager'
+              assign img_fetch = 'high'
+              assign img_w = 400
+            endif
+            assign img_w2x = img_w | times: 2 | at_most: img.width
+          -%}
 
           <a
             href="{{ block.settings.collection_url }}"
@@ -78,15 +86,8 @@
             <div class="category-card">
               <div class="circle-background{%- if block.settings.collection_title == 'Uniline' %} uniline-image{%- endif -%}">
                 {%- if img != blank -%}
-                  {%- assign img_w   = img.width | at_most: 300 -%}
-                  {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
                   {%- comment -%} Use picture element for WebP/AVIF support on 4G networks {%- endcomment -%}
                   <picture>
-                    {%- comment -%} AVIF - smallest file size, best for slow networks {%- endcomment -%}
-                    <source
-                      type="image/avif"
-                      srcset="{{ img | image_url: width: img_w, format: 'avif' }} 1x, {{ img | image_url: width: img_w2x, format: 'avif' }} 2x"
-                    >
                     {%- comment -%} WebP - good compression, broad browser support {%- endcomment -%}
                     <source
                       type="image/webp"
@@ -101,7 +102,7 @@
                       alt="{{ img_alt }}"
                       class="product-image"
                       loading="{{ img_load }}"
-                      fetchpriority="{% if forloop.index <= 2 %}high{% else %}auto{% endif %}"
+                      fetchpriority="{{ img_fetch }}"
                       decoding="async"
                     >
                   </picture>

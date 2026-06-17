@@ -116,8 +116,10 @@
               <!-- /snippets/product-grid-item.liquid -->
 
                 
+{% assign visible_index = 0 %}
 {% for product in collection.products %}
   {% unless product.tags contains 'hide' or product.title contains 'Gift' %}
+    {% assign visible_index = visible_index | plus: 1 %}
     <div class="collection-product-card">
       {%- liquid
         assign preload = false
@@ -130,9 +132,14 @@
         if forloop.index0 < non_lazy_count
           assign eagerload = true
         endif
+
+        assign is_first_lcp = false
+        if visible_index == 1
+          assign is_first_lcp = true
+        endif
       -%}
 
-      {% render 'product-card-home-page', product: product, preload: preload, eagerload: eagerload %}
+      {% render 'product-card-home-page', product: product, preload: preload, eagerload: eagerload, is_first_lcp: is_first_lcp %}
     </div>
   {% endunless %}
 {% else %}

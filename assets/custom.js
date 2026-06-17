@@ -448,18 +448,7 @@ function searchFunction() {
 //   }, 3000);
 // });
 // });
-document.querySelectorAll('.add-cart-button-singale-variant').forEach(button => {
-button.addEventListener('click', (event) => {
-  event.preventDefault();
-  const productCard = event.target.closest('.product-grid-item__container');
-  const popup = productCard.querySelector('.popup-message');
-    popup.classList.add('show');
-    setTimeout(() => {
-      popup.classList.remove('show');
-     
-    }, 3000);
-});
-});
+// Click listener delegated to document on window.load (see bottom of file)
 
 //// Lazy section
 
@@ -577,30 +566,7 @@ customElements.define('lazy-section', LazySection);
 
 
 
-document.querySelectorAll('.add-to-cart-button-for-product-card').forEach(btn => {
-  btn.addEventListener('click', function() {
-
-    // Start loader
-    this.classList.add('loading');
-
-    const duration = 1000; // 2 seconds
-    const start = Date.now();
-
-    // Bubble animation interval
-    // const bubbleInterval = setInterval(() => {
-    //   if (Date.now() - start > duration) {
-    //     clearInterval(bubbleInterval);
-    //     return;
-    //   }
-    //   createBubble(this);
-    // }, 80);
-
-    // Stop loader after 2 seconds
-    setTimeout(() => {
-      this.classList.remove('loading');
-    }, duration);
-  });
-});
+// Click listener delegated to document on window.load (see bottom of file)
 
 function createBubble(button) {
   const bubble = document.createElement("span");
@@ -669,35 +635,7 @@ function createBubble(button) {
 
 
 
-      document.querySelectorAll('.add-to-cart-button-for-product-card').forEach(button => {
-  button.addEventListener('click', function () {
-    
-    const cartIcon = document.querySelector('svg.icon-theme.icon-theme-stroke.icon-set-classic-cart');
-    const buttonRect = button.getBoundingClientRect();
-    const cartRect = cartIcon.getBoundingClientRect();
-
-    // Create flying clone
-    const clone = document.createElement('div');
-    clone.classList.add('fly-animation-clone');
-    document.body.appendChild(clone);
-
-    // Set start position
-    clone.style.left = buttonRect.left + buttonRect.width / 2 + "px";
-    clone.style.top = buttonRect.top + buttonRect.height / 2 + "px";
-
-    // Delay animation for rendering
-    requestAnimationFrame(() => {
-      clone.style.transform = `
-        translate(${cartRect.left - buttonRect.left}px, ${cartRect.top - buttonRect.top}px)
-        scale(0.3)
-      `;
-      clone.style.opacity = "0";
-    });
-
-    // Remove clone after animation
-    setTimeout(() => clone.remove(), 900);
-  });
-});
+// Click listener delegated to document on window.load (see bottom of file)
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.querySelector(
     'input[data-predictive-search-input="search-popdown-results"]'
@@ -785,27 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-//bubble animation add to cart
-const button = document.querySelector(".add-to-cart-button-for-product-card");
-
-let isAnimating = false;
-
-if (button) {
-  button.addEventListener("click", () => {
-    if (isAnimating) return; // prevents spam clicking
-
-    isAnimating = true;
-    button.classList.add("loading");
-
-    createExplosion(button, 32);
-
-    // reset after animation complete
-    setTimeout(() => {
-      button.classList.remove("loading");
-      isAnimating = false;
-    }, 1600);
-  });
-}
+// Click listener delegated to document on window.load (see bottom of file)
 
 
 
@@ -953,4 +871,57 @@ if (button) {
     setInterval(updateStock, 15000); // change every 15 sec
   }
 
+});
+
+// Defer and Delegate Add to Cart click handlers
+window.addEventListener('load', function() {
+  document.addEventListener('click', function(e) {
+    // Handler for .add-to-cart-button-for-product-card
+    const atcBtn = e.target.closest('.add-to-cart-button-for-product-card');
+    if (atcBtn) {
+      // 1. Loader logic
+      atcBtn.classList.add('loading');
+      setTimeout(() => {
+        atcBtn.classList.remove('loading');
+      }, 1000);
+
+      // 2. Flying clone logic
+      const cartIcon = document.querySelector('svg.icon-theme.icon-theme-stroke.icon-set-classic-cart');
+      if (cartIcon) {
+        const buttonRect = atcBtn.getBoundingClientRect();
+        const cartRect = cartIcon.getBoundingClientRect();
+        const clone = document.createElement('div');
+        clone.classList.add('fly-animation-clone');
+        document.body.appendChild(clone);
+        clone.style.left = buttonRect.left + buttonRect.width / 2 + "px";
+        clone.style.top = buttonRect.top + buttonRect.height / 2 + "px";
+        requestAnimationFrame(() => {
+          clone.style.transform = `translate(${cartRect.left - buttonRect.left}px, ${cartRect.top - buttonRect.top}px) scale(0.3)`;
+          clone.style.opacity = "0";
+        });
+        setTimeout(() => clone.remove(), 900);
+      }
+
+      // 3. Explosion logic
+      if (typeof createExplosion === 'function') {
+        createExplosion(atcBtn, 32);
+      }
+    }
+
+    // Handler for .add-cart-button-singale-variant
+    const singleVariantBtn = e.target.closest('.add-cart-button-singale-variant');
+    if (singleVariantBtn) {
+      e.preventDefault();
+      const productCard = singleVariantBtn.closest('.product-grid-item__container');
+      if (productCard) {
+        const popup = productCard.querySelector('.popup-message');
+        if (popup) {
+          popup.classList.add('show');
+          setTimeout(() => {
+            popup.classList.remove('show');
+          }, 3000);
+        }
+      }
+    }
+  });
 });

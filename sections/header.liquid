@@ -144,6 +144,7 @@
       style="--LOGO-WIDTH: {{ logo_width }}px"
     >
       {% if section.settings.logo != blank %}
+        {%- assign logo_width = 200 -%}
         {%- assign alt = section.settings.logo.alt | default: shop.name | strip_html | escape %}
         {%- assign logo_width_2x = logo_width | times: 2 %}
         {%- assign logo_width_3x = logo_width | times: 3 %}
@@ -151,15 +152,6 @@
 
         {%- comment -%} Optimized logo with WebP/AVIF support for faster loading on 4G {%- endcomment -%}
         <picture>
-          {%- comment -%} AVIF: Best compression for LCP image {%- endcomment -%}
-          <source
-            type="image/avif"
-            srcset="
-              {{ section.settings.logo | image_url: width: logo_width, format: 'avif' }} 1x,
-              {{ section.settings.logo | image_url: width: logo_width_2x, format: 'avif' }} 2x,
-              {{ section.settings.logo | image_url: width: logo_width_3x, format: 'avif' }} 3x
-            "
-          >
           {%- comment -%} WebP: Better browser support than AVIF {%- endcomment -%}
           <source
             type="image/webp"

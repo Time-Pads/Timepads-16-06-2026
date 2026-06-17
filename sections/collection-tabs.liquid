@@ -276,12 +276,14 @@
   }
   .ct-tabs-content .free-shipping-text-product img { position: absolute; bottom: 5px; }
   .ct-tabs-content .product-card.single-variant { height: 7rem; }
-
+.circle-collections-heading{
+  font-size: 26px !important;
+}
   /* ── Mobile ── */
   @media (max-width: 768px) {
     .circle-collections-heading {
-      font-size: 16px !important;
-      font-weight: 500 !important;
+      font-size: 20px !important;
+      font-weight: 800 !important;
       letter-spacing: 1px !important;
     }
 
@@ -338,9 +340,18 @@
 
         {%- if block.settings.header_image != blank -%}
           {%- assign img     = block.settings.header_image -%}
-          {%- assign img_w   = img.width | at_most: 220 -%}
-          {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
-          {%- assign img_alt = block.settings.tab_label | default: shop.name -%}
+          {%- liquid
+            assign img_load = 'lazy'
+            assign img_fetch = 'low'
+            assign img_w = img.width | at_most: 220
+            if forloop.first
+              assign img_load = 'eager'
+              assign img_fetch = 'high'
+              assign img_w = 400
+            endif
+            assign img_w2x = img_w | times: 2 | at_most: img.width
+            assign img_alt = block.settings.tab_label | default: shop.name
+          -%}
 
           {%- if block.settings.collection_url != blank -%}
             <a href="{{ block.settings.collection_url }}" class="ct-image-link" tabindex="-1" aria-hidden="true">
@@ -359,8 +370,8 @@
                 height="{{ img_w }}"
                 alt="{{ img_alt | escape }}"
                 class="ct-header-image"
-                loading="lazy"
-                fetchpriority="low"
+                loading="{{ img_load }}"
+                fetchpriority="{{ img_fetch }}"
                 decoding="async"
               >
             </picture>

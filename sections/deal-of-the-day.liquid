@@ -111,8 +111,8 @@
   }
 
   .deal-header h2.kicker-flourished {
-    font-size: 22px !important;
-    font-weight: 900 !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
     text-transform: capitalize;
     margin-bottom: 0;
     padding-bottom: 0;
@@ -124,12 +124,13 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     transform: none !important;
+    padding_bottom: 3rem;
   }
 
   .deal-product-item { flex: none; min-width: auto; }
   .deal-nav, .deal-pagination { display: none; }
 
-  .deal-products-wrapper { padding: 0 10px; }
+  .deal-products-wrapper { padding: 0 10px; padding-bottom: 3rem; }
 
   .deal-of-day-section .free-shipping-text-product img {
     width: 60%;
@@ -139,7 +140,7 @@
 }
 
 @media (min-width: 750px) {
-  .deal-header h2 { font-size: 32px !important; }
+  .deal-header h2 { font-size: 26px !important; }
 }
 #shopify-section-{{ section.id }} {
   padding-top: {{ section.settings.padding_top }}px !important;

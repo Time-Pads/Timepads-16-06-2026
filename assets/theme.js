@@ -6424,11 +6424,18 @@
   };
   const collectionFiltersSidebar = {
       onLoad () {
-          sections$6[this.id] = [];
-          const wrappers = this.container.querySelectorAll(`[${selectors$u.filtersWrappper}]`);
-          wrappers.forEach((wrapper)=>{
-              sections$6[this.id].push(new Filters(wrapper));
-          });
+          const initFiltersSidebar = () => {
+              sections$6[this.id] = [];
+              const wrappers = this.container.querySelectorAll(`[${selectors$u.filtersWrappper}]`);
+              wrappers.forEach((wrapper)=>{
+                  sections$6[this.id].push(new Filters(wrapper));
+              });
+          };
+          if (document.readyState === 'complete') {
+              initFiltersSidebar();
+          } else {
+              window.addEventListener('load', initFiltersSidebar);
+          }
       },
       onUnload: function() {
           sections$6[this.id].forEach((filters)=>{
@@ -6767,7 +6774,14 @@
   };
   const collectionFiltersForm = {
       onLoad () {
-          this.filterForm = new FiltersForm(this);
+          const initFiltersForm = () => {
+              this.filterForm = new FiltersForm(this);
+          };
+          if (document.readyState === 'complete') {
+              initFiltersForm();
+          } else {
+              window.addEventListener('load', initFiltersForm);
+          }
       },
       onUnload () {
           if (this.filterForm && typeof this.filterForm.unload === 'function') {
@@ -8967,7 +8981,14 @@
   };
   const collectionSection = {
       onLoad () {
-          this.collection = new Collection(this);
+          const initCollectionSection = () => {
+              this.collection = new Collection(this);
+          };
+          if (document.readyState === 'complete') {
+              initCollectionSection();
+          } else {
+              window.addEventListener('load', initCollectionSection);
+          }
       }
   };
   register('collection', [

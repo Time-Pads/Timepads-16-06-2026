@@ -330,20 +330,38 @@
             >
               {% unless visible %}<template>{% endunless %}
               
-              {%- assign img_url = img_object | image_url: width: 400, format: 'webp' -%}
+              {%- liquid
+                assign img_url = img_object | image_url: width: 400
+                if is_first_lcp
+                  assign img_loading = 'eager'
+                  assign img_fetchpriority = 'high'
+                  assign img_decoding = 'sync'
+                  assign img_sizes = '(max-width: 768px) 45vw, 25vw'
+                else
+                  assign img_loading = 'lazy'
+                  assign img_fetchpriority = 'low'
+                  assign img_decoding = 'async'
+                  assign img_sizes = '(max-width: 768px) 50vw, 33vw'
+                endif
+              -%}
+              {%- if is_first_lcp -%}
+                {%- capture img_srcset -%}{{ img_object | image_url: width: 200 }} 200w, {{ img_object | image_url: width: 400 }} 400w, {{ img_object | image_url: width: 600 }} 600w{%- endcapture -%}
+              {%- else -%}
+                {%- capture img_srcset -%}{{ img_object | image_url: width: 300, format: 'webp' }} 300w, {{ img_object | image_url: width: 400, format: 'webp' }} 400w, {{ img_object | image_url: width: 600, format: 'webp' }} 600w{%- endcapture -%}
+              {%- endif -%}
               <div class="lazy-image-wrapper" style="aspect-ratio: 1 / 1; position: relative; overflow: hidden; background-color: #f5f5f5;">
                 <img 
                   class="tw-w-full tw-max-h-[60rem] main-image img-object-cover fade-in-image" 
                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
                   src="{{ img_url }}"
-                  srcset="{{ img_object | image_url: width: 300, format: 'webp' }} 300w, {{ img_object | image_url: width: 400, format: 'webp' }} 400w, {{ img_object | image_url: width: 600, format: 'webp' }} 600w"
-                  loading="{% if eagerload or preload_image %}eager{% else %}lazy{% endif %}"
-                  fetchpriority="{% if eagerload or preload_image %}high{% else %}auto{% endif %}"
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  width="{{ img_object.width | default: 400 }}" 
-                  height="{{ img_object.height | default: 400 }}" 
+                  srcset="{{ img_srcset }}"
+                  sizes="{{ img_sizes }}"
+                  loading="{{ img_loading }}"
+                  fetchpriority="{{ img_fetchpriority }}"
+                  width="600" 
+                  height="600" 
                   alt="{{ img_object.alt | default: product.title | escape }}" 
-                  decoding="async"
+                  decoding="{{ img_decoding }}"
                   onload="if(this.complete) this.classList.add('loaded');"
                 >
                 {% if product.images[1] %}
@@ -352,8 +370,8 @@
                     src="{{ product.images[1] | image_url: width: 400, format: 'webp' }}" 
                     loading="lazy" 
                     decoding="async" 
-                    width="{{ product.images[1].width | default: 400 }}"
-                    height="{{ product.images[1].height | default: 400 }}"
+                    width="600"
+                    height="600"
                     alt="{{ product.images[1].alt | default: product.title | escape }}"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.3s ease; z-index: 2;" 
                     onload="this.classList.add('loaded')"
@@ -607,7 +625,8 @@
    </noscript>
    <div class="product-card single-variant">
       <div class="variant-options">
-         <div class="product-card" data-product-id="{{ product.id }}" data-variants="{{ product.variants | json }}">
+         <div class="product-card" data-product-id="{{ product.id }}">
+            <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
             <div class="form__selectors">
                <!-- Loop through each option (e.g., Size, Packs) -->
                {% for option in product.options_with_values %}
@@ -1085,7 +1104,8 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
             <div class="quickview__form__wrapper is-expanded" data-quickview-form-area data-product-form-wrapper>
           
             <dynamic-card class="quick-card">
-              <div class="product-card" data-product-id="{{ product.id }}" data-variants="{{ product.variants | json }}">
+              <div class="product-card" data-product-id="{{ product.id }}">
+                <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
                 <div class="form__selectors">
                   <!-- Loop through each option (e.g., Size, Packs) -->
                  {% for option in product.options_with_values %}

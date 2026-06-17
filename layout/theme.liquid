@@ -11,6 +11,37 @@
 {%- assign default_description = false -%}
 
 <head>
+  {% assign logo = settings.logo %}
+  {% if logo %}
+    <link rel="preload" as="image"
+          href="{{ logo | image_url: width: 200 }}"
+          imagesrcset="{{ logo | image_url: width: 200 }} 1x, {{ logo | image_url: width: 400 }} 2x, {{ logo | image_url: width: 600 }} 3x"
+          fetchpriority="high">
+  {% endif %}
+
+  {% if request.page_type == 'collection' %}
+    {% if collection.image %}
+      <link rel="preload" as="image"
+            href="{{ collection.image | image_url: width: 800 }}"
+            fetchpriority="high">
+    {% endif %}
+    {% assign first_product = nil %}
+    {% for product in collection.products %}
+      {% unless product.tags contains 'hide' or product.title contains 'Gift' %}
+        {% assign first_product = product %}
+        {% break %}
+      {% endunless %}
+    {% endfor %}
+    {% if first_product and first_product.featured_image %}
+      <link rel="preload" as="image" 
+            href="{{ first_product.featured_image | image_url: width: 400 }}"
+            imagesrcset="{{ first_product.featured_image | image_url: width: 200 }} 200w, {{ first_product.featured_image | image_url: width: 400 }} 400w, {{ first_product.featured_image | image_url: width: 600 }} 600w"
+            imagesizes="(max-width: 768px) 45vw, 25vw"
+            fetchpriority="high">
+    {% endif %}
+  {% endif %}
+
+
   {%- comment -%} 1. Charset + viewport — must be first {%- endcomment -%}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -90,12 +121,15 @@
   <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://gokwik.co" crossorigin>
+  <link rel="dns-prefetch" href="https://gokwik.co">
+  <link rel="preconnect" href="https://api.gokwik.co" crossorigin>
+  <link rel="dns-prefetch" href="https://api.gokwik.co">
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
   <link rel="dns-prefetch" href="//cdn.shopify.com">
   <link rel="dns-prefetch" href="//apps.shopify.com">
   <link rel="dns-prefetch" href="//pdp.gokwik.co">
-  <link rel="dns-prefetch" href="//api.gokwik.co">
   {%- unless template == 'index' -%}
     <link rel="dns-prefetch" href="//cdnwidget.judge.me">
     <link rel="dns-prefetch" href="//cdn.judge.me">
@@ -193,6 +227,50 @@
   {%- comment -%} 14. LCP image preload hint {%- endcomment -%}
   {%- render 'preload-lcp' -%}
 
+
+  {% if request.page_type == 'collection' %}
+  <style>
+    /* Inline only the CSS needed for above-fold collection grid */
+    .js-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .collection-product-card { position: relative; background: #fff; }
+    .product-grid-item { position: relative; background: #fff; }
+    .product-grid-item img { width: 100%; height: auto; display: block; }
+    .collection__filters__wrapper { /* filter sidebar base styles */ }
+  </style>
+  {% endif %}
+
+  {%- comment -%} 14b. Product page critical CSS — above-fold paint {%- endcomment -%}
+  {%- if request.page_type == 'product' -%}
+  <style>
+    /* Critical product page above-fold CSS */
+    .product-section { width: 100%; }
+    .product-page { width: 100%; }
+    .float-grid.product-single { display: flex; flex-wrap: wrap; }
+    .product__media__wrapper { width: 100%; position: relative; overflow: hidden; }
+    .product__media__wrapper img { width: 100%; height: auto; display: block; object-fit: cover; }
+    .product__grid { width: 100%; overflow: hidden; }
+    .product__media { width: 100%; }
+    .product-image-wrapper { width: 100%; overflow: hidden; }
+    .product-image-wrapper picture { display: block; width: 100%; }
+    .product-image-wrapper img { width: 100%; height: auto; display: block; }
+    .product__main__content { width: 100%; padding: 12px 0; }
+    .product__inner { padding: 0 12px; }
+    .product__title { font-size: 1.3rem; font-weight: 700; margin: 0 0 8px; line-height: 1.3; }
+    .product__block__price { margin: 0 0 12px; }
+    .product__block__price .price { font-size: 1.4rem; font-weight: 700; }
+    .product__submit__buttons { width: 100%; margin-top: 12px; }
+    .product__submit__buttons button { width: 100%; padding: 14px; font-size: 16px; font-weight: 700; }
+    @media (min-width: 768px) {
+      .product__media__wrapper { width: 50%; float: left; }
+      .product__main__content { width: 50%; float: left; padding: 0 0 0 24px; }
+      .product__inner { padding: 0; }
+      .product__title { font-size: 1.5rem; }
+    }
+  </style>
+  {%- endif -%}
+
+
+
   {%- comment -%} 14a. Image optimization for 4G networks {%- endcomment -%}
   {%- comment -%}
     Image Loading Best Practices for 4G Performance:
@@ -230,6 +308,32 @@
     .header__backfill{
       display: none;
     }
+    [data-grid] [data-item].index__column,
+    .gif-section--main-content{
+      padding-bottom: 0px !important;
+    }
+    @media only screen and (max-width: 768px){
+    .ticker--animated{
+      font-size: 12px;
+    }
+   .trending-wrapper .trending-header h2{
+      font-size: 20px !important;
+      font-weight: 800 !important;
+    }
+    .section-columns.palette--light.bg--neutral h2.kicker-flourished.mb-r11{
+    font-size: 20px !important;
+   font-weight: 800 !important;
+    }
+    .reviews-section-text h2.kicker-flourished{
+      font-size: 20px !important;
+   font-weight: 800 !important;
+    }
+    .section-logos h2.kicker-flourished.mb-r11{
+      font-size: 20px !important;
+   font-weight: 800 !important;
+    }
+    }
+
   {% endstyle %}
 
   {%- comment -%} 16. Non-critical CSS — async load, zero render-blocking {%- endcomment -%}

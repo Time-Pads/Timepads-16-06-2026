@@ -754,7 +754,7 @@ body .shopify-policy__container { width: 90%; }
 .shopify-policy__body p strong { color: #000; font-weight: 900; font-size: 18px; }
 
 /* ── GIF section ── */
-.gif-section--main-content { color: #fff; padding-bottom: 2rem; }
+.gif-section--main-content { color: #fff; }
 
 /* ── Collection tabs ── */
 .ct-tabs-nav {
@@ -1285,4 +1285,11 @@ button#quick-add-menu-button-1{
   padding-top: 60px !important;
   padding-bottom: 0 !important;
 }
+
+@font-face {
+  font-family: 'Poppins';
+  font-display: swap;
+  src: url("//timepads.in/cdn/fonts/poppins/poppins_n4.0ba78fa5af9b0e1a374041b3ceaadf0a43b41362.woff2") format("woff2");
+}
+
 

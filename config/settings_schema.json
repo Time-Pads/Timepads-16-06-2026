@@ -60,6 +60,11 @@
     "settings": [
       {
         "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "image_picker",
         "id": "preload_image_desktop",
         "label": "Image(Desktop)"
       },

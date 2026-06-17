@@ -2,7 +2,6 @@ class DynamicCard extends HTMLElement {
   constructor() {
     super();
     this.addTocartButton = this.querySelector('button[add-to-cart]');
-    this.variantsData = this.getVariantsData();
     this.cart =
       document.querySelector('cart-notification') ||
       document.querySelector('cart-drawer');
@@ -14,14 +13,16 @@ class DynamicCard extends HTMLElement {
     this.querySelector('.select-wrapper')?.addEventListener('click', this.handleClickSelect.bind(this));
   }
   connectedCallback() {
-    this.onVariantChange(); // Ensure styles and price are updated
- 
     const fieldsets = this.querySelectorAll('fieldset');
     fieldsets.forEach((fieldset) => {
-      Array.from(fieldset.querySelectorAll('input'))[0].checked = true;
+      const checkedInput = fieldset.querySelector('input:checked');
+      if (!checkedInput) {
+        const firstInput = fieldset.querySelector('input');
+        if (firstInput) firstInput.checked = true;
+      }
     });
+    this.getCurrentSelectedOptions();
     this.updateSelectedStyles();
-    
   }
 
 
@@ -59,15 +60,15 @@ class DynamicCard extends HTMLElement {
   }
 
   getVariantsData() {
-    if (this.variantsData) return this.variantsData;
+    if (this._variantsData) return this._variantsData;
 
-    const jsonData = this.querySelector('[type="application/json"]');
-    this.variantsData = jsonData ? JSON.parse(jsonData.textContent) : [];
-    return this.variantsData;
+    const jsonData = this.querySelector('script[data-product-variants]') || this.querySelector('[type="application/json"]');
+    this._variantsData = jsonData ? JSON.parse(jsonData.textContent) : [];
+    return this._variantsData;
   }
 
   getcurrentVariant() {
-    this.currentVariant = this.variantsData.find((variant) =>
+    this.currentVariant = this.getVariantsData().find((variant) =>
       variant.options.every((option, index) => this.currentOptions[index] === option)
     );
   }

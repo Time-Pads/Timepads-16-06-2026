@@ -47,6 +47,26 @@
             assign media_fetchpriority = fetchpriority | default: 'auto'
             assign media_loading = loading | default: 'lazy'
 
+            comment
+              If width was passed in from parent (e.g. product.liquid loop),
+              use it. Otherwise determine based on media position.
+              srcset_widths limits srcset entries — LCP image: small set ending at 800;
+              gallery images: small set ending at 600.
+            endcomment
+            if width != blank
+              assign media_width = width
+            elsif media.position == 1 and loading == blank and fetchpriority == blank and preload == blank
+              assign media_width = 800
+            else
+              assign media_width = 600
+            endif
+
+            if media_width == 800
+              assign media_srcset_widths = '300,400,640,800'
+            else
+              assign media_srcset_widths = '300,480,600'
+            endif
+
             if media.position == 1 and loading == blank and fetchpriority == blank and preload == blank
               assign media_preload = true
               assign media_fetchpriority = 'high'
@@ -68,6 +88,8 @@
             loading: media_loading,
             preload: media_preload,
             fetchpriority: media_fetchpriority,
+            width: media_width,
+            srcset_widths: media_srcset_widths,
             placeholder: false,
             alt: alt,
             loading_animation: loading_animation

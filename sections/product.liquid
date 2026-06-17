@@ -366,13 +366,22 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
                     assign media_fetchpriority = 'auto'
                   endif
                 -%}
+                {%- liquid
+                  assign media_width_pdp = nil
+                  if forloop.first
+                    assign media_width_pdp = 800
+                  else
+                    assign media_width_pdp = 600
+                  endif
+                -%}
                 {%- render 'media',
                   media: media,
                   section: section,
                   product: product,
                   loading_animation: loading_animation,
                   loading: media_loading,
-                  fetchpriority: media_fetchpriority
+                  fetchpriority: media_fetchpriority,
+                  width: media_width_pdp
                 -%}
               {%- endfor -%}
             {%- else -%}

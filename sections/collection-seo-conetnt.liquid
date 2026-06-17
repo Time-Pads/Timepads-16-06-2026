@@ -3,7 +3,7 @@
   Paste into: sections/timepads-collection-seo.liquid
 {% endcomment %}
 
-<section class="tp-seo-section">
+<section class="tp-seo-section" id="tp-seo-lazy-block" style="visibility: hidden; height: 0; overflow: hidden; padding: 0;">
   <div class="tp-seo-wrap page-width">
     {% if section.settings.top_heading != blank %}
       <div class="tp-seo-top-heading">
@@ -57,6 +57,50 @@
     </div>
   </div>
 </section>
+
+<script>
+  (function() {
+    const seoBlock = document.getElementById('tp-seo-lazy-block');
+    if (!seoBlock) return;
+
+    const revealSEO = () => {
+      seoBlock.style.visibility = 'visible';
+      seoBlock.style.height = 'auto';
+      seoBlock.style.overflow = 'visible';
+      seoBlock.style.padding = '';
+    };
+
+    const footer = document.querySelector('footer') || document.querySelector('[role="contentinfo"]') || document.querySelector('.main-content')?.nextElementSibling;
+    if (footer) {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            revealSEO();
+            obs.disconnect();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+      observer.observe(footer);
+    } else {
+      window.addEventListener('load', () => {
+        const footerFallback = document.querySelector('footer') || document.querySelector('[role="contentinfo"]');
+        if (footerFallback) {
+          const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                revealSEO();
+                obs.disconnect();
+              }
+            });
+          }, { rootMargin: '200px 0px' });
+          observer.observe(footerFallback);
+        } else {
+          revealSEO();
+        }
+      });
+    }
+  })();
+</script>
 
 <style>
   .tp-seo-section {

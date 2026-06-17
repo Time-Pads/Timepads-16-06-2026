@@ -2,10 +2,10 @@
 <div class="collection-banner-image">
   {{
     collection.image
-    | image_url: width: 1800
+    | image_url: width: 800
     | image_tag:
       alt: collection.title,
-      widths: '480, 720, 960, 1200, 1600, 1800',
+      widths: '480, 720, 800',
       sizes: '100vw',
       loading: 'eager',
       fetchpriority: 'high'

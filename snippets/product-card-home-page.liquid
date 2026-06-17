@@ -151,7 +151,8 @@ assign placeholder = placeholder | default: false
         placeholder: placeholder,
         columns_desktop: columns_desktop,
         columns_tablet: columns_tablet,
-        columns_mobile: columns_mobile
+        columns_mobile: columns_mobile,
+        is_first_lcp: is_first_lcp
       %}
     {% endfor %}
   {% elsif has_swatches %}
@@ -212,7 +213,8 @@ assign placeholder = placeholder | default: false
         placeholder: placeholder,
         columns_desktop: columns_desktop,
         columns_tablet: columns_tablet,
-        columns_mobile: columns_mobile
+        columns_mobile: columns_mobile,
+        is_first_lcp: is_first_lcp
       %}
 
       {% capture swatch_link_markup %}
@@ -272,7 +274,8 @@ assign placeholder = placeholder | default: false
       placeholder: placeholder,
       columns_desktop: columns_desktop,
       columns_tablet: columns_tablet,
-      columns_mobile: columns_mobile
+      columns_mobile: columns_mobile,
+      is_first_lcp: is_first_lcp
     %}
   {% endif %}
 </product-grid-item>
