@@ -9,11 +9,11 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
     "enable_lazy_loading_sections": false,
     "hp_eager_section_count": 50,
     "pdp_eager_section_count": 50,
     "enable_lazy_loading_header_sections": false,
+    "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
     "preload_image_desktop": "shopify://shop_images/Banner-2_1.jpg",
     "preload_image_mobile": "shopify://shop_images/Banner-2.1.jpg",
     "free_shipping": "1500",
@@ -181,11 +181,6 @@
         "disabled": false,
         "settings": {}
       },
-      "15710897563947040993": {
-        "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
-        "disabled": false,
-        "settings": {}
-      },
       "15420431898985516217": {
         "type": "shopify://apps/nitro-x/blocks/nitrotrack/0199a908-71dc-7412-8559-0f72394b4c48",
         "disabled": false,
@@ -193,6 +188,11 @@
       },
       "14415272397818527300": {
         "type": "shopify://apps/nitro-x/blocks/recover-agent/0199a908-71dc-7412-8559-0f72394b4c48",
+        "disabled": true,
+        "settings": {}
+      },
+      "15710897563947040993": {
+        "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
         "disabled": true,
         "settings": {}
       }
