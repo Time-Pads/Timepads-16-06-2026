@@ -235,12 +235,6 @@
     .collection-product-card { position: relative; background: #fff; }
     .product-grid-item { position: relative; background: #fff; }
     .product-grid-item img { width: 100%; height: auto; display: block; }
-    @media only screen and (min-width: 768px){
-        .reposition-background-mobile{
-     height: 600px !important;
-     object-fit: fill !important;
-    }
-    }
 
     .collection__filters__wrapper { /* filter sidebar base styles */ }
   </style>
@@ -276,6 +270,15 @@
   </style>
   {%- endif -%}
 
+
+{% style %}
+    @media only screen and (min-width: 768px){
+        .reposition-background-mobile{
+     height: 600px !important;
+     object-fit: fill !important;
+    }
+    }
+{% endstyle %}
 
 
   {%- comment -%} 14a. Image optimization for 4G networks {%- endcomment -%}
