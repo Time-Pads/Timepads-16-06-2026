@@ -202,7 +202,7 @@
         "image_jer7eT"
       ],
       "settings": {
-        "autoplay": false,
+        "autoplay": true,
         "autoplay_speed": 4,
         "preload_first_image": true,
         "height": "use_image",
