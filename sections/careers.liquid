@@ -239,8 +239,8 @@ position: relative;
 <!-- HERO -->
 <section class="hero" id="hero">
   <picture class="hero-bg">
-    <source media="(max-width: 768px)" srcset="{{ 'Sanitary-Pads-Banner-Mobile_1.jpg' | file_url | image_url: width: 800 }}">
-    <img src="{{ 'Sanitary-Pads-Banner-Desktop_2.jpg' | file_url | image_url: width: 1200 }}" alt="Hero Banner">
+    <source media="(max-width: 768px)" srcset="{{ 'Sanitary-Pads-Banner-Mobile_1.jpg' | file_img_url: '800x' }}">
+    <img src="{{ 'Sanitary-Pads-Banner-Desktop_2.jpg' | file_img_url: '1200x' }}" alt="Hero Banner">
   </picture>
 
 </section>
@@ -399,7 +399,7 @@ position: relative;
 
 <!-- CTA -->
 <div class="outer right-role">
-  <img src="{{ 'Gif-Animation.gif' | file_url | image_url: width: 800 }}" alt="careers"/>
+  <img src="{{ 'Gif-Animation.gif' | file_url }}" alt="careers"/>
   <div class="cta-wrap">
   <div class="cta">
     <div class="cta-orb cta-orb1"></div>
