@@ -155,7 +155,7 @@
         {%- if sold_out -%}
           <span class="tp-badge tp-badge--sold">Sold out</span>
         {%- elsif show_save_badge -%}
-          <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span>
+          {% comment %} <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span> {% endcomment %}
         {%- endif -%}
       </div>
     </div>
