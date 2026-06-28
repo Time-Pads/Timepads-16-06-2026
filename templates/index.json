@@ -32,25 +32,6 @@
             "button_style": "btn"
           }
         },
-        "image_EQicbA": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-06-18_at_10.38.42_PM_37b7e20a-d700-4316-aa98-26d176cc7cf2.jpg",
-            "mobile_image": "shopify://shop_images/ChatGPT_Image_Jun_22_2026_06_27_37_PM.png",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://products/period-pain-relief-cream",
-            "button_color": "btn--white",
-            "button_style": "btn"
-          }
-        },
         "image_bTfJtJ": {
           "type": "image",
           "settings": {
@@ -66,6 +47,25 @@
             "text_color": "text--white",
             "link_text": "",
             "link": "shopify://collections/all",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_EQicbA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-06-18_at_10.38.42_PM_37b7e20a-d700-4316-aa98-26d176cc7cf2.jpg",
+            "mobile_image": "shopify://shop_images/ChatGPT_Image_Jun_22_2026_06_27_37_PM.png",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://products/period-pain-relief-cream",
             "button_color": "btn--white",
             "button_style": "btn"
           }
@@ -212,8 +212,8 @@
       },
       "block_order": [
         "image_eBCV4b",
-        "image_EQicbA",
         "image_bTfJtJ",
+        "image_EQicbA",
         "image_UmJcC8",
         "image_8hKAHJ",
         "image_7HjkDA",
