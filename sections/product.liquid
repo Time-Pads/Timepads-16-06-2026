@@ -491,14 +491,14 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
                     endif
                   -%}
                   {%- if product.metafields.custom.best_seller_tag != blank or show_save_badge -%}
-                    <div class="tp-inline-badges">
+                    {% comment %} <div class="tp-inline-badges">
                       {%- if product.metafields.custom.best_seller_tag != blank -%}
                         <span class="tp-badge tp-badge--best tp-badge--pulse">{{ product.metafields.custom.best_seller_tag }}</span>
                       {%- endif -%}
                       {%- if show_save_badge -%}
                         <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span>
                       {%- endif -%}
-                    </div>
+                    </div> {% endcomment %}
                   {%- endif -%}
                   {%- render 'product-title', product: product, block: block, section: section -%}
 

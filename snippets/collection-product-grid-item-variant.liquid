@@ -136,16 +136,16 @@
 {%- capture tp_badges -%}
   {%- if left_badge_content != blank or sold_out or show_save_badge -%}
     <div class="tp-card-badges">
-      <div>
+      {% comment %} <div>
         {%- if left_badge_content != blank -%}
           <span class="tp-badge tp-badge--best tp-badge--pulse">{{ left_badge_content }}</span>
         {%- endif -%}
-      </div>
+      </div> {% endcomment %}
       <div>
         {%- if sold_out -%}
           <span class="tp-badge tp-badge--sold">Sold out</span>
         {%- elsif show_save_badge -%}
-          <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span>
+          {% comment %} <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span> {% endcomment %}
         {%- endif -%}
       </div>
     </div>
