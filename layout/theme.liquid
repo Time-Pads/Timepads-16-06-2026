@@ -277,6 +277,11 @@
   {%- comment -%} 14b. Product page critical CSS — above-fold paint {%- endcomment -%}
   {%- if request.page_type == 'product' -%}
   <style>
+    @media only screen and (max-width: 768px){
+    .drawer__search.desktop-hide{
+     display: none;
+    }
+  }
     .mobile-nav-new { font-size: 8px; position: absolute; top: 1% !important; left: 10%; background: red; color: #fff; padding: 2px 5px; border-radius: 10px; animation: blink 3s infinite; }
     /* Critical product page above-fold CSS */
     .product-section { width: 100%; }
