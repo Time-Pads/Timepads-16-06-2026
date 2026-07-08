@@ -12,6 +12,25 @@
     "section_slideshow_K6XEAq": {
       "type": "section-slideshow",
       "blocks": {
+        "image_8hKAHJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-06-27_at_11.52.39_AM.jpg",
+            "mobile_image": "shopify://shop_images/jb_27_desk.png",
+            "overlay_opacity": 0,
+            "overlay_color": "#ffffff",
+            "enable_overlay_text": true,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://collections/all",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
         "image_EQicbA": {
           "type": "image",
           "settings": {
@@ -27,25 +46,6 @@
             "text_color": "text--white",
             "link_text": "",
             "link": "shopify://products/period-pain-relief-cream",
-            "button_color": "btn--white",
-            "button_style": "btn"
-          }
-        },
-        "image_8hKAHJ": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Desktop_Banner_Pads.jpg_1.jpg",
-            "mobile_image": "shopify://shop_images/Desktop_Banner_Mobile_Pads.jpg_1.jpg",
-            "overlay_opacity": 0,
-            "overlay_color": "#ffffff",
-            "enable_overlay_text": true,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://collections/all",
             "button_color": "btn--white",
             "button_style": "btn"
           }
@@ -191,8 +191,8 @@
         }
       },
       "block_order": [
-        "image_EQicbA",
         "image_8hKAHJ",
+        "image_EQicbA",
         "image_bTfJtJ",
         "image_UmJcC8",
         "image_7HjkDA",
