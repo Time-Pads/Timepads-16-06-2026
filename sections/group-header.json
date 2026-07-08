@@ -71,6 +71,7 @@
         "announce_text",
         "announce_shipping"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "text_size": 4,
