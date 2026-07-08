@@ -1076,7 +1076,7 @@ p.Paragraph.SCXW149860544.BCX8 span { font-size: 16px; }
   body#why-time-best-menstrual-pads-amp-women-hygiene-products .wrapper.section-padding { padding: 0; max-width: 100%; }
   .header__backfill { display: none; }
   .template-search .theme__header { position: sticky; top: 0; z-index: 6000; left: 0; right: 0; }
-  .mobile-nav-new { font-size: 8px; position: absolute; top: 1%; left: 10%; background: red; color: #fff; padding: 2px 5px; border-radius: 10px; animation: blink 3s infinite; }
+  .mobile-nav-new { font-size: 8px; position: absolute; top: 1% !important; left: 10%; background: red; color: #fff; padding: 2px 5px; border-radius: 10px; animation: blink 3s infinite; }
   body#time-pads-scooter-gift-hamper-policy p, body#time-pads-scooter-gift-hamper-policy li { font-size: 13px; }
   .header__mobile__right { gap: 1rem; }
   .rotating-text p .word .letter.in, .rotating-text p { font-size: 20px; }
