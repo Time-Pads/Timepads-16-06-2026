@@ -10,7 +10,7 @@
 {
   "current": {
     "enable_lazy_loading_sections": true,
-    "hp_eager_section_count": 3,
+    "hp_eager_section_count": 5,
     "pdp_eager_section_count": 3,
     "enable_lazy_loading_header_sections": false,
     "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
