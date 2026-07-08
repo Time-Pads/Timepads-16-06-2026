@@ -208,10 +208,14 @@
       assign wrapper_style = wrapper_style | append: ' --ASPECT-RATIO-MOBILE: ' | append: wh_ratio_mobile | append: ';'
     -%}
     <picture class="{{ wrapper_classes }}" style="{{ wrapper_style }}">
-      <source media="(min-width: 768px)" type="image/avif" sizes="{{ sizes }}" srcset="{{ srcset_avif }}" />
+      {%- unless srcset_avif contains 'Liquid error' or srcset_avif == blank -%}
+        <source media="(min-width: 768px)" type="image/avif" sizes="{{ sizes }}" srcset="{{ srcset_avif }}" />
+      {%- endunless -%}
       <source media="(min-width: 768px)" type="image/webp" sizes="{{ sizes }}" srcset="{{ srcset_webp }}" />
       <source media="(min-width: 768px)" sizes="{{ sizes }}" srcset="{{ srcset }}" />
-      <source media="(max-width: 767px)" type="image/avif" sizes="{{ sizes }}" srcset="{{ srcset_mobile_avif }}" />
+      {%- unless srcset_mobile_avif contains 'Liquid error' or srcset_mobile_avif == blank -%}
+        <source media="(max-width: 767px)" type="image/avif" sizes="{{ sizes }}" srcset="{{ srcset_mobile_avif }}" />
+      {%- endunless -%}
       <source media="(max-width: 767px)" type="image/webp" sizes="{{ sizes }}" srcset="{{ srcset_mobile_webp }}" />
       <source media="(max-width: 767px)" sizes="{{ sizes }}" srcset="{{ srcset_mobile }}" />
       {{ image | image_url: width: width_default | image_tag:
@@ -230,7 +234,9 @@
     </picture>
   {%- else -%}
     <picture class="{{ wrapper_classes }}" style="{{ wrapper_style }}">
-      <source type="image/avif" sizes="{{ sizes }}" srcset="{{ srcset_avif }}" />
+      {%- unless srcset_avif contains 'Liquid error' or srcset_avif == blank -%}
+        <source type="image/avif" sizes="{{ sizes }}" srcset="{{ srcset_avif }}" />
+      {%- endunless -%}
       <source type="image/webp" sizes="{{ sizes }}" srcset="{{ srcset_webp }}" />
       {{ image | image_url: width: width_default | image_tag:
         class: image_classes,

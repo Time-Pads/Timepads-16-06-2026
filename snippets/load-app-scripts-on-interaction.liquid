@@ -1,7 +1,9 @@
 <script>
   (function () {
     // Define the array of strings to look for in the script or content
-    const stringsToMatch = ['moengage', 'clarity', 'troopod-widget-build'];
+    const stringsToMatch = [
+      'uppromote', 'searchpie',
+    ];
 
     // Function to check if a script src or content contains any of the strings in the array
     function scriptContainsString(scriptElement, strings) {
@@ -38,5 +40,39 @@
     document.addEventListener('DOMContentLoaded', () => {
       observer.disconnect();
     });
+
+    // ── Interaction-based script loading trigger ─────────────────────────────
+    var triggered = false;
+    function triggerInteraction() {
+      if (triggered) return;
+      triggered = true;
+
+      // Remove listeners
+      window.removeEventListener('scroll', triggerInteraction);
+      window.removeEventListener('mousemove', triggerInteraction);
+      window.removeEventListener('touchstart', triggerInteraction);
+      window.removeEventListener('keydown', triggerInteraction);
+
+      // Dispatch asyncLazyLoad for Shopify storefront non-critical features
+      document.dispatchEvent(new CustomEvent('asyncLazyLoad'));
+
+      // Find and evaluate all scripts marked as lazy-script
+      document.querySelectorAll('script[type="lazy-script"]').forEach(function(script) {
+        var newScript = document.createElement('script');
+        if (script.src) {
+          newScript.src = script.src;
+        } else {
+          newScript.textContent = script.textContent;
+        }
+        newScript.async = true;
+        document.head.appendChild(newScript);
+        script.remove();
+      });
+    }
+
+    window.addEventListener('scroll', triggerInteraction, {passive: true});
+    window.addEventListener('mousemove', triggerInteraction, {passive: true});
+    window.addEventListener('touchstart', triggerInteraction, {passive: true});
+    window.addEventListener('keydown', triggerInteraction, {passive: true});
   })(); 
 </script>

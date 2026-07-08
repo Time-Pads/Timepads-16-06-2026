@@ -9,13 +9,13 @@
  */
 {
   "current": {
-    "enable_lazy_loading_sections": false,
-    "hp_eager_section_count": 50,
-    "pdp_eager_section_count": 50,
+    "enable_lazy_loading_sections": true,
+    "hp_eager_section_count": 3,
+    "pdp_eager_section_count": 3,
     "enable_lazy_loading_header_sections": false,
     "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
-    "preload_image_desktop": "shopify://shop_images/Banner-2_1.jpg",
-    "preload_image_mobile": "shopify://shop_images/Banner-2.1.jpg",
+    "preload_image_desktop": "shopify://shop_images/bj_22.25_12233_2.png",
+    "preload_image_mobile": "shopify://shop_images/B25_2.png",
     "free_shipping": "1500",
     "color_main_body_bg": "#e80d0d",
     "color_announcement_bg": "#ffffff",
@@ -126,11 +126,6 @@
         "disabled": false,
         "settings": {}
       },
-      "6610233760104865948": {
-        "type": "shopify://apps/pushowl-brevo-email-push-sms/blocks/pushowl-app-embed-3d2ff2b5/fa20c3ba-38bf-43e0-ba5c-431f6ae07d95",
-        "disabled": true,
-        "settings": {}
-      },
       "1219337400145039034": {
         "type": "shopify://apps/kwikpass/blocks/kp_login/603e209b-d585-47ff-8592-837a4faa325b",
         "disabled": false,
@@ -153,11 +148,6 @@
       },
       "11068332061543699368": {
         "type": "shopify://apps/booster-page-speed-optimizer/blocks/app-embed/d920faf3-7c60-423a-9636-22618b5561b5",
-        "disabled": false,
-        "settings": {}
-      },
-      "1461908000033839453": {
-        "type": "shopify://apps/avada-seo-suite/blocks/avada-seo/15507c6e-1aa3-45d3-b698-7e175e033440",
         "disabled": false,
         "settings": {}
       },
@@ -188,11 +178,6 @@
       },
       "14415272397818527300": {
         "type": "shopify://apps/nitro-x/blocks/recover-agent/0199a908-71dc-7412-8559-0f72394b4c48",
-        "disabled": true,
-        "settings": {}
-      },
-      "15710897563947040993": {
-        "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
         "disabled": true,
         "settings": {}
       }

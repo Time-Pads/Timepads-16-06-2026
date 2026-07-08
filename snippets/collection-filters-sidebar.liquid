@@ -193,84 +193,9 @@
     {% endunless %}
 
   {%- when 'collections' -%}
-    {% if collections.size > 1 %}
-      {%- capture links_html -%}
-        {% for collection_link in collections %}
-          {%- assign skip_collection = false -%}
-
-          {% comment %} {%- for exclude in excluded_collections_strict -%}
-            {%- assign exclude_handle = exclude | handle -%}
-
-            {%- if exclude_handle == collection_link.handle -%}
-              {%- assign skip_collection = true -%}
-            {%- endif -%}
-          {%- endfor -%} {% endcomment %}
-
-          {% comment %} {%- for exclude in excluded_collections -%}
-            {%- assign exclude_handle = exclude | handle -%}
-
-            {%- if collection_link.handle contains exclude_handle -%}
-              {%- assign skip_collection = true -%}
-            {%- endif -%}
-          {%- endfor -%} {% endcomment %}
-
-          {% comment %} {% unless skip_collection %}
-            <div class="sidebar__item{% if collection.handle == collection_link.handle %} sidebar__item--active{% endif %} bbbb stateful-filter-icons{% if forloop.index > 10 %} is-hidden{% endif %}">
-              <a href="{{ routes.collections_url }}/{{ collection_link.handle }}">{{ collection_link.title }}</a>
-              {% render 'icon-stateful-box' %}
-            </div>
-          {% endunless %} {% endcomment %}
-
-          {%- if collection.handle == collection_link.handle -%}
-            {%- assign accordion_initial_state = 'accordion-is-open' -%}
-            {%- assign accordion_open_boolean = true -%}
-          {%- endif -%}
-        {% endfor %}
-      {%- endcapture -%}
-
-      {% comment %} <div class="sidebar__filter__group bbb" {{ block.shopify_attributes }}>
-        <button class="sidebar__heading js {{ accordion_initial_state }}"
-          data-accordion-trigger="accordion-{{ block.id }}"
-          aria-controls="accordion-{{ block.id }}"
-          aria-haspopup="true"
-          aria-expanded="{{ accordion_open_boolean }}">
-
-          <span>{{ block.settings.title }}</span>
-
-          <span class="sidebar__heading-chevron">
-            {% render 'icon-core-chevron-right' %}
-            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
-            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
-          </span>
-        </button>
-
-        <input type="checkbox"
-          name="accordion-{{ block.id }}"
-          id="accordion-{{ block.id }}-checkbox"
-          class="no-js no-js-checkbox" checked>
-
-        <label for="accordion-{{ block.id }}-checkbox" class="sidebar__heading no-js">
-          <span>{{ block.settings.title }}</span>
-
-          <span class="sidebar__heading-chevron">
-            {% render 'icon-core-chevron-right' %}
-            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
-            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
-          </span>
-        </label>
-
-        <div data-accordion-body
-          class="sidebar__navigation__list no-js-accordion"
-          id="accordion-{{ block.id }}"
-          {% if accordion_open_boolean == false %} style="display: none;" {% endif %}>
-          {{ links_html }}
-        </div>
-
-        {% if collections.size > 10 %}
-          <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
-        {% endif %}
-      </div> {% endcomment %}
-    {% endif %}
+    {%- comment -%}
+      Redundant collections block loop disabled for performance (TTFB optimization).
+    {%- endcomment -%}
   {%- endcase -%}
 {%- endfor -%}
 

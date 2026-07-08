@@ -74,7 +74,7 @@ font-size: 13px;
     {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
 
     {%- if settings[social_link] != blank -%}
-      <a class="footer__icon footer__icon--social aaaaa" href="{{ settings[social_link] }}" title="{{ social }}" target="_blank">
+      <a class="footer__icon footer__icon--social aaaaa" href="{{ settings[social_link] }}" title="{{ social }}" target="_blank" aria-label="{{ social }}">
         {% render 'social-icon' handle: social_handle %}
         <span class="visually-hidden">{{ social }}</span>
       </a>
@@ -123,7 +123,7 @@ font-size: 13px;
             data-accordion-trigger="{{ accordion_index }}"
             aria-controls="{{ accordion_index }}"
             role="button"
-            aria-haspopup="true"
+            aria-haspopup="false"
             aria-label="{{ linklist.title | default: "Toggle" }}"
             aria-expanded="{% if block.settings.accordion_default == 'accordion-is-open' %}true{% else %}false{% endif %}">
               {{ block.settings.title | default: linklist.title }}
@@ -161,7 +161,7 @@ font-size: 13px;
               data-accordion-trigger="{{ accordion_index }}"
               aria-controls="{{ accordion_index }}"
               role="button"
-              aria-haspopup="true"
+              aria-haspopup="false"
               aria-expanded="{% if block.settings.accordion_default == 'accordion-is-open' %}true{% else %}false{% endif %}">
                 {{ shop.name }}
                 {% render 'icon-core-chevron-right' %}
@@ -187,7 +187,7 @@ font-size: 13px;
               data-accordion-trigger="{{ accordion_index }}"
               aria-controls="{{ accordion_index }}"
               role="button"
-              aria-haspopup="true"
+              aria-haspopup="false"
               aria-expanded="{% if block.settings.accordion_default == 'accordion-is-open' %}true{% else %}false{% endif %}">
                 {{ page.title | escape }}
                 {% render 'icon-core-chevron-right' %}
@@ -219,7 +219,7 @@ font-size: 13px;
             data-accordion-trigger="{{ accordion_index }}"
             aria-controls="{{ accordion_index }}"
             role="button"
-            aria-haspopup="true"
+            aria-haspopup="false"
             aria-expanded="{% if block.settings.accordion_default == 'accordion-is-open' %}true{% else %}false{% endif %}">
               {{ block.settings.title | escape }}
               {% render 'icon-core-chevron-right' %}
@@ -268,7 +268,7 @@ font-size: 13px;
               data-accordion-trigger="{{ accordion_index }}"
               aria-controls="{{ accordion_index }}"
               role="button"
-              aria-haspopup="true"
+              aria-haspopup="false"
               aria-expanded="{% if block.settings.accordion_default == 'accordion-is-open' %}true{% else %}false{% endif %}">
                 {{ block.settings.title | escape }}
                 {% render 'icon-core-chevron-right' %}

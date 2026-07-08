@@ -2,9 +2,11 @@
   Dynamic Popular Search SEO Section — Compact Grid Layout
 {% endcomment %}
 
-<div class="ps-wrap">
-
-  <p class="ps-title">Popular Searches</p>
+<details class="ps-wrap">
+  <summary class="ps-title-wrapper">
+    <span class="ps-title">Popular Searches</span>
+    <span class="ps-icon">{% render 'icon-core-chevron-down' %}</span>
+  </summary>
 
   <div class="ps-grid">
 
@@ -110,13 +112,27 @@
     </div>
 
   </div>{%- comment -%} /ps-grid {%- endcomment -%}
-</div>
+</details>
 
 <style>
 .ps-wrap {
-  padding: 28px 24px 24px;
+  padding: 24px;
   border-top: 1px solid #e8e8e1;
   background: #fff;
+  display: block;
+}
+.ps-title-wrapper {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+  padding: 8px 0;
+}
+.ps-title-wrapper::-webkit-details-marker {
+  display: none;
 }
 .ps-title {
   font-size: 11px;
@@ -125,7 +141,25 @@
   text-transform: uppercase;
   color: #888;
   text-align: center;
-  margin: 0 0 20px;
+  margin: 0;
+}
+.ps-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: #888;
+}
+.ps-icon svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+details[open] .ps-icon {
+  transform: rotate(180deg);
+}
+details[open] .ps-title-wrapper {
+  margin-bottom: 20px;
 }
 .ps-grid {
   display: grid;
@@ -134,6 +168,17 @@
   border: 1px solid #ebebeb;
   border-radius: 6px;
   overflow: hidden;
+  animation: ps-fadeIn 0.3s ease-out forwards;
+}
+@keyframes ps-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .ps-group {
   padding: 14px 18px;

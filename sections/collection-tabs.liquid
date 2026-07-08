@@ -179,7 +179,7 @@
     width: 100%;
     height: auto;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 0;
     transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
   }
 
@@ -207,17 +207,10 @@
     color: #000;
   }
 
-  /* Panels */
+  /* Panels visible immediately — removing opacity:0 gate which was delaying LCP paint timestamp */
   .ct-tab-panel { contain: layout style paint; }
   .ct-tab-panel:not(.ct-active) { display: none; }
   .ct-tab-panel.ct-active { display: block; }
-
-  /* Fade-in when ready */
-  .ct-tabs-content { opacity: 0; }
-  .ct-tabs-content[data-section-ready="true"] {
-    animation: ct-fadeIn 0.4s ease forwards;
-  }
-  @keyframes ct-fadeIn { to { opacity: 1; } }
 
   /* Product grid */
   .ct-products-grid {
@@ -341,13 +334,14 @@
         {%- if block.settings.header_image != blank -%}
           {%- assign img     = block.settings.header_image -%}
           {%- liquid
-            assign img_load = 'lazy'
-            assign img_fetch = 'low'
             assign img_w = img.width | at_most: 220
             if forloop.first
-              assign img_load = 'eager'
-              assign img_fetch = 'high'
-              assign img_w = 400
+              assign img_w    = 400
+              assign img_load  = 'eager'
+              assign img_fetch = 'low'
+            else
+              assign img_load  = 'eager'
+              assign img_fetch = 'low'
             endif
             assign img_w2x = img_w | times: 2 | at_most: img.width
             assign img_alt = block.settings.tab_label | default: shop.name
@@ -357,24 +351,27 @@
             <a href="{{ block.settings.collection_url }}" class="ct-image-link" tabindex="-1" aria-hidden="true">
           {%- endif -%}
 
-            <picture>
-              <source
-                type="image/webp"
-                srcset="{{ img | image_url: width: img_w, format: 'webp' }} 1x, {{ img | image_url: width: img_w2x, format: 'webp' }} 2x"
-              >
-              <img
-                src="{{ img | image_url: width: img_w }}"
-                srcset="{{ img | image_url: width: img_w }} 1x, {{ img | image_url: width: img_w2x }} 2x"
-                sizes="(max-width: 767px) 28vw, 12vw"
-                width="{{ img_w }}"
-                height="{{ img_w }}"
-                alt="{{ img_alt | escape }}"
-                class="ct-header-image"
-                loading="{{ img_load }}"
-                fetchpriority="{{ img_fetch }}"
-                decoding="async"
-              >
-            </picture>
+            <div class="ct-image-wrapper loading-shimmer" style="aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden; background-color: #f5f5f5; width: 100%; margin-bottom: 6px;">
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="{{ img | image_url: width: img_w, format: 'webp' }} 1x, {{ img | image_url: width: img_w2x, format: 'webp' }} 2x"
+                >
+                <img
+                  src="{{ img | image_url: width: img_w }}"
+                  srcset="{{ img | image_url: width: img_w }} 1x, {{ img | image_url: width: img_w2x }} 2x"
+                  sizes="(max-width: 767px) 28vw, 12vw"
+                  width="{{ img_w }}"
+                  height="{{ img_w }}"
+                  alt="{{ img_alt | escape }}"
+                  class="ct-header-image"
+                  loading="{{ img_load }}"
+                  fetchpriority="{{ img_fetch }}"
+                  decoding="async"
+                  onload="if(this.complete) { var w = this.closest('.ct-image-wrapper'); if(w) { w.classList.remove('loading-shimmer'); w.style.backgroundColor = 'transparent'; } }"
+                >
+              </picture>
+            </div>
 
           {%- if block.settings.collection_url != blank -%}
             </a>
@@ -393,6 +390,34 @@
 
       </div>
     {%- endfor -%}
+  </div>
+
+  <div class="ct-tabs-content" data-section-ready="true">
+    {%- assign first_block = section.blocks | first -%}
+    {%- if first_block -%}
+      {%- assign first_collection = first_block.settings.collection -%}
+      {%- assign first_collection_url = first_block.settings.collection_url | default: first_collection.url -%}
+      <div class="ct-tab-panel ct-active" data-tab-panel="0">
+        {%- if first_collection != blank and first_collection.products_count > 0 -%}
+          <div class="ct-products-grid">
+            {%- for product in first_collection.products limit: ct_product_limit -%}
+              {%- render 'product-card-home-page',
+                product: product,
+                placeholder: 'product',
+                columns_desktop: section.settings.grid,
+                columns_mobile: section.settings.grid_mobile
+              -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+      {% comment %}  {%- if first_collection_url != blank -%}
+          <div class="ct-view-all-wrapper">
+            <a class="ct-view-all-btn" href="{{ first_collection_url }}">View all</a>
+          </div>
+        {%- endif -%} {% endcomment %}
+      </div>
+    {%- endif -%}
   </div>
 
   {%- for block in section.blocks -%}

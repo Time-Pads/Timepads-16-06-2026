@@ -51,8 +51,9 @@
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (entry.initiatorType === 'img' && entry.duration > 500) {
-            // Image took more than 500ms to load - warn in dev
-            if (process.env.NODE_ENV !== 'production') {
+            // Slow image detected — only log in local development
+            var isLocalDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            if (isLocalDev) {
               console.warn('Slow image load detected:', {
                 name: entry.name,
                 duration: Math.round(entry.duration) + 'ms',
@@ -90,7 +91,8 @@
       }
     });
 
-    if (issues.length > 0 && process.env.NODE_ENV !== 'production') {
+    var isLocalDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    if (issues.length > 0 && isLocalDev) {
       console.warn('Images without dimensions (may cause CLS):', issues);
     }
   }

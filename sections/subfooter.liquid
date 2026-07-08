@@ -27,7 +27,7 @@
     {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
 
     {%- if settings[social_link] != blank -%}
-      <a class="footer__icon footer__icon--social" href="{{ settings[social_link] }}" title="{{ social }}" target="_blank">
+      <a class="footer__icon footer__icon--social" href="{{ settings[social_link] }}" title="{{ social }}" target="_blank" aria-label="{{ social }}">
         {% render 'social-icon' handle: social_handle %}
         <span class="visually-hidden">{{ social }}</span>
       </a>

@@ -593,7 +593,9 @@
   }, true);
   // Tasks to run when the DOM elements are available
   window.addEventListener('DOMContentLoaded', ()=>{
-      setVarsOnResize();
+      requestAnimationFrame(() => {
+          setVarsOnResize();
+      });
       floatLabels(document);
       errorTabIndex(document);
       moveModals(document);
@@ -4496,8 +4498,10 @@
           });
       }
       init() {
-          this.trigger.setAttribute('aria-haspopup', true);
-          this.trigger.setAttribute('aria-expanded', false);
+          this.trigger.setAttribute('aria-haspopup', 'false');
+          const isOpen = this.trigger.classList.contains(classes$s.open);
+          this.trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          this.body.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
           this.trigger.setAttribute('aria-controls', this.key);
           this.setDefaultState();
           this.trigger.addEventListener('click', this.toggleEvent);
@@ -4572,10 +4576,14 @@
       }
       hideAccordion() {
           this.trigger.classList.remove(classes$s.open);
+          this.trigger.setAttribute('aria-expanded', 'false');
+          this.body.setAttribute('aria-hidden', 'true');
           slideUp(this.body);
       }
       showAccordion() {
           this.trigger.classList.add(classes$s.open);
+          this.trigger.setAttribute('aria-expanded', 'true');
+          this.body.setAttribute('aria-hidden', 'false');
           slideDown(this.body);
           setTimeout(()=>{
               this.checkInViewportAndScrollTo();

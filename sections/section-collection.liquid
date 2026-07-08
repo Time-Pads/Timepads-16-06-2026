@@ -62,12 +62,16 @@
       >
         {%- if collection.products.size > 0 -%}
           {%- for product in collection.products limit: product_limit -%}
+            {%- assign eagerload = false -%}
+            {%- if forloop.index <= section.settings.grid -%}
+              {%- assign eagerload = true -%}
+            {%- endif -%}
             {%- render 'product-card-home-page',
               product: product,
               placeholder: 'product',
               columns_desktop: section.settings.grid,
               columns_mobile: section.settings.grid_mobile,
-              loading: 'lazy'
+              eagerload: eagerload
             -%}
           {%- endfor -%}
         {%- else -%}

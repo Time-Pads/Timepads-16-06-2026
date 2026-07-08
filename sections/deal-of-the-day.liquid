@@ -154,6 +154,15 @@
 }
 {% endstyle %}
 
+{%- capture lazy_load_section -%}
+  {%- render 'lazy-load-section-validations' -%}
+{%- endcapture -%}
+
+{%- if lazy_load_section != blank -%}
+  <lazy-section>
+{%- endif -%}
+
+{%- if lazy_load_section == blank -%}
 <div class="deal-of-day-section color-{{ section.settings.color_scheme }} gradient" data-section-id="{{ section.id }}">
   <div class="page-width">
 
@@ -202,6 +211,17 @@
 
   </div>
 </div>
+{%- else -%}
+  <div class="deal-of-day-section color-{{ section.settings.color_scheme }} gradient" style="min-height: 400px; display: flex; align-items: center; justify-content: center;">
+    <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
+      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+    </svg>
+  </div>
+{%- endif -%}
+
+{%- if lazy_load_section != blank -%}
+  </lazy-section>
+{%- endif -%}
 
 <script>
 (function () {

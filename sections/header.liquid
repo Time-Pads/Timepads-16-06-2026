@@ -439,7 +439,8 @@
     <div class="header__mobile__right">
       <a class="header__mobile__button"
        data-drawer-toggle="drawer-cart"
-        href="{{ routes.cart_url }}">
+        href="{{ routes.cart_url }}"
+        aria-label="Cart">
         {{ cart_icon }}
         <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
       
@@ -494,7 +495,7 @@
 
     {% if section.settings.enable_search %}
       <div class="header__desktop__button {% if request.path contains routes.search_url %} main-menu--active{% endif %}" {{ text_hover }}>
-        <a href="{{ routes.search_url }}" class="navlink" data-popdown-toggle="search-popdown">
+        <a href="{{ routes.search_url }}" class="navlink" data-popdown-toggle="search-popdown" aria-label="Search">
           {% if section.settings.use_icons %}
             {{ search_icon }}
             <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
@@ -508,7 +509,8 @@
     <div class="header__desktop__button {% if request.path contains routes.cart_url %} main-menu--active{% endif %}" {{ text_hover }}>
       <a href="{{ routes.cart_url }}"
         class="navlink navlink--cart"
-        data-drawer-toggle="drawer-cart">
+        data-drawer-toggle="drawer-cart"
+        aria-label="Cart">
         {% if section.settings.use_icons %}
           {{ cart_icon }}
           <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
@@ -677,9 +679,9 @@
         {% if toolbar_links or toolbar_locale or toolbar_currency %}
           <div class="toolbar__links">
             <div class="toolbar__elements header__desktop">
-              <a href="#!" class="toolbar__navlink">
+              <span class="toolbar__navlink">
                 <span class="navtext">&nbsp;</span>
-              </a>
+              </span>
             </div>
           </div>
         {% endif %}

@@ -174,7 +174,7 @@
   function handleArrowClick(button) {
     if (!mobileQuery.matches) return;
 
-    const card = button.closest(CARD_SELECTOR);
+    const card = (button && typeof button.closest === 'function') ? button.closest(CARD_SELECTOR) : null;
     if (!card) return;
 
     const images = parseImages(card);
@@ -190,21 +190,21 @@
   }
 
   document.addEventListener('mouseenter', (event) => {
-    const card = event.target.closest(CARD_SELECTOR);
+    const card = (event.target && typeof event.target.closest === 'function') ? event.target.closest(CARD_SELECTOR) : null;
     if (!card) return;
     if (event.relatedTarget instanceof Element && card.contains(event.relatedTarget)) return;
     startPreview(card);
   }, true);
 
   document.addEventListener('mouseleave', (event) => {
-    const card = event.target.closest(CARD_SELECTOR);
+    const card = (event.target && typeof event.target.closest === 'function') ? event.target.closest(CARD_SELECTOR) : null;
     if (!card) return;
     if (event.relatedTarget instanceof Element && card.contains(event.relatedTarget)) return;
     stopPreview(card, true);
   }, true);
 
   document.addEventListener('click', (event) => {
-    const arrow = event.target.closest(ARROW_SELECTOR);
+    const arrow = (event.target && typeof event.target.closest === 'function') ? event.target.closest(ARROW_SELECTOR) : null;
     if (!arrow) return;
     event.preventDefault();
     event.stopPropagation();
@@ -292,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Mobile Double Tap (touchend) via Delegation
   document.addEventListener('touchend', (e) => {
     if (!isMobile()) return;
+    if (!e.target || typeof e.target.closest !== 'function') return;
     
     const container = e.target.closest('.product__media');
     if (!container) return;
@@ -344,6 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Block accidental clicks when zoomed
   document.addEventListener('click', (e) => {
     if (!isMobile()) return;
+    if (!e.target || typeof e.target.closest !== 'function') return;
     const container = e.target.closest('.product__media');
     if (container && container.classList.contains('zoomed')) {
       e.preventDefault();
@@ -354,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Desktop Hover Zoom (mousemove & mouseout) via Delegation
   document.addEventListener('mousemove', (e) => {
     if (isMobile()) return;
+    if (!e.target || typeof e.target.closest !== 'function') return;
     
     const container = e.target.closest('.product-single .product__media');
     if (!container) return;
@@ -377,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('mouseout', (e) => {
     if (isMobile()) return;
+    if (!e.target || typeof e.target.closest !== 'function') return;
     
     const container = e.target.closest('.product-single .product__media');
     if (!container) return;
@@ -876,6 +880,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // Defer and Delegate Add to Cart click handlers
 window.addEventListener('load', function() {
   document.addEventListener('click', function(e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
+
     // Handler for .add-to-cart-button-for-product-card
     const atcBtn = e.target.closest('.add-to-cart-button-for-product-card');
     if (atcBtn) {

@@ -11,13 +11,14 @@
 {%- assign default_description = false -%}
 
 <head>
-  {% assign logo = settings.logo %}
-  {% if logo %}
-    <link rel="preload" as="image"
-          href="{{ logo | image_url: width: 200 }}"
-          imagesrcset="{{ logo | image_url: width: 200 }} 1x, {{ logo | image_url: width: 400 }} 2x, {{ logo | image_url: width: 600 }} 3x"
-          fetchpriority="high">
-  {% endif %}
+  {%- comment -%}
+    ORDERING CRITICAL FOR LCP:
+    1. Charset/viewport (must be first)
+    2. Hero image preload (LCP element — highest priority)
+    3. Logo preload (non-LCP, lower priority)
+    4. Fonts (non-LCP)
+    See: https://web.dev/lcp/#resource-hints
+  {%- endcomment -%}
 
   {% if request.page_type == 'collection' %}
     {% if collection.image %}
@@ -121,21 +122,8 @@
   <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://gokwik.co" crossorigin>
-  <link rel="dns-prefetch" href="https://gokwik.co">
-  <link rel="preconnect" href="https://api.gokwik.co" crossorigin>
-  <link rel="dns-prefetch" href="https://api.gokwik.co">
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
   <link rel="dns-prefetch" href="//cdn.shopify.com">
-  <link rel="dns-prefetch" href="//apps.shopify.com">
-  <link rel="dns-prefetch" href="//pdp.gokwik.co">
-  {%- unless template == 'index' -%}
-    <link rel="dns-prefetch" href="//cdnwidget.judge.me">
-    <link rel="dns-prefetch" href="//cdn.judge.me">
-    <link rel="dns-prefetch" href="//cdn1.judge.me">
-    <link rel="dns-prefetch" href="//api.judge.me">
-  {%- endunless -%}
+
 
   {%- comment -%} 5. Judge.me — product pages: dns-prefetch only (settings block moved to </body>) {%- endcomment -%}
   {%- if request.page_type == 'product' -%}
@@ -215,8 +203,8 @@
     assign heading_font_url = settings.font_heading_family | font_url
     assign accent_font_url = settings.font_accent_family | font_url
   -%}
-  <link rel="preload" href="https://timepads.in/cdn/fonts/poppins/poppins_n4.0ba78fa5af9b0e1a374041b3ceaadf0a43b41362.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
-  <link rel="preload" href="{{ body_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  {%- comment -%} Duplicate Poppins preload removed — body_font_url below resolves to the same file {%- endcomment -%}
+  <link rel="preload" href="{{ body_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="low">
   {%- if heading_font_url != body_font_url -%}
     <link rel="preload" href="{{ heading_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="low">
   {%- endif -%}
@@ -224,8 +212,54 @@
     <link rel="preload" href="{{ accent_font_url }}" as="font" type="font/woff2" crossorigin fetchpriority="low">
   {%- endif -%}
 
-  {%- comment -%} 14. LCP image preload hint {%- endcomment -%}
+  {%- comment -%}
+    14. LCP image preload — MUST come before logo preload.
+    Browser preload scanner processes hints in source order.
+    Hero image is the LCP element; logo is not.
+  {%- endcomment -%}
+  {%- if template == 'index' -%}
+    {%- assign preload_image_desktop = settings.preload_image_desktop -%}
+    {%- assign preload_image_mobile  = settings.preload_image_mobile -%}
+
+    {%- comment -%}
+      Desktop WebP preload only.
+      AVIF removed: format:'avif' throws a Liquid error for shop_images files,
+      emitting a broken href string that the browser silently discards.
+      imagesrcset widths match the slideshow srcset_widths (480,640,750,900,1100,1200)
+      so the browser's preload resolution and <source> selection always agree.
+    {%- endcomment -%}
+    {%- if preload_image_desktop != blank -%}
+      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(min-width: 768px)"
+            href="{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }}"
+            imagesrcset="{% if preload_image_desktop.width >= 480 %}{{ preload_image_desktop | image_url: width: 480, format: 'webp' }} 480w,{% endif %}{% if preload_image_desktop.width >= 640 %}{{ preload_image_desktop | image_url: width: 640, format: 'webp' }} 640w,{% endif %}{% if preload_image_desktop.width >= 750 %}{{ preload_image_desktop | image_url: width: 750, format: 'webp' }} 750w,{% endif %}{% if preload_image_desktop.width >= 900 %}{{ preload_image_desktop | image_url: width: 900, format: 'webp' }} 900w,{% endif %}{% if preload_image_desktop.width >= 1100 %}{{ preload_image_desktop | image_url: width: 1100, format: 'webp' }} 1100w,{% endif %}{% if preload_image_desktop.width >= 1200 %}{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }} 1200w{% endif %}"
+            imagesizes="100vw">
+    {%- endif -%}
+
+    {%- comment -%}
+      Mobile WebP preload only.
+      imagesrcset widths match the slideshow srcset_widths_mobile (240,320,375,480,640,750).
+      Previously only 375w was listed; PageSpeed runs at 360px × DPR 3 (effective ~540px),
+      which selects 640w from the <source> — adding 480w and 640w fixes the preload mismatch.
+    {%- endcomment -%}
+    {%- if preload_image_mobile != blank -%}
+      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(max-width: 767px)"
+            href="{{ preload_image_mobile | image_url: width: 750, format: 'webp' }}"
+            imagesrcset="{% if preload_image_mobile.width >= 240 %}{{ preload_image_mobile | image_url: width: 240, format: 'webp' }} 240w,{% endif %}{% if preload_image_mobile.width >= 320 %}{{ preload_image_mobile | image_url: width: 320, format: 'webp' }} 320w,{% endif %}{% if preload_image_mobile.width >= 375 %}{{ preload_image_mobile | image_url: width: 375, format: 'webp' }} 375w,{% endif %}{% if preload_image_mobile.width >= 480 %}{{ preload_image_mobile | image_url: width: 480, format: 'webp' }} 480w,{% endif %}{% if preload_image_mobile.width >= 640 %}{{ preload_image_mobile | image_url: width: 640, format: 'webp' }} 640w,{% endif %}{% if preload_image_mobile.width >= 750 %}{{ preload_image_mobile | image_url: width: 750, format: 'webp' }} 750w{% endif %}"
+            imagesizes="100vw">
+    {%- endif -%}
+  {%- endif -%}
+
+
   {%- render 'preload-lcp' -%}
+
+  {%- comment -%} 14b. Logo preload — after hero so hero wins priority race {%- endcomment -%}
+  {%- assign logo = settings.logo -%}
+  {%- if logo -%}
+    <link rel="preload" as="image"
+          href="{{ logo | image_url: width: 200 }}"
+          imagesrcset="{{ logo | image_url: width: 200 }} 1x, {{ logo | image_url: width: 400 }} 2x, {{ logo | image_url: width: 600 }} 3x"
+          fetchpriority="low">
+  {%- endif -%}
 
 
   {% if request.page_type == 'collection' %}
@@ -275,9 +309,12 @@
     @media only screen and (min-width: 768px){
         .reposition-background-mobile,
         .section-slideshow{
-     height: 600px !important;
-     object-fit: fill !important;
+    /* height: 600px !important; */
+     object-fit: fill !important; 
     }
+    }
+    span.tp-badge.tp-badge--best.tp-badge--pulse{
+      display: none;
     }
 {% endstyle %}
 
@@ -343,6 +380,30 @@
       font-size: 20px !important;
    font-weight: 800 !important;
     }
+    }
+
+    /* Below-the-fold content visibility optimizations for performance */
+    #shopify-section-deal_of_the_day_wBf4Px,
+    #shopify-section-trending_this_week_rKUbXd,
+    #shopify-section-image_columns_with_text_reLjTW,
+    #shopify-section-gif_images_3zqd3g,
+    #shopify-section-reviews_section_ekCTPn,
+    #shopify-section-logos {
+      content-visibility: auto;
+      contain-intrinsic-size: 600px;
+    }
+
+    /* ── Inline critical shimmer (Fix 5) ──────────────────────────────
+       image-optimization.css loads async; inlining here ensures the
+       collection tab circles shimmer correctly on first paint.      */
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    .loading-shimmer {
+      animation: shimmer 2s infinite;
+      background: linear-gradient(90deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%);
+      background-size: 200% 100%;
     }
 
   {% endstyle %}
@@ -515,10 +576,6 @@
     {%- render 'tiny-script-control' -%}
   {%- endif -%}
 
-  {%- comment -%} 20. App snippets {%- endcomment -%}
-  {%- render 'app-plaza' -%}
-  {%- render 'avada-seo' -%}
-
 <meta name="msvalidate.01" content="4B78D65C8E6C112F952CD628ABC3E87B" />
 </head>
 
@@ -526,10 +583,7 @@
   id="{{ page_title | handle }}"
   class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} class-{{ page.title | handleize }} {{ settings.default_background }}{% if customer %} customer-logged-in{% endif %} {{ page.title }}"
 >
-  {%- comment -%} Facebook noscript pixel {%- endcomment -%}
-  <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1291098495481000&ev=PageView&noscript=1" alt="">
-  </noscript>
+
 
   {%- render 'gtm-body' -%}
 

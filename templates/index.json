@@ -12,30 +12,11 @@
     "section_slideshow_K6XEAq": {
       "type": "section-slideshow",
       "blocks": {
-        "image_bTfJtJ": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-06-18_at_10.47.58_PM.jpg",
-            "mobile_image": "shopify://shop_images/ChatGPT_Image_Jun_22_2026_06_35_11_PM.png",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://collections/all",
-            "button_color": "btn--white",
-            "button_style": "btn"
-          }
-        },
         "image_EQicbA": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-06-18_at_10.38.42_PM_37b7e20a-d700-4316-aa98-26d176cc7cf2.jpg",
-            "mobile_image": "shopify://shop_images/ChatGPT_Image_Jun_22_2026_06_27_37_PM.png",
+            "image": "shopify://shop_images/bj_22.25_12233_2.png",
+            "mobile_image": "shopify://shop_images/B25_2.png",
             "overlay_opacity": 0,
             "overlay_color": "#000000",
             "enable_overlay_text": false,
@@ -50,8 +31,47 @@
             "button_style": "btn"
           }
         },
+        "image_8hKAHJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Desktop_Banner_Pads.jpg_1.jpg",
+            "mobile_image": "shopify://shop_images/Desktop_Banner_Mobile_Pads.jpg_1.jpg",
+            "overlay_opacity": 0,
+            "overlay_color": "#ffffff",
+            "enable_overlay_text": true,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://collections/all",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "image_bTfJtJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/cf.png",
+            "mobile_image": "shopify://shop_images/B25_1.png",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "shopify://collections/menstrual-cups",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
         "image_UmJcC8": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/WhatsApp_Image_2026-06-18_at_10.52.29_PM_fdb6d33c-d1c8-40fb-be91-7b2847bf1c21.jpg",
             "mobile_image": "shopify://shop_images/ChatGPT_Image_Jun_22_2026_06_30_50_PM.png",
@@ -65,26 +85,6 @@
             "text_color": "text--white",
             "link_text": "",
             "link": "shopify://products/menstrual-cup",
-            "button_color": "btn--white",
-            "button_style": "btn"
-          }
-        },
-        "image_8hKAHJ": {
-          "type": "image",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/file_0000000008ac720896b1f51e8975647b-1.png",
-            "mobile_image": "shopify://shop_images/WhatsApp_Image_2026-05-11_at_6.18.09_PM.jpg",
-            "overlay_opacity": 0,
-            "overlay_color": "#ffffff",
-            "enable_overlay_text": true,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "https://timepads.in/products/time-ultra-thin-quality-sanitary-pads",
             "button_color": "btn--white",
             "button_style": "btn"
           }
@@ -191,10 +191,10 @@
         }
       },
       "block_order": [
-        "image_bTfJtJ",
         "image_EQicbA",
-        "image_UmJcC8",
         "image_8hKAHJ",
+        "image_bTfJtJ",
+        "image_UmJcC8",
         "image_7HjkDA",
         "image_F64cEx",
         "image_DY9bHr",

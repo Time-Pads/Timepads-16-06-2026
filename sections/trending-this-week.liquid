@@ -65,6 +65,7 @@
   font-weight: 600;
   margin-bottom: 3px;
   text-transform: uppercase;
+  display: none;
 }
 
 .trending-title {
@@ -121,7 +122,6 @@
   .trending-vendor { font-size: 7px; }
 }
 {% endstylesheet %}
-
 {% style %}
   #shopify-section-{{ section.id }} {
     padding-top: {{ section.settings.padding_top }}px !important;
@@ -135,6 +135,13 @@
   }
 {% endstyle %}
 
+{%- capture lazy_load_section -%}
+  {%- render 'lazy-load-section-validations' -%}
+{%- endcapture -%}
+
+{%- if lazy_load_section != blank -%}
+  <lazy-section>
+{%- endif -%}
 
 {%- comment -%} Cache arrow SVG once — reused per card via Liquid variable {%- endcomment -%}
 {%- capture arrow_svg -%}
@@ -145,6 +152,7 @@
   </div>
 {%- endcapture -%}
 
+{%- if lazy_load_section == blank -%}
 <div class="page-width trending-wrapper" data-section-id="{{ section.id }}">
 
   <div class="trending-header">
@@ -204,6 +212,17 @@
   </div>
 
 </div>
+{%- else -%}
+  <div class="page-width trending-wrapper" style="min-height: 250px; display: flex; align-items: center; justify-content: center;">
+    <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
+      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+    </svg>
+  </div>
+{%- endif -%}
+
+{%- if lazy_load_section != blank -%}
+  </lazy-section>
+{%- endif -%}
 
 {% schema %}
 {
