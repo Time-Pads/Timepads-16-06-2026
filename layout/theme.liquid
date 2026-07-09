@@ -11,9 +11,6 @@
 {%- assign default_description = false -%}
 
 <head>
- <script>
-  function _debounce(t,e=300){let a;return(...r)=>{clearTimeout(a),a=setTimeout(()=>t.apply(this,r),e)}}window.___mnag="userA"+(window.___mnag1||"")+"gent",window.___plt="plat"+(window.___mnag1||"")+"form";try{var t=navigator[window.___mnag],e=navigator[window.___plt];window.__isPSA=e.indexOf("x86_64")>-1&&0>t.indexOf("CrOS"),window.___mnag="!1",r=null}catch(a){window.__isPSA=!1;var r=null;window.___mnag="!1"}if(window.__isPSA=__isPSA,__isPSA){var n=new MutationObserver(t=>{t.forEach(({addedNodes:t})=>{t.forEach(t=>{1===t.nodeType&&"IFRAME"===t.tagName&&(t.setAttribute("loading","lazy"),t.setAttribute("data-src",t.src),t.removeAttribute("src")),1===t.nodeType&&"IMG"===t.tagName&&++i>s&&t.setAttribute("loading","lazy"),1===t.nodeType&&"SCRIPT"===t.tagName&&(t.setAttribute("data-src",t.src),t.removeAttribute("src"),t.type="text/lazyload")})})}),i=0,s=20;n.observe(document.documentElement,{childList:!0,subtree:!0})}
-</script>
 
 
   {%- comment -%}
@@ -55,6 +52,68 @@
 
   {%- comment -%} 2. Flip no-js → js as early as possible {%- endcomment -%}
   <script>document.documentElement.classList.replace('no-js','js');</script>
+
+  {%- comment -%}
+    2b. LCP hero image preload — positioned here, immediately after meta charset/viewport,
+    so the preload scanner discovers the hero image before any CSS, fonts, or scripts.
+    AVIF is listed FIRST to match the <picture> source order in image.liquid (avif → webp → original).
+    A browser that supports AVIF will ignore a WebP-only preload and fetch AVIF cold — causing
+    the 5.6s LCP. Having the AVIF preload first ensures the cached file matches what the browser picks.
+  {%- endcomment -%}
+  {%- if template == 'index' -%}
+    {%- if settings.preload_image_desktop != blank -%}
+      {%- capture _srcset_d_avif -%}
+        {%- if settings.preload_image_desktop.width >= 480 %}{{ settings.preload_image_desktop | image_url: width: 480, format: 'avif' }} 480w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 640 %},{{ settings.preload_image_desktop | image_url: width: 640, format: 'avif' }} 640w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 750 %},{{ settings.preload_image_desktop | image_url: width: 750, format: 'avif' }} 750w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 900 %},{{ settings.preload_image_desktop | image_url: width: 900, format: 'avif' }} 900w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 1100 %},{{ settings.preload_image_desktop | image_url: width: 1100, format: 'avif' }} 1100w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 1200 %},{{ settings.preload_image_desktop | image_url: width: 1200, format: 'avif' }} 1200w{% endif -%}
+      {%- endcapture -%}
+      {%- capture _srcset_d_webp -%}
+        {%- if settings.preload_image_desktop.width >= 480 %}{{ settings.preload_image_desktop | image_url: width: 480, format: 'webp' }} 480w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 640 %},{{ settings.preload_image_desktop | image_url: width: 640, format: 'webp' }} 640w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 750 %},{{ settings.preload_image_desktop | image_url: width: 750, format: 'webp' }} 750w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 900 %},{{ settings.preload_image_desktop | image_url: width: 900, format: 'webp' }} 900w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 1100 %},{{ settings.preload_image_desktop | image_url: width: 1100, format: 'webp' }} 1100w{% endif -%}
+        {%- if settings.preload_image_desktop.width >= 1200 %},{{ settings.preload_image_desktop | image_url: width: 1200, format: 'webp' }} 1200w{% endif -%}
+      {%- endcapture -%}
+      <link rel="preload" as="image" type="image/avif" fetchpriority="high" media="(min-width: 768px)"
+            href="{{ settings.preload_image_desktop | image_url: width: 1200, format: 'avif' }}"
+            imagesrcset="{{ _srcset_d_avif | strip }}"
+            imagesizes="100vw">
+      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(min-width: 768px)"
+            href="{{ settings.preload_image_desktop | image_url: width: 1200, format: 'webp' }}"
+            imagesrcset="{{ _srcset_d_webp | strip }}"
+            imagesizes="100vw">
+    {%- endif -%}
+    {%- if settings.preload_image_mobile != blank -%}
+      {%- capture _srcset_m_avif -%}
+        {%- if settings.preload_image_mobile.width >= 240 %}{{ settings.preload_image_mobile | image_url: width: 240, format: 'avif' }} 240w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 320 %},{{ settings.preload_image_mobile | image_url: width: 320, format: 'avif' }} 320w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 375 %},{{ settings.preload_image_mobile | image_url: width: 375, format: 'avif' }} 375w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 480 %},{{ settings.preload_image_mobile | image_url: width: 480, format: 'avif' }} 480w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 640 %},{{ settings.preload_image_mobile | image_url: width: 640, format: 'avif' }} 640w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 750 %},{{ settings.preload_image_mobile | image_url: width: 750, format: 'avif' }} 750w{% endif -%}
+      {%- endcapture -%}
+      {%- capture _srcset_m_webp -%}
+        {%- if settings.preload_image_mobile.width >= 240 %}{{ settings.preload_image_mobile | image_url: width: 240, format: 'webp' }} 240w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 320 %},{{ settings.preload_image_mobile | image_url: width: 320, format: 'webp' }} 320w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 375 %},{{ settings.preload_image_mobile | image_url: width: 375, format: 'webp' }} 375w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 480 %},{{ settings.preload_image_mobile | image_url: width: 480, format: 'webp' }} 480w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 640 %},{{ settings.preload_image_mobile | image_url: width: 640, format: 'webp' }} 640w{% endif -%}
+        {%- if settings.preload_image_mobile.width >= 750 %},{{ settings.preload_image_mobile | image_url: width: 750, format: 'webp' }} 750w{% endif -%}
+      {%- endcapture -%}
+      <link rel="preload" as="image" type="image/avif" fetchpriority="high" media="(max-width: 767px)"
+            href="{{ settings.preload_image_mobile | image_url: width: 640, format: 'avif' }}"
+            imagesrcset="{{ _srcset_m_avif | strip }}"
+            imagesizes="100vw">
+      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(max-width: 767px)"
+            href="{{ settings.preload_image_mobile | image_url: width: 750, format: 'webp' }}"
+            imagesrcset="{{ _srcset_m_webp | strip }}"
+            imagesizes="100vw">
+    {%- endif -%}
+  {%- endif -%}
 
   {%- comment -%}
     3. SINGLE consolidated observer — defers injected storefront/app/PSA scripts.
@@ -218,58 +277,10 @@
   {%- endif -%}
 
   {%- comment -%}
-    14. LCP image preload — MUST come before logo preload.
-    Browser preload scanner processes hints in source order.
-    Hero image is the LCP element; logo is not.
+    14. LCP hero image preload — MOVED to section 2b, immediately after meta charset/viewport.
+    Both AVIF and WebP preloads now live there, with AVIF first to match the <picture>
+    source order rendered by image.liquid (avif → webp → original fallback).
   {%- endcomment -%}
-  {%- if template == 'index' -%}
-    {%- assign preload_image_desktop = settings.preload_image_desktop -%}
-    {%- assign preload_image_mobile  = settings.preload_image_mobile -%}
-
-    {%- comment -%}
-      Desktop WebP preload only.
-      AVIF removed: format:'avif' throws a Liquid error for shop_images files,
-      emitting a broken href string that the browser silently discards.
-      imagesrcset widths match the slideshow srcset_widths (480,640,750,900,1100,1200)
-      so the browser's preload resolution and <source> selection always agree.
-    {%- endcomment -%}
-    {%- if preload_image_desktop != blank -%}
-      {%- capture srcset_desktop -%}
-        {%- if preload_image_desktop.width >= 480 %}{{ preload_image_desktop | image_url: width: 480, format: 'webp' }} 480w{% endif -%}
-        {%- if preload_image_desktop.width >= 640 %},{{ preload_image_desktop | image_url: width: 640, format: 'webp' }} 640w{% endif -%}
-        {%- if preload_image_desktop.width >= 750 %},{{ preload_image_desktop | image_url: width: 750, format: 'webp' }} 750w{% endif -%}
-        {%- if preload_image_desktop.width >= 900 %},{{ preload_image_desktop | image_url: width: 900, format: 'webp' }} 900w{% endif -%}
-        {%- if preload_image_desktop.width >= 1100 %},{{ preload_image_desktop | image_url: width: 1100, format: 'webp' }} 1100w{% endif -%}
-        {%- if preload_image_desktop.width >= 1200 %},{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }} 1200w{% endif -%}
-      {%- endcapture -%}
-      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(min-width: 768px)"
-            href="{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }}"
-            imagesrcset="{{ srcset_desktop | strip }}"
-            imagesizes="100vw">
-    {%- endif -%}
-
-    {%- comment -%}
-      Mobile WebP preload only.
-      imagesrcset widths match the slideshow srcset_widths_mobile (240,320,375,480,640,750).
-      Previously only 375w was listed; PageSpeed runs at 360px × DPR 3 (effective ~540px),
-      which selects 640w from the <source> — adding 480w and 640w fixes the preload mismatch.
-    {%- endcomment -%}
-    {%- if preload_image_mobile != blank -%}
-      {%- capture srcset_mobile -%}
-        {%- if preload_image_mobile.width >= 240 %}{{ preload_image_mobile | image_url: width: 240, format: 'webp' }} 240w{% endif -%}
-        {%- if preload_image_mobile.width >= 320 %},{{ preload_image_mobile | image_url: width: 320, format: 'webp' }} 320w{% endif -%}
-        {%- if preload_image_mobile.width >= 375 %},{{ preload_image_mobile | image_url: width: 375, format: 'webp' }} 375w{% endif -%}
-        {%- if preload_image_mobile.width >= 480 %},{{ preload_image_mobile | image_url: width: 480, format: 'webp' }} 480w{% endif -%}
-        {%- if preload_image_mobile.width >= 640 %},{{ preload_image_mobile | image_url: width: 640, format: 'webp' }} 640w{% endif -%}
-        {%- if preload_image_mobile.width >= 750 %},{{ preload_image_mobile | image_url: width: 750, format: 'webp' }} 750w{% endif -%}
-      {%- endcapture -%}
-      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(max-width: 767px)"
-            href="{{ preload_image_mobile | image_url: width: 750, format: 'webp' }}"
-            imagesrcset="{{ srcset_mobile | strip }}"
-            imagesizes="100vw">
-    {%- endif -%}
-  {%- endif -%}
-
 
   {%- render 'preload-lcp' -%}
 
