@@ -665,6 +665,7 @@
         "collection_images_8kAEGB",
         "collection_images_JkPbCR"
       ],
+      "disabled": true,
       "settings": {
         "padding_top": 0,
         "padding_bottom": 0,
@@ -742,6 +743,7 @@
         "images_L7w7Et",
         "images_wLUmUN"
       ],
+      "disabled": true,
       "settings": {
         "section_heading": "Our Customers Love Us!",
         "font_size": 24,
