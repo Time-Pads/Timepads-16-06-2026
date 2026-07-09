@@ -309,6 +309,7 @@ button.add-to-cart-button-for-product-card {
   font-family: "Poppins";
   position: relative;
   overflow: visible;
+  white-space: nowrap;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .add-to-cart-button-for-product-card:active:not(.loading) { transform: scale(0.94); }
