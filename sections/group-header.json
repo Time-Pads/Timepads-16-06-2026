@@ -13,64 +13,7 @@
   "sections": {
     "announcement": {
       "type": "announcement",
-      "blocks": {
-        "text_RnUKCX": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": "<p><strong>Free Shipping on All Orders  </strong></p><p></p>",
-            "target_url_enabled": false,
-            "target_url": "",
-            "target_referrer_enabled": false,
-            "target_referrer": "",
-            "target_device_enabled": false,
-            "target_device": "mobile"
-          }
-        },
-        "text_YLwVXL": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": "<p><strong>Get FLAT 75 CASHBACK</strong> on your first ever transaction via MobiKwik UPI valid on transaction above <strong>Rs. 249</strong></p>",
-            "target_url_enabled": false,
-            "target_url": "",
-            "target_referrer_enabled": false,
-            "target_referrer": "",
-            "target_device_enabled": false,
-            "target_device": "mobile"
-          }
-        },
-        "announce_text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Your period, your comfort Trust Time for the best protection!</p>",
-            "target_url_enabled": false,
-            "target_url": "",
-            "target_referrer_enabled": false,
-            "target_referrer": "",
-            "target_device_enabled": false,
-            "target_device": "mobile"
-          }
-        },
-        "announce_shipping": {
-          "type": "message",
-          "settings": {
-            "message": "💥 Crazy Prices! Enjoy discounted rates on all products on Timepads!",
-            "target_url_enabled": false,
-            "target_url": "",
-            "target_referrer_enabled": false,
-            "target_referrer": "",
-            "target_device_enabled": false,
-            "target_device": "mobile"
-          }
-        }
-      },
-      "block_order": [
-        "text_RnUKCX",
-        "text_YLwVXL",
-        "announce_text",
-        "announce_shipping"
-      ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "text_size": 4,

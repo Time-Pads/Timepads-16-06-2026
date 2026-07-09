@@ -59,6 +59,7 @@
         class="js-grid"
         data-grid-large="{{ section.settings.grid }}"
         data-grid-small="{{ section.settings.grid_mobile }}"
+        style="flex-wrap: wrap;"
       >
         {%- if collection.products.size > 0 -%}
           {%- for product in collection.products limit: product_limit -%}

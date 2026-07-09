@@ -378,93 +378,19 @@
       "settings": {
         "show_announcement_hot_selling": false,
         "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_bottom": 40,
         "mpadding_top": 0,
-        "mpadding_bottom": 0,
+        "mpadding_bottom": 30,
         "title": "",
         "font_size": 24,
         "font_size_mobile": 20,
         "collection": "circular-collection",
-        "grid": 8,
-        "rows": 1,
+        "grid": 4,
+        "rows": 3,
         "grid_mobile": "2",
         "bg": "palette--light bg--neutral",
         "show_view_all": true,
         "width": "wrapper"
-      }
-    },
-    "deal_of_the_day_wBf4Px": {
-      "type": "deal-of-the-day",
-      "blocks": {
-        "product_FMWkhn": {
-          "type": "product",
-          "settings": {
-            "product": "time-us-cotton-sanitary-pads"
-          }
-        },
-        "product_yTYtFH": {
-          "type": "product",
-          "settings": {
-            "product": "cotton-sanitary-pads"
-          }
-        },
-        "product_chNCgV": {
-          "type": "product",
-          "settings": {
-            "product": "uniline-240mm-l-3-packs-6-pads-each"
-          }
-        },
-        "product_cYHmGe": {
-          "type": "product",
-          "settings": {
-            "product": "uniline-280mm-xl-3-packs-6-pads-each"
-          }
-        },
-        "product_RYcPDD": {
-          "type": "product",
-          "settings": {
-            "product": "premium-cotton-top-sheet-ultra-thin-rash-free-pads-xl-21-pads"
-          }
-        },
-        "product_UadaNx": {
-          "type": "product",
-          "settings": {
-            "product": "no-leak-heavy-flow-soft-ultra-thin-pads-xxl-21-pads"
-          }
-        },
-        "product_EnGFjH": {
-          "type": "product",
-          "settings": {
-            "product": "extra-wide-soft-comfort-full-night-pads-xxl-21-pads"
-          }
-        },
-        "product_dh6AbQ": {
-          "type": "product",
-          "settings": {
-            "product": "overnight-wider-back-rash-free-heavy-flow-pads-xxl-15-pads"
-          }
-        }
-      },
-      "block_order": [
-        "product_FMWkhn",
-        "product_yTYtFH",
-        "product_chNCgV",
-        "product_cYHmGe",
-        "product_RYcPDD",
-        "product_UadaNx",
-        "product_EnGFjH",
-        "product_dh6AbQ"
-      ],
-      "name": "Deal of the Day",
-      "settings": {
-        "show_limited_badge": true,
-        "show_pagination": true,
-        "columns_desktop": 4,
-        "columns_mobile": "1",
-        "padding_top": 30,
-        "padding_bottom": 30,
-        "padding_top_mobile": 32,
-        "padding_bottom_mobile": 0
       }
     },
     "trending_this_week_rKUbXd": {
@@ -837,7 +763,6 @@
     "section_announcement_w9yLCp",
     "collection_tabs_jwbj9a",
     "product-grid",
-    "deal_of_the_day_wBf4Px",
     "trending_this_week_rKUbXd",
     "image_columns_with_text_reLjTW",
     "gif_images_3zqd3g",

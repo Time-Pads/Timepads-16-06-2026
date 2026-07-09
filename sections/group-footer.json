@@ -139,18 +139,12 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
-    },
-    "popular_search_dGCjAk": {
-      "type": "popular-search",
-      "name": "popular-search",
-      "settings": {}
     }
   },
   "order": [
     "timepads_footer_Yx4jjt",
     "mobile_navigation_bottom_AwDkUj",
     "footer",
-    "subfooter",
-    "popular_search_dGCjAk"
+    "subfooter"
   ]
 }

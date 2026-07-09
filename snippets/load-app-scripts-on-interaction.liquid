@@ -2,11 +2,12 @@
   (function () {
     // Define the array of strings to look for in the script or content
     const stringsToMatch = [
-      'uppromote', 'searchpie',
+      'uppromote', 'searchpie', 'googletagmanager', 'clarity',
     ];
 
     // Function to check if a script src or content contains any of the strings in the array
     function scriptContainsString(scriptElement, strings) {
+      if (scriptElement.hasAttribute('data-bypass-lazy')) return false;
       const scriptSrc = scriptElement.getAttribute('src') || '';
       const scriptContent = scriptElement.textContent || '';
       return strings.some((str) => scriptSrc.includes(str) || scriptContent.includes(str));
@@ -69,6 +70,8 @@
         script.remove();
       });
     }
+
+    window.triggerInteraction = triggerInteraction;
 
     window.addEventListener('scroll', triggerInteraction, {passive: true});
     window.addEventListener('mousemove', triggerInteraction, {passive: true});

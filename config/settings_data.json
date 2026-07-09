@@ -10,9 +10,10 @@
 {
   "current": {
     "enable_lazy_loading_sections": true,
-    "hp_eager_section_count": 3,
+    "hp_eager_section_count": 5,
     "pdp_eager_section_count": 3,
-    "enable_lazy_loading_header_sections": false,
+    "enable_lazy_loading_header_sections": true,
+    "header_eager_section_count": 4,
     "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
     "preload_image_desktop": "shopify://shop_images/bj_22.25_12233_2.png",
     "preload_image_mobile": "shopify://shop_images/B25_2.png",
@@ -128,7 +129,7 @@
       },
       "1219337400145039034": {
         "type": "shopify://apps/kwikpass/blocks/kp_login/603e209b-d585-47ff-8592-837a4faa325b",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       },
       "2567389343055140935": {
@@ -148,11 +149,6 @@
       },
       "11068332061543699368": {
         "type": "shopify://apps/booster-page-speed-optimizer/blocks/app-embed/d920faf3-7c60-423a-9636-22618b5561b5",
-        "disabled": false,
-        "settings": {}
-      },
-      "3138269044488530766": {
-        "type": "shopify://apps/uppromote-affiliate/blocks/core-script/64c32457-930d-4cb9-9641-e24c0d9cf1f4",
         "disabled": false,
         "settings": {}
       },
@@ -178,6 +174,11 @@
       },
       "14415272397818527300": {
         "type": "shopify://apps/nitro-x/blocks/recover-agent/0199a908-71dc-7412-8559-0f72394b4c48",
+        "disabled": true,
+        "settings": {}
+      },
+      "3138269044488530766": {
+        "type": "shopify://apps/uppromote-affiliate/blocks/core-script/64c32457-930d-4cb9-9641-e24c0d9cf1f4",
         "disabled": true,
         "settings": {}
       }

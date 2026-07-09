@@ -11,6 +11,11 @@
 {%- assign default_description = false -%}
 
 <head>
+ <script>
+  function _debounce(t,e=300){let a;return(...r)=>{clearTimeout(a),a=setTimeout(()=>t.apply(this,r),e)}}window.___mnag="userA"+(window.___mnag1||"")+"gent",window.___plt="plat"+(window.___mnag1||"")+"form";try{var t=navigator[window.___mnag],e=navigator[window.___plt];window.__isPSA=e.indexOf("x86_64")>-1&&0>t.indexOf("CrOS"),window.___mnag="!1",r=null}catch(a){window.__isPSA=!1;var r=null;window.___mnag="!1"}if(window.__isPSA=__isPSA,__isPSA){var n=new MutationObserver(t=>{t.forEach(({addedNodes:t})=>{t.forEach(t=>{1===t.nodeType&&"IFRAME"===t.tagName&&(t.setAttribute("loading","lazy"),t.setAttribute("data-src",t.src),t.removeAttribute("src")),1===t.nodeType&&"IMG"===t.tagName&&++i>s&&t.setAttribute("loading","lazy"),1===t.nodeType&&"SCRIPT"===t.tagName&&(t.setAttribute("data-src",t.src),t.removeAttribute("src"),t.type="text/lazyload")})})}),i=0,s=20;n.observe(document.documentElement,{childList:!0,subtree:!0})}
+</script>
+
+
   {%- comment -%}
     ORDERING CRITICAL FOR LCP:
     1. Charset/viewport (must be first)
@@ -229,9 +234,17 @@
       so the browser's preload resolution and <source> selection always agree.
     {%- endcomment -%}
     {%- if preload_image_desktop != blank -%}
+      {%- capture srcset_desktop -%}
+        {%- if preload_image_desktop.width >= 480 %}{{ preload_image_desktop | image_url: width: 480, format: 'webp' }} 480w{% endif -%}
+        {%- if preload_image_desktop.width >= 640 %},{{ preload_image_desktop | image_url: width: 640, format: 'webp' }} 640w{% endif -%}
+        {%- if preload_image_desktop.width >= 750 %},{{ preload_image_desktop | image_url: width: 750, format: 'webp' }} 750w{% endif -%}
+        {%- if preload_image_desktop.width >= 900 %},{{ preload_image_desktop | image_url: width: 900, format: 'webp' }} 900w{% endif -%}
+        {%- if preload_image_desktop.width >= 1100 %},{{ preload_image_desktop | image_url: width: 1100, format: 'webp' }} 1100w{% endif -%}
+        {%- if preload_image_desktop.width >= 1200 %},{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }} 1200w{% endif -%}
+      {%- endcapture -%}
       <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(min-width: 768px)"
             href="{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }}"
-            imagesrcset="{% if preload_image_desktop.width >= 480 %}{{ preload_image_desktop | image_url: width: 480, format: 'webp' }} 480w,{% endif %}{% if preload_image_desktop.width >= 640 %}{{ preload_image_desktop | image_url: width: 640, format: 'webp' }} 640w,{% endif %}{% if preload_image_desktop.width >= 750 %}{{ preload_image_desktop | image_url: width: 750, format: 'webp' }} 750w,{% endif %}{% if preload_image_desktop.width >= 900 %}{{ preload_image_desktop | image_url: width: 900, format: 'webp' }} 900w,{% endif %}{% if preload_image_desktop.width >= 1100 %}{{ preload_image_desktop | image_url: width: 1100, format: 'webp' }} 1100w,{% endif %}{% if preload_image_desktop.width >= 1200 %}{{ preload_image_desktop | image_url: width: 1200, format: 'webp' }} 1200w{% endif %}"
+            imagesrcset="{{ srcset_desktop | strip }}"
             imagesizes="100vw">
     {%- endif -%}
 
@@ -242,9 +255,17 @@
       which selects 640w from the <source> — adding 480w and 640w fixes the preload mismatch.
     {%- endcomment -%}
     {%- if preload_image_mobile != blank -%}
+      {%- capture srcset_mobile -%}
+        {%- if preload_image_mobile.width >= 240 %}{{ preload_image_mobile | image_url: width: 240, format: 'webp' }} 240w{% endif -%}
+        {%- if preload_image_mobile.width >= 320 %},{{ preload_image_mobile | image_url: width: 320, format: 'webp' }} 320w{% endif -%}
+        {%- if preload_image_mobile.width >= 375 %},{{ preload_image_mobile | image_url: width: 375, format: 'webp' }} 375w{% endif -%}
+        {%- if preload_image_mobile.width >= 480 %},{{ preload_image_mobile | image_url: width: 480, format: 'webp' }} 480w{% endif -%}
+        {%- if preload_image_mobile.width >= 640 %},{{ preload_image_mobile | image_url: width: 640, format: 'webp' }} 640w{% endif -%}
+        {%- if preload_image_mobile.width >= 750 %},{{ preload_image_mobile | image_url: width: 750, format: 'webp' }} 750w{% endif -%}
+      {%- endcapture -%}
       <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(max-width: 767px)"
             href="{{ preload_image_mobile | image_url: width: 750, format: 'webp' }}"
-            imagesrcset="{% if preload_image_mobile.width >= 240 %}{{ preload_image_mobile | image_url: width: 240, format: 'webp' }} 240w,{% endif %}{% if preload_image_mobile.width >= 320 %}{{ preload_image_mobile | image_url: width: 320, format: 'webp' }} 320w,{% endif %}{% if preload_image_mobile.width >= 375 %}{{ preload_image_mobile | image_url: width: 375, format: 'webp' }} 375w,{% endif %}{% if preload_image_mobile.width >= 480 %}{{ preload_image_mobile | image_url: width: 480, format: 'webp' }} 480w,{% endif %}{% if preload_image_mobile.width >= 640 %}{{ preload_image_mobile | image_url: width: 640, format: 'webp' }} 640w,{% endif %}{% if preload_image_mobile.width >= 750 %}{{ preload_image_mobile | image_url: width: 750, format: 'webp' }} 750w{% endif %}"
+            imagesrcset="{{ srcset_mobile | strip }}"
             imagesizes="100vw">
     {%- endif -%}
   {%- endif -%}
@@ -272,7 +293,11 @@
 
     .collection__filters__wrapper { /* filter sidebar base styles */ }
   </style>
-  {% endif %}
+  {% endif %} 
+
+  {% style %}
+
+  {% endstyle %}
 
   {%- comment -%} 14b. Product page critical CSS — above-fold paint {%- endcomment -%}
   {%- if request.page_type == 'product' -%}
@@ -316,6 +341,16 @@
     span.tp-badge.tp-badge--best.tp-badge--pulse{
       display: none;
     }
+    bbody.template-index .js-grid[data-grid-large="4"] { display: flex; justify-content: center; gap: 20px; width: 90%; margin: auto; flex-wrap: wrap !important; }
+        @media only screen and (min-width: 768px){
+   body .mobile-nav-new{
+      top: 1% !important;
+    }
+    }
+     body#search section.page-search.wrapper.section-padding{
+  margin-top: 2rem;
+}
+
 {% endstyle %}
 
 
@@ -544,6 +579,9 @@
     .selector-wrapper:first-child { z-index: 9; }
     .variant-options.menstrual-variants .option-values { flex-wrap: wrap; }
     @media only screen and (max-width: 749px) {
+        div#search-drawer{
+    display: none;
+  }
       button.product-price-card-product.advanced-height { height: 47px !important; }
       body .header__logo__link{
         max-width: 30vw !important;
@@ -563,6 +601,7 @@
     padding: 0;
   }
 }
+
 
   {% endstyle %}
 
