@@ -494,70 +494,65 @@
       md:px-r8 md:py-r5 md:w-full md:aspect-auto
       {% if sold_out %}opacity-50 !cursor-not-allowed{% endif %}
     {% endcapture %}
+    {% comment %} Allow for shorter default text on longer translations {% endcomment %}
+    {% liquid
+      if product.metafields.theme.preorder.value == true
+        assign button_text = 'products.general.instant_add_pre_order' | t
+      else
+        assign button_text = 'products.general.instant_add' | t
+      endif
+    %}
+
+    {% capture button %}
+      <button
+        data-add-to-cart
+        type="submit"
+        name="add"
+        class="{{ quick_action_button_classes }}"
+        :class="{
+          'has-success': isSuccess,
+          'loading': isLoading
+        }"
+        title="{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ button_text }}{% endif %}"
+        :disabled="{{sold_out}} || isDisabled"
+        aria-label="{{ button_text }}"
+      >
+        <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap">
+          <span class="hidden md:block">
+            <span class="mobile-hide">
+              {% if sold_out %}
+                Sold Out
+              {% else %}
+                Add to Cart
+              {% endif %}
+            </span>
+            <span class="desktop-hide">
+              {% if sold_out %}
+                Sold
+              {% else %}
+                Add
+              {% endif %}
+            </span>
+          </span>
+          <span aria-hidden class="block md:hidden" style="color: white">
+            {% if sold_out %}
+              Sold
+            {% else %}
+              Add
+            {% endif %}
+          </span>
+        </span>
+        <span class="btn-state-loading">
+          <svg height="18" width="18" class="svg-loader" style="--border: rgb(var(--rgb-button-contrast) / 50%); --text: rgb(var(--rgb-button-contrast));">
+            <circle r="7" cx="9" cy="9" />
+            <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+          </svg>
+        </span>
+        <span class="btn-state-complete" style="--primary: rgb(var(--rgb-button-contrast));">&nbsp;</span>
+      </button>
+    {% endcapture %}
 
     {%- if instant_add_button %}
-      {% comment %} Allow for shorter default text on longer translations {% endcomment %}
-      {% liquid
-        if product.metafields.theme.preorder.value == true
-          assign button_text = 'products.general.instant_add_pre_order' | t
-        else
-          assign button_text = 'products.general.instant_add' | t
-        endif
-      %}
-
-      {% capture button %}
-        
-
-        <button
-  data-add-to-cart
-  type="submit"
-  name="add"
-  class="{{ quick_action_button_classes }}"
-  :class="{
-    'has-success': isSuccess,
-    'loading': isLoading
-  }"
-  title="{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ button_text }}{% endif %}"
-  :disabled="{{sold_out}} || isDisabled"
-  aria-label="{{ button_text }}"
->
-  <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap">
-    <span class="hidden md:block">
-      <span class="mobile-hide">
-        {% if sold_out %}
-          Sold Out
-        {% else %}
-          Add to Cart
-        {% endif %}
-      </span>
-      <span class="desktop-hide">
-        {% if sold_out %}
-          Sold
-        {% else %}
-          Add
-        {% endif %}
-      </span>
-    </span>
-    <span aria-hidden class="block md:hidden" style="color: white">
-      {% if sold_out %}
-        Sold
-      {% else %}
-        Add
-      {% endif %}
-    </span>
-  </span>
-  <span class="btn-state-loading">
-    <svg height="18" width="18" class="svg-loader" style="--border: rgb(var(--rgb-button-contrast) / 50%); --text: rgb(var(--rgb-button-contrast));">
-      <circle r="7" cx="9" cy="9" />
-      <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
-    </svg>
-  </span>
-  <span class="btn-state-complete" style="--primary: rgb(var(--rgb-button-contrast));">&nbsp;</span>
-</button>
-
-
-
-      {% endcapture %}
 
     <script>
       (function () {
@@ -704,12 +699,9 @@
       %}
       {% endif %}
    </div>
-{% unless product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
-
-
-   <div class="add-to-cart-button-card {% if product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}hide-quick-add{% endif %}">
+   <div class="add-to-cart-button-card">
       {%- unless product.title contains 'Gift' or product.title contains 'Gift' -%}
-      <button class="product-price-card-product ccccccc vv  {% if product.title contains 'Period Pain Relief Cream' %} style="display:none !important;" {% endif %}  {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %} advanced-height {% endif %} ">
+      <button class="product-price-card-product ccccccc vv">
          <div class="product__grid__price {% if settings.show_cutline %} product__grid__price--nowrap{% endif %}">
             {%- if settings.show_cutline -%}
             <span class="product__grid__cutline">{{ product.metafields.theme.cutline.value }}</span>
@@ -737,13 +729,8 @@
       {% endunless %}
       {%- assign product = all_products[product.handle] -%}
       {%- assign variant = product.variants.first -%}
-      {% unless product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}
-  {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
-{% endunless %}
-      {% comment %} {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full" %} {% endcomment %}
+      {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
    </div>
-
-{% endunless %}
 
 
 
@@ -908,7 +895,7 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
 
       <div class="add-to-cart-button-card">
   {%- unless product.title contains 'Gift' or product.title contains 'Gift' -%}
-    <button class="product-price-card-product {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %} advanced-height {% endif %}">
+    <button class="product-price-card-product ccccccc vv">
   <div class="product__grid__price {% if settings.show_cutline %} product__grid__price--nowrap{% endif %}">
     
     {%- if settings.show_cutline -%}
@@ -943,12 +930,8 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
 {% endunless %}
       {%- assign product = all_products[product.handle] -%}
       {%- assign variant = product.variants.first -%}
-      
-
-<a class="mentsrual-cup-btn" href="{{ product.url }}">
-  <span class="btn-desktop">Add to Cart</span>
-  <span class="btn-mobile">Add</span>
-</a>      </div>
+      {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
+      </div>
 {% endif %}
 
 

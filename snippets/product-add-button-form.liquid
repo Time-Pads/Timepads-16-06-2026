@@ -4,7 +4,6 @@
   * A form wrapper for a button that adds a product to the cart
   {% render 'product-add-button-form', variant: variant, selling_plan: selling_plan, button: '<button data-add-to-cart type='submit'>Add to Cart</button>' %}
 {% endcomment %}
-  {% unless product.title contains 'Period Pain Relief Cream' or product.title contains 'Menstrual Cup' %}
 {%- unless product.tags contains 'hide-product' -%} 
 {%- unless product.title contains 'Gift' or product.title contains 'Gift' -%}
 {%- liquid
@@ -82,6 +81,4 @@ document.querySelectorAll('.add-cart-button-singale-variant').forEach(button => 
 
 </script> -->
 {%- endunless -%}
-  {% endunless %}
-
-{% endunless %}
+{%- endunless -%}
