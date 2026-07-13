@@ -129,7 +129,12 @@
     --COLOR-NAV-TEXT-TRANSPARENT: {{ section.settings.transparent_text_color }};
     --COLOR-HEADER-TRANSPARENT-GRADIENT: {{ overlay_color }};
     --LOGO-PADDING: {{ section.settings.logo_padding | append: 'px' }};
-    --menu-backfill-height: auto;
+    --menu-backfill-height: 60px;
+  }
+  @media screen and (min-width: 769px) {
+    :root {
+      --menu-backfill-height: 90px;
+    }
   }
 {% endstyle %}
 
@@ -376,18 +381,32 @@
             preload: true
           }} {% endcomment %}
 
-          {% render 'responsive-picture' 
-          forloop: forloop,
-          desktopImage: section.settings.logo, 
-          mobileImage: section.settings.logo,
-          class: "logo__img logo__img--color",
-          width: logo_width,
-          srcset: srcset,
-          alt: alt,
-          loading: 'lazy',
-          fetchpriority: 'low',
-          img-class: 'tw-w-full tw-max-h-[60rem]'
-        %}
+          <picture>
+            <source
+              type="image/webp"
+              srcset="
+                {{ section.settings.logo | image_url: width: logo_width, format: 'webp' }} 1x,
+                {{ section.settings.logo | image_url: width: logo_width_2x, format: 'webp' }} 2x,
+                {{ section.settings.logo | image_url: width: logo_width_3x, format: 'webp' }} 3x
+              "
+            >
+            <img
+              src="{{ section.settings.logo | image_url: width: logo_width }}"
+              srcset="
+                {{ section.settings.logo | image_url: width: logo_width }} 1x,
+                {{ section.settings.logo | image_url: width: logo_width_2x }} 2x,
+                {{ section.settings.logo | image_url: width: logo_width_3x }} 3x
+              "
+              alt="{{ alt }}"
+              class="logo__img logo__img--color tw-w-full tw-max-h-[60rem]"
+              width="{{ logo_width }}"
+              height="{{ logo_width | divided_by: section.settings.logo.aspect_ratio | round }}"
+              style="aspect-ratio: {{ section.settings.logo.aspect_ratio }}; height: auto;"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            >
+          </picture>
         {% else %}
           {% liquid
             assign text_logo_length = ''
@@ -427,8 +446,11 @@
             class: "logo__img logo__img--transparent",
             srcset: srcset,
             alt: alt,
-            loading: 'lazy',
-            fetchpriority: 'low'
+            width: transparent_logo_width,
+            height: transparent_logo_width | divided_by: section.settings.transparent_logo.aspect_ratio | round,
+            style: "aspect-ratio: " | append: section.settings.transparent_logo.aspect_ratio | append: "; height: auto;",
+            loading: 'eager',
+            fetchpriority: 'high'
           }}
         {% endif %}
       </a>

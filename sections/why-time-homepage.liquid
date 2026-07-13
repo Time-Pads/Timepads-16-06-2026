@@ -1,0 +1,810 @@
+{%- comment -%}
+  Why TIME Homepage Section
+  A premium, high-end, responsive section for the homepage.
+  Optimized for maximum page speed (zero HTTP requests for assets, deferred fonts, inline SVGs).
+{%- endcomment -%}
+
+{%- style -%}
+  .why-time-section--{{ section.id }} {
+    --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    
+    /* Core Brand Color Tokens */
+    --wine: #000000;
+    --blush-bg: #FDF1F1;
+    --accent-rose: #F6C6CE;
+    --accent-lavender: #D8D6F0;
+    --accent-sage: #D3EBD6;
+    --accent-peach: #F7DCC2;
+    --white: #FFFFFF;
+    --cream: #FFFDFD;
+  }
+
+  .why-time-section {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, #fff8ec 100%);
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
+    overflow: hidden;
+    color: var(--wine);
+    content-visibility: auto; /* Optimization for off-screen rendering */
+    contain-intrinsic-size: 800px;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-section {
+      padding-top: var(--padding-top-desktop);
+      padding-bottom: var(--padding-bottom-desktop);
+    }
+  }
+
+  /* Container */
+  .why-time-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Corner Floral Illustrations */
+  .why-time-floral {
+    position: absolute;
+    bottom: 0;
+    width: 220px;
+    height: 220px;
+    opacity: 0.04;
+    color: var(--wine);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .why-time-floral--left {
+    left: 0;
+    transform: translate(-10%, 15%);
+  }
+
+  .why-time-floral--right {
+    right: 0;
+    transform: translate(10%, 15%) scaleX(-1);
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-floral {
+      width: 320px;
+      height: 320px;
+    }
+  }
+
+  /* Header Group */
+  .why-time-header {
+    text-align: center;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-header {
+      margin-bottom: 15px;
+    }
+  }
+
+  /* Eyebrow badge */
+  .why-time-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--wine);
+    background: rgba(74, 16, 48, 0.05);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  /* Headline */
+  .why-time-headline {
+    font-size: 36px;
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--wine);
+    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-headline {
+      font-size: 56px;
+    }
+  }
+
+  /* Subheadline */
+  .why-time-subheadline {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6B5361; /* Muted gray-wine */
+    max-width: 600px;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-subheadline {
+      font-size: 16px;
+    }
+  }
+
+  /* Cards Wrapper */
+  .why-time-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
+    padding: 12px 4px 30px 4px;
+    margin: 0 -4px;
+  }
+
+  .why-time-cards::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      overflow: visible;
+      padding: 12px 0;
+      margin: 0;
+    }
+  }
+
+  @media screen and (min-width: 481px) and (max-width: 768px) {
+    .why-time-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      overflow: visible;
+      gap: 24px;
+    }
+  }
+
+  /* Individual Card */
+  .why-time-card {
+    flex: 0 0 290px; /* Width for mobile snapping */
+    scroll-snap-align: center;
+    background: var(--white);
+    border: 1px solid rgba(74, 16, 48, 0.03);
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: 0 8px 24px rgba(74, 16, 48, 0.04);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-card {
+      flex: initial;
+      scroll-snap-align: none;
+      padding: 40px 32px;
+    }
+
+    .why-time-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(74, 16, 48, 0.08);
+    }
+  }
+
+  /* Card Badge */
+  .why-time-card-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    background-color: var(--card-accent);
+    color: var(--wine);
+    transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .why-time-card-badge svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .why-time-card:hover .why-time-card-badge {
+    transform: scale(1.05);
+  }
+
+  /* Card Title */
+  .why-time-card-title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--wine);
+    margin: 0;
+  }
+
+  /* Card Title Underline */
+  .why-time-card-underline {
+    height: 2px;
+    width: 40px;
+    margin-top: 12px;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, var(--card-accent) 0%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 2px;
+  }
+
+  /* Card Body */
+  .why-time-card-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #6B5361;
+    margin: 0;
+    font-weight: 400;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Lotus Motif Overlay */
+  .why-time-card .card-lotus-motif {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 80px;
+    height: 80px;
+    color: var(--wine);
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Trust Strip Container */
+  .why-time-trust-strip-wrapper {
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-trust-strip-wrapper {
+      margin-top: 15px;
+    }
+  }
+
+  .why-time-trust-strip-pill {
+    background: var(--white);
+    border-radius: 28px;
+    box-shadow: 0 8px 24px rgba(74, 16, 48, 0.04);
+    border: 1px solid rgba(74, 16, 48, 0.03);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  @media screen and (min-width: 769px) {
+    .why-time-trust-strip-pill {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 100px;
+      padding: 20px 40px;
+      gap: 0;
+    }
+  }
+
+  /* Trust Item */
+  .why-time-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .why-time-trust-strip-pill {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .why-time-trust-item:last-child:nth-child(odd) {
+      grid-column: span 2;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .why-time-trust-strip-pill {
+      grid-template-columns: 1fr;
+    }
+    .why-time-trust-item:last-child:nth-child(odd) {
+      grid-column: span 1;
+      justify-content: flex-start;
+    }
+  }
+
+  .why-time-trust-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--wine);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .why-time-trust-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .why-time-trust-label {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--wine);
+    letter-spacing: -0.01em;
+  }
+{%- endstyle -%}
+
+<!-- Asynchronous premium Google Font loading -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
+<div class="why-time-section why-time-section--{{ section.id }}">
+  <!-- Left Corner Floral Line Art -->
+  {%- if section.settings.show_floral_illustrations -%}
+    <div class="why-time-floral why-time-floral--left">
+      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 200 C 40 180, 80 170, 110 130 C 130 100, 140 60, 130 20" />
+        <path d="M 50 185 C 60 170, 75 165, 75 155 C 75 145, 60 150, 50 185 Z" />
+        <path d="M 85 160 C 105 150, 115 135, 110 125 C 105 115, 95 135, 85 160 Z" />
+        <path d="M 115 120 C 135 110, 145 90, 140 80 C 135 70, 125 90, 115 120 Z" />
+        <g transform="translate(130, 20)">
+          <path d="M 0 0 C 15 -10, 20 -25, 10 -35 C 0 -45, -15 -35, -20 -20 C -25 -5, -15 10, 0 0 Z" opacity="0.8"/>
+          <path d="M -5 -10 C 5 -18, 10 -25, 2 -30 C -5 -35, -12 -28, -10 -15 C -8 -2, -15 0, -5 -10 Z" opacity="0.9"/>
+          <path d="M -10 -5 C -8 5, -2 8, 0 10" />
+          <path d="M -12 -8 Q -10 2 -2 -2 Q 2 5 6 -6" />
+        </g>
+        <path d="M 80 162 C 100 175, 130 180, 160 175" />
+        <path d="M 115 171 C 130 175, 145 185, 140 190 C 135 195, 125 180, 115 171 Z" />
+        <g transform="translate(160, 175)">
+          <path d="M 0 0 C 10 5, 18 -5, 15 -12 C 12 -20, 2 -15, 0 0 Z" />
+          <path d="M 2 -4 Q 8 -10 12 -8 Q 10 -2 5 -2" />
+        </g>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- Right Corner Floral Line Art -->
+  {%- if section.settings.show_floral_illustrations -%}
+    <div class="why-time-floral why-time-floral--right">
+      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 200 200 C 160 180, 120 170, 90 130 C 70 100, 60 60, 70 20" />
+        <path d="M 150 185 C 140 170, 125 165, 125 155 C 125 145, 140 150, 150 185 Z" />
+        <path d="M 115 160 C 95 150, 85 135, 90 125 C 95 115, 105 135, 115 160 Z" />
+        <path d="M 85 120 C 65 110, 55 90, 60 80 C 65 70, 75 90, 85 120 Z" />
+        <g transform="translate(70, 20)">
+          <path d="M 0 0 C -15 -10, -20 -25, -10 -35 C 0 -45, 15 -35, 20 -20 C 25 -5, 15 10, 0 0 Z" opacity="0.8"/>
+          <path d="M 5 -10 C -5 -18, -10 -25, -2 -30 C 5 -35, 12 -28, 10 -15 C 8 -2, 15 0, 5 -10 Z" opacity="0.9"/>
+          <path d="M 10 -5 C 8 5, 2 8, 0 10" />
+          <path d="M 12 -8 Q 10 2 2 -2 Q -2 5 -6 -6" />
+        </g>
+        <path d="M 120 162 C 100 175, 70 180, 40 175" />
+        <path d="M 85 171 C 70 175, 55 185, 60 190 Q 65 195 75 180 C 75 180 85 171 85 171 Z" />
+        <g transform="translate(40, 175)">
+          <path d="M 0 0 C -10 5, -18 -5, -15 -12 C -12 -20, -2 -15, 0 0 Z" />
+          <path d="M -2 -4 Q -8 -10 -12 -8 Q -10 -2 -5 -2" />
+        </g>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <div class="why-time-container">
+    <!-- Header Block -->
+    <div class="why-time-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="why-time-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.headline != blank -%}
+        <h2 class="why-time-headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheadline != blank -%}
+        <p class="why-time-subheadline">{{ section.settings.subheadline | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Cards Layout -->
+    <div class="why-time-cards">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'card' -%}
+          {%- liquid
+            case block.settings.accent_color
+              when 'rose'
+                assign block_accent = 'var(--accent-rose)'
+              when 'lavender'
+                assign block_accent = 'var(--accent-lavender)'
+              when 'sage'
+                assign block_accent = 'var(--accent-sage)'
+              when 'peach'
+                assign block_accent = 'var(--accent-peach)'
+              when 'custom'
+                assign block_accent = block.settings.custom_accent_color | default: 'var(--accent-rose)'
+            endcase
+          -%}
+          <div class="why-time-card" {{ block.shopify_attributes }} style="--card-accent: {{ block_accent }};">
+            <!-- Icon Badge -->
+            <div class="why-time-card-badge">
+              {%- case block.settings.icon -%}
+                {%- when 'feather' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 22 L11 13 L21 3" />
+                    <path d="M21 3 C17 3, 14 5, 12.5 7.5 C11 10, 10 13.5, 11 13" />
+                    <path d="M17.5 5 C15.5 5.5, 14 7, 13 8.5" />
+                    <path d="M14.5 7.5 C13 8.5, 12 10.5, 11.5 12" />
+                    <path d="M21 3 C21 7, 19 10, 16.5 11.5 C14 13, 10.5 14, 11 13" />
+                    <path d="M19 5.5 C18.5 7.5, 17 9, 15.5 10" />
+                    <path d="M16.5 8 C15.5 9.5, 13.5 11, 12 11.5" />
+                    <path d="M11 13 C9.5 14, 7 15, 6 17" />
+                    <path d="M8.5 15.5 C7.5 16.5, 6 17.5, 4.5 19.5" />
+                  </svg>
+                {%- when 'shield' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" />
+                    <path d="M12 7C12 7 9 11.5 9 13.5C9 15.1569 10.3431 16.5 12 16.5C13.6569 16.5 15 15.1569 15 13.5C15 11.5 12 7 12 7Z" />
+                  </svg>
+                {%- when 'routine' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 5 C6 5, 7 12, 10 14 L10 17 C10 17.5, 9 18, 9 18.5 M10 17 L11 17 C11.5 17, 12 17.5, 12 18 M10 14 C13 12, 14 5, 14 5" />
+                    <path d="M6 5 C7 4.5, 13 4.5, 14 5" />
+                    <path d="M14 10 C16 8, 20 8, 20 12 C20 16, 16 19, 14 20 C12 19, 11 18, 11 16 C11 14, 12 12, 14 10 Z" />
+                    <path d="M14 10 L18 18" />
+                  </svg>
+                {%- when 'heart' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l4.3-4.3" />
+                    <path d="M16 12 L18.5 14.5 L23 10" />
+                  </svg>
+                {%- when 'custom' -%}
+                  {{ block.settings.custom_icon_svg }}
+              {%- endcase -%}
+            </div>
+
+            <!-- Content -->
+            {%- if block.settings.title != blank -%}
+              <h3 class="why-time-card-title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            
+            <div class="why-time-card-underline"></div>
+
+            {%- if block.settings.body != blank -%}
+              <p class="why-time-card-body">{{ block.settings.body | escape }}</p>
+            {%- endif -%}
+
+            <!-- Subtle Lotus motif SVG -->
+            <svg class="card-lotus-motif" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 50 15 C 44 35, 44 65, 50 85 C 56 65, 56 35, 50 15 Z" />
+              <path d="M 50 35 C 32 45, 28 70, 50 85" />
+              <path d="M 50 35 C 68 45, 72 70, 50 85" />
+              <path d="M 50 50 C 15 55, 15 75, 42 85" />
+              <path d="M 50 50 C 85 55, 85 75, 58 85" />
+              <path d="M 35 88 Q 50 95 65 88" />
+            </svg>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Trust Strip Pill -->
+    <div class="why-time-trust-strip-wrapper">
+      <div class="why-time-trust-strip-pill">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_item' -%}
+            <div class="why-time-trust-item" {{ block.shopify_attributes }}>
+              <div class="why-time-trust-icon">
+                {%- case block.settings.icon -%}
+                  {%- when 'certified' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="7" stroke-dasharray="2 2" />
+                      <path d="M9 12 L11 14 L15 10" />
+                    </svg>
+                  {%- when 'comfort' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 22 C6 20, 8 16, 9 13" />
+                      <path d="M9 13 C12 7, 18 4, 22 2 C 20 6, 17 12, 11 15 C 8 16, 6 20, 2 22" />
+                      <path d="M9 13 L15 11" />
+                      <path d="M11 15 L17 13" />
+                    </svg>
+                  {%- when 'leak' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 5C12 5 7 11 7 14C7 16.7614 9.23858 19 12 19C14.7614 19 17 16.7614 17 14C17 11 12 5 12 5Z" />
+                      <path d="M3 14 A 9 9 0 0 0 21 14" opacity="0.5" />
+                    </svg>
+                  {%- when 'coverage' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 12" />
+                      <path d="M12 2 A 10 10 0 0 1 22 12" stroke-width="2" />
+                    </svg>
+                  {%- when 'women' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="9" cy="9" r="5" />
+                      <path d="M9 14 v5 M7 17 h4" />
+                      <circle cx="15" cy="11" r="5" opacity="0.8" />
+                      <path d="M15 16 v5 M13 19 h4" opacity="0.8" />
+                    </svg>
+                  {%- when 'custom' -%}
+                    {{ block.settings.custom_icon_svg }}
+                {%- endcase -%}
+              </div>
+              {%- if block.settings.label != blank -%}
+                <span class="why-time-trust-label">{{ block.settings.label | escape }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Why TIME Homepage",
+  "tag": "section",
+  "class": "section-why-timee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Badge",
+      "default": "WHY TIME"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Why Women Choose TIME"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "Every period is different — some days call for softness, some nights for extra protection. TIME is built around that reality, not around a one-size routine."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_floral_illustrations",
+      "label": "Show corner floral illustrations",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 60,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 60,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Feature Card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Card Title"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Card Body",
+          "default": "Card description goes here."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "feather", "label": "Feather" },
+            { "value": "shield", "label": "Shield & Drop" },
+            { "value": "routine", "label": "Routine (Cup & Cream)" },
+            { "value": "heart", "label": "Heart & Check" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "feather"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        },
+        {
+          "type": "select",
+          "id": "accent_color",
+          "label": "Accent Color Theme",
+          "options": [
+            { "value": "rose", "label": "Rose Blush" },
+            { "value": "lavender", "label": "Soft Lavender" },
+            { "value": "sage", "label": "Sage Green" },
+            { "value": "peach", "label": "Warm Peach" },
+            { "value": "custom", "label": "Custom Hex Code" }
+          ],
+          "default": "rose"
+        },
+        {
+          "type": "color",
+          "id": "custom_accent_color",
+          "label": "Custom Accent Color",
+          "default": "#F6C6CE"
+        }
+      ]
+    },
+    {
+      "type": "trust_item",
+      "name": "Trust Strip Item",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Dermatologically Tested"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "certified", "label": "Clinical Seal" },
+            { "value": "comfort", "label": "Comfort Leaf" },
+            { "value": "leak", "label": "Leak Protection Drop" },
+            { "value": "coverage", "label": "Coverage Clock" },
+            { "value": "women", "label": "Venus Interlocked Symbols" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "certified"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why TIME Homepage",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Soft on Skin",
+            "body": "Breathable, hypoallergenic materials that stay comfortable through long days, heavy flow, and overnight wear.",
+            "icon": "feather",
+            "accent_color": "rose"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Leak-Proof, Day or Night",
+            "body": "Engineered absorbency that holds up through work, travel, and sleep — so you're not thinking about it.",
+            "icon": "shield",
+            "accent_color": "lavender"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "One Brand, Full Routine",
+            "body": "Pads, menstrual cups, and cramp relief — TIME covers every part of your cycle, not just one product.",
+            "icon": "routine",
+            "accent_color": "sage"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Tested, Trusted",
+            "body": "Dermatologically tested and medical-grade where it matters, because your comfort isn't negotiable.",
+            "icon": "heart",
+            "accent_color": "peach"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label": "Dermatologically Tested",
+            "icon": "certified"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label": "Rash-Free Comfort",
+            "icon": "comfort"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label": "Leak Protection",
+            "icon": "leak"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label": "Up to 12 Hours Coverage",
+            "icon": "coverage"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label": "Made by Women, for Women",
+            "icon": "women"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

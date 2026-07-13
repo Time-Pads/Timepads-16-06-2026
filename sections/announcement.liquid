@@ -133,7 +133,7 @@
   {%- if bar_markup != blank -%}
     <div
       class="announcement text-[--text] relative z-[5500] overflow-hidden body-color"
-      style="--PT:{{ section.settings.padding_top }}px;--PB:{{ section.settings.padding_bottom }}px;--text:var(--COLOR-ANNOUNCEMENT-TEXT);--underline:calc(var(--font-{{ section.settings.text_size }}) * var(--FONT-ADJUST-ACCENT));"
+      style="--PT:{{ section.settings.padding_top }}px;--PB:{{ section.settings.padding_bottom }}px;--text:var(--COLOR-ANNOUNCEMENT-TEXT);--underline:calc(var(--font-{{ section.settings.text_size }}) * var(--FONT-ADJUST-ACCENT)); min-height: calc({{ section.settings.padding_top }}px + {{ section.settings.padding_bottom }}px + calc(var(--font-{{ section.settings.text_size }}, 14px) * 1.5));"
       data-announcement-bar
       data-section-id="{{ section.id }}"
       data-section-type="announcement"

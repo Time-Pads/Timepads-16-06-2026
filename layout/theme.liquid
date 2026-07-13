@@ -387,7 +387,10 @@
     .wrapper--full { max-width: 100%; padding: 0 20px; }
     .grid__item { box-sizing: border-box; }
     .header__backfill{
-      display: none;
+        display: none !important;
+    }
+    [data-header-transparent="true"] + .header__backfill {
+      display: none !important;
     }
     [data-grid] [data-item].index__column,
     .gif-section--main-content{

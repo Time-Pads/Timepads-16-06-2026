@@ -1,0 +1,822 @@
+{%- comment -%}
+  Trust & Care Homepage Section
+  A premium wellness trust section with dual tiers in one container card.
+  Top Area: Centered header with custom eyebrow line.
+  Tier 1: 6-item responsive grid with vertical hairline dividers.
+  Tier 2: Rounded tan values band with edge leaf-sprigs and circular badge icons.
+{%- endcomment -%}
+
+{%- style -%}
+  .trust-care-section--{{ section.id }} {
+    --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+
+    /* Design Color Tokens */
+    --cream-bg: #FDF6EE;
+    --espresso: #3A2417;
+    --sage: #5C7A5C;
+    --terracotta: #8B4A2B;
+    --peach-tint: #F5E4D3;
+    --rose-badge: #D98A8A;
+  }
+
+  .trust-care-section {
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
+    background: linear-gradient(180deg, #ffffff 0%, #fff8ec 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--espresso);
+    content-visibility: auto;
+    contain-intrinsic-size: 800px;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-section {
+      padding-top: var(--padding-top-desktop);
+      padding-bottom: var(--padding-bottom-desktop);
+    }
+  }
+
+  /* Page Outer Container */
+  .trust-care-outer-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Card Container */
+  .trust-care-card-container {
+    background-color: var(--cream-bg);
+    border-radius: 32px;
+    padding: 32px 20px;
+    box-shadow: 0 16px 48px rgba(139, 74, 43, 0.04); /* Soft warm shadow */
+    border: 1px solid rgba(139, 74, 43, 0.03);
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-card-container {
+      padding: 64px;
+    }
+  }
+
+  /* Header Group */
+  .trust-care-header {
+    text-align: center;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-header {
+      margin-bottom: 64px;
+    }
+  }
+
+  /* Eyebrow Line */
+  .trust-care-eyebrow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 16px;
+  }
+
+  .trust-care-eyebrow-line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, rgba(139, 74, 43, 0) 0%, rgba(139, 74, 43, 0.3) 50%, rgba(139, 74, 43, 0) 100%);
+  }
+
+  .trust-care-eyebrow-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--terracotta);
+    white-space: nowrap;
+  }
+
+  .trust-care-eyebrow-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--terracotta);
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trust-care-eyebrow-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Headline */
+  .trust-care-headline {
+    font-family: 'Fraunces', 'Playfair Display', Didot, Georgia, serif;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 700;
+    color: var(--espresso);
+    margin: 0 0 16px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-headline {
+      font-size: 44px;
+    }
+  }
+
+  /* Subheadline */
+  .trust-care-subheadline {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #7A695E;
+    max-width: 550px;
+    margin: 0;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .trust-care-sub-heart {
+    width: 12px;
+    height: 12px;
+    color: var(--terracotta);
+    opacity: 0.7;
+  }
+
+  /* Tier 1 Grid/Columns styling */
+  .trust-care-tier-1-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 32px;
+    column-gap: 16px;
+    margin-bottom: 56px;
+  }
+
+  @media screen and (min-width: 481px) and (max-width: 768px) {
+    .trust-care-tier-1-grid {
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 24px;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-tier-1-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0;
+      margin-bottom: 64px;
+    }
+  }
+
+  /* Tier 1 Column */
+  .trust-care-tier-1-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-tier-1-col {
+      flex: 1;
+      padding: 0 20px;
+    }
+
+    /* Thin vertical dividers */
+    .trust-care-tier-1-col:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10%;
+      height: 80%;
+      width: 1px;
+      background-color: rgba(139, 74, 43, 0.12); /* light tan, low opacity */
+    }
+  }
+
+  /* Tier 1 circular badge */
+  .trust-care-t1-badge {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: transform 0.25s ease;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-t1-badge {
+      width: 88px;
+      height: 88px;
+    }
+  }
+
+  .trust-care-tier-1-col:hover .trust-care-t1-badge {
+    transform: scale(1.05);
+  }
+
+  .trust-care-t1-badge svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Tier 1 Titles */
+  .trust-care-t1-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    margin: 0 0 8px 0;
+    max-width: 150px;
+  }
+
+  /* Tier 1 Descriptions */
+  .trust-care-t1-desc {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #7A695E;
+    margin: 0;
+    font-weight: 400;
+    max-width: 160px;
+  }
+
+  /* Tier 2 Band styling */
+  .trust-care-tier-2-band {
+    background-color: var(--peach-tint); /* #F5E4D3 */
+    border-radius: 24px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-tier-2-band {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 40px;
+      gap: 0;
+    }
+  }
+
+  /* Tier 2 Item */
+  .trust-care-tier-2-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media screen and (min-width: 769px) {
+    .trust-care-tier-2-item {
+      padding: 0 32px;
+    }
+
+    .trust-care-tier-2-item:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background-color: rgba(58, 36, 23, 0.08); /* light divider */
+    }
+  }
+
+  /* Leaf-sprig placement on far outer edges of first/last items */
+  .trust-care-leaf-sprig {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    color: var(--terracotta);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .trust-care-leaf-sprig--left {
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .trust-care-leaf-sprig--right {
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+  }
+
+  @media screen and (max-width: 768px) {
+    .trust-care-leaf-sprig {
+      display: none; /* Hide leaf decorative edges on mobile band */
+    }
+  }
+
+  /* Circular badge tier 2 */
+  .trust-care-t2-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+
+  .trust-care-tier-2-item:hover .trust-care-t2-badge {
+    transform: scale(1.05);
+  }
+
+  .trust-care-t2-badge svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Content block tier 2 */
+  .trust-care-t2-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+  }
+
+  /* Tier 2 Titles */
+  .trust-care-t2-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--espresso);
+    margin: 0;
+  }
+
+  /* Tier 2 Description */
+  .trust-care-t2-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: #7A695E;
+    margin: 0;
+    font-weight: 400;
+  }
+{%- endstyle -%}
+
+<!-- Asynchronous Google Fonts Import -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
+<div class="trust-care-section trust-care-section--{{ section.id }}">
+  <div class="trust-care-outer-container">
+    <div class="trust-care-card-container">
+      
+      <!-- Top Area: Header -->
+      <div class="trust-care-header">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="trust-care-eyebrow-container">
+            <span class="trust-care-eyebrow-line"></span>
+            <div class="trust-care-eyebrow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              </svg>
+            </div>
+            <span class="trust-care-eyebrow-label">{{ section.settings.eyebrow | escape }}</span>
+            <div class="trust-care-eyebrow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              </svg>
+            </div>
+            <span class="trust-care-eyebrow-line"></span>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.headline != blank -%}
+          <h2 class="trust-care-headline">{{ section.settings.headline | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subheadline != blank -%}
+          <p class="trust-care-subheadline">
+            {{ section.settings.subheadline | escape }}
+            <svg class="trust-care-sub-heart" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </p>
+        {%- endif -%}
+      </div>
+
+      <!-- Tier 1: 6-Icon Trust Row -->
+      <div class="trust-care-tier-1-grid">
+        {%- assign counter = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tier_1_item' -%}
+            {%- liquid
+              assign is_even = counter | modulo: 2
+              if is_even == 0
+                assign t1_bg = 'rgba(92, 122, 92, 0.08)'
+                assign t1_color = 'var(--sage)'
+              else
+                assign t1_bg = 'rgba(139, 74, 43, 0.08)'
+                assign t1_color = 'var(--terracotta)'
+              endif
+              assign counter = counter | plus: 1
+            -%}
+            <div class="trust-care-tier-1-col" {{ block.shopify_attributes }}>
+              <div class="trust-care-t1-badge" style="background-color: {{ t1_bg }}; color: {{ t1_color }};">
+                {%- case block.settings.icon -%}
+                  {%- when 'shield-check' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22C12 22 19 18 19 12V5L12 2L5 5V12C5 18 12 22 12 22Z" />
+                      <path d="M9 12.5l2 2 4-4" />
+                      <path d="M15 15c2 0 4 1 5 3M17 15.5c1-1 3-1 3-1 M19 17.5c1 0 2-1 2-1" />
+                    </svg>
+                  {%- when 'lock-box' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                      <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                      <rect x="9.5" y="6" width="5" height="4" rx="1" fill="none" />
+                      <path d="M10.5 6V4.5a1.5 1.5 0 0 1 3 0V6" />
+                      <path d="M18.5 10.5c1.5 1 2 2.5 1.5 4c-.5 1.5-2 1.5-3 1M18 12.5c1.5.2 2-.5 2-.5" />
+                    </svg>
+                  {%- when 'delivery-truck' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 18H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v11z" />
+                      <path d="M16 8h4l3 3v5a2 2 0 0 1-2 2h-1" />
+                      <circle cx="7.5" cy="18.5" r="2.5" />
+                      <circle cx="17.5" cy="18.5" r="2.5" />
+                      <path d="M7 11c3-2 5-1 6 2M9 11c1 1 2.5 1 2.5 1 M8 9.5c.8.2 1.5 0 1.5 0" />
+                    </svg>
+                  {%- when 'refresh-box' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 15l4-2.3v-5.4L12 5L8 7.3v5.4l4 2.3z M8.2 7.5L12 9.7l3.8-2.2M12 14.8V9.7" />
+                      <path d="M19 14.5c.7-1.5.8-3.3.2-4.9a8 8 0 1 0-1.8 7.2" />
+                      <path d="M17 19h4v-4" />
+                    </svg>
+                  {%- when 'headset-heart' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 14c0-4.97 4.03-9 9-9s9 4.03 9 9" />
+                      <rect x="2" y="13" width="3" height="5" rx="1.5" />
+                      <rect x="19" y="13" width="3" height="5" rx="1.5" />
+                      <path d="M20 17.5c-1 2-2.5 3-4.5 3.5" />
+                      <path d="M12 15c-.8-.8-2-1.2-2.8-1.2-1.5 0-2.2 1-2.2 2 0 1.8 3 4 3 4s3-2.2 3-4c0-1-.7-2-2.2-2-.8 0-2 .4-2.8 1.2Z" />
+                    </svg>
+                  {%- when 'India-map-heart' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9.5 2c1.2 1.5 2 1.5 2.5 2.5s3.5 1.5 4 2 .5 1.2-.2 1.8-2 .5-2.2 1 .2 1 .5 2 1 1 1.5 1.2s1.5 1 1 1.3-1.5-.2-2 .2-.2 1-.5 1.5-2 2-2.5 3.5S11 20 10.5 21.5l-.2.5-.2-.5c-.8-2.2-1.8-4.2-2.5-5.5s-1.5-2-2.5-2.2-1.5-.8-1.8-1.5.8-1.5.5-2.2-2-.5-2.2-1.2 1-1.2 1.3-1.8.8-1 1-1.5 1.2-.8 1.5-1.5.5-1.5 1-2S8.2 2.5 9.5 2Z" />
+                      <path d="M12 11c-.5-.5-1.2-.8-1.7-.8-1.2 0-1.8.7-1.8 1.4 0 1.2 2 2.7 2.5 3.1c.5-.4 2.5-1.9 2.5-3.1 0-.7-.6-1.4-1.8-1.4-.5 0-1.2.3-1.7.8Z" />
+                    </svg>
+                  {%- when 'custom' -%}
+                    {{ block.settings.custom_icon_svg }}
+                {%- endcase -%}
+              </div>
+              {%- if block.settings.title != blank -%}
+                <h3 class="trust-care-t1-title" style="color: {{ t1_color }};">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="trust-care-t1-desc">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- Tier 2: Values Band -->
+      <div class="trust-care-tier-2-band">
+        <!-- Faded leaf sprigs on the outer edges -->
+        <svg class="trust-care-leaf-sprig trust-care-leaf-sprig--left" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 10 90 C 20 80, 40 50, 70 30" />
+          <path d="M 30 65 C 20 55, 20 40, 25 35 C 30 30, 40 45, 30 65 Z" />
+          <path d="M 45 53 C 40 38, 45 25, 50 22 C 55 19, 58 35, 45 53 Z" />
+          <path d="M 60 40 C 60 25, 70 15, 75 15 C 80 15, 75 30, 60 40 Z" />
+        </svg>
+        <svg class="trust-care-leaf-sprig trust-care-leaf-sprig--right" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 10 90 C 20 80, 40 50, 70 30" />
+          <path d="M 30 65 C 20 55, 20 40, 25 35 C 30 30, 40 45, 30 65 Z" />
+          <path d="M 45 53 C 40 38, 45 25, 50 22 C 55 19, 58 35, 45 53 Z" />
+          <path d="M 60 40 C 60 25, 70 15, 75 15 C 80 15, 75 30, 60 40 Z" />
+        </svg>
+
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tier_2_item' -%}
+            {%- liquid
+              case block.settings.badge_color
+                when 'brown'
+                  assign t2_badge_bg = 'var(--terracotta)'
+                when 'sage'
+                  assign t2_badge_bg = 'var(--sage)'
+                when 'rose'
+                  assign t2_badge_bg = 'var(--rose-badge)'
+                when 'custom'
+                  assign t2_badge_bg = block.settings.custom_badge_color | default: 'var(--terracotta)'
+              endcase
+            -%}
+            <div class="trust-care-tier-2-item" {{ block.shopify_attributes }}>
+              <div class="trust-care-t2-badge" style="background-color: {{ t2_badge_bg }};">
+                {%- case block.settings.icon -%}
+                  {%- when 'seal-check' -%}
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M22 12c0-1.1-.49-2.09-1.26-2.74.38-1.01.21-2.17-.49-2.88-.71-.71-1.87-.88-2.88-.49C16.73 5.11 15.74 5 14.64 5c-1.1 0-2.09.49-2.74 1.26-1.01-.38-2.17-.21-2.88.49-.71.71-.88 1.87-.49 2.88C7.27 10.36 7 11.36 7 12.46c0 1.1.49 2.09 1.26 2.74-.38 1.01-.21 2.17.49 2.88.71.71 1.87.88 2.88.49.65.77 1.64.88 2.74.88 1.1 0 2.09-.49 2.74-1.26 1.01.38 2.17.21 2.88-.49.71-.71.88-1.87.49-2.88.77-.65.88-1.64.88-2.74z" />
+                      <path d="M10 12.5l2 2 4.5-4.5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  {%- when 'leaf' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 22 C6 20, 8 16, 9 13" />
+                      <path d="M9 13 C12 7, 18 4, 22 2 C 20 6, 17 12, 11 15 C 8 16, 6 20, 2 22" />
+                      <path d="M9 13 L15 11" />
+                      <path d="M11 15 L17 13" />
+                    </svg>
+                  {%- when 'heart' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                  {%- when 'custom' -%}
+                    {{ block.settings.custom_icon_svg }}
+                {%- endcase -%}
+              </div>
+              <div class="trust-care-t2-content">
+                {%- if block.settings.title != blank -%}
+                  <h4 class="trust-care-t2-title">{{ block.settings.title | escape }}</h4>
+                {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <p class="trust-care-t2-desc">{{ block.settings.description | escape }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust & Care Homepage",
+  "tag": "section",
+  "class": "section-trust-care",
+  "max_blocks": 9,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "TIME CARES FOR YOU"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Trusted by Thousands of Women"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "Premium products. Honest care. Always."
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier_1_item",
+      "name": "Tier 1: Trust Column",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Trust Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Trust descriptions go here."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Badge Icon",
+          "options": [
+            { "value": "shield-check", "label": "Dermatologically Check Shield" },
+            { "value": "lock-box", "label": "Secure Lock Package" },
+            { "value": "delivery-truck", "label": "Discreet Delivery Truck" },
+            { "value": "refresh-box", "label": "Refund Loop Package" },
+            { "value": "headset-heart", "label": "Support Headset with Heart" },
+            { "value": "India-map-heart", "label": "Made in India Map & Heart" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "shield-check"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        }
+      ]
+    },
+    {
+      "type": "tier_2_item",
+      "name": "Tier 2: Value Banner Item",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Value Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Value descriptions go here."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Badge Icon",
+          "options": [
+            { "value": "seal-check", "label": "Certified Rosette Check" },
+            { "value": "leaf", "label": "Eco Comfort Leaf" },
+            { "value": "heart", "label": "Feminine Care Heart" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "seal-check"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        },
+        {
+          "type": "select",
+          "id": "badge_color",
+          "label": "Badge Background Swatch",
+          "options": [
+            { "value": "brown", "label": "Terracotta Brown" },
+            { "value": "sage", "label": "Sage Green" },
+            { "value": "rose", "label": "Pastel Rose" },
+            { "value": "custom", "label": "Custom Color Hex Code" }
+          ],
+          "default": "brown"
+        },
+        {
+          "type": "color",
+          "id": "custom_badge_color",
+          "label": "Custom Badge Color",
+          "default": "#8B4A2B"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust & Care Homepage",
+      "blocks": [
+        {
+          "type": "tier_1_item",
+          "settings": {
+            "title": "Dermatologically Tested",
+            "description": "Safe & gentle on sensitive skin",
+            "icon": "shield-check"
+          }
+        },
+        {
+          "type": "tier_1_item",
+          "settings": {
+            "title": "100% Secure Payments",
+            "description": "Your payments are safe with us",
+            "icon": "lock-box"
+          }
+        },
+        {
+          "type": "tier_1_item",
+          "settings": {
+            "title": "Discreet Packaging",
+            "description": "Your privacy is our priority",
+            "icon": "delivery-truck"
+          }
+        },
+        {
+          "type": "tier_1_item",
+          "settings": {
+            "title": "Easy Returns & Refunds",
+            "description": "Hassle-free returns within 7 days",
+            "icon": "refresh-box"
+          }
+        },
+        {
+          "type": "tier_1_item",
+          "settings": {
+            "title": "Customer Support",
+            "description": "We're here for you, always",
+            "icon": "headset-heart"
+          }
+        },
+        {
+          "type": "tier_1_item",
+          "settings": {
+            "title": "Made in India",
+            "description": "Proudly made for Indian women",
+            "icon": "India-map-heart"
+          }
+        },
+        {
+          "type": "tier_2_item",
+          "settings": {
+            "title": "QUALITY YOU CAN TRUST",
+            "description": "Every TIME product is crafted with care and the highest quality standards.",
+            "icon": "seal-check",
+            "badge_color": "brown"
+          }
+        },
+        {
+          "type": "tier_2_item",
+          "settings": {
+            "title": "SUSTAINABLE CHOICES",
+            "description": "Thoughtful products and eco-friendly practices for a better tomorrow.",
+            "icon": "leaf",
+            "badge_color": "sage"
+          }
+        },
+        {
+          "type": "tier_2_item",
+          "settings": {
+            "title": "WOMEN FIRST, ALWAYS",
+            "description": "Designed to support, empower, and care for every woman.",
+            "icon": "heart",
+            "badge_color": "rose"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

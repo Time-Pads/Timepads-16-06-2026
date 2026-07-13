@@ -1,0 +1,1030 @@
+{%- comment -%}
+  Shop by Need Homepage Section
+  A premium, wellness-focused Shop by Need section with organic blobs,
+  botanical drawings, pastel cards, overlapping circular badges, and a custom trust strip.
+{%- endcomment -%}
+
+{%- style -%}
+  .shop-by-need-section--{{ section.id }} {
+    --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+
+    /* Design Color Tokens */
+    --cream-bg: #FBF1E7;
+    --espresso: #3A2417;
+    --terracotta: #8B4A2B;
+    
+    /* Pastel swatches */
+    --card-rose: #F6D3D8;
+    --card-lavender: #E4DCF0;
+    --card-mint: #D8ECE6;
+    --card-peach: #F5DCC0;
+    --card-sage: #DCE9D6;
+  }
+
+  .shop-by-need-section {
+    position: relative;
+    background: linear-gradient(180deg, #FDF6EE 0%, #FFFFFF 100%);
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--espresso);
+    content-visibility: auto;
+    contain-intrinsic-size: 850px;
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-section {
+      padding-top: var(--padding-top-desktop);
+      padding-bottom: var(--padding-bottom-desktop);
+    }
+  }
+
+  /* Organic Wave Blob */
+  .shop-by-need-blob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    max-width: 1400px;
+    opacity: 0.08;
+    color: #DECAB5;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Faded Corner Botanical Branches */
+  .shop-by-need-botanical {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    opacity: 0.08; /* Reduced opacity to sit quietly in the background */
+    color: var(--terracotta);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .shop-by-need-botanical--top-left {
+    top: 0;
+    left: 0;
+    transform: translate(-10%, -10%);
+  }
+
+  .shop-by-need-botanical--bottom-right {
+    bottom: 0;
+    right: 0;
+    transform: translate(10%, 10%) rotate(180deg);
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-botanical {
+      width: 350px;
+      height: 350px;
+    }
+  }
+
+  /* Section Container */
+  .shop-by-need-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+
+  /* Header Section */
+  .shop-by-need-header {
+    text-align: center;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Eyebrow badge */
+  .shop-by-need-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--espresso);
+    background: rgba(139, 74, 43, 0.08); /* Soft cream/tan background */
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  .shop-by-need-eyebrow svg {
+    width: 8px;
+    height: 8px;
+    color: var(--espresso);
+    opacity: 0.6;
+  }
+
+  /* Headline */
+  .shop-by-need-headline {
+    font-family: 'Fraunces', 'Playfair Display', Didot, Georgia, serif;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--espresso);
+    margin: 0 0 12px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-headline {
+      font-size: 48px;
+    }
+  }
+
+  /* Headline Divider */
+  .shop-by-need-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 180px;
+    margin-bottom: 16px;
+  }
+
+  .shop-by-need-divider-line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, rgba(139, 74, 43, 0) 0%, rgba(139, 74, 43, 0.3) 50%, rgba(139, 74, 43, 0) 100%);
+  }
+
+  .shop-by-need-divider-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--terracotta);
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shop-by-need-divider-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Subheadline */
+  .shop-by-need-subheadline {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6B5361; /* Visual consistency with Why TIME */
+    max-width: 550px;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-subheadline {
+      font-size: 16px;
+    }
+  }
+
+  /* Grid/Flex Layout for Cards */
+  .shop-by-need-cards {
+    display: flex;
+    gap: 20px; /* Increased gap */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
+    padding: 10px 4px 30px 4px;
+    margin: 0 -4px;
+  }
+
+  .shop-by-need-cards::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      overflow: visible;
+      padding: 10px 0;
+      margin: 0;
+      gap: 24px; /* Increased gap */
+    }
+  }
+
+  /* White Background Cards with elevation */
+  .shop-by-need-card {
+    flex: 0 0 calc(75vw - 20px); /* Peeking layout for mobile flow */
+    max-width: 320px;
+    scroll-snap-align: center;
+    background: #FFFFFF; /* White card background */
+    border-radius: 20px;
+    padding: 24px 20px; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 8px 24px rgba(58, 36, 23, 0.06); /* Shadow depth */
+    border: none;
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-card {
+      flex: initial;
+      max-width: none;
+      scroll-snap-align: none;
+      padding: 28px; /* Increased padding */
+    }
+
+    .shop-by-need-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(58, 36, 23, 0.1);
+    }
+  }
+
+  /* Image Wrapper with Soft Background Swatch Tint */
+  .shop-by-need-image-wrapper {
+    aspect-ratio: 1 / 1;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    overflow: hidden;
+    position: relative;
+    background: var(--card-bg); /* Simplified container with pastel background tint */
+    margin-top: -24px;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-image-wrapper {
+      margin-top: -28px;
+      margin-left: -28px;
+      margin-right: -28px;
+    }
+  }
+
+  .shop-by-need-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+  }
+
+  .shop-by-need-image-wrapper svg.placeholder-svg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    opacity: 0.6;
+    transition: transform 0.25s ease;
+  }
+
+  .shop-by-need-card:hover .shop-by-need-image-wrapper img,
+  .shop-by-need-card:hover .shop-by-need-image-wrapper svg.placeholder-svg {
+    transform: scale(1.03);
+  }
+
+  /* Badge row centered with padding */
+  .shop-by-need-card-badge-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 16px;
+    padding-bottom: 20px;
+    width: 100%;
+  }
+
+  /* White Badge with colored Line Icon */
+  .shop-by-need-card-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Soft shadow from prompt */
+    color: var(--icon-color);
+    border: 1px solid rgba(139, 74, 43, 0.05);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .shop-by-need-card:hover .shop-by-need-card-badge {
+    transform: scale(1.05);
+  }
+
+  .shop-by-need-card-badge svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Card Title Underline */
+  .shop-by-need-card-underline {
+    height: 1px;
+    width: 32px;
+    margin-top: 10px;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, var(--icon-color) 50%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 2px;
+  }
+
+  /* Content Grouping */
+  .shop-by-need-card-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  /* Card Headline */
+  .shop-by-need-card-title {
+    font-family: 'Fraunces', 'Playfair Display', Didot, Georgia, serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--espresso);
+    margin: 0 0 8px 0;
+  }
+
+  /* Description (2 lines limit) */
+  .shop-by-need-card-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6B5361; /* Visual consistency with Why TIME */
+    margin: 0 0 20px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 38px; /* Match standard 2-line height */
+  }
+
+  /* Rounded-pill Solid Terracotta CTA Button with lightened font weight */
+  .shop-by-need-card-btn {
+    width: 100%;
+    background: var(--terracotta);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 100px; /* Rounded-pill */
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 500; /* Lightened font weight */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    margin-top: auto;
+  }
+
+  .shop-by-need-card-btn:hover {
+    background-color: #733c21;
+    opacity: 0.95;
+    transform: translateY(-1px);
+  }
+
+  .shop-by-need-btn-arrow {
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .shop-by-need-card-btn:hover .shop-by-need-btn-arrow {
+    transform: translateX(3px);
+  }
+
+  /* Trust Strip Container */
+  .shop-by-need-trust-wrapper {
+    margin-top: 40px;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-trust-wrapper {
+      margin-top: 56px;
+    }
+  }
+
+  .shop-by-need-trust-pill {
+    background: #F4E7DA; /* Tan/cream background, slightly darker than section */
+    border-radius: 28px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid rgba(58, 36, 23, 0.04);
+  }
+
+  @media screen and (min-width: 769px) {
+    .shop-by-need-trust-pill {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 100px;
+      padding: 20px 40px;
+      gap: 0;
+    }
+  }
+
+  /* Trust Strip Item */
+  .shop-by-need-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .shop-by-need-trust-pill {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .shop-by-need-trust-item:last-child:nth-child(odd) {
+      grid-column: span 2;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .shop-by-need-trust-pill {
+      grid-template-columns: 1fr;
+    }
+    .shop-by-need-trust-item:last-child:nth-child(odd) {
+      grid-column: span 1;
+      justify-content: flex-start;
+    }
+  }
+
+  .shop-by-need-trust-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--terracotta);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .shop-by-need-trust-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .shop-by-need-trust-label {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--espresso);
+    letter-spacing: -0.01em;
+  }
+{%- endstyle -%}
+
+<!-- Asynchronous Google Fonts Loader -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
+<div class="shop-by-need-section shop-by-need-section--{{ section.id }}">
+  <!-- Background organic blob shape -->
+  {%- if section.settings.show_organic_blob -%}
+    <div class="shop-by-need-blob">
+      <svg viewBox="0 0 1000 600" fill="currentColor">
+        <path d="M 150 300 C 120 120, 480 80, 600 180 C 720 280, 920 180, 880 380 C 840 580, 480 620, 360 520 C 240 420, 180 480, 150 300 Z" />
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- Faded Corner Botanical line art - Top Left -->
+  {%- if section.settings.show_botanical_illustrations -%}
+    <div class="shop-by-need-botanical shop-by-need-botanical--top-left">
+      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 0 C 40 40, 80 90, 100 150" />
+        <path d="M 30 35 C 50 30, 65 15, 60 10 C 55 5, 40 20, 30 35 Z" />
+        <path d="M 52 60 C 75 55, 90 40, 85 35 C 80 30, 65 45, 52 60 Z" />
+        <path d="M 72 90 C 95 95, 115 85, 115 75 C 115 65, 95 75, 72 90 Z" />
+        <path d="M 88 120 C 110 135, 130 130, 130 120 C 130 110, 110 115, 88 120 Z" />
+        <path d="M 22 20 C 15 35, 5 45, 2 40 C -1 35, 8 25, 22 20 Z" />
+        <path d="M 38 45 C 30 65, 18 75, 15 70 C 12 65, 25 55, 38 45 Z" />
+        <path d="M 58 75 C 50 95, 38 105, 35 100 C 32 95, 45 85, 58 75 Z" />
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- Faded Corner Botanical line art - Bottom Right (Mirrored in CSS) -->
+  {%- if section.settings.show_botanical_illustrations -%}
+    <div class="shop-by-need-botanical shop-by-need-botanical--bottom-right">
+      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 0 C 40 40, 80 90, 100 150" />
+        <path d="M 30 35 C 50 30, 65 15, 60 10 C 55 5, 40 20, 30 35 Z" />
+        <path d="M 52 60 C 75 55, 90 40, 85 35 C 80 30, 65 45, 52 60 Z" />
+        <path d="M 72 90 C 95 95, 115 85, 115 75 C 115 65, 95 75, 72 90 Z" />
+        <path d="M 88 120 C 110 135, 130 130, 130 120 C 130 110, 110 115, 88 120 Z" />
+        <path d="M 22 20 C 15 35, 5 45, 2 40 C -1 35, 8 25, 22 20 Z" />
+        <path d="M 38 45 C 30 65, 18 75, 15 70 C 12 65, 25 55, 38 45 Z" />
+        <path d="M 58 75 C 50 95, 38 105, 35 100 C 32 95, 45 85, 58 75 Z" />
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <div class="shop-by-need-container">
+    <!-- Header Block -->
+    <div class="shop-by-need-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="shop-by-need-eyebrow">
+          {{ section.settings.eyebrow | escape }}
+        </span>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h2 class="shop-by-need-headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+
+      <!-- Horizontal Divider with Heart in center -->
+      <div class="shop-by-need-divider">
+        <span class="shop-by-need-divider-line"></span>
+        <span class="shop-by-need-divider-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </span>
+        <span class="shop-by-need-divider-line"></span>
+      </div>
+
+      {%- if section.settings.subheadline != blank -%}
+        <p class="shop-by-need-subheadline">{{ section.settings.subheadline | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Cards wrapper -->
+    <div class="shop-by-need-cards">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'card' -%}
+          {%- liquid
+            case block.settings.bg_color
+              when 'rose'
+                assign card_bg = 'var(--card-rose)'
+                assign icon_color = '#B84357'
+              when 'lavender'
+                assign card_bg = 'var(--card-lavender)'
+                assign icon_color = '#584B8C'
+              when 'mint'
+                assign card_bg = 'var(--card-mint)'
+                assign icon_color = '#1E654D'
+              when 'peach'
+                assign card_bg = 'var(--card-peach)'
+                assign icon_color = '#8B4A2B'
+              when 'sage'
+                assign card_bg = 'var(--card-sage)'
+                assign icon_color = '#385A42'
+              when 'custom'
+                assign card_bg = block.settings.custom_bg_color | default: 'var(--card-rose)'
+                assign icon_color = 'var(--terracotta)'
+            endcase
+          -%}
+          
+          <div class="shop-by-need-card" {{ block.shopify_attributes }} style="--card-bg: {{ card_bg }}; --icon-color: {{ icon_color }};">
+            <!-- Product Image Area -->
+            <div class="shop-by-need-image-wrapper">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 320 | image_tag: loading: 'lazy', alt: block.settings.title }}
+              {%- else -%}
+                {%- assign placeholder_index = forloop.index | at_most: 6 -%}
+                {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+            <!-- Dedicated space for icon badge below image, above title -->
+            <div class="shop-by-need-card-badge-row">
+              <div class="shop-by-need-card-badge">
+                {%- case block.settings.icon -%}
+                  {%- when 'droplet' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                    </svg>
+                  {%- when 'moon' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                  {%- when 'face' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+                      <path d="M8 7c-2 2-2 6-2 8" />
+                      <path d="M16 7c2 2 2 6 2 8" />
+                    </svg>
+                  {%- when 'lightning' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                  {%- when 'cup' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 6c0 0 1 9 6 11l0 3 M12 17c5-2 6-11 6-11" />
+                      <path d="M6 6c1-1 11-1 12 0" />
+                      <path d="M10 20h4" />
+                    </svg>
+                  {%- when 'custom' -%}
+                    {{ block.settings.custom_icon_svg }}
+                {%- endcase -%}
+              </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="shop-by-need-card-content">
+              {%- if block.settings.title != blank -%}
+                <h3 class="shop-by-need-card-title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+
+              <!-- Accent-colored gradient underline below title -->
+              <div class="shop-by-need-card-underline"></div>
+
+              {%- if block.settings.description != blank -%}
+                <p class="shop-by-need-card-desc">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.btn_label != blank -%}
+                <a href="{{ block.settings.btn_link | default: '#' }}" class="shop-by-need-card-btn">
+                  {{ block.settings.btn_label | escape }}
+                  <span class="shop-by-need-btn-arrow">&rarr;</span>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Trust Strip Pill wrapper -->
+    <div class="shop-by-need-trust-wrapper">
+      <div class="shop-by-need-trust-pill">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_item' -%}
+            <div class="shop-by-need-trust-item" {{ block.shopify_attributes }}>
+              <div class="shop-by-need-trust-icon">
+                {%- case block.settings.icon -%}
+                  {%- when 'drop_check' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z" />
+                      <path d="M9 14.5l2 2 4-4" />
+                    </svg>
+                  {%- when 'leaf' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 22 C6 20, 8 16, 9 13" />
+                      <path d="M9 13 C12 7, 18 4, 22 2 C 20 6, 17 12, 11 15 C 8 16, 6 20, 2 22" />
+                      <path d="M9 13 L15 11" />
+                      <path d="M11 15 L17 13" />
+                    </svg>
+                  {%- when 'water_drop' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z" />
+                      <path d="M12 18.5a3.5 3.5 0 0 0 3.5-3.5c0-2-3.5-6.5-3.5-6.5S8.5 13 8.5 15a3.5 3.5 0 0 0 3.5 3.5z" opacity="0.6" />
+                    </svg>
+                  {%- when 'clock' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 12" />
+                      <path d="M12 2 A 10 10 0 0 1 22 12" stroke-width="2.5" />
+                    </svg>
+                  {%- when 'heart_hand' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 14c1-2 3-3 5-3a4 4 0 0 1 4 4v2m8-3c-1-2-3-3-5-3a4 4 0 0 0-4 4v2" />
+                      <path d="M12 7.5c-.8-1-2.2-1.5-3-1.5-2.2 0-3 1.8-3 3 0 2.5 4.5 5.5 6 6.5 1.5-1 6-4 6-6.5 0-1.2-.8-3-3-3-.8 0-2.2.5-3 1.5z" />
+                    </svg>
+                  {%- when 'custom' -%}
+                    {{ block.settings.custom_icon_svg }}
+                {%- endcase -%}
+              </div>
+              <span class="shop-by-need-trust-label">
+                {%- if block.settings.label_1 != blank -%}
+                  {{ block.settings.label_1 | escape }}<br>
+                {%- endif -%}
+                {%- if block.settings.label_2 != blank -%}
+                  {{ block.settings.label_2 | escape }}
+                {%- endif -%}
+              </span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop by Need Homepage",
+  "tag": "section",
+  "class": "section-shop-by-need",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Badge",
+      "default": "SHOP BY NEED"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Find What Your Body Needs Today"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "Different days. Different needs. TIME has you covered."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_organic_blob",
+      "label": "Show organic wave background shape",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_botanical_illustrations",
+      "label": "Show corner botanical illustrations",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Pastel Need Card",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Card Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Card Description",
+          "default": "Short 2-line description of the need or flow type."
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Button Label",
+          "default": "Shop Flow"
+        },
+        {
+          "type": "url",
+          "id": "btn_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Badge Icon",
+          "options": [
+            { "value": "droplet", "label": "Flow Droplet" },
+            { "value": "moon", "label": "Night Moon" },
+            { "value": "face", "label": "Teen Face Outline" },
+            { "value": "lightning", "label": "Cramp Lightning Bolt" },
+            { "value": "cup", "label": "Menstrual Cup" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "droplet"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        },
+        {
+          "type": "select",
+          "id": "bg_color",
+          "label": "Card Background Swatch",
+          "options": [
+            { "value": "rose", "label": "Pastel Rose" },
+            { "value": "lavender", "label": "Pastel Lavender" },
+            { "value": "mint", "label": "Pastel Mint" },
+            { "value": "peach", "label": "Pastel Peach" },
+            { "value": "sage", "label": "Pastel Sage" },
+            { "value": "custom", "label": "Custom Swatch Picker" }
+          ],
+          "default": "rose"
+        },
+        {
+          "type": "color",
+          "id": "custom_bg_color",
+          "label": "Custom Background ColorSwatch",
+          "default": "#F6D3D8"
+        }
+      ]
+    },
+    {
+      "type": "trust_item",
+      "name": "Trust Strip Item",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Label Line 1",
+          "default": "Line 1 Label"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Label Line 2",
+          "default": "Line 2 Label"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "drop_check", "label": "Clinical Check Drop" },
+            { "value": "leaf", "label": "Comfort Leaf" },
+            { "value": "water_drop", "label": "Protection Concentric Drop" },
+            { "value": "clock", "label": "Coverage Clock" },
+            { "value": "heart_hand", "label": "Cradle Hands & Heart" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "drop_check"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by Need Homepage",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "For Heavy Flow",
+            "description": "Extra protection for heavy flow days and long hours.",
+            "btn_label": "Shop Heavy Flow",
+            "icon": "droplet",
+            "bg_color": "rose"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "For Overnight Comfort",
+            "description": "Longer pads with better coverage for peaceful sleep.",
+            "btn_label": "Shop Overnight",
+            "icon": "moon",
+            "bg_color": "lavender"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "For Teens",
+            "description": "Soft, gentle, and beginner-friendly pads for young girls.",
+            "btn_label": "Shop Teens",
+            "icon": "face",
+            "bg_color": "mint"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "For Cramp Relief",
+            "description": "Fast-absorbing pain relief cream for instant comfort.",
+            "btn_label": "Shop Relief Cream",
+            "icon": "lightning",
+            "bg_color": "peach"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "For Reusable Care",
+            "description": "Medical-grade menstrual cup with up to 12 hours of protection.",
+            "btn_label": "Shop Menstrual Cup",
+            "icon": "cup",
+            "bg_color": "sage"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label_1": "DERMATOLOGICALLY",
+            "label_2": "TESTED",
+            "icon": "drop_check"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label_1": "RASH-FREE",
+            "label_2": "COMFORT",
+            "icon": "leaf"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label_1": "LEAK",
+            "label_2": "PROTECTION",
+            "icon": "water_drop"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label_1": "UP TO 12 HOURS",
+            "label_2": "PROTECTION",
+            "icon": "clock"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "label_1": "MADE IN INDIA",
+            "label_2": "FOR WOMEN",
+            "icon": "heart_hand"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

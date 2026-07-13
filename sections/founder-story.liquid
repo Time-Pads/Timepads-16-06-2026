@@ -1,0 +1,854 @@
+{%- comment -%}
+  Founder Story Homepage Section
+  A premium two-column editorial layout: text/story on left, founder photo + overlapping quote card on right, with a 5-item values strip below.
+{%- endcomment -%}
+
+{%- style -%}
+  .founder-story-section--{{ section.id }} {
+    --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+
+    /* Design Color Tokens */
+    --bg-cream: #FDF9F4;
+    --espresso: #3A2417;
+    --terracotta: #8B4A2B;
+    --rose-accent: #C75B6A;
+    --sage: #5C7A5C;
+    --peach-strip-bg: #F5E4D3;
+  }
+
+  .founder-story-section {
+    padding-top: var(--padding-top-mobile);
+    padding-bottom: var(--padding-bottom-mobile);
+    background: linear-gradient(180deg, var(--bg-cream) 0%, #FFFFFF 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--espresso);
+    position: relative;
+    overflow: hidden;
+    content-visibility: auto;
+    contain-intrinsic-size: 800px;
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-section {
+      padding-top: var(--padding-top-desktop);
+      padding-bottom: var(--padding-bottom-desktop);
+    }
+  }
+
+  /* Scoped Page Container */
+  .founder-story-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Botanical line-arts in corners */
+  .founder-story-botanical {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    color: var(--terracotta);
+    opacity: 0.08; /* Subtle 8% opacity */
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .founder-story-botanical--top-left {
+    top: 0;
+    left: 0;
+    transform: translate(-10%, -10%);
+  }
+
+  .founder-story-botanical--bottom-right {
+    bottom: 0;
+    right: 0;
+    transform: translate(10%, 10%) rotate(180deg);
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-botanical {
+      width: 380px;
+      height: 380px;
+    }
+  }
+
+  /* Two-column layout */
+  .founder-story-two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 56px;
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-two-col {
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-bottom: 64px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .founder-story-two-col {
+      grid-template-columns: 1fr 1.05fr;
+      gap: 80px;
+    }
+  }
+
+  /* Left Column: Text Content */
+  .founder-story-text-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Eyebrow Label */
+  .founder-story-eyebrow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .founder-story-eyebrow-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .founder-story-eyebrow-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .founder-story-eyebrow-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .founder-story-eyebrow-line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, rgba(139, 74, 43, 0.4) 0%, rgba(139, 74, 43, 0) 100%);
+  }
+
+  .founder-story-eyebrow-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--terracotta);
+    white-space: nowrap;
+  }
+
+  /* Headline */
+  .founder-story-headline {
+    font-family: 'Fraunces', 'Playfair Display', Didot, Georgia, serif;
+    font-size: 36px;
+    line-height: 1.15;
+    font-weight: 700;
+    color: var(--espresso);
+    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-headline {
+      font-size: 44px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .founder-story-headline {
+      font-size: 50px;
+    }
+  }
+
+  .founder-story-headline em {
+    color: var(--rose-accent);
+    font-style: normal;
+  }
+
+  /* Decorative underline below headline */
+  .founder-story-underline {
+    height: 2px;
+    width: 48px;
+    background: linear-gradient(90deg, var(--rose-accent) 0%, rgba(199, 91, 106, 0.1) 100%);
+    margin-bottom: 28px;
+    border-radius: 2px;
+  }
+
+  /* Body copy */
+  .founder-story-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #6C5D53;
+    margin: 0 0 20px 0;
+    max-width: 480px;
+  }
+
+  .founder-story-desc:last-of-type {
+    margin-bottom: 32px;
+  }
+
+  /* Statement Pill Badge */
+  .founder-story-statement-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--terracotta);
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(139, 74, 43, 0.15);
+  }
+
+  .founder-story-statement-pill svg {
+    width: 14px;
+    height: 14px;
+    color: #FFFFFF;
+    flex-shrink: 0;
+  }
+
+  /* Right Column: Visual Photo & quote */
+  .founder-story-visual-col {
+    position: relative;
+    width: 100%;
+  }
+
+  .founder-story-image-container {
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    overflow: hidden;
+    background-color: var(--peach-strip-bg);
+    aspect-ratio: 1.15 / 1;
+    box-shadow: 0 16px 40px rgba(58, 36, 23, 0.05);
+  }
+
+  .founder-story-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .founder-story-image-container svg.placeholder-svg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(139, 74, 43, 0.15);
+    padding: 40px;
+    opacity: 0.5;
+  }
+
+  /* Overlapping Quote Card */
+  .founder-story-quote-card {
+    background-color: #FFFFFF;
+    border-radius: 24px;
+    padding: 28px 24px 20px 24px;
+    box-shadow: 0 12px 32px rgba(58, 36, 23, 0.08);
+    border: 1px solid rgba(139, 74, 43, 0.03);
+    position: absolute;
+    top: 10%;
+    right: -10px;
+    width: 240px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .founder-story-quote-card {
+      width: 270px;
+      right: -24px;
+      padding: 36px 28px 24px 28px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .founder-story-quote-card {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: 100%;
+      margin-top: -32px; /* Slight overlap on stack layout */
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 320px;
+    }
+  }
+
+  /* Quotation badge floating over card */
+  .founder-story-quote-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--terracotta);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -19px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 10px rgba(139, 74, 43, 0.2);
+  }
+
+  .founder-story-quote-badge svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .founder-story-quote-text {
+    font-family: 'Fraunces', 'Playfair Display', Didot, Georgia, serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--espresso);
+    margin: 0 0 12px 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .founder-story-quote-text {
+      font-size: 15px;
+    }
+  }
+
+  .founder-story-quote-heart {
+    width: 12px;
+    height: 12px;
+    color: var(--rose-accent);
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .founder-story-quote-author {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--espresso);
+    display: block;
+    margin-bottom: 2px;
+    font-style: normal;
+  }
+
+  .founder-story-quote-title {
+    font-size: 11px;
+    color: #8C7C72;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Bottom: Values Strip */
+  .founder-story-values-strip {
+    background-color: var(--peach-strip-bg);
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: 0 8px 24px rgba(139, 74, 43, 0.03);
+    position: relative;
+    z-index: 2;
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-values-strip {
+      padding: 36px 40px;
+    }
+  }
+
+  .founder-story-values-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 32px;
+    column-gap: 20px;
+  }
+
+  @media screen and (min-width: 481px) and (max-width: 768px) {
+    .founder-story-values-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-values-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0;
+    }
+  }
+
+  .founder-story-value-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-value-item {
+      flex: 1;
+      padding: 0 16px;
+    }
+
+    .founder-story-value-item:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10%;
+      height: 80%;
+      width: 1px;
+      background-color: rgba(58, 36, 23, 0.08);
+    }
+  }
+
+  .founder-story-value-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    transition: transform 0.25s ease;
+  }
+
+  @media screen and (min-width: 769px) {
+    .founder-story-value-badge {
+      width: 72px;
+      height: 72px;
+    }
+  }
+
+  .founder-story-value-item:hover .founder-story-value-badge {
+    transform: scale(1.05);
+  }
+
+  .founder-story-value-badge svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .founder-story-value-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    margin: 0 0 6px 0;
+  }
+
+  .founder-story-value-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: #7A695E;
+    margin: 0;
+    max-width: 160px;
+  }
+{%- endstyle -%}
+
+<!-- Asynchronous Google Fonts Import -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
+<div class="founder-story-section founder-story-section--{{ section.id }}">
+  <!-- Botanical leaf line-arts in background -->
+  <svg class="founder-story-botanical founder-story-botanical--top-left" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 10 90 C 20 80, 40 50, 70 30" />
+    <path d="M 30 65 C 20 55, 20 40, 25 35 C 30 30, 40 45, 30 65 Z" />
+    <path d="M 45 53 C 40 38, 45 25, 50 22 C 55 19, 58 35, 45 53 Z" />
+    <path d="M 60 40 C 60 25, 70 15, 75 15 C 80 15, 75 30, 60 40 Z" />
+  </svg>
+  <svg class="founder-story-botanical founder-story-botanical--bottom-right" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 10 90 C 20 80, 40 50, 70 30" />
+    <path d="M 30 65 C 20 55, 20 40, 25 35 C 30 30, 40 45, 30 65 Z" />
+    <path d="M 45 53 C 40 38, 45 25, 50 22 C 55 19, 58 35, 45 53 Z" />
+    <path d="M 60 40 C 60 25, 70 15, 75 15 C 80 15, 75 30, 60 40 Z" />
+  </svg>
+
+  <div class="founder-story-container">
+    <div class="founder-story-two-col">
+      
+      <!-- Left Column: Story Text -->
+      <div class="founder-story-text-col">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="founder-story-eyebrow">
+            <div class="founder-story-eyebrow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M2 22 C6 20, 8 16, 9 13 M9 13 C12 7, 18 4, 22 2 C 20 6, 17 12, 11 15 C 8 16, 6 20, 2 22 M9 13 L15 11 M11 15 L17 13" />
+              </svg>
+            </div>
+            <div class="founder-story-eyebrow-container">
+              <span class="founder-story-eyebrow-line"></span>
+              <span class="founder-story-eyebrow-label">{{ section.settings.eyebrow | escape }}</span>
+              <span class="founder-story-eyebrow-line"></span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.headline != blank -%}
+          <h2 class="founder-story-headline">{{ section.settings.headline }}</h2>
+        {%- endif -%}
+
+        <div class="founder-story-underline"></div>
+
+        {%- if section.settings.paragraph_1 != blank -%}
+          <p class="founder-story-desc">{{ section.settings.paragraph_1 | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.paragraph_2 != blank -%}
+          <p class="founder-story-desc">{{ section.settings.paragraph_2 | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.paragraph_3 != blank -%}
+          <p class="founder-story-desc">{{ section.settings.paragraph_3 | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.pill_statement != blank -%}
+          <div class="founder-story-statement-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span>{{ section.settings.pill_statement | escape }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Right Column: Visual Photo & Overlap Card -->
+      <div class="founder-story-visual-col">
+        <div class="founder-story-image-container">
+          {%- if section.settings.founder_image != blank -%}
+            {{ section.settings.founder_image | image_url: width: 640 | image_tag: loading: 'lazy', alt: section.settings.founder_name }}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <!-- Overlapping Quote Card -->
+        <div class="founder-story-quote-card">
+          <div class="founder-story-quote-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.686-1.327-.822-.217-.052-.444-.077-.685-.077-.162 0-.312.01-.45.03.18-.843.682-1.96 1.506-3.351l.033-.057c.353-.603.136-1.371-.486-1.706-.575-.311-1.298-.124-1.657.419C6.012 10.151 5 12.378 5 14.951c0 3.059 1.637 4.806 3.795 4.806 1.347 0 2.398-.799 2.398-3.001zm8.808 0c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.686-1.327-.822-.217-.052-.444-.077-.685-.077-.162 0-.312.01-.45.03.18-.843.682-1.96 1.506-3.351l.033-.057c.353-.603.136-1.371-.486-1.706-.575-.311-1.298-.124-1.657.419-.92 1.385-1.932 3.612-1.932 6.185 0 3.059 1.637 4.806 3.795 4.806 1.347 0 2.398-.799 2.398-3.001z"/>
+            </svg>
+          </div>
+          {%- if section.settings.quote_text != blank -%}
+            <p class="founder-story-quote-text">
+              "{{ section.settings.quote_text | escape }}"
+            </p>
+          {%- endif -%}
+          
+          <svg class="founder-story-quote-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+
+          {%- if section.settings.founder_name != blank -%}
+            <cite class="founder-story-quote-author">{{ section.settings.founder_name | escape }}</cite>
+          {%- endif -%}
+
+          {%- if section.settings.founder_title != blank -%}
+            <span class="founder-story-quote-title">{{ section.settings.founder_title | escape }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom: Values Strip -->
+    <div class="founder-story-values-strip">
+      <div class="founder-story-values-grid">
+        {%- assign val_counter = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'value_item' -%}
+            {%- liquid
+              assign val_mod = val_counter | modulo: 3
+              if val_mod == 0
+                assign badge_bg = 'rgba(92, 122, 92, 0.08)'
+                assign val_color = 'var(--sage)'
+              elsif val_mod == 1
+                assign badge_bg = 'rgba(139, 74, 43, 0.08)'
+                assign val_color = 'var(--terracotta)'
+              else
+                assign badge_bg = 'rgba(199, 91, 106, 0.08)'
+                assign val_color = 'var(--rose-accent)'
+              endif
+              assign val_counter = val_counter | plus: 1
+            -%}
+            <div class="founder-story-value-item" {{ block.shopify_attributes }}>
+              <div class="founder-story-value-badge" style="background-color: {{ badge_bg }}; color: {{ val_color }};">
+                {%- case block.settings.icon -%}
+                  {%- when 'shield-check' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                      <path d="M9 11l2 2 4-4" />
+                      <path d="M14.5 15c1 0 2.5.5 3 1.5 M16 15.5c.5-.5 1.5-.5 1.5-.5 M17.5 17c.5 0 1-.5 1-.5" />
+                    </svg>
+                  {%- when 'ribbon-medal' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12" />
+                      <circle cx="12" cy="8" r="6" />
+                      <path d="M12 5l1.2 2.4 2.8.4-2 2 .5 2.8-2.5-1.3-2.5 1.3.5-2.8-2-2 2.8-.4z" />
+                    </svg>
+                  {%- when 'heart-leaf' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 21c-4.5-4.5-8-7.5-8-10.5C4 7.5 6.5 5 9.5 5c1.7 0 3.4.8 4.5 2.1C15.1 5.8 16.8 5 18.5 5c3 0 5.5 2.5 5.5 5.5 0 3-3.5 6-8 10.5Z" />
+                      <path d="M12 11c1-1.5 2.5-2 3.5-2M13 13c1.5-.5 2.5.2 2.5.2 M12 15c1.5.5 2 0 2 0" />
+                    </svg>
+                  {%- when 'globe-hands' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="9" r="6" />
+                      <path d="M12 3a6 6 0 0 0 0 12 M6 9h12 M7.5 5.5a9 9 0 0 0 9 0M7.5 12.5a9 9 0 0 0 9 0" opacity="0.6" />
+                      <path d="M5 16c1 2.5 3 4 5.5 4.5 M19 16c-1 2.5-3 4-5.5 4.5" />
+                      <path d="M3 13.5c1 1.5 2.5 2 4.5 2M21 13.5c-1 1.5-2.5 2-4.5 2" />
+                    </svg>
+                  {%- when 'women-group' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="7" r="3" />
+                      <path d="M7.5 16v-1a4.5 4.5 0 0 1 9 0v1" />
+                      <circle cx="7" cy="9" r="2.5" />
+                      <path d="M3.5 18v-.5a3.5 3.5 0 0 1 7 0v.5" />
+                      <circle cx="17" cy="9" r="2.5" />
+                      <path d="M13.5 18v-.5a3.5 3.5 0 0 1 7 0v.5" />
+                    </svg>
+                  {%- when 'custom' -%}
+                    {{ block.settings.custom_icon_svg }}
+                {%- endcase -%}
+              </div>
+              {%- if block.settings.title != blank -%}
+                <h3 class="founder-story-value-title" style="color: {{ val_color }};">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="founder-story-value-desc">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Founder Story",
+  "tag": "section",
+  "class": "section-founder-story",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "A Promise Born from Personal Pain and <em>Purpose.</em>"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_1",
+      "label": "Paragraph 1",
+      "default": "TIME was born out of a simple belief — every woman deserves comfort, dignity, and care during her period."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_2",
+      "label": "Paragraph 2",
+      "default": "What started as a personal struggle to find safe, irritation-free products turned into a mission to create premium, reliable, and thoughtfully designed solutions for every Indian woman."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_3",
+      "label": "Paragraph 3",
+      "default": "From our pads to our care essentials, every product is crafted with love, backed by science, and made to support you through every phase of your journey."
+    },
+    {
+      "type": "text",
+      "id": "pill_statement",
+      "label": "Pill Statement",
+      "default": "Made for Real Women. By a Woman Who Cares."
+    },
+    {
+      "type": "header",
+      "content": "Founder Visual & Quote"
+    },
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Founder Photo"
+    },
+    {
+      "type": "textarea",
+      "id": "quote_text",
+      "label": "Quote Text",
+      "default": "I created TIME for every girl who once wished for better comfort and care. This is my promise to you."
+    },
+    {
+      "type": "text",
+      "id": "founder_name",
+      "label": "Founder Name",
+      "default": "Lisha Suri"
+    },
+    {
+      "type": "text",
+      "id": "founder_title",
+      "label": "Founder Designation",
+      "default": "Founder, TIME"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value_item",
+      "name": "Values Strip Item",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Value Label"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Value descriptions go here."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Badge Icon",
+          "options": [
+            { "value": "shield-check", "label": "Sage Shield Check" },
+            { "value": "ribbon-medal", "label": "Terracotta Ribbon Medal" },
+            { "value": "heart-leaf", "label": "Pastel Heart Leaf" },
+            { "value": "globe-hands", "label": "Terracotta Globe Hands" },
+            { "value": "women-group", "label": "Pastel Women Group" },
+            { "value": "custom", "label": "Custom SVG Code" }
+          ],
+          "default": "shield-check"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_svg",
+          "label": "Custom Icon SVG",
+          "info": "Paste custom SVG HTML code here if 'Custom SVG Code' is selected."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Founder Story",
+      "blocks": [
+        {
+          "type": "value_item",
+          "settings": {
+            "title": "Safe & Gentle",
+            "description": "Dermatologically tested and made for sensitive skin.",
+            "icon": "shield-check"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "title": "Premium Quality",
+            "description": "Carefully sourced materials for superior comfort & protection.",
+            "icon": "ribbon-medal"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "title": "Thoughtful Design",
+            "description": "Designed with real women and real needs in mind.",
+            "icon": "heart-leaf"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "title": "Sustainable Choices",
+            "description": "Eco-friendly practices for a better tomorrow.",
+            "icon": "globe-hands"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "title": "Women First",
+            "description": "Empowering women through care, comfort & confidence.",
+            "icon": "women-group"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
