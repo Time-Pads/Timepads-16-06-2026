@@ -85,7 +85,8 @@
         {{ desktopImage | image_url }} {{ desktopImage.width }}w"
       sizes="{{ desktopSize | default: '100vw' }}"
     >
-    <img src="{{ desktopImage | image_url: width: 1500 }}"
+    {% assign fallback_width = width | default: 800 %}
+    <img src="{{ desktopImage | image_url: width: fallback_width }}"
       loading="{{ loading }}"
       fetchpriority="{{ fetchpriority }}"
       class="{{ img-class }}"

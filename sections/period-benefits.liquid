@@ -55,7 +55,9 @@
       {% for block in section.blocks %}
         <div class="period-benefits__item" {{ block.shopify_attributes }}>
           <div class="period-benefits__icon">
-         <img src="{{ block.settings.icon | image_url }}" alt="{{ block.settings.text }}">   
+            {% if block.settings.icon != blank %}
+              <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.text | default: 'Benefit' | escape }}" loading="lazy" decoding="async" width="120" height="120">
+            {% endif %}
           </div>
           <p class="period-benefits__text">
             {{ block.settings.text }}

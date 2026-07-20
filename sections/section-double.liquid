@@ -92,9 +92,11 @@
        <div class="background-img-why-time">
        {% endif %}
 
-       <div class="image-bg-mobile">
-        <img src="{{ section.settings.bg_images | image_url }}" alt="Background Image">
-       </div>
+       {% if section.settings.bg_images != blank %}
+         <div class="image-bg-mobile">
+          <img src="{{ section.settings.bg_images | image_url: width: 1400 }}" alt="{{ section.settings.bg_images.alt | default: 'Background Image' | escape }}" loading="lazy" decoding="async" width="{{ section.settings.bg_images.width }}" height="{{ section.settings.bg_images.height }}">
+         </div>
+       {% endif %}
     
   <div class="section-padding {{ section.settings.width }}" data-wrapper>
     <div class="brick__section brick--{{ section.blocks.size }} {{ margin_class }} {{ border_class }} {{ section.settings.height }} {{ swaparoo_class }}"

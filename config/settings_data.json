@@ -10,13 +10,13 @@
 {
   "current": {
     "enable_lazy_loading_sections": true,
-    "hp_eager_section_count": 5,
+    "hp_eager_section_count": 10,
     "pdp_eager_section_count": 3,
     "enable_lazy_loading_header_sections": true,
-    "header_eager_section_count": 4,
-    "logo": "shopify://shop_images/Time-Logo-black_942d22d3-dc35-4d57-ac5c-ec5033b11d942.png",
-    "preload_image_desktop": "shopify://shop_images/bj_22.25_12233_2.png",
-    "preload_image_mobile": "shopify://shop_images/B25_2.png",
+    "header_eager_section_count": 10,
+    "logo": "shopify://shop_images/logo.webp",
+    "preload_image_desktop": "shopify://shop_images/banner.webp",
+    "preload_image_mobile": "shopify://shop_images/banner-mobile.webp",
     "free_shipping": "1500",
     "color_main_body_bg": "#e80d0d",
     "color_announcement_bg": "#ffffff",
@@ -150,16 +150,6 @@
       "11068332061543699368": {
         "type": "shopify://apps/booster-page-speed-optimizer/blocks/app-embed/d920faf3-7c60-423a-9636-22618b5561b5",
         "disabled": false,
-        "settings": {}
-      },
-      "14167655181940180261": {
-        "type": "shopify://apps/quinn-shoppable-reel/blocks/app-embed/483fa771-9c4d-49e4-8c0d-0155f4b872d6",
-        "disabled": true,
-        "settings": {}
-      },
-      "2766656906679212237": {
-        "type": "shopify://apps/quinn-shoppable-reel/blocks/app-embed-legacy/483fa771-9c4d-49e4-8c0d-0155f4b872d6",
-        "disabled": true,
         "settings": {}
       },
       "10431957531522714341": {

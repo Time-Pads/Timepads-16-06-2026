@@ -129,12 +129,7 @@
     --COLOR-NAV-TEXT-TRANSPARENT: {{ section.settings.transparent_text_color }};
     --COLOR-HEADER-TRANSPARENT-GRADIENT: {{ overlay_color }};
     --LOGO-PADDING: {{ section.settings.logo_padding | append: 'px' }};
-    --menu-backfill-height: 60px;
-  }
-  @media screen and (min-width: 769px) {
-    :root {
-      --menu-backfill-height: 90px;
-    }
+    --menu-backfill-height: auto;
   }
 {% endstyle %}
 
@@ -364,22 +359,11 @@
         style="--LOGO-WIDTH: {{ logo_width }}px"
       >
         {% if section.settings.logo != blank %}
+          {%- assign logo_width = 200 -%}
           {%- assign alt = section.settings.logo.alt | default: shop.name | strip_html | escape %}
           {%- assign logo_width_2x = logo_width | times: 2 %}
           {%- assign logo_width_3x = logo_width | times: 3 %}
-  
-          {% capture srcset %}
-            {{ section.settings.logo | image_url: width: logo_width_2x }} 2x,
-            {{ section.settings.logo | image_url: width: logo_width_3x }} 3x,
-            {{ section.settings.logo | image_url: width: logo_width }}
-          {% endcapture %}
-  
-          {% comment %} {{ section.settings.logo | image_url: width: logo_width | image_tag:
-            class: "logo__img logo__img--color",
-            srcset: srcset,
-            alt: alt,
-            preload: true
-          }} {% endcomment %}
+          {%- assign logo_img_height = logo_width | divided_by: section.settings.logo.aspect_ratio | round %}
 
           <picture>
             <source
@@ -400,8 +384,7 @@
               alt="{{ alt }}"
               class="logo__img logo__img--color tw-w-full tw-max-h-[60rem]"
               width="{{ logo_width }}"
-              height="{{ logo_width | divided_by: section.settings.logo.aspect_ratio | round }}"
-              style="aspect-ratio: {{ section.settings.logo.aspect_ratio }}; height: auto;"
+              height="{{ logo_img_height }}"
               loading="eager"
               fetchpriority="high"
               decoding="async"
@@ -446,11 +429,8 @@
             class: "logo__img logo__img--transparent",
             srcset: srcset,
             alt: alt,
-            width: transparent_logo_width,
-            height: transparent_logo_width | divided_by: section.settings.transparent_logo.aspect_ratio | round,
-            style: "aspect-ratio: " | append: section.settings.transparent_logo.aspect_ratio | append: "; height: auto;",
-            loading: 'eager',
-            fetchpriority: 'high'
+            loading: 'lazy',
+            fetchpriority: 'low'
           }}
         {% endif %}
       </a>

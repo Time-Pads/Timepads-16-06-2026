@@ -14,10 +14,9 @@
       "blocks": {
         "image_8hKAHJ": {
           "type": "image",
-          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-06-27_at_11.52.39_AM.jpg",
-            "mobile_image": "shopify://shop_images/jb_27_desk.png",
+            "image": "shopify://shop_images/banner.webp",
+            "mobile_image": "shopify://shop_images/banner-mobile.webp",
             "overlay_opacity": 0,
             "overlay_color": "#ffffff",
             "enable_overlay_text": true,
@@ -35,8 +34,8 @@
         "image_EQicbA": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/bj_22.25_12233_2.png",
-            "mobile_image": "shopify://shop_images/B25_2.png",
+            "image": "shopify://shop_images/banner-2.webp",
+            "mobile_image": "shopify://shop_images/banner-mobile-2.webp",
             "overlay_opacity": 0,
             "overlay_color": "#000000",
             "enable_overlay_text": false,
@@ -54,8 +53,8 @@
         "image_bTfJtJ": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/cf.png",
-            "mobile_image": "shopify://shop_images/B25_1.png",
+            "image": "shopify://shop_images/banner-3.webp",
+            "mobile_image": "shopify://shop_images/banner-mobile-3.webp",
             "overlay_opacity": 0,
             "overlay_color": "#000000",
             "enable_overlay_text": false,
@@ -204,7 +203,7 @@
       ],
       "settings": {
         "autoplay": true,
-        "autoplay_speed": 4,
+        "autoplay_speed": 2,
         "preload_first_image": true,
         "height": "use_image",
         "color_bg": "palette--light bg--accent",
@@ -291,7 +290,7 @@
           "type": "tab",
           "settings": {
             "coming_soon_text": "New Arrivals",
-            "header_image": "shopify://shop_images/Cream_1_fbbb9a81-8d73-4bd1-a27d-c378a6e6fa82.png",
+            "header_image": "shopify://shop_images/Cream_1_fbbb9a81-8d73-4bd1-a27d-c378a6e6fa82_1_1.webp",
             "header_title": "Period Pain Relief Cream",
             "tab_label": "Period Pain Relief Cream",
             "collection": "",
@@ -302,7 +301,7 @@
           "type": "tab",
           "settings": {
             "coming_soon_text": "New Arrivals",
-            "header_image": "shopify://shop_images/Cup_1_21485a91-1b99-489e-8098-2e803deadb03.png",
+            "header_image": "shopify://shop_images/Cup_1_21485a91-1b99-489e-8098-2e803deadb0.webp",
             "header_title": "Menstrual Cup",
             "tab_label": "Menstrual Cup",
             "collection": "",
@@ -313,7 +312,7 @@
           "type": "tab",
           "settings": {
             "coming_soon_text": "",
-            "header_image": "shopify://shop_images/Feather_9.png",
+            "header_image": "shopify://shop_images/Feather_9_1_1.webp",
             "header_title": "Ultra Feather",
             "tab_label": "Day Pads",
             "collection": "cotton-sanitary-pads",
@@ -324,7 +323,7 @@
           "type": "tab",
           "settings": {
             "coming_soon_text": "",
-            "header_image": "shopify://shop_images/Velvet_4.png",
+            "header_image": "shopify://shop_images/Velvet_4_1.jpg",
             "header_title": "Ultra Velvet",
             "tab_label": "Day & Night pads",
             "collection": "comfortable-pads-for-periods",
@@ -335,7 +334,7 @@
           "type": "tab",
           "settings": {
             "coming_soon_text": "",
-            "header_image": "shopify://shop_images/Cuddle_9.png",
+            "header_image": "shopify://shop_images/Cuddle_9_1_1.webp",
             "header_title": "Ultra cuddle",
             "tab_label": "Night Pads",
             "collection": "period-pads-cotton",
@@ -346,7 +345,7 @@
           "type": "tab",
           "settings": {
             "coming_soon_text": "",
-            "header_image": "shopify://shop_images/Uniline_5.png",
+            "header_image": "shopify://shop_images/Uniline.webp",
             "header_title": "Uniline",
             "tab_label": "Straight pads",
             "collection": "soft-cotton-pads-for-periods",
@@ -460,7 +459,7 @@
           "type": "text_block",
           "settings": {
             "enable_image": true,
-            "image": "shopify://shop_images/Slide-1_2.jpg",
+            "image": "shopify://shop_images/Slide-1_2.webp",
             "alt_text": "period pads",
             "shape_class": "",
             "title": "",
@@ -478,7 +477,7 @@
           "type": "text_block",
           "settings": {
             "enable_image": true,
-            "image": "shopify://shop_images/Slide-2_7.jpg",
+            "image": "shopify://shop_images/Slide-2_7_1.webp",
             "alt_text": "sanitary pads",
             "shape_class": "",
             "title": "",
@@ -496,7 +495,7 @@
           "type": "text_block",
           "settings": {
             "enable_image": true,
-            "image": "shopify://shop_images/Slide-3_7.jpg",
+            "image": "shopify://shop_images/Slide-3_7.webp",
             "alt_text": "long night time sanitary pads",
             "shape_class": "",
             "title": "",
@@ -514,7 +513,7 @@
           "type": "text_block",
           "settings": {
             "enable_image": true,
-            "image": "shopify://shop_images/Slide-4_6.jpg",
+            "image": "shopify://shop_images/Slide-4_6.webp",
             "alt_text": "cotton absorbent sanitary pads",
             "shape_class": "",
             "title": "",
@@ -591,7 +590,6 @@
         "collection_images_8kAEGB",
         "collection_images_JkPbCR"
       ],
-      "disabled": true,
       "settings": {
         "padding_top": 0,
         "padding_bottom": 0,
@@ -669,7 +667,6 @@
         "images_L7w7Et",
         "images_wLUmUN"
       ],
-      "disabled": true,
       "settings": {
         "section_heading": "Our Customers Love Us!",
         "font_size": 24,

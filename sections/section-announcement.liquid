@@ -1,392 +1,366 @@
-<!-- /sections/section-announcement.liquid -->
+{%- comment -%}
+  TIMEPADS - Ultra-Fast Pure CSS Scrolling Promotion Bar
+  Target: Lighthouse 95+ Mobile | CLS = 0 | LCP Unaffected | 0 KB JS | HTML < 2 KB | CSS < 2 KB
+{%- endcomment -%}
 
+{%- liquid
+  assign bg_color = section.settings.bg_color | default: '#46543E'
+  assign text_color = section.settings.text_color | default: '#FFFFFF'
+  assign desktop_size = section.settings.desktop_font_size | default: 16
+  assign mobile_size = section.settings.mobile_font_size | default: 14
+  assign speed = section.settings.animation_speed | default: 25
+  assign pause_hover = section.settings.pause_on_hover
+  assign pad_top = section.settings.padding_top | default: 0
+  assign pad_bottom = section.settings.padding_bottom | default: 0
 
-{%- capture lazy_load_section %}
-  {%- render 'lazy-load-section-validations' -%}
-{%- endcapture -%}
+  assign items = section.blocks
+-%}
 
-{% if lazy_load_section != blank %}
-  <lazy-section>
-{% endif %}
+{%- style -%}
+  .tp-promo-{{ section.id }} {
+    --tp-promo-bg: {{ bg_color }};
+    --tp-promo-text: {{ text_color }};
+    --tp-promo-size-desktop: {{ desktop_size }}px;
+    --tp-promo-size-mobile: {{ mobile_size }}px;
+    --tp-promo-speed: {{ speed }}s;
+    --tp-promo-pt: {{ pad_top }}px;
+    --tp-promo-pb: {{ pad_bottom }}px;
+  }
+{%- endstyle -%}
 
-  {% if lazy_load_section == blank %}
-
-
-
-
-
-
-{%- assign bar_markup = '' -%}
-{%- assign font_size_class = section.settings.text_size | prepend: 'accent-size-' -%}
-{%- assign line_height_ratio = 1 -%} {%- comment -%} --leading-none: 1 {%- endcomment -%}
-
-{%- comment -%} Build Bar HTML {%- endcomment -%}
-{%- for block in section.blocks -%}
-  {%- assign icon_markup = '' -%}
-  {%- assign classes = 'section-padding flex items-center px-[--items-spacing]' -%}
-
-  {%- capture block_settings -%}
-    x-ref="{{ block.id }}"
-    class="{{ classes }}"
-    {{ block.shopify_attributes }}
-  {%- endcapture -%}
-
-  {%- comment -%} Build icon block {%- endcomment -%}
-  {%- if block.type == 'icon_block' -%}
-    {% capture icon_markup %}
-      {%- if block.settings.icon_alt != blank -%}
-        {%- assign image_max_width = block.settings.icon_alt_width | append: 'px' -%}
-        {%- capture image_max_height -%}
-          calc((var(--font-{{ section.settings.text_size }}) * var(--FONT-ADJUST-ACCENT)) * {{ line_height_ratio }})
-        {%- endcapture -%}
-
-        {% assign image = block.settings.icon_alt %}
-        {% assign image_width = block.settings.icon_alt_width | at_most: image.width %}
-        {% assign image_width_2x = image_width | times: 2 | at_most: image.width %}
-        {% assign alt = image.alt | default: shop.name %}
-
-        {% capture srcset %}
-          {{ image | image_url: width: image_width_2x }} 2x,
-          {{ image | image_url: width: image_width }}
-        {% endcapture %}
-
-        {% capture style %}
-          --image-max-width: {{ image_max_width }};
-          --image-max-height: {{ image_max_height }};
-        {% endcapture %}
-
-        {% comment %} Note: cant lazy load these images as the images wont load in Safari when cloned {% endcomment %}
-        {%- render 'image',
-          img_object: image,
-          wh_ratio: image.aspect_ratio,
-          width: image_width,
-          srcset: srcset,
-          alt: alt,
-          cover: false,
-          wrapper_style: style,
-          wrapper_class: 'mr-[0.5em] max-w-[--image-max-width] max-h-[--image-max-height]',
-          loading: 'eager'
-        -%}
-      {%- else -%}
-        <div class="mr-[0.5em] {{ font_size_class }}" style="--ICON-STROKE-COLOR: {{ block.settings.icon_color }}">
-          {% render 'icon-setting', filename: block.settings.icon_name %}
-        </div>
-      {%- endif -%}
-
-      {% if block.settings.text != blank %}
-        <div class="rte {{ font_size_class }}">{{ block.settings.text | replace: '|', '&nbsp;<span class="ml-[0.33em] pr-[0.33em] w-0 border-l border-current"></span>&nbsp;' }}</div>
-      {% endif %}
-    {% endcapture %}
-  {%- endif -%}
-
-  {%- comment -%} Build Bar HTML {%- endcomment -%}
-  {%- capture bar_html -%}
-    {%- if block.settings.message != blank or block.settings.text != blank or icon_markup != blank -%}
-      <div {{ block_settings }}{% if block.type == 'message' %} data-cart-message-container{% endif %}>
-        {%- case block.type -%}
-          {%- when 'text' -%}
-            {%- if block.settings.text != blank -%}
-              {{ block.settings.text | replace: '|', '&nbsp;<span class="ml-[0.33em] pr-[0.33em] w-0 border-l border-current"></span>&nbsp;' }}
-            {%- endif -%}
-
-          {%- when 'message' -%}
-            {%- if block.settings.message -%}
-              {% render 'cart-shipping-message', message: block.settings.message, show_wheel: false, font_size_class: font_size_class %}
-            {%- endif -%}
-
-          {%- when 'custom' -%}
-            {%- if block.settings.text != blank -%}
-              {{ block.settings.text }}
-            {%- endif -%}
-
-          {% when 'icon_block' %}
-            {%- if icon_markup -%}
-              {{ icon_markup }}
-            {%- endif -%}
-        {%- endcase -%}
-      </div>
-    {%- endif -%}
-  {%- endcapture -%}
-
-  {%- assign bar_markup = bar_markup | append: bar_html -%}
-{%- endfor -%}
-
-<div
-  class="announcement bg-[--bg] text-[--text] relative z-[5500] overflow-hidden"
-  style="
-    --PT: {{ section.settings.padding_top }}px;
-    --PB: {{ section.settings.padding_bottom }}px;
-    --bg: {{ section.settings.bg_color }};
-    --text: {{ section.settings.color }};
-    --underline: calc(var(--font-{{ section.settings.text_size }}) * var(--FONT-ADJUST-ACCENT));"
-  data-announcement-bar
-  data-section-id="{{ section.id }}"
-  data-section-type="announcement"
-  x-data="announcement()"
+<section
+  id="shopify-section-promo-{{ section.id }}"
+  class="tp-promo tp-promo-{{ section.id }}"
+  role="region"
+  aria-label="Scrolling Promotion"
 >
-  <div style="--items-spacing: {{ section.settings.text_size | times: 4 }}px">
-    <div class="flex justify-between items-center text-center w-full">
-      <div
-        class="w-full px-[--outer] text-[0] overflow-hidden"
-        data-ticker-frame
-        x-data="announcementTicker({ stopClone: true })"
-        {%- if request.design_mode -%}
-          @shopify:block:select="onBlockSelect"
-          @shopify:block:deselect="onBlockDeselect"
-        {%- endif -%}
-      >
-        <div
-          class="inline-flex items-center transition-opacity duration-500 ease-linear ticker--unloaded"
-          data-ticker-scale
-        >
-          <div
-            class="rte--lock-font rte--lock-size flex flex-row items-center w-max {{ font_size_class }}"
-            data-ticker-text
-          >
-            {{ bar_markup }}
-          </div>
+  <div class="tp-promo__container{% if pause_hover %} tp-promo__container--pause-hover{% endif %}">
+    <div class="tp-promo__track">
+      {%- comment -%} Render items twice via Liquid for seamless CSS infinite scroll {%- endcomment -%}
+      {%- for loop_index in (1..2) -%}
+        <div class="tp-promo__group" aria-hidden="{% if loop_index == 2 %}true{% else %}false{% endif %}">
+          {%- if items.size > 0 -%}
+            {%- for block in items -%}
+              {%- liquid
+                assign item_text = block.settings.text | default: block.settings.title | default: block.settings.message | strip_html
+                assign item_link = block.settings.link | default: block.settings.url
+                assign item_svg = block.settings.svg_icon | default: block.settings.icon_svg
+              -%}
+
+              {%- if item_text != blank -%}
+                <div class="tp-promo__item" {{ block.shopify_attributes }}>
+                  {%- if item_link != blank -%}
+                    <a href="{{ item_link }}" class="tp-promo__link">
+                  {%- endif -%}
+
+                  {%- if item_svg != blank -%}
+                    <span class="tp-promo__icon">{{ item_svg }}</span>
+                  {%- else -%}
+                    <span class="tp-promo__icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                  {%- endif -%}
+
+                  <span class="tp-promo__text">{{ item_text }}</span>
+
+                  {%- if item_link != blank -%}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Default Preset Items if No Blocks Configured -->
+            <div class="tp-promo__item">
+              <span class="tp-promo__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span class="tp-promo__text">Clinically Tested</span>
+            </div>
+            <div class="tp-promo__item">
+              <span class="tp-promo__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
+              <span class="tp-promo__text">100% Rash Free</span>
+            </div>
+            <div class="tp-promo__item">
+              <span class="tp-promo__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></span>
+              <span class="tp-promo__text">Fast Delivery</span>
+            </div>
+            <div class="tp-promo__item">
+              <span class="tp-promo__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></span>
+              <span class="tp-promo__text">Leak Proof</span>
+            </div>
+          {%- endif -%}
         </div>
-      </div>
+      {%- endfor -%}
     </div>
   </div>
-</div>
+</section>
 
-
-
-
-{% else %}
-<svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-</svg>
-{% endif %}       
-
-{% if lazy_load_section != blank %}
-</lazy-section>
-{% endif %}
-{% style %}
-  #shopify-section-{{ section.id }} {
-    padding-top: {{ section.settings.padding_top }}px !important;
-    padding-bottom: {{ section.settings.padding_bottom }}px !important;
+<style>
+  .tp-promo-{{ section.id }} {
+    background-color: var(--tp-promo-bg);
+    color: var(--tp-promo-text);
+    padding-top: var(--tp-promo-pt);
+    padding-bottom: var(--tp-promo-pb);
+    width: 100%;
+    min-height: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 40;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  @media (max-width: 768px) {
-    #shopify-section-{{ section.id }} {
-      padding-top: {{ section.settings.padding_top_mobile }}px !important;
-      padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+  @media (min-width: 768px) {
+    .tp-promo-{{ section.id }} {
+      min-height: 52px;
+      height: 52px;
     }
   }
-{% endstyle %}
 
+  .tp-promo-{{ section.id }} .tp-promo__container {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
 
+  .tp-promo-{{ section.id }} .tp-promo__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    will-change: transform;
+    animation: tp-marquee var(--tp-promo-speed) linear infinite;
+  }
+
+  .tp-promo-{{ section.id }} .tp-promo__container--pause-hover:hover .tp-promo__track {
+    animation-play-state: paused;
+  }
+
+  .tp-promo-{{ section.id }} .tp-promo__group {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-right: 32px;
+    flex-shrink: 0;
+  }
+  @media (min-width: 768px) {
+    .tp-promo-{{ section.id }} .tp-promo__group {
+      gap: 48px;
+      padding-right: 48px;
+    }
+  }
+
+  .tp-promo-{{ section.id }} .tp-promo__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    font-size: var(--tp-promo-size-mobile);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: inherit;
+  }
+  @media (min-width: 768px) {
+    .tp-promo-{{ section.id }} .tp-promo__item {
+      font-size: var(--tp-promo-size-desktop);
+    }
+  }
+
+  .tp-promo-{{ section.id }} .tp-promo__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+  }
+  .tp-promo-{{ section.id }} .tp-promo__link:hover {
+    text-decoration: underline;
+  }
+
+  .tp-promo-{{ section.id }} .tp-promo__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    flex-shrink: 0;
+  }
+  .tp-promo-{{ section.id }} .tp-promo__icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    stroke: currentColor;
+  }
+
+  @keyframes tp-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tp-promo-{{ section.id }} .tp-promo__track {
+      animation: none;
+    }
+  }
+</style>
 
 {% schema %}
 {
-  "name": "Scrolling promotion",
+  "name": "Scrolling Promotion",
+  "tag": "section",
+  "class": "tp-scrolling-promo-section",
   "settings": [
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background color",
-      "default": "#f7f7f7"
+      "label": "Background Color",
+      "default": "#46543E"
     },
     {
       "type": "color",
-      "id": "color",
-      "label": "Text color",
-      "default": "#545454"
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
     },
     {
-      "type":  "range",
-      "id":    "text_size",
-      "label": "Text size",
-      "min":    1,
-      "max":    15,
-      "step":   1,
-      "default":7
+      "type": "range",
+      "id": "desktop_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Font Size",
+      "default": 16
     },
     {
-      "type": "header",
-      "content": "Section spacing"
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Animation Speed",
+      "default": 25
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Enable Pause On Hover",
+      "default": true
     },
     {
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 180,
+      "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Padding top",
-      "default": 18
+      "label": "Padding Top",
+      "default": 0
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 180,
+      "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Padding bottom",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "padding_top_mobile",
-      "min": 0,
-      "max": 180,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding top mobile",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_mobile",
-      "min": 0,
-      "max": 180,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding bottom mobile",
-      "default": 14
+      "label": "Padding Bottom",
+      "default": 0
     }
   ],
-  "blocks" : [
+  "blocks": [
     {
       "type": "text",
-      "name": "Text announcement",
+      "name": "Promotion Item (Text)",
       "settings": [
         {
-          "type": "richtext",
+          "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "<p><strong>Make an announcement</strong> | More info</p>"
-        }
-      ]
-    },
-    {
-      "type": "message",
-      "name": "Free shipping message",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "textarea",
-          "id": "message",
-          "label": "Message",
-          "info": "Use ||amount|| to display progress towards free shipping.",
-          "default": "Spend ||amount|| more for free shipping"
+          "default": "Safe & Reliable"
         },
         {
-          "type": "paragraph",
-          "content": "Navigate to Theme settings > Cart > Free shipping message to set the amount."
-        }
-      ]
-    },
-    {
-      "type": "custom",
-      "name": "Custom HTML",
-      "settings": [
+          "type": "html",
+          "id": "svg_icon",
+          "label": "Custom SVG Icon HTML (Optional)"
+        },
         {
-          "type": "liquid",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Custom HTML</p>"
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
         }
       ]
     },
     {
       "type": "icon_block",
-      "name": "Icon column",
+      "name": "Promotion Item",
       "settings": [
         {
-          "type": "richtext",
+          "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "<p><strong>Our pledge</strong> | Learn more</p>"
+          "default": "Clinically Tested"
         },
         {
-          "type": "select",
-          "id": "icon_name",
-          "label": "Icon",
-          "default": "icon-leaf",
-          "options": [
-            { "value": "icon-animal", "label": "Animal" },
-            { "value": "icon-animal-paw", "label": "Animal paw" },
-            { "value": "icon-award", "label": "Award" },
-            { "value": "icon-basket-like", "label": "Basket like" },
-            { "value": "icon-basket-return", "label": "Basket return" },
-            { "value": "icon-cart-check", "label": "Cart check" },
-            { "value": "icon-cart-message", "label": "Cart message" },
-            { "value": "icon-chat", "label": "Chat" },
-            { "value": "icon-dollar", "label": "Dollar" },
-            { "value": "icon-earth", "label": "Earth" },
-            { "value": "icon-email", "label": "Email" },
-            { "value": "icon-gluten-free", "label": "Gluten free" },
-            { "value": "icon-iron", "label": "Iron" },
-            { "value": "icon-leaf", "label": "Leaf" },
-            { "value": "icon-legal", "label": "Legal" },
-            { "value": "icon-lock-card", "label": "Lock card" },
-            { "value": "icon-lock-shield", "label": "Lock shield" },
-            { "value": "icon-lock-window", "label": "Lock window" },
-            { "value": "icon-payment", "label": "Payment" },
-            { "value": "icon-phone", "label": "Phone" },
-            { "value": "icon-rating", "label": "Rating" },
-            { "value": "icon-star-rating", "label": "Rating star" },
-            { "value": "icon-recycled", "label": "Recycled" },
-            { "value": "icon-ruler", "label": "Ruler" },
-            { "value": "icon-send", "label": "Send" },
-            { "value": "icon-sewing-machine", "label": "Sewing machine" },
-            { "value": "icon-shipment-world", "label": "Shipment world" },
-            { "value": "icon-shipment", "label": "Shipment" },
-            { "value": "icon-shoes", "label": "Shoes" },
-            { "value": "icon-store", "label": "Store" },
-            { "value": "icon-support-headphones", "label": "Support headphones" },
-            { "value": "icon-thread", "label": "Thread" },
-            { "value": "icon-truck", "label": "Truck" },
-            { "value": "icon-washer", "label": "Washer" },
-            { "value": "icon-water", "label": "Water" },
-            { "value": "safee", "label": "saft"},
-            { "value": "Reliablee", "label": "Reliable"},
-            { "value": "Skin-Friendlye", "label": "Skin-Friendly"}
-          ]
+          "type": "html",
+          "id": "svg_icon",
+          "label": "Custom SVG Icon HTML"
         },
         {
-          "type": "color",
-          "id": "icon_color",
-          "label": "Icon color",
-          "default": "#AAAAAA"
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
+        }
+      ]
+    },
+    {
+      "type": "message",
+      "name": "Promotion Item (Message)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
         },
         {
-          "type": "image_picker",
-          "id": "icon_alt",
-          "label": "Alternative icon/image"
-        },
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": "Promotion Item (Custom)",
+      "settings": [
         {
-          "type":    "range",
-          "id":      "icon_alt_width",
-          "min":     0,
-          "max":     300,
-          "step":    3,
-          "unit":    "px",
-          "label":   "Alternative image width",
-          "default": 33
+          "type": "text",
+          "id": "text",
+          "label": "Text"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Scrolling promotion",
-      "category": "Text",
-      "blocks": [
-        {
-          "type": "text"
-        },
-        {
-          "type": "icon_block"
-        }
-      ]
+      "name": "Scrolling Promotion"
     }
-  ],
-  "disabled_on": {
-    "groups": ["header","footer","aside"]
-  }
+  ]
 }
 {% endschema %}

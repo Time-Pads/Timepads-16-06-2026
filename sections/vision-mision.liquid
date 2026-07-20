@@ -2,9 +2,11 @@
     <div class="vision-mission-container">
         {% for block in section.blocks %}
         <div class="vision-wrapper animate-on-scroll">
-          <a href="{{ block.settings.url }}">
-           <img src="{{ block.settings.image | image_url }}" alt="offers">
-          </a>
+          {% if block.settings.image != blank %}
+            <a href="{{ block.settings.url }}">
+             <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.image.alt | default: 'Vision Mission' | escape }}" loading="lazy" decoding="async" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+            </a>
+          {% endif %}
         </div>
         {% endfor %}
     </div>

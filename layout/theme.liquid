@@ -293,6 +293,9 @@
      display: none !important;
     }
   }
+  .quickview__form, .template-index .product-grid-item{
+    flex: 0 0 27% !important;
+  }
   {% endstyle %}
 
   {%- comment -%} 14b. Product page critical CSS — above-fold paint {%- endcomment -%}
@@ -387,10 +390,7 @@
     .wrapper--full { max-width: 100%; padding: 0 20px; }
     .grid__item { box-sizing: border-box; }
     .header__backfill{
-        display: none !important;
-    }
-    [data-header-transparent="true"] + .header__backfill {
-      display: none !important;
+      display: none;
     }
     [data-grid] [data-item].index__column,
     .gif-section--main-content{
@@ -614,6 +614,34 @@
     {{ content_for_header }}
   {%- else -%}
     {%- render 'tiny-script-control' -%}
+  {%- endif -%}
+
+  {%- comment -%} Custom Hero Slideshow First Slide LCP Preload (Homepage Only) {%- endcomment -%}
+  {%- if template == 'index' -%}
+    {%- assign lcp_hero_mobile = settings.preload_image_mobile -%}
+    {%- assign lcp_hero_desktop = settings.preload_image_desktop -%}
+    {%- if lcp_hero_mobile != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        fetchpriority="high"
+        media="(max-width: 767px)"
+        href="{{ lcp_hero_mobile | image_url: width: 750 }}"
+        imagesrcset="{{ lcp_hero_mobile | image_url: width: 375 }} 375w, {{ lcp_hero_mobile | image_url: width: 750 }} 750w"
+        imagesizes="100vw"
+      >
+    {%- endif -%}
+    {%- if lcp_hero_desktop != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        fetchpriority="high"
+        media="(min-width: 768px)"
+        href="{{ lcp_hero_desktop | image_url: width: 1100 }}"
+        imagesrcset="{{ lcp_hero_desktop | image_url: width: 1100 }} 1100w, {{ lcp_hero_desktop | image_url: width: 1600 }} 1600w"
+        imagesizes="100vw"
+      >
+    {%- endif -%}
   {%- endif -%}
 
 <meta name="msvalidate.01" content="4B78D65C8E6C112F952CD628ABC3E87B" />

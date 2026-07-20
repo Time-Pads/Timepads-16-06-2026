@@ -638,8 +638,10 @@
    </noscript>
    <div class="product-card single-variant">
       <div class="variant-options">
-         <div class="product-card" data-product-id="{{ product.id }}">
-            <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
+          <div class="product-card" data-product-id="{{ product.id }}">
+             <script type="application/json" data-product-variants>
+               [{%- for v in product.variants -%}{"id":{{ v.id }},"available":{{ v.available | json }},"price":{{ v.price }},"compare_at_price":{% if v.compare_at_price %}{{ v.compare_at_price }}{% else %}null{% endif %},"options":{{ v.options | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+             </script>
             <div class="form__selectors">
                <!-- Loop through each option (e.g., Size, Packs) -->
                {% for option in product.options_with_values %}
@@ -674,9 +676,8 @@
                </div>
                {% endfor %}
             </div>
-         </div>
-         <noscript type="application/json">{{ product.variants | json }}</noscript>
-      </div>
+          </div>
+       </div>
    </div>
    {%  style %} 
    {% endstyle %}
@@ -1106,7 +1107,9 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
           
             <dynamic-card class="quick-card">
               <div class="product-card" data-product-id="{{ product.id }}">
-                <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
+                <script type="application/json" data-product-variants>
+                  [{%- for v in product.variants -%}{"id":{{ v.id }},"available":{{ v.available | json }},"price":{{ v.price }},"compare_at_price":{% if v.compare_at_price %}{{ v.compare_at_price }}{% else %}null{% endif %},"options":{{ v.options | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+                </script>
                 <div class="form__selectors">
                   <!-- Loop through each option (e.g., Size, Packs) -->
                  {% for option in product.options_with_values %}
@@ -1218,8 +1221,6 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
 
                 
               </div>
-            
-              <noscript type="application/json">{{ product.variants | json }}</noscript>
             </dynamic-card>
 
 {% style %}

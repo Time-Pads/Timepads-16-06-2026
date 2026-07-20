@@ -446,7 +446,10 @@
     </noscript>
     <div class="product-card single-variant">
       <div class="variant-options">
-        <div class="product-card" data-product-id="{{ product.id }}" data-variants="{{ product.variants | json }}">
+        <div class="product-card" data-product-id="{{ product.id }}">
+          <script type="application/json" data-product-variants>
+            [{%- for v in product.variants -%}{"id":{{ v.id }},"available":{{ v.available | json }},"price":{{ v.price }},"compare_at_price":{% if v.compare_at_price %}{{ v.compare_at_price }}{% else %}null{% endif %},"options":{{ v.options | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+          </script>
           <div class="form__selectors">
             <!-- Loop through each option (e.g., Size, Packs) -->
             {% for option in product.options_with_values %}
@@ -487,39 +490,9 @@
           <!-- Add to Cart Button and Price -->
          
 
-          
-          <!-- Popup Message -->
-          {% comment %} <div class="popup-message"> <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/1_oDqXedYUMyhWzN48pUjHyw.gif?v=1737970819"/> </div> {% endcomment %}
-          
         </div>
-      
-        <noscript type="application/json">{{ product.variants | json }}</noscript>
       </div>
       </div>
-
-      {% comment %} {% if product.variants.size > 1 %}
-      <div class="variant-drop-down">
-      <form action="/cart/add" method="post" >
-      <select name="id">
-      {% for variant in product.variants %}
-      {% if variant.available %}
-      <option value="{{ variant.id }}">{{ variant.title }}</option>
-      {% else %}
-      <option disabled="disabled">{{ variant.title }} - Sold Out</option>
-      {% endif %}
-      {% endfor %}
-      </select><br>
-      <input type="submit" value="Buy now" class="variant-button" /><br> <br>
-      </form></div>
-      {% endif %}
-       {% endcomment %}
-      
-      {% comment %} {% if product.has_only_default_variant %}
-      <form method="post" action="/cart/add">
-      <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
-      <input type="submit" value="Buy now" class="variant-button" />
-      </form>
-      {% endif %} {% endcomment %}
 
       {%  style %} 
 
@@ -727,7 +700,10 @@
           
         
             <dynamic-card class="quick-card">
-              <div class="product-card" data-product-id="{{ product.id }}" data-variants="{{ product.variants | json }}">
+              <div class="product-card" data-product-id="{{ product.id }}">
+                <script type="application/json" data-product-variants>
+                  [{%- for v in product.variants -%}{"id":{{ v.id }},"available":{{ v.available | json }},"price":{{ v.price }},"compare_at_price":{% if v.compare_at_price %}{{ v.compare_at_price }}{% else %}null{% endif %},"options":{{ v.options | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+                </script>
                 <div class="form__selectors">
                   <!-- Loop through each option (e.g., Size, Packs) -->
                   {% for option in product.options_with_values %}
@@ -819,8 +795,6 @@
                 <div class="popup-message"><img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Thank_You-1.gif?v=1739599043" alt="thank you" loading="lazy" decoding="async"/> </div>
                 
               </div>
-            
-              <noscript type="application/json">{{ product.variants | json }}</noscript>
             </dynamic-card>
             
 

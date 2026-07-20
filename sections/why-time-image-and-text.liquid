@@ -2,7 +2,9 @@
   {% for block in section.blocks %}
   <div class="why-time-item {% if block.settings.direction == 'left' %}direction-left{% else %}direction-right{% endif %}">
     <div class="image-container">
-      <img src="{{ block.settings.image | img_url: '640x640' }}" alt="Logo">
+      {% if block.settings.image != blank %}
+        <img src="{{ block.settings.image | image_url: width: 640 }}" alt="{{ block.settings.heading_text | default: 'Why Time' | escape }}" loading="lazy" decoding="async" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+      {% endif %}
     </div>
     <div class="text-container">
       {% if forloop.first %}
