@@ -986,7 +986,7 @@ p.Paragraph.SCXW149860544.BCX8 span { font-size: 16px; }
   .template-index product-grid-item.product-grid-item.group\/product-grid-item { overflow: hidden !important; width: 100% !important; }
   .header__mobile__button .header__cart__status [data-header-cart-count]:not([data-header-cart-count="0"]) { display: none; }
   .header__mobile__button { min-width: 44px !important; width: 44px !important; height: 44px !important; z-index: 999999; }
-  .template-index .header__cart__status { display: none; }
+  .template-index .header__cart__status { display: none !important; }
   .template-collection .product__align-left .radio__button label { padding: 8px 5px; }
   .template-search .product-card.single-variant { height: 8rem; min-height: 6rem !important; }
   .template-index .product__align-left .radio__button label { padding: 8px 7px; }

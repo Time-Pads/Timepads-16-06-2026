@@ -193,7 +193,7 @@
   }
   .header__logo picture,
   .header__logo picture img {
-    display: block;
+    display: contents;
     /* width: {{ logo_width }}px; */
     height: auto;
     aspect-ratio: {{ section.settings.logo.aspect_ratio | default: '2.5' }};
@@ -305,26 +305,26 @@
             media="(max-width: 767px)"
             type="image/webp"
             srcset="
-              {{ section.settings.logo | image_url: width: 90, format: 'webp', quality: 55 }} 90w,
-              {{ section.settings.logo | image_url: width: 100, format: 'webp', quality: 55 }} 100w,
-              {{ section.settings.logo | image_url: width: 110, format: 'webp', quality: 55 }} 110w
+              {{ section.settings.logo | image_url: width: 160, format: 'webp', quality: 75 }} 160w,
+              {{ section.settings.logo | image_url: width: 220, format: 'webp', quality: 75 }} 220w,
+              {{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w
             "
-            sizes="50px"
+            sizes="130px"
           >
           <!-- Desktop WebP -->
           <source
             media="(min-width: 768px)"
             type="image/webp"
             srcset="
-              {{ section.settings.logo | image_url: width: 120, format: 'webp', quality: 55 }} 120w,
-              {{ section.settings.logo | image_url: width: 140, format: 'webp', quality: 55 }} 140w,
-              {{ section.settings.logo | image_url: width: 160, format: 'webp', quality: 55 }} 160w
+              {{ section.settings.logo | image_url: width: 200, format: 'webp', quality: 75 }} 200w,
+              {{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w,
+              {{ section.settings.logo | image_url: width: 320, format: 'webp', quality: 75 }} 320w
             "
-            sizes="{{ section.settings.logo_max_width | default: 120 }}px"
+            sizes="{{ section.settings.logo_max_width | default: 180 }}px"
           >
           <!-- Fallback Img (WebP format for lightweight fallback) -->
           <img
-            src="{{ section.settings.logo | image_url: width: 100, format: 'webp', quality: 55 }}"
+            src="{{ section.settings.logo | image_url: width: 220, format: 'webp', quality: 75 }}"
             alt="{{ alt }}"
             class="tw-w-full tw-max-h-[60rem]"
             width="{{ logo_width }}"
@@ -508,20 +508,22 @@
 
  
     <div class="header__mobile__right">
-      <a class="header__mobile__button"
-       data-drawer-toggle="drawer-cart"
-        href="{{ routes.cart_url }}"
-        aria-label="Cart">
-        {{ cart_icon }}
-        <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
-      
-        {{ cart_status }}
+      <a class="header__mobile__button tracking-page-redirect"
+         href="https://timepads.in/apps/trackingmore"
+         aria-label="Track Order">
+        {% render 'tacking-icon' %}
       </a>
 
-      <span class="tracking-page-redirect" onclick="window.location.href='https://timepads.in/apps/trackingmore';">
-        {% render 'tacking-icon' %}
-      </span>
-
+      <a class="header__mobile__button header__mobile__cart"
+         data-drawer-toggle="drawer-cart"
+         href="{{ routes.cart_url }}"
+         aria-label="Cart">
+        {{ cart_icon }}
+        <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
+        <span class="header__cart__status">
+          <span data-header-cart-count="{{ cart.item_count }}">({{ cart.item_count }})</span>
+        </span>
+      </a>
     </div>
     {% comment %} <div class="header__mobile__right">
       <a class="header__mobile__button">
@@ -557,11 +559,10 @@
         </a>
       </div>
     {% endif %}
-    <div class="header__desktop__button tacking-id {% if request.path contains routes.account_url %} main-menu--active{% endif %}" {{ text_hover }}>
-      <span class="tracking-page-redirect" onclick="window.location.href='https://timepads.in/apps/trackingmore';">
-      {% render 'tacking-icon' %}
-    </span>
-
+    <div class="header__desktop__button tacking-id" {{ text_hover }}>
+      <a href="https://timepads.in/apps/trackingmore" class="navlink tracking-page-redirect" aria-label="Track Order">
+        {% render 'tacking-icon' %}
+      </a>
     </div>
 
     {% if section.settings.enable_search %}

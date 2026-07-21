@@ -362,10 +362,7 @@
       min-height: 104px;
       display: block;
     }
-    body .header__desktop__buttons {
-  display: flex;
-  align-items: center !important;
-}
+
     @media (min-width: 768px) {
       .shopify-section-group-header {
         min-height: 124px;
@@ -435,28 +432,140 @@
     }
 
 
-   .mobile-center-cart .header__mobile__button,
-    .header__desktop__button   {
+    body .header__desktop__buttons {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 12px !important;
+      height: 100% !important;
+    }
+    .header__desktop__button {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      flex-shrink: 0 !important;
-      width: 60px !important;
-      height: 44px !important;
-      min-width: 60px !important;
-      min-height: 44px !important;
+      height: 40px !important;
+      min-height: 40px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .header__desktop__button a.navlink {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 40px !important;
+      min-height: 40px !important;
+      margin: 0 !important;
+      padding: 0 4px !important;
+      text-decoration: none !important;
+      line-height: 1 !important;
       box-sizing: border-box !important;
     }
     .tracking-page-redirect svg,
     .header__mobile__button svg,
     .header__desktop__button svg,
+    .header__desktop__button a.navlink svg,
     .icon-set-classic-cart {
       width: 24px !important;
       height: 24px !important;
       min-width: 24px !important;
       min-height: 24px !important;
-      display: block !important;
-
+      display: inline-block !important;
+      vertical-align: middle !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .header__cart__status {
+      display: inline-flex !important;
+      align-items: center !important;
+      margin-left: 2px !important;
+      font-size: 14px !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    .header__cart__status::-webkit-scrollbar,
+    .header__cart__status *::-webkit-scrollbar,
+    .header__desktop__button::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .header__cart__status [data-header-cart-count] {
+      display: inline-block !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      line-height: 1 !important;
+      color: inherit !important;
+      white-space: nowrap !important;
+    }
+    /* Mobile Header Balancing: Big Prominent Logo, Clean Spaced Right-Side Icons */
+    @media (max-width: 767px) {
+      .header__logo {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 120px !important;
+      }
+      .header__logo img,
+      .header__logo picture img {
+        width: 120px !important;
+        height: auto !important;
+        max-height: 42px !important;
+        object-fit: contain !important;
+      }
+      .header__mobile__right {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 12px !important;
+        position: relative !important;
+      }
+      .header__mobile__right .header__mobile__button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        height: 36px !important;
+        width: auto !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-decoration: none !important;
+      }
+      .header__mobile__right svg,
+      .header__mobile__right .header__mobile__button svg,
+      .header__mobile__right .tracking-page-redirect svg {
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        min-height: 22px !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin: 0 !important;
+      }
+      .header__mobile__right .header__cart__status {
+        display: none !important;
+        align-items: center !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        color: #17120e !important;
+        margin-left: 3px !important;
+        white-space: nowrap !important;
+        position: static !important;
+      }
+      .header__mobile__right .header__cart__status [data-header-cart-count] {
+        display: none !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        color: inherit !important;
+        white-space: nowrap !important;
+        position: static !important;
+      }
     }
     /* Critical Product Card Aspect Ratio & Sizing Reservation */
     .tp-perf-card__image-container {
