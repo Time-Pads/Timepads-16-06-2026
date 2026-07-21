@@ -11,31 +11,6 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
-    "timepads_footer_Yx4jjt": {
-      "type": "timepads-footer",
-      "blocks": {
-        "menu_M9MqfB": {
-          "type": "menu",
-          "settings": {
-            "menu": "footer",
-            "title": "sadasd"
-          }
-        }
-      },
-      "block_order": [
-        "menu_M9MqfB"
-      ],
-      "name": "Timepads Footer",
-      "settings": {
-        "tagline": "Footer",
-        "whatsapp_link": "https://whatsapp.com/channel/0029Vb7NBPmA89Ml7laBSt3s",
-        "calculator_link": "shopify://pages/period-tracker",
-        "contact_text": "Mon–Sat: 9:30AM – 6:30PM",
-        "privacy": "shopify://pages/privacy-policy",
-        "terms": "shopify://pages/terms-of-use",
-        "bugs": "shopify://pages/bugs-and-suggestions"
-      }
-    },
     "mobile_navigation_bottom_AwDkUj": {
       "type": "mobile-navigation-bottom",
       "settings": {
@@ -118,7 +93,6 @@
         "social",
         "newsletter"
       ],
-      "disabled": true,
       "settings": {
         "menu_position": "left",
         "logo_max_limit": 120,
@@ -142,7 +116,6 @@
     }
   },
   "order": [
-    "timepads_footer_Yx4jjt",
     "mobile_navigation_bottom_AwDkUj",
     "footer",
     "subfooter"

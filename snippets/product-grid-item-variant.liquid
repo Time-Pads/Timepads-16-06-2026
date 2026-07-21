@@ -349,24 +349,20 @@
               {% unless visible %}<template>{% endunless %}
               
               {%- liquid
-                assign img_url = img_object | image_url: width: 400
+                assign img_url = img_object | image_url: width: 220, format: 'webp', quality: 80
                 if is_first_lcp or eagerload
                   assign img_loading = 'eager'
                   assign img_fetchpriority = 'high'
                   assign img_decoding = 'sync'
-                  assign img_sizes = '(max-width: 768px) 45vw, 25vw'
+                  assign img_sizes = '(max-width: 767px) 110px, 260px'
                 else
                   assign img_loading = 'lazy'
                   assign img_fetchpriority = 'low'
                   assign img_decoding = 'async'
-                  assign img_sizes = '(max-width: 768px) 50vw, 33vw'
+                  assign img_sizes = '(max-width: 767px) 110px, 260px'
                 endif
               -%}
-              {%- if is_first_lcp -%}
-                {%- capture img_srcset -%}{{ img_object | image_url: width: 200 }} 200w, {{ img_object | image_url: width: 400 }} 400w, {{ img_object | image_url: width: 600 }} 600w{%- endcapture -%}
-              {%- else -%}
-                {%- capture img_srcset -%}{{ img_object | image_url: width: 300, format: 'webp' }} 300w, {{ img_object | image_url: width: 400, format: 'webp' }} 400w, {{ img_object | image_url: width: 600, format: 'webp' }} 600w{%- endcapture -%}
-              {%- endif -%}
+              {%- capture img_srcset -%}{{ img_object | image_url: width: 180, format: 'webp', quality: 80 }} 180w, {{ img_object | image_url: width: 220, format: 'webp', quality: 80 }} 220w, {{ img_object | image_url: width: 260, format: 'webp', quality: 80 }} 260w, {{ img_object | image_url: width: 300, format: 'webp', quality: 80 }} 300w, {{ img_object | image_url: width: 360, format: 'webp', quality: 80 }} 360w, {{ img_object | image_url: width: 480, format: 'webp', quality: 80 }} 480w{%- endcapture -%}
               <div class="lazy-image-wrapper loading-shimmer" style="aspect-ratio: 1 / 1; position: relative; overflow: hidden; background-color: #f5f5f5;">
                 <img 
                   class="tw-w-full tw-max-h-[60rem] main-image img-object-cover fade-in-image" 
@@ -376,8 +372,8 @@
                   sizes="{{ img_sizes }}"
                   loading="{{ img_loading }}"
                   fetchpriority="{{ img_fetchpriority }}"
-                  width="600" 
-                  height="600" 
+                  width="260" 
+                  height="260" 
                   alt="{{ img_object.alt | default: product.title | escape }}" 
                   decoding="{{ img_decoding }}"
                   onload="if(this.complete) { this.classList.add('loaded'); this.closest('.lazy-image-wrapper')?.classList.remove('loading-shimmer'); }"
@@ -385,11 +381,11 @@
                 {% if product.images[1] %}
                   <img 
                     class="hover-image img-object-cover" 
-                    src="{{ product.images[1] | image_url: width: 400, format: 'webp' }}" 
+                    src="{{ product.images[1] | image_url: width: 260, format: 'webp' }}" 
                     loading="lazy" 
                     decoding="async" 
-                    width="600"
-                    height="600"
+                    width="260"
+                    height="260"
                     alt="{{ product.images[1].alt | default: product.title | escape }}"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.3s ease; z-index: 2;" 
                     onload="this.classList.add('loaded')"

@@ -129,7 +129,155 @@
     --COLOR-NAV-TEXT-TRANSPARENT: {{ section.settings.transparent_text_color }};
     --COLOR-HEADER-TRANSPARENT-GRADIENT: {{ overlay_color }};
     --LOGO-PADDING: {{ section.settings.logo_padding | append: 'px' }};
-    --menu-backfill-height: auto;
+    {%- if has_toolbar -%}
+      --menu-backfill-height: 112px; /* 72px header + 40px toolbar */
+    {%- else -%}
+      --menu-backfill-height: 72px;
+    {%- endif -%}
+  }
+
+  /* ══════════════════════════════════════════════
+     ZERO CLS — Reserved header dimensions.
+     All heights set at Liquid render time so no JS
+     measurement can trigger layout shift.
+  ══════════════════════════════════════════════ */
+
+  /* 1. Backfill: reserve full height, override JS inline style.display='none'
+     theme.js sets backfill.style.display='none' for transparent-header pages.
+     Using display:block !important prevents that inline style from winning. */
+  .header__backfill {
+    display: none;
+    height: 0;
+  }
+
+  /* 2. Announcement bar (toolbar): pre-reserve 40px so it never collapses
+     before the ticker JS initialises. The ticker removes ticker--unloaded
+     after measuring widths — we must hold the height open the entire time. */
+  .header__inner--bar {
+    height: 40px !important;
+    min-height: 40px !important;
+    overflow: hidden;
+  }
+  .theme__header__toolbar {
+    height: 40px;
+    min-height: 40px;
+  }
+  /* ticker frame: force visible height before JS ticker init */
+  .theme__header__toolbar__text[data-ticker-frame] {
+    height: 40px;
+    min-height: 40px;
+    overflow: hidden;
+  }
+  /* ticker scale: keep it visible while unloaded — do NOT let it collapse */
+  .toolbar__scale.ticker--unloaded {
+    min-height: 32px;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* 3. Main header row: 72px desktop */
+  .theme__header {
+    min-height: 72px;
+  }
+  .header__inner:not(.header__inner--bar) {
+    min-height: 72px;
+  }
+
+  /* 4. Logo: reserve exact dimensions */
+  .header__logo {
+    min-width: {{ logo_width }}px;
+    height: 72px;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .header__logo picture,
+  .header__logo picture img {
+    display: block;
+    /* width: {{ logo_width }}px; */
+    height: auto;
+    aspect-ratio: {{ section.settings.logo.aspect_ratio | default: '2.5' }};
+    max-width: {{ logo_width }}px;
+  }
+
+  /* 5. Desktop buttons: fixed 40x40 */
+  .header__desktop__button {
+    min-width: 40px;
+    min-height: 40px;
+    width: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  /* 6. Mobile buttons: fixed 44x44 touch target */
+  .header__mobile__button {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  /* 7. Tracking icon: fixed 40x40 */
+  .tracking-page-redirect {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* 8. Cart status: reserve space for count badge */
+  .header__cart__status {
+    display: inline-flex;
+    align-items: center;
+    min-width: 32px;
+    white-space: nowrap;
+  }
+
+  /* 9. Backfill placeholder logo */
+  .header__backfill .header__logo {
+    width: {{ logo_width }}px;
+    height: 72px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .header__backfill .header__logo > div {
+    width: {{ logo_width }}px;
+    height: {{ logo_img_height | default: 40 }}px;
+    overflow: hidden;
+  }
+
+  /* 10. Mobile: 64px header */
+  @media (max-width: 768px) {
+    :root {
+      {%- if has_toolbar -%}
+        --menu-backfill-height: 104px; /* 64px header + 40px toolbar */
+      {%- else -%}
+        --menu-backfill-height: 64px;
+      {%- endif -%}
+    }
+    .theme__header {
+      min-height: 64px;
+    }
+    .header__inner:not(.header__inner--bar) {
+      min-height: 64px;
+    }
+    .header__logo {
+      height: 64px;
+    }
+    .header__backfill .header__logo {
+      height: 64px;
+    }
   }
 {% endstyle %}
 
@@ -152,23 +300,31 @@
 
         {%- comment -%} Optimized logo with WebP/AVIF support for faster loading on 4G {%- endcomment -%}
         <picture>
-          {%- comment -%} WebP: Better browser support than AVIF {%- endcomment -%}
+          <!-- Mobile WebP -->
           <source
+            media="(max-width: 767px)"
             type="image/webp"
             srcset="
-              {{ section.settings.logo | image_url: width: logo_width, format: 'webp' }} 1x,
-              {{ section.settings.logo | image_url: width: logo_width_2x, format: 'webp' }} 2x,
-              {{ section.settings.logo | image_url: width: logo_width_3x, format: 'webp' }} 3x
+              {{ section.settings.logo | image_url: width: 90, format: 'webp', quality: 55 }} 90w,
+              {{ section.settings.logo | image_url: width: 100, format: 'webp', quality: 55 }} 100w,
+              {{ section.settings.logo | image_url: width: 110, format: 'webp', quality: 55 }} 110w
             "
+            sizes="50px"
           >
-          {%- comment -%} Fallback to original format {%- endcomment -%}
-          <img
-            src="{{ section.settings.logo | image_url: width: logo_width }}"
+          <!-- Desktop WebP -->
+          <source
+            media="(min-width: 768px)"
+            type="image/webp"
             srcset="
-              {{ section.settings.logo | image_url: width: logo_width }} 1x,
-              {{ section.settings.logo | image_url: width: logo_width_2x }} 2x,
-              {{ section.settings.logo | image_url: width: logo_width_3x }} 3x
+              {{ section.settings.logo | image_url: width: 120, format: 'webp', quality: 55 }} 120w,
+              {{ section.settings.logo | image_url: width: 140, format: 'webp', quality: 55 }} 140w,
+              {{ section.settings.logo | image_url: width: 160, format: 'webp', quality: 55 }} 160w
             "
+            sizes="{{ section.settings.logo_max_width | default: 120 }}px"
+          >
+          <!-- Fallback Img (WebP format for lightweight fallback) -->
+          <img
+            src="{{ section.settings.logo | image_url: width: 100, format: 'webp', quality: 55 }}"
             alt="{{ alt }}"
             class="tw-w-full tw-max-h-[60rem]"
             width="{{ logo_width }}"
@@ -176,6 +332,7 @@
             loading="eager"
             fetchpriority="high"
             decoding="async"
+            style="aspect-ratio: {{ section.settings.logo.aspect_ratio | default: 1.67 }}; width: auto; height: auto; max-height: 48px; object-fit: contain;"
           >
         </picture>
       {% else %}
@@ -337,7 +494,7 @@
 
 {% capture minimal %}
     <div class="header__mobile__left">
-        <span class="mobile-nav-new" style="top: 1%;">New</span>
+     
       <button class="header__mobile__button"
         data-drawer-toggle="hamburger"
         aria-label="{{ 'general.accessibility.open_menu' | t }}"
@@ -347,95 +504,7 @@
         {{ hamburger_icon }}
       </button>
     </div>
-    {% comment %} {{ logos }} {% endcomment %}
-
-    {%- if transparent_header and section.settings.transparent_logo != blank -%}
-      {%- assign has_transparent_logo = true -%}
-    {%- endif -%}
-    <div class="header__logo{% if section.settings.logo %} header__logo--image{% endif %}{% if has_transparent_logo %} header__logo--has-transparent{% endif %}">
-  
-    <a class="header__logo__link cccccc"
-        href="{{ routes.root_url }}"
-        style="--LOGO-WIDTH: {{ logo_width }}px"
-      >
-        {% if section.settings.logo != blank %}
-          {%- assign logo_width = 200 -%}
-          {%- assign alt = section.settings.logo.alt | default: shop.name | strip_html | escape %}
-          {%- assign logo_width_2x = logo_width | times: 2 %}
-          {%- assign logo_width_3x = logo_width | times: 3 %}
-          {%- assign logo_img_height = logo_width | divided_by: section.settings.logo.aspect_ratio | round %}
-
-          <picture>
-            <source
-              type="image/webp"
-              srcset="
-                {{ section.settings.logo | image_url: width: logo_width, format: 'webp' }} 1x,
-                {{ section.settings.logo | image_url: width: logo_width_2x, format: 'webp' }} 2x,
-                {{ section.settings.logo | image_url: width: logo_width_3x, format: 'webp' }} 3x
-              "
-            >
-            <img
-              src="{{ section.settings.logo | image_url: width: logo_width }}"
-              srcset="
-                {{ section.settings.logo | image_url: width: logo_width }} 1x,
-                {{ section.settings.logo | image_url: width: logo_width_2x }} 2x,
-                {{ section.settings.logo | image_url: width: logo_width_3x }} 3x
-              "
-              alt="{{ alt }}"
-              class="logo__img logo__img--color tw-w-full tw-max-h-[60rem]"
-              width="{{ logo_width }}"
-              height="{{ logo_img_height }}"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            >
-          </picture>
-        {% else %}
-          {% liquid
-            assign text_logo_length = ''
-            assign title_length = shop.name | size
-            assign oneword = true
-            if shop.name contains ' ' or shop.name contains '-'
-              assign oneword = false
-            endif
-            if title_length > 15 and section.settings.logo_text_size > 4
-              assign text_logo_length = text_logo_length | append: ' header__logo__text--long'
-              if oneword
-                assign text_logo_length = text_logo_length | append: ' header__logo__text--break'
-              endif
-            endif
-  
-            assign text_logo_setting = section.settings.logo_text_size | prepend: 'accent-size-'
-  
-            if has_transparent_logo
-              assign svg_device_class = 'logo__img--color'
-            endif
-          %}
-          <div class="header__logo__text {{ text_logo_length }} {{ text_logo_setting }} {{ svg_device_class }}">
-            <span>{{ shop.name }}</span>
-          </div>
-        {% endif %}
-        {% if has_transparent_logo %}
-          {%- assign alt = section.settings.transparent_logo.alt | default: shop.name | strip_html | escape %}
-          {%- assign transparent_logo_width = logo_width | at_most: section.settings.logo_max_limit %}
-          {%- assign transparent_logo_width_2x = transparent_logo_width | times: 2 %}
-  
-          {% capture srcset %}
-            {{ section.settings.transparent_logo | image_url: width: transparent_logo_width_2x }} 2x,
-            {{ section.settings.transparent_logo | image_url: width: transparent_logo_width }}
-          {% endcapture %}
-  
-          {{ section.settings.transparent_logo | image_url: width: transparent_logo_width | image_tag:
-            class: "logo__img logo__img--transparent",
-            srcset: srcset,
-            alt: alt,
-            loading: 'lazy',
-            fetchpriority: 'low'
-          }}
-        {% endif %}
-      </a>
-  
-    </div>
+    {{ logos }}
 
  
     <div class="header__mobile__right">
@@ -666,9 +735,7 @@
 </div>
 
 {% comment %} Load correct header height when position absolute{% endcomment %}
-<div class="header__backfill"
-  data-header-backfill
-  style="height: var(--menu-backfill-height);">
+<div class="header__backfill" data-header-backfill aria-hidden="true">
   {% if has_toolbar %}
     <div class="header__inner header__inner--bar{% unless has_toolbar_text %} header__inner--bar-nav{% endunless %}">
       <div class="{{ width_wrapper_class }} theme__header__toolbar">

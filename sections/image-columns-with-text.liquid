@@ -4,16 +4,17 @@
 {%- capture lazy_load_section -%}{%- render 'lazy-load-section-validations' -%}{%- endcapture -%}
 
 {%- comment -%} ── Scoped vars ── {%- endcomment -%}
-{%- assign sid  = section.id -%}
-{%- assign pt   = section.settings.padding_top -%}
-{%- assign pb   = section.settings.padding_bottom -%}
-{%- assign mpt  = section.settings.padding_top_mobile -%}
-{%- assign mpb  = section.settings.padding_bottom_mobile -%}
+{%- assign sid = section.id -%}
+{%- assign pt  = section.settings.padding_top -%}
+{%- assign pb  = section.settings.padding_bottom -%}
+{%- assign mpt = section.settings.padding_top_mobile -%}
+{%- assign mpb = section.settings.padding_bottom_mobile -%}
 
 {% style %}
   #shopify-section-{{ sid }} {
     padding-top: {{ pt }}px !important;
     padding-bottom: {{ pb }}px !important;
+    contain-intrinsic-size: 1px 400px;
   }
   @media (max-width: 768px) {
     #shopify-section-{{ sid }} {
@@ -21,7 +22,6 @@
       padding-bottom: {{ mpb }}px !important;
     }
   }
-  /* Scope read-more styles to this section to avoid cross-section conflicts */
   #shopify-section-{{ sid }} .text-container {
     max-height: 30px;
     overflow: hidden;
@@ -42,12 +42,12 @@
     color: #2d2a2a;
   }
   #shopify-section-{{ sid }} .read-more-btn:hover { color: #fff; }
-  .index__column.grid__item.slide-item.text-center h3{
+  #shopify-section-{{ sid }} .index__column h3 {
     font-size: 16px;
   }
 {% endstyle %}
 
-{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+{%- if lazy_load_section != blank -%}<lazy-section style="display: block; min-height: 300px;">{%- endif -%}
 
 {%- if lazy_load_section == blank -%}
 
@@ -80,35 +80,11 @@
 
             {%- if block.settings.enable_image and block.settings.image != blank -%}
               <div class="column__image" data-grid-slide>
-
-                {%- capture sizes -%}
-                  {%- render 'image-grid-sizes',
-                    columns_desktop: section.settings.grid_large,
-                    columns_tablet:  section.settings.grid_large,
-                    columns_mobile:  section.settings.grid_mobile,
-                    section_width:   section.settings.width,
-                    alt:             block.settings.alt_text
-                  -%}
-                {%- endcapture -%}
-
-                {%- capture srcset -%}
-                  {%- render 'image-grid-srcset',
-                    image:           block.settings.image,
-                    columns_desktop: section.settings.grid_large,
-                    columns_tablet:  section.settings.grid_large,
-                    columns_mobile:  section.settings.grid_mobile,
-                    section_width:   section.settings.width,
-                    alt:             block.settings.alt_text
-                  -%}
-                {%- endcapture -%}
-
                 {%- render 'responsive-picture',
                   forloop:      forloop,
                   cover:        true,
                   desktopImage: block.settings.image,
                   mobileImage:  block.settings.image,
-                  srcset:       srcset,
-                  sizes:        sizes,
                   alt:          block.settings.alt_text,
                   loading:      'lazy',
                   class:        block.settings.shape_class,
@@ -116,7 +92,7 @@
                   img-class:    'tw-w-full tw-max-h-[60rem]'
                 -%}
 
-                {%- if block.settings.enable_video -%}
+                {%- if block.settings.enable_video and block.settings.video_link != blank -%}
                   <div class="{{ block.settings.video_button_color }}">
                     {%- render 'video-popup', video: block.settings.video_link, unique: block.id -%}
                   </div>
@@ -127,7 +103,6 @@
                     aria-label="{{ block.settings.title | strip_html | escape }}"
                   ></a>
                 {%- endif -%}
-
               </div>
             {%- endif -%}
 
@@ -178,26 +153,20 @@
 
 {%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
 
-{%- comment -%}
-  Read-more JS — loaded once globally via a flag so multiple instances
-  of this section don't stack duplicate listeners.
-{%- endcomment -%}
 <script>
 (function () {
-  if (window.__readMoreInit) return; // guard: only initialise once per page
+  if (window.__readMoreInit) return;
   window.__readMoreInit = true;
 
-  /* ── hide button when content fits in collapsed height ── */
   function initButtons(root) {
-    root.querySelectorAll('[data-read-more-text]').forEach(function (container) {
+    (root || document).querySelectorAll('[data-read-more-text]').forEach(function (container) {
       var btn = container.nextElementSibling && container.nextElementSibling.querySelector('.read-more-btn');
-      if (btn && container.scrollHeight <= 32) {
-        btn.hidden = true;
+      if (btn) {
+        btn.hidden = (container.scrollHeight <= 32);
       }
     });
   }
 
-  /* ── toggle handler (single delegated listener on document) ── */
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.read-more-btn');
     if (!btn) return;
@@ -207,33 +176,18 @@
     if (!container) return;
 
     var expanded = container.classList.toggle('expanded');
-    btn.textContent   = expanded ? 'Read Less' : 'Read More';
+    btn.textContent = expanded ? 'Read Less' : 'Read More';
     btn.setAttribute('aria-expanded', String(expanded));
   }, { passive: true });
 
-  function scheduleInit(root) {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(function () {
-        initButtons(root);
-      }, { timeout: 1200 });
-      return;
-    }
-    window.setTimeout(function () {
-      initButtons(root);
-    }, 0);
-  }
-
   if (document.readyState === 'complete') {
-    scheduleInit(document);
+    initButtons(document);
   } else {
-    window.addEventListener('load', function () {
-      scheduleInit(document);
-    }, { once: true });
+    window.addEventListener('load', function () { initButtons(document); }, { once: true });
   }
 
-  /* ── re-run when a lazy section loads ── */
   document.addEventListener('shopify:section:load', function (e) {
-    scheduleInit(e.target);
+    initButtons(e.target);
   });
 }());
 </script>

@@ -13,11 +13,19 @@
   "sections": {
     "announcement": {
       "type": "announcement",
+      "disabled": true,
       "custom_css": [],
       "settings": {
-        "text_size": 4,
-        "layout": "slider",
-        "speed": 13,
+        "enable_announcement": true,
+        "announcement_text": "🚚 Free Shipping on Orders Above ₹699",
+        "enable_link": true,
+        "announcement_link": "",
+        "link_text": "Shop Now →",
+        "bg_color": "#46543e",
+        "text_color": "#ffffff",
+        "link_hover_color": "#c8d8c0",
+        "desktop_font_size": 14,
+        "mobile_font_size": 13,
         "padding_top": 4,
         "padding_bottom": 4
       }

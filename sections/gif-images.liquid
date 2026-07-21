@@ -2,17 +2,17 @@
 
 {%- capture lazy_load_section -%}{%- render 'lazy-load-section-validations' -%}{%- endcapture -%}
 
-{%- comment -%} ── Styles first — before any HTML so browser can apply them immediately ── {%- endcomment -%}
-{%- assign sid  = section.id -%}
-{%- assign pt   = section.settings.padding_top -%}
-{%- assign pb   = section.settings.padding_bottom -%}
-{%- assign mpt  = section.settings.padding_top_mobile -%}
-{%- assign mpb  = section.settings.padding_bottom_mobile -%}
+{%- assign sid = section.id -%}
+{%- assign pt  = section.settings.padding_top -%}
+{%- assign pb  = section.settings.padding_bottom -%}
+{%- assign mpt = section.settings.padding_top_mobile -%}
+{%- assign mpb = section.settings.padding_bottom_mobile -%}
 
 {% style %}
   #shopify-section-{{ sid }} {
     padding-top: {{ pt }}px !important;
     padding-bottom: {{ pb }}px !important;
+    contain-intrinsic-size: 1px 180px;
   }
   @media (max-width: 768px) {
     #shopify-section-{{ sid }} {
@@ -29,12 +29,66 @@
       {%- endif -%}
     }
   {%- endif -%}
+
+  body.template-product h2.kicker-flourished {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  #shopify-section-{{ sid }} .gif-section--main-content {
+    position: relative;
+  }
+
+  #shopify-section-{{ sid }} .gif-section--image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 45px;
+    padding: 10px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #shopify-section-{{ sid }} .gif-section--image-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ sid }} .gif-section--image-wrapper img {
+    padding: 10px;
+    width: 210px;
+    height: auto;
+    padding-bottom: 0;
+    display: block;
+  }
+
+  @media (max-width: 770px) {
+    #shopify-section-{{ sid }} .gif-section--main-content {
+      margin-bottom: 1rem;
+    }
+
+    #shopify-section-{{ sid }} .gif-section--image-wrapper {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 0;
+      padding: 0;
+    }
+
+    #shopify-section-{{ sid }} .gif-section--image-wrapper picture {
+      flex: 0 0 30%;
+    }
+
+    #shopify-section-{{ sid }} .gif-section--image-wrapper img {
+      width: 100%;
+      padding: 0;
+    }
+  }
 {% endstyle %}
 
-{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+{%- if lazy_load_section != blank -%}<lazy-section style="display: block; min-height: 180px;">{%- endif -%}
 
 {%- if lazy_load_section == blank -%}
-
   <div class="page-width gif-usp-{{ sid }}">
     <div class="gif-section--main-content">
 
@@ -45,11 +99,13 @@
       {%- if section.blocks.size > 0 -%}
         <div class="gif-section--image-wrapper">
           {%- for block in section.blocks -%}
-            {%- if block.settings.collection_image != blank -%}
-              {%- assign img      = block.settings.collection_image -%}
-              {%- assign img_alt  = block.settings.alt_text | default: section.settings.heading_text | default: shop.name | escape -%}
-              {%- assign img_w    = img.width | at_most: 210 -%}
-              {%- assign img_w2x  = img_w | times: 2 | at_most: img.width -%}
+            {%- assign img = block.settings.collection_image -%}
+            {%- if img != blank -%}
+              {%- assign img_alt = block.settings.alt_text | default: section.settings.heading_text | default: shop.name | escape -%}
+              {%- assign img_1x = img | image_url: width: 210, format: 'webp' -%}
+              {%- assign img_2x = img | image_url: width: 420, format: 'webp' -%}
+              {%- assign srcset_val = img_1x | append: ' 1x, ' | append: img_2x | append: ' 2x' -%}
+              
               {%- render 'responsive-picture',
                 forloop:      forloop,
                 desktopImage: img,
@@ -57,8 +113,11 @@
                 img-class:    'tw-w-full tw-max-h-[60rem]',
                 alt:          img_alt,
                 loading:      'lazy',
-                width:        img_w,
-                srcset:       img | image_url: width: img_w | append: ' 1x, ' | append: (img | image_url: width: img_w2x) | append: ' 2x'
+                fetchpriority:'low',
+                decoding:     'async',
+                width:        210,
+                sizes:        '(max-width: 770px) 30vw, 210px',
+                srcset:       srcset_val
               -%}
             {%- endif -%}
           {%- endfor -%}
@@ -67,7 +126,6 @@
 
     </div>
   </div>
-
 {%- else -%}
   <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
     <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
@@ -75,57 +133,6 @@
 {%- endif -%}
 
 {%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
-
-<style>
-/* ── Gif Images USP — static styles ── */
-body.template-product h2.kicker-flourished {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.gif-section--main-content { position: relative; }
-
-.gif-section--image-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 45px;
-  padding: 10px 0;
-  overflow-x: auto;        /* only scroll when content overflows */
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.gif-section--image-wrapper::-webkit-scrollbar { display: none; }
-
-.gif-section--image-wrapper img {
-  padding: 10px;
-  width: 210px;
-  height: auto;
-  padding-bottom:0;
-}
-
-@media (max-width: 770px) {
-  .gif-section--main-content { margin-bottom: 1rem; }
-
-  .gif-section--image-wrapper {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 0;
-    padding: 0;
-  }
-
-  .gif-section--image-wrapper picture {
-    flex: 0 0 30%;
-  }
-
-  .gif-section--image-wrapper img {
-    width: 100%;
-    padding: 0;
-  }
-}
-</style>
 
 {% schema %}
 {

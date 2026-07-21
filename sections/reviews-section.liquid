@@ -3,16 +3,21 @@
 {%- capture lazy_load_section -%}{%- render 'lazy-load-section-validations' -%}{%- endcapture -%}
 
 {%- assign sid = section.id -%}
+{%- assign pt  = section.settings.padding_top -%}
+{%- assign pb  = section.settings.padding_bottom -%}
+{%- assign mpt = section.settings.mpadding_top -%}
+{%- assign mpb = section.settings.mpadding_bottom -%}
 
 {% style %}
   #shopify-section-{{ sid }} {
-    padding-top: {{ section.settings.padding_top }}px !important;
-    padding-bottom: {{ section.settings.padding_bottom }}px !important;
+    padding-top: {{ pt }}px !important;
+    padding-bottom: {{ pb }}px !important;
+    contain-intrinsic-size: 1px 220px;
   }
   @media (max-width: 768px) {
     #shopify-section-{{ sid }} {
-      padding-top: {{ section.settings.mpadding_top }}px !important;
-      padding-bottom: {{ section.settings.mpadding_bottom }}px !important;
+      padding-top: {{ mpt }}px !important;
+      padding-bottom: {{ mpb }}px !important;
     }
   }
   .title-{{ sid }} {
@@ -22,33 +27,89 @@
   @media (max-width: 767px) {
     .title-{{ sid }} { font-size: {{ section.settings.font_size_mobile }}px; }
   }
+
+  /* Static section styles scoped to #shopify-section-{{ sid }} */
+  #shopify-section-{{ sid }} .reviews-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #shopify-section-{{ sid }} .reviews-scroll::-webkit-scrollbar { display: none; }
+
+  #shopify-section-{{ sid }} .reviews-track {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+  }
+
+  #shopify-section-{{ sid }} .reviews-slide {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: flex;
+    justify-content: center;
+    border: 0.5px solid #e2dfdf;
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    background: #fff;
+  }
+
+  #shopify-section-{{ sid }} .testimonial-wrapper {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 90%;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ sid }} .testimonial-name h3 { font-size: 16px; margin-bottom: 0.5rem; }
+  #shopify-section-{{ sid }} .testimonial-name p  { font-size: 12px; margin: 0 0 2px 0; }
+
+  #shopify-section-{{ sid }} .testimonial-content h3 { font-size: 16px; margin-top: 1rem; margin-bottom: 0.5rem; }
+  #shopify-section-{{ sid }} .testimonial-content p, 
+  #shopify-section-{{ sid }} .testimonial-content div { font-size: 10px; letter-spacing: 1px; }
+
+  #shopify-section-{{ sid }} .icons { display: flex; gap: 4px; margin-top: 8px; }
+  #shopify-section-{{ sid }} .icons svg { display: block; }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ sid }} .reviews-slide { flex: 0 0 90%; }
+    #shopify-section-{{ sid }} .testimonial-wrapper { max-width: 95%; padding: 10px 0 20px; }
+    #shopify-section-{{ sid }} .testimonial-name h3 { font-size: 12px; }
+    #shopify-section-{{ sid }} .testimonial-name p  { font-size: 10px; }
+    #shopify-section-{{ sid }} .testimonial-content h3 { font-size: 12px; }
+    #shopify-section-{{ sid }} .testimonial-content p, 
+    #shopify-section-{{ sid }} .testimonial-content div { font-size: 8px; }
+  }
+  @media (min-width: 768px) {
+    #shopify-section-{{ sid }} .reviews-slide { flex: 0 0 30%; }
+  }
 {% endstyle %}
 
-{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+{%- if lazy_load_section != blank -%}<lazy-section style="display: block; min-height: 220px;">{%- endif -%}
 
 {%- if lazy_load_section == blank -%}
 
   {%- comment -%}
-    Build star markup once and reuse it for every review.
-    Inline SVG avoids repeated star image requests entirely.
+    Cached inline SVG 5-star markup — 0 HTTP image requests.
   {%- endcomment -%}
-  {%- assign star_img = section.settings.testimonial_reviews -%}
-  {%- if star_img != blank -%}
-    {%- capture star_markup -%}
-      <div class="icons" aria-label="5 stars">
-        <svg viewBox="0 0 60 12" width="60" height="12" aria-hidden="true" focusable="false">
-          <path fill="#f5a623" d="M6 0.8l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L6 8.1 3.16 9.55l0.54-3.17-2.3-2.24 3.18-0.46L6 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L18 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L18 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L30 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L30 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L42 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L42 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L54 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L54 0.8z"/>
-        </svg>
-      </div>
-    {%- endcapture -%}
-  {%- else -%}
-    {%- comment -%} Fallback: pure CSS/Unicode stars — zero network requests {%- endcomment -%}
-    {%- capture star_markup -%}
-      <div class="icons" aria-label="5 stars">
-        <span aria-hidden="true" style="color:#f5a623;font-size:12px;letter-spacing:2px;">★★★★★</span>
-      </div>
-    {%- endcapture -%}
-  {%- endif -%}
+  {%- capture star_markup -%}
+    <div class="icons" aria-label="5 stars">
+      <svg viewBox="0 0 60 12" width="60" height="12" aria-hidden="true" focusable="false">
+        <path fill="#f5a623" d="M6 0.8l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L6 8.1 3.16 9.55l0.54-3.17-2.3-2.24 3.18-0.46L6 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L18 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L18 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L30 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L30 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L42 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L42 0.8zm12 0l1.42 2.88 3.18 0.46-2.3 2.24 0.54 3.17L54 8.1l-2.84 1.45 0.54-3.17-2.3-2.24 3.18-0.46L54 0.8z"/>
+      </svg>
+    </div>
+  {%- endcapture -%}
 
   <div class="page-width">
     {%- if section.settings.section_heading != blank -%}
@@ -62,17 +123,15 @@
         <ul class="reviews-track" role="list">
           {%- for block in section.blocks -%}
             <li class="reviews-slide" {{ block.shopify_attributes }}>
-              <div class="testimonial-wrapper">
-                <div class="testimonial-wrapper-content">
-                  <div class="testimonial-name">
-                    {%- if block.settings.name_person != blank -%}
-                      <p>{{ block.settings.name_person | escape }}</p>
-                    {%- endif -%}
-                    {%- if block.settings.person_location != blank -%}
-                      <p>{{ block.settings.person_location | escape }}</p>
-                    {%- endif -%}
-                    {{ star_markup }}
-                  </div>
+              <article class="testimonial-wrapper">
+                <div class="testimonial-name">
+                  {%- if block.settings.name_person != blank -%}
+                    <p>{{ block.settings.name_person | escape }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.person_location != blank -%}
+                    <p>{{ block.settings.person_location | escape }}</p>
+                  {%- endif -%}
+                  {{ star_markup }}
                 </div>
                 <div class="testimonial-content">
                   {%- if block.settings.person_content_heading != blank -%}
@@ -82,7 +141,7 @@
                     <div>{{ block.settings.person_content_subheading }}</div>
                   {%- endif -%}
                 </div>
-              </div>
+              </article>
             </li>
           {%- endfor -%}
         </ul>
@@ -97,81 +156,6 @@
 {%- endif -%}
 
 {%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
-
-<style>
-/* ── Reviews Section — static styles ── */
-.reviews-scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  overscroll-behavior-x: contain;
-  padding-bottom: 8px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.reviews-scroll::-webkit-scrollbar { display: none; }
-
-.reviews-track {
-  display: flex;
-  gap: 10px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  flex-wrap: nowrap;
-}
-
-.reviews-slide {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  display: flex;
-  justify-content: center;
-  border: 0.5px solid #e2dfdf;
-  margin: 5px;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  background: #fff;
-}
-
-.testimonial-wrapper {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 90%;
-  text-align: left;
-}
-
-.testimonial-wrapper-content { display: flex; gap: 1rem; }
-
-.testimonial-name h3 { font-size: 16px; margin-bottom: 0.5rem; }
-.testimonial-name p  { font-size: 12px; }
-
-.testimonial-content h3 { font-size: 16px; margin-top: 1rem; margin-bottom: 0.5rem; }
-.testimonial-content p, .testimonial-content div { font-size: 10px; letter-spacing: 1px; }
-
-.icons { display: flex; gap: 4px; margin-top: 8px; }
-.icons svg { display: block; }
-
-/* Responsive widths */
-@media (max-width: 767px) {
- .reviews-slide {
-     flex: 0 0 90%;
-     }
-  .testimonial-wrapper  { max-width: 95%; padding: 10px 0 20px; }
-  .testimonial-name h3  { font-size: 12px; }
-  .testimonial-name p   { font-size: 10px; }
-  .testimonial-content h3 { font-size: 12px; }
-  .testimonial-content p, .testimonial-content div { font-size: 8px; }
-}
-@media (min-width: 768px) and (max-width: 1023px) {
-  .reviews-slide {   flex: 0 0 30%; }
-}
-@media (min-width: 1024px) {
-  .reviews-slide { 
-     flex: 0 0 30%; }
-}
-</style>
 
 {% schema %}
 {

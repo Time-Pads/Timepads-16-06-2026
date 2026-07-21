@@ -170,8 +170,8 @@ button.stain-button-canvas.group\/quick-action-button.bg-button.flex.items-cente
 color: white;
 }
 button.stain-button-canvas.group\/quick-action-button.bg-button.flex.items-center.justify-center.type-accent.font-bold.text-r3.transition-opacity.duration-\[--enter-animation-duration\].pointer-events-auto.w-r12.aspect-square.min-w-\[40px\].min-h-\[40px\].md\:min-h-\[48px\].md\:px-r8.md\:py-r5.md\:w-full.md\:aspect-auto .btn-state-ready{
- color: black !important;
-
+ color: white !important;
 }
+
 
 

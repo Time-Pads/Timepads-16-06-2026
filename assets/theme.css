@@ -13868,13 +13868,13 @@ body .shopify-email-marketing-confirmation__container {
   padding-left: 0;
 }
 .header__mobile__right {
-  display: flex;
-  justify-content: flex-end;
+  display: flex !important;
+  justify-content: flex-start !important;
 }
 .header__mobile__right .header__mobile__button {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 0;
+  display: flex !important;
+  justify-content: flex-start !important;
+  padding-right: 0 !important;
 }
 .header__mobile__right .visually-hidden,
 .header__mobile__right [data-shopify-xr-hidden] {
@@ -13916,8 +13916,9 @@ body .shopify-email-marketing-confirmation__container {
   align-self: stretch;
   height: 100%;
 }
-.header__desktop__buttons {
+body .header__desktop__buttons {
   display: flex;
+  align-items: center;
 }
 .header__menu__inner {
   display: flex;
@@ -16261,7 +16262,7 @@ html.js
 }
 .logo-bar__image {
   display: block;
-  margin: 0 auto;
+  margin: 0 ;
   max-width: 100%;
 }
 .logo-bar__link {

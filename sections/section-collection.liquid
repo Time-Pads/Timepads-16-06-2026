@@ -1,247 +1,314 @@
-{%- comment -%}
-  TIMEPADS - Featured Product Grid Section
-  Rendering Store Native Collection Product Cards (with Variants & Split Add to Cart Button)
-{%- endcomment -%}
+<!-- /sections/section-collection.liquid -->
+{%- comment -%} ── Lazy-load gate ── {%- endcomment -%}
+{%- capture lazy_load_section -%}
+  {%- render 'lazy-load-section-validations' -%}
+{%- endcapture -%}
 
-{%- liquid
-  assign collection = collections[section.settings.collection]
-  assign heading = section.settings.title | default: section.settings.heading | default: collection.title
-  assign limit = section.settings.maximum_products | default: section.settings.limit | default: 8
-  
-  assign cols_desktop = section.settings.products_per_row_desktop | default: section.settings.grid | default: 4
-  assign cols_mobile = section.settings.products_per_row_mobile | default: section.settings.grid_mobile | default: 2
-  
-  assign enable_view_all = section.settings.enable_view_all | default: section.settings.show_view_all
-  assign view_all_text = section.settings.button_text | default: 'View All Products'
-  
-  assign pad_top = section.settings.padding_top | default: 40
-  assign pad_bottom = section.settings.padding_bottom | default: 40
-  assign bg_color = section.settings.bg_color | default: '#FFFFFF'
--%}
+{%- comment -%} ── Scoped styles (single block, section-scoped) ── {%- endcomment -%}
+{%- assign pt    = section.settings.padding_top -%}
+{%- assign pb    = section.settings.padding_bottom -%}
+{%- assign mpt   = section.settings.mpadding_top -%}
+{%- assign mpb   = section.settings.mpadding_bottom -%}
+{%- assign fs    = section.settings.font_size -%}
+{%- assign fs_m  = section.settings.font_size_mobile -%}
+{%- assign sid   = section.id -%}
+{%- assign grid_desktop = section.settings.grid | default: 3 -%}
+{%- assign grid_mobile  = section.settings.grid_mobile | default: 2 -%}
 
-{%- style -%}
-  .tp-grid-{{ section.id }} {
-    --tp-grid-bg: {{ bg_color }};
-    --tp-grid-cols-desktop: {{ cols_desktop }};
-    --tp-grid-cols-mobile: {{ cols_mobile }};
-    --tp-grid-pt: {{ pad_top }}px;
-    --tp-grid-pb: {{ pad_bottom }}px;
+{% style %}
+  #shopify-section-{{ sid }} {
+    padding-top: {{ pt }}px !important;
+    padding-bottom: {{ pb }}px !important;
   }
-{%- endstyle -%}
+  @media (max-width: 767px) {
+    #shopify-section-{{ sid }} {
+      padding-top: {{ mpt }}px !important;
+      padding-bottom: {{ mpb }}px !important;
+    }
+  }
+  .title-{{ sid }} {
+    font-size: {{ fs }}px;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 767px) {
+    .title-{{ sid }} { font-size: {{ fs_m }}px; }
+  }
 
-<section
-  id="shopify-section-grid-{{ section.id }}"
-  class="tp-grid-section tp-grid-{{ section.id }}"
-  aria-label="{{ heading | default: 'Featured Products' | escape }}"
->
-  <div class="tp-grid__container">
-    
-    {%- if heading != blank -%}
-      <div class="tp-grid__header">
-        <h2 class="tp-grid__heading">{{ heading }}</h2>
-      </div>
-    {%- endif -%}
-
-    <div class="tp-grid__products">
-      {%- if collection != blank and collection.products.size > 0 -%}
-        {%- for product in collection.products limit: limit -%}
-          {%- render 'collection-product-card', product: product -%}
-        {%- endfor -%}
-      {%- else -%}
-        <!-- Onboarding Placeholder Cards -->
-        {%- for i in (1..4) -%}
-          <div class="tp-product-card-placeholder">Sample Product {{ i }}</div>
-        {%- endfor -%}
-      {%- endif -%}
-    </div>
-
-    {%- if enable_view_all and collection.url != blank -%}
-      <div class="tp-grid__footer">
-        <a href="{{ collection.url }}" class="tp-grid__view-all-btn">
-          <span>{{ view_all_text }}</span>
-        </a>
-      </div>
-    {%- endif -%}
-
-  </div>
-</section>
-
-<style>
-  .tp-grid-{{ section.id }} {
-    background-color: var(--tp-grid-bg);
-    padding-top: var(--tp-grid-pt);
-    padding-bottom: var(--tp-grid-pb);
+  /* Grid Layout with Zero Layout Shift */
+  #shopify-section-{{ sid }} .js-grid {
+    display: grid !important;
+    grid-template-columns: repeat({{ grid_mobile }}, 1fr) !important;
+    gap: 14px !important;
     width: 100%;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-
-  .tp-grid-{{ section.id }} .tp-grid__container {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  .tp-grid-{{ section.id }} .tp-grid__header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 36px auto;
-  }
-
-  .tp-grid-{{ section.id }} .tp-grid__heading {
-    font-size: 28px;
-    font-weight: 700;
-    color: #2D2D2D;
-    margin: 0;
-    line-height: 1.25;
+    box-sizing: border-box;
   }
   @media (min-width: 768px) {
-    .tp-grid-{{ section.id }} .tp-grid__heading {
-      font-size: 34px;
+    #shopify-section-{{ sid }} .js-grid {
+      grid-template-columns: repeat({{ grid_desktop }}, 1fr) !important;
+      gap: 20px !important;
     }
   }
-  @media (min-width: 1024px) {
-    .tp-grid-{{ section.id }} .tp-grid__heading {
-      font-size: 40px;
-    }
-  }
+{% endstyle %}
 
-  /* Grid Layout (2 cols mobile, 3 cols tablet, 4 cols desktop) */
-  .tp-grid-{{ section.id }} .tp-grid__products {
-    display: grid;
-    grid-template-columns: repeat(var(--tp-grid-cols-mobile), 1fr);
-    gap: 18px;
-  }
-  @media (min-width: 768px) {
-    .tp-grid-{{ section.id }} .tp-grid__products {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-  }
-  @media (min-width: 1024px) {
-    .tp-grid-{{ section.id }} .tp-grid__products {
-      grid-template-columns: repeat(var(--tp-grid-cols-desktop), 1fr);
-      gap: 28px;
-    }
-  }
+{%- if lazy_load_section != blank -%}
+  <lazy-section style="display: block; min-height: 400px;">
+{%- endif -%}
 
-  /* View All Button Footer */
-  .tp-grid-{{ section.id }} .tp-grid__footer {
+{%- if lazy_load_section == blank -%}
+
+  {%- assign collection    = collections[section.settings.collection] -%}
+  {%- assign product_limit = section.settings.grid | times: section.settings.rows | at_most: 8 -%}
+
+  <div
+    class="section-collection home-collection-list {{ section.settings.bg }}"
+    data-section-id="{{ sid }}"
+    data-section-type="collection-row"
+  >
+    <div class="{{ section.settings.width }}">
+
+      {%- if section.settings.title != blank -%}
+        <h2 class="kicker-flourished title-{{ sid }}{% if section.settings.show_announcement_hot_selling %} text-for-collection-heading{% endif %}">
+          {{ section.settings.title | escape }}
+        </h2>
+      {%- endif -%}
+
+      <div
+        class="js-grid"
+        data-grid-large="{{ section.settings.grid }}"
+        data-grid-small="{{ section.settings.grid_mobile }}"
+      >
+        {%- if collection.products.size > 0 -%}
+          {%- for product in collection.products limit: product_limit -%}
+            {%- assign eagerload = false -%}
+            {%- if forloop.index <= section.settings.grid -%}
+              {%- assign eagerload = true -%}
+            {%- endif -%}
+            {%- render 'product-card-performance',
+              product: product,
+              placeholder: 'product',
+              columns_desktop: section.settings.grid,
+              columns_mobile: section.settings.grid_mobile,
+              eagerload: eagerload
+            -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- render 'onboarding-product-grid-item', limit: product_limit -%}
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_view_all and collection.url != blank -%}
+        <div class="text-center mt-r8">
+          <a href="{{ collection.url }}" class="btn--outline">
+            {{ 'collections.general.view_all' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+{%- else -%}
+
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    role="presentation"
+    class="spinner"
+    viewBox="0 0 66 66"
+    xmlns="http://www.w3.org/2000/svg"
+    width="66"
+    height="66"
+  >
+    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+  </svg>
+
+{%- endif -%}
+
+{%- if lazy_load_section != blank -%}
+  </lazy-section>
+{%- endif -%}
+
+{% comment %} 
+  Static CSS for this section type.
+  Move to your theme's main stylesheet to avoid per-section style injection.
+{% endcomment %}
+<style id="sc-static-styles">
+  .kicker-flourished {
+    position: relative;
+    font-size: 26px !important;
+    color: #8000ff;
+    font-weight: bold;
+    display: inline-block;
+  }
+  .home-collection-list h2.kicker-flourished {
     text-align: center;
-    margin-top: 36px;
-  }
-
-  .tp-grid-{{ section.id }} .tp-grid__view-all-btn {
-    display: inline-flex;
-    align-items: center;
+    display: flex;
     justify-content: center;
-    height: 48px;
-    padding: 0 32px;
-    border-radius: 12px;
-    border: 1.5px solid #46543E;
-    color: #46543E;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    padding-top: 1rem;
   }
-  @media (min-width: 768px) {
-    .tp-grid-{{ section.id }} .tp-grid__view-all-btn {
-      font-size: 16px;
-    }
-  }
-  .tp-grid-{{ section.id }} .tp-grid__view-all-btn:hover {
-    background-color: #46543E;
-    color: #FFFFFF;
+  .text-for-collection-heading {
+    margin-bottom: 2rem !important;
   }
 </style>
 
 {% schema %}
 {
-  "name": "Featured Product Grid",
-  "tag": "section",
-  "class": "tp-featured-product-grid-section",
+  "name": "Product grid",
   "settings": [
     {
-      "type": "text",
-      "id": "title",
-      "label": "Heading",
-      "default": "Featured Products"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "products_per_row_desktop",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "label": "Products Per Row Desktop",
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "products_per_row_mobile",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "label": "Products Per Row Mobile",
-      "default": 2
-    },
-    {
-      "type": "range",
-      "id": "maximum_products",
-      "min": 4,
-      "max": 12,
-      "step": 2,
-      "label": "Maximum Products",
-      "default": 8
-    },
-    {
       "type": "checkbox",
-      "id": "enable_view_all",
-      "label": "Enable View All Button",
-      "default": true
+      "id": "show_announcement_hot_selling",
+      "label": "Show announcement",
+      "default": false
     },
     {
-      "type": "text",
-      "id": "button_text",
-      "label": "View All Button Text",
-      "default": "View All Products"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#FFFFFF"
+      "type": "header",
+      "content": "Padding"
     },
     {
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 80,
-      "step": 4,
+      "max": 100,
+      "step": 2,
       "unit": "px",
       "label": "Padding Top",
-      "default": 40
+      "default": 0
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 80,
-      "step": 4,
+      "max": 100,
+      "step": 2,
       "unit": "px",
       "label": "Padding Bottom",
-      "default": 40
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mpadding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mpadding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Font Size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Font Size Mobile"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "label": "Products per row (desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "label": "Number of rows (desktop)",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "grid_mobile",
+      "label": "Mobile layout",
+      "options": [
+        { "value": "1", "label": "One product per row" },
+        { "value": "2", "label": "Two products per row" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral",        "label": "Default" },
+        { "value": "palette--light bg--accent",         "label": "Light" },
+        { "value": "palette--dark bg--invert",          "label": "Dark" },
+        { "value": "palette--dark bg--invert--accent",  "label": "Dark accent" },
+        { "value": "palette--bright bg--bright",        "label": "Bright" },
+        { "value": "palette--bright bg--bright--accent","label": "Bright accent" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full",   "label": "Full width padded" },
+        { "value": "wrapper",         "label": "Page width" },
+        { "value": "wrapper--narrow", "label": "Page width narrow" },
+        { "value": "wrapper--tiny",   "label": "Page width extra narrow" }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Featured Product Grid"
+      "name": "Product grid",
+      "category": "Collection"
     }
-  ]
+  ],
+  "disabled_on": {
+    "groups": ["header", "aside"]
+  }
 }
 {% endschema %}

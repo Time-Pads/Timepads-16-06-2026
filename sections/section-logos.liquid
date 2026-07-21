@@ -6,11 +6,11 @@
 {%- assign is_product_or_collection = false -%}
 {%- if product or collection -%}{%- assign is_product_or_collection = true -%}{%- endif -%}
 
-{%- comment -%} ── Styles FIRST — before HTML to prevent layout flash ── {%- endcomment -%}
 {% style %}
   #shopify-section-{{ sid }} {
     padding-top: {{ section.settings.padding_top }}px !important;
     padding-bottom: {{ section.settings.padding_bottom }}px !important;
+    contain-intrinsic-size: 1px 120px;
   }
   @media (max-width: 768px) {
     #shopify-section-{{ sid }} {
@@ -18,17 +18,40 @@
       padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
     }
   }
+
+  /* Scoped section styles */
+  @media (max-width: 767px) {
+    #shopify-section-{{ sid }} .buy-from-us.logo-bar.ticker--unloaded {
+      overflow-x: auto;
+      overflow-y: hidden;
+      display: flex;
+      gap: 5px;
+      justify-content: flex-start;
+      margin-bottom: 0rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #shopify-section-{{ sid }} .buy-from-us.logo-bar.ticker--unloaded::-webkit-scrollbar {
+      display: none;
+    }
+    #shopify-section-{{ sid }} .buy-from-us.logo-bar.ticker--unloaded .logo-bar__item {
+      flex: 0 0 30%;
+      margin: 0;
+      padding: 0rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    #shopify-section-{{ sid }} .kicker-flourished {
+      margin-bottom: 1.4rem;
+    }
+  }
 {% endstyle %}
 
-{%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
+{%- if lazy_load_section != blank -%}<lazy-section style="display: block; min-height: 120px;">{%- endif -%}
 
 {%- if lazy_load_section == blank -%}
 
-  {%- comment -%}
-    Count blocks that have images — must be done OUTSIDE capture
-    because assign inside capture is scoped locally and won't
-    update the outer variable (Liquid scope bug in original).
-  {%- endcomment -%}
   {%- assign has_block_with_image = false -%}
   {%- for block in section.blocks -%}
     {%- if block.settings.image != blank -%}
@@ -44,7 +67,6 @@
 
   {%- unless hide_section -%}
 
-    {%- comment -%} Build logo markup once for reuse ── {%- endcomment -%}
     {%- capture logo_markup -%}
       {%- for block in section.blocks -%}
         {%- assign img = block.settings.image -%}
@@ -71,14 +93,20 @@
             {%- assign img_w   = img.width | at_most: block.settings.width -%}
             {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
             {%- assign img_alt = block.settings.alt_text | default: section.settings.title | escape -%}
+            {%- assign img_1x  = img | image_url: width: img_w, format: 'webp' -%}
+            {%- assign img_2x  = img | image_url: width: img_w2x, format: 'webp' -%}
+            {%- assign srcset_val = img_1x | append: ' 1x, ' | append: img_2x | append: ' 2x' -%}
             <div class="logo-bar__image">
               <img
-                src="{{ img | image_url: width: img_w }}"
-                srcset="{{ img | image_url: width: img_w }} 1x, {{ img | image_url: width: img_w2x }} 2x"
+                src="{{ img_1x }}"
+                srcset="{{ srcset_val }}"
+                sizes="(max-width: 767px) 40vw, {{ img_w }}px"
                 width="{{ img_w }}"
                 height="{{ img_w }}"
+                style="width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain;"
                 alt="{{ img_alt }}"
                 loading="lazy"
+                fetchpriority="low"
                 decoding="async"
               >
             </div>
@@ -144,29 +172,6 @@
 {%- endif -%}
 
 {%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
-
-<style>
-/* ── Logo bar mobile override — static ── */
-@media (max-width: 767px) {
-  .buy-from-us.logo-bar.ticker--unloaded {
-    overflow-x: auto;
-    overflow-y: hidden;
-    display: flex;
-    gap: 0;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-  }
-  .buy-from-us.logo-bar.ticker--unloaded .logo-bar__item {
-    flex: 0 0 40%;
-    margin: 0;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  .kicker-flourished { margin-bottom: 1.4rem; }
-}
-</style>
 
 {% schema %}
 {

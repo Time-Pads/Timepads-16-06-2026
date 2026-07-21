@@ -89,14 +89,14 @@
               >
               <!-- Fallback Img (Eager for First Only, Lazy for Remaining) -->
               <img
-                src="{{ d_img | image_url: width: 1440 }}"
+                src="{{ m_img | default: d_img | image_url: width: 750, format: 'webp' }}"
                 alt="{{ d_img.alt | default: shop.name | escape }}"
                 class="tp-rotator__img"
-                width="{{ d_img.width | default: 1440 }}"
-                height="{{ d_img.height | default: 612 }}"
+                width="{{ m_img.width | default: d_img.width | default: 750 }}"
+                height="{{ m_img.height | default: d_img.height | default: 920 }}"
                 loading="{% if is_first %}eager{% else %}lazy{% endif %}"
                 fetchpriority="{% if is_first %}high{% else %}low{% endif %}"
-                decoding="async"
+                decoding="{% if is_first %}sync{% else %}async{% endif %}"
               >
             </picture>
           {%- else -%}
@@ -229,13 +229,15 @@
     var current = 0;
     var interval = parseInt(el.getAttribute('data-interval') || '2000', 10);
 
-    setInterval(function() {
-      slides[current].classList.remove('is-active');
-      slides[current].setAttribute('aria-hidden', 'true');
-      current = (current + 1) % count;
-      slides[current].classList.add('is-active');
-      slides[current].setAttribute('aria-hidden', 'false');
-    }, interval);
+    setTimeout(function() {
+      setInterval(function() {
+        slides[current].classList.remove('is-active');
+        slides[current].setAttribute('aria-hidden', 'true');
+        current = (current + 1) % count;
+        slides[current].classList.add('is-active');
+        slides[current].setAttribute('aria-hidden', 'false');
+      }, interval);
+    }, 5000);
   })();
 </script>
 

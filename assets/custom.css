@@ -129,9 +129,12 @@ body h2.kicker-flourished,
 .accent-title-large.strong.mb-r4,
 .one-whole.text-center p,
 .product__align-left .product__title,
-.btn-state-ready,
+body .btn-state-ready,
 .collection-item__title,
-.sidebar__item.stateful-filter-icons a { color: #2c2525 !important; }
+.sidebar__item.stateful-filter-icons a { color: #fbfbfb !important; }
+body .btn-state-ready,
+body b.btn-state-ready,
+body button .btn-state-ready { color: #fff !important; }
 .navtext,
 .cart__message.is-success .cart__message-success,
 .rte--lock-font.rte--lock-size.px-r6.flex.flex-row.items-center.accent-size-5 p { text-transform: capitalize; }
@@ -574,7 +577,7 @@ body.template-index .js-grid[data-grid-large="4"] { display: flex; justify-conte
 .template-index .on-sale,
 .template-index .product__grid__price--nowrap .price { font-family: "Poppins"; color: #231f20; font-size: 16px; font-weight: 700; line-height: 16px; text-transform: capitalize; flex: 0 0 23%; justify-content: flex-end; gap: 5px; }
 .template-index .variant-price-wrapper .current-price { font-family: "Poppins"; color: #231f20; font-size: 16px; font-weight: 700; line-height: 16px; flex: 0 0 31%; justify-content: flex-end; gap: 5px; }
-.template-index .variant-price-wrapper .compare-at-price { flex: 0 0 20%; font-size: 10px; }
+.template-index .variant-price-wrapper .compare-at-price { display: none; flex: 0 0 20%; font-size: 10px; }
 .template-index p.variant-price-wrapper { width: 75%; gap: 4px; }
 .template-index .product-grid-item, .quickview__form { flex: 0 0 23%; }
 .template-index .variants-price-container .offer-percentage { top: 5px !important; }
@@ -971,6 +974,7 @@ p.Paragraph.SCXW149860544.BCX8 span { font-size: 16px; }
   .template-index .variant-price-wrapper .current-price { font-size: 12px; justify-content: center; flex: 0 0 27% !important; width: 100%; }
   .template-index .variant-price-wrapper .compare-at-price { flex: 0 0 39% !important; }
   span.mobile-hide, .mobile-hide { display: none !important; }
+  span.desktop-hide, .desktop-hide { display: inline-block !important; }
   .template-collection .product-card.single-variant { padding-right: 5px; }
   .image__hero__frame img { object-fit: fill; }
   h1.circular-collection-heading { margin-bottom: 0 !important; }
@@ -981,7 +985,7 @@ p.Paragraph.SCXW149860544.BCX8 span { font-size: 16px; }
   .page-contact .btn--neutral.btn--outline { padding: 10px; width: 30%; max-width: 30%; min-width: 30%; }
   .template-index product-grid-item.product-grid-item.group\/product-grid-item { overflow: hidden !important; width: 100% !important; }
   .header__mobile__button .header__cart__status [data-header-cart-count]:not([data-header-cart-count="0"]) { display: none; }
-  .header__mobile__button { min-width: 25px !important; z-index: 999999; }
+  .header__mobile__button { min-width: 44px !important; width: 44px !important; height: 44px !important; z-index: 999999; }
   .template-index .header__cart__status { display: none; }
   .template-collection .product__align-left .radio__button label { padding: 8px 5px; }
   .template-search .product-card.single-variant { height: 8rem; min-height: 6rem !important; }
@@ -1077,9 +1081,8 @@ p.Paragraph.SCXW149860544.BCX8 span { font-size: 16px; }
   .announcement p { font-size: 12px; }
   .template-product img.block.overflow-hidden { border-radius: 0; }
   body#why-time-best-menstrual-pads-amp-women-hygiene-products .wrapper.section-padding { padding: 0; max-width: 100%; }
-  .header__backfill { display: none; }
+  .header__backfill { display: none !important; }
   .template-search .theme__header { position: sticky; top: 0; z-index: 6000; left: 0; right: 0; }
-  .mobile-nav-new { font-size: 8px; position: absolute; top: 1% !important; left: 10%; background: red; color: #fff; padding: 2px 5px; border-radius: 10px; animation: blink 3s infinite; }
   body#time-pads-scooter-gift-hamper-policy p, body#time-pads-scooter-gift-hamper-policy li { font-size: 13px; }
   .header__mobile__right { gap: 1rem; }
   .rotating-text p .word .letter.in, .rotating-text p { font-size: 20px; }
@@ -1295,4 +1298,10 @@ button#quick-add-menu-button-1{
   src: url("//timepads.in/cdn/fonts/poppins/poppins_n4.0ba78fa5af9b0e1a374041b3ceaadf0a43b41362.woff2") format("woff2");
 }
 
-
+body .btn-state-ready,
+span.btn-state-ready,
+button .btn-state-ready,
+.add-to-cart-button-for-product-card .btn-state-ready,
+.tp-perf-card__atc-btn .btn-state-ready {
+  color: #ffffff !important;
+}

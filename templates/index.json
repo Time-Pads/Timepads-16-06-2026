@@ -17,18 +17,7 @@
           "settings": {
             "image": "shopify://shop_images/banner.webp",
             "mobile_image": "shopify://shop_images/banner-mobile.webp",
-            "overlay_opacity": 0,
-            "overlay_color": "#ffffff",
-            "enable_overlay_text": true,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://collections/all",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://collections/all"
           }
         },
         "image_EQicbA": {
@@ -36,18 +25,7 @@
           "settings": {
             "image": "shopify://shop_images/banner-2.webp",
             "mobile_image": "shopify://shop_images/banner-mobile-2.webp",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://products/period-pain-relief-cream",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://products/period-pain-relief-cream"
           }
         },
         "image_bTfJtJ": {
@@ -55,18 +33,7 @@
           "settings": {
             "image": "shopify://shop_images/banner-3.webp",
             "mobile_image": "shopify://shop_images/banner-mobile-3.webp",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://collections/menstrual-cups",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://collections/menstrual-cups"
           }
         },
         "image_UmJcC8": {
@@ -75,18 +42,7 @@
           "settings": {
             "image": "shopify://shop_images/WhatsApp_Image_2026-06-18_at_10.52.29_PM_fdb6d33c-d1c8-40fb-be91-7b2847bf1c21.jpg",
             "mobile_image": "shopify://shop_images/ChatGPT_Image_Jun_22_2026_06_30_50_PM.png",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://products/menstrual-cup",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://products/menstrual-cup"
           }
         },
         "image_7HjkDA": {
@@ -95,18 +51,7 @@
           "settings": {
             "image": "shopify://shop_images/file_000000002a707208b2b6eaa6b0c920a4.png",
             "mobile_image": "shopify://shop_images/file_00000000dd047208b95809a615349c85.png",
-            "overlay_opacity": 0,
-            "overlay_color": "#ffffff",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://products/menstrual-cup",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://products/menstrual-cup"
           }
         },
         "image_F64cEx": {
@@ -115,18 +60,7 @@
           "settings": {
             "image": "shopify://shop_images/bj172.png",
             "mobile_image": "shopify://shop_images/website_mob_ver1_1.png",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://products/period-pain-relief-cream",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://products/period-pain-relief-cream"
           }
         },
         "image_DY9bHr": {
@@ -135,18 +69,7 @@
           "settings": {
             "image": "shopify://shop_images/image_3.jpg",
             "mobile_image": "shopify://shop_images/image_7.jpg",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://collections/period-pads-cotton",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://collections/period-pads-cotton"
           }
         },
         "image_QrDDQw": {
@@ -155,18 +78,7 @@
           "settings": {
             "image": "shopify://shop_images/image_2.jpg",
             "mobile_image": "shopify://shop_images/image_6.jpg",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://collections/soft-cotton-pads-for-periods",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://collections/soft-cotton-pads-for-periods"
           }
         },
         "image_jer7eT": {
@@ -175,18 +87,7 @@
           "settings": {
             "image": "shopify://shop_images/Banner_04_02.jpg",
             "mobile_image": "shopify://shop_images/Banner_04_750x600_02.jpg",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": true,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "View products",
-            "link": "shopify://collections/all",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://collections/all"
           }
         }
       },
@@ -202,16 +103,12 @@
         "image_jer7eT"
       ],
       "settings": {
-        "autoplay": true,
-        "autoplay_speed": 2,
-        "preload_first_image": true,
-        "height": "use_image",
-        "color_bg": "palette--light bg--accent",
-        "width": "wrapper--none",
+        "banner_link": "",
+        "autoplay_interval": 2000,
+        "desktop_border_radius": 0,
+        "mobile_border_radius": 0,
         "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0
+        "padding_bottom": 0
       }
     },
     "section_announcement_w9yLCp": {
@@ -220,48 +117,51 @@
         "text_HWbbrX": {
           "type": "text",
           "settings": {
-            "text": "<p>Our Products Are Clinically Tested to Ensure Maximum <strong>Safety and Quality</strong> for Women!</p>"
+            "text": "<p>Our Products Are Clinically Tested to Ensure Maximum <strong>Safety and Quality</strong> for Women!</p>",
+            "svg_icon": "",
+            "link": ""
           }
         },
         "text_GXWpFC": {
           "type": "text",
           "disabled": true,
           "settings": {
-            "text": "<p><strong>| Free Shipping on All Orders Shop Now</strong></p>"
+            "text": "<p><strong>| Free Shipping on All Orders Shop Now</strong></p>",
+            "svg_icon": "",
+            "link": ""
           }
         },
         "icon_block_BiTUaa": {
           "type": "icon_block",
           "settings": {
             "text": "<p>Safe</p>",
-            "icon_name": "icon-washer",
-            "icon_color": "#aaaaaa",
-            "icon_alt_width": 33
+            "svg_icon": "",
+            "link": ""
           }
         },
         "icon_block_yaYeeR": {
           "type": "icon_block",
           "settings": {
             "text": "<p> Reliable, and </p>",
-            "icon_name": "icon-thread",
-            "icon_color": "#aaaaaa",
-            "icon_alt_width": 33
+            "svg_icon": "",
+            "link": ""
           }
         },
         "icon_block_jbaXLz": {
           "type": "icon_block",
           "settings": {
             "text": "<p>Skin-Friendly!</p>",
-            "icon_name": "icon-truck",
-            "icon_color": "#aaaaaa",
-            "icon_alt_width": 33
+            "svg_icon": "",
+            "link": ""
           }
         },
         "text_4pNnwk": {
           "type": "text",
           "disabled": true,
           "settings": {
-            "text": "<p>Afraid to try a new pad? Try Time! One pack, and you'll love it—bet on it!</p>"
+            "text": "<p>Afraid to try a new pad? Try Time! One pack, and you'll love it—bet on it!</p>",
+            "svg_icon": "",
+            "link": ""
           }
         }
       },
@@ -275,12 +175,13 @@
       ],
       "settings": {
         "bg_color": "#000000",
-        "color": "#ffffff",
-        "text_size": 4,
+        "text_color": "#ffffff",
+        "desktop_font_size": 16,
+        "mobile_font_size": 14,
+        "animation_speed": 25,
+        "pause_on_hover": true,
         "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0
+        "padding_bottom": 0
       }
     },
     "collection_tabs_jwbj9a": {
@@ -289,67 +190,67 @@
         "tab_PnMr8r": {
           "type": "tab",
           "settings": {
-            "coming_soon_text": "New Arrivals",
+            "collection": "",
             "header_image": "shopify://shop_images/Cream_1_fbbb9a81-8d73-4bd1-a27d-c378a6e6fa82_1_1.webp",
             "header_title": "Period Pain Relief Cream",
-            "tab_label": "Period Pain Relief Cream",
-            "collection": "",
-            "collection_url": "https://timepads.in/products/period-pain-relief-cream-oil"
+            "collection_url": "https://timepads.in/products/period-pain-relief-cream-oil",
+            "coming_soon_text": "New Arrivals",
+            "badge_color": "#ff4a4a"
           }
         },
         "tab_Hm6i8d": {
           "type": "tab",
           "settings": {
-            "coming_soon_text": "New Arrivals",
+            "collection": "",
             "header_image": "shopify://shop_images/Cup_1_21485a91-1b99-489e-8098-2e803deadb0.webp",
             "header_title": "Menstrual Cup",
-            "tab_label": "Menstrual Cup",
-            "collection": "",
-            "collection_url": "shopify://products/menstrual-cup"
+            "collection_url": "shopify://products/menstrual-cup",
+            "coming_soon_text": "New Arrivals",
+            "badge_color": "#ff4a4a"
           }
         },
         "tab_qNmpaP": {
           "type": "tab",
           "settings": {
-            "coming_soon_text": "",
+            "collection": "cotton-sanitary-pads",
             "header_image": "shopify://shop_images/Feather_9_1_1.webp",
             "header_title": "Ultra Feather",
-            "tab_label": "Day Pads",
-            "collection": "cotton-sanitary-pads",
-            "collection_url": "shopify://collections/cotton-sanitary-pads"
+            "collection_url": "shopify://collections/cotton-sanitary-pads",
+            "coming_soon_text": "",
+            "badge_color": "#ff4a4a"
           }
         },
         "tab_UtMXmL": {
           "type": "tab",
           "settings": {
-            "coming_soon_text": "",
+            "collection": "comfortable-pads-for-periods",
             "header_image": "shopify://shop_images/Velvet_4_1.jpg",
             "header_title": "Ultra Velvet",
-            "tab_label": "Day & Night pads",
-            "collection": "comfortable-pads-for-periods",
-            "collection_url": "shopify://collections/comfortable-pads-for-periods"
+            "collection_url": "shopify://collections/comfortable-pads-for-periods",
+            "coming_soon_text": "",
+            "badge_color": "#ff4a4a"
           }
         },
         "tab_UbehUd": {
           "type": "tab",
           "settings": {
-            "coming_soon_text": "",
+            "collection": "period-pads-cotton",
             "header_image": "shopify://shop_images/Cuddle_9_1_1.webp",
             "header_title": "Ultra cuddle",
-            "tab_label": "Night Pads",
-            "collection": "period-pads-cotton",
-            "collection_url": "shopify://collections/period-pads-cotton"
+            "collection_url": "shopify://collections/period-pads-cotton",
+            "coming_soon_text": "",
+            "badge_color": "#ff4a4a"
           }
         },
         "tab_LYdNYW": {
           "type": "tab",
           "settings": {
-            "coming_soon_text": "",
+            "collection": "soft-cotton-pads-for-periods",
             "header_image": "shopify://shop_images/Uniline.webp",
             "header_title": "Uniline",
-            "tab_label": "Straight pads",
-            "collection": "soft-cotton-pads-for-periods",
-            "collection_url": "shopify://collections/soft-cotton-pads-for-periods"
+            "collection_url": "shopify://collections/soft-cotton-pads-for-periods",
+            "coming_soon_text": "",
+            "badge_color": "#ff4a4a"
           }
         }
       },
@@ -364,12 +265,14 @@
       "name": "Collection Tabs",
       "settings": {
         "heading": "Explore Our Collections",
-        "grid": 4,
-        "grid_mobile": 2,
+        "subheading": "Explore our clinically tested women's wellness essentials",
+        "columns_desktop": 6,
+        "columns_mobile": 2,
+        "gap_desktop": 28,
+        "gap_mobile": 18,
+        "bg_color": "#ffffff",
         "padding_top": 30,
-        "padding_bottom": 0,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 0
+        "padding_bottom": 0
       }
     },
     "product-grid": {
@@ -441,6 +344,7 @@
         "product_item_AfWJqk",
         "product_item_JE4EzB"
       ],
+      "disabled": true,
       "name": "Trending This Week",
       "settings": {
         "heading": "Trending This Week",
@@ -534,6 +438,7 @@
         "text_block_tyCn8K",
         "text_block_ECCWgh"
       ],
+      "disabled": true,
       "settings": {
         "padding_top": 30,
         "padding_bottom": 0,
@@ -590,6 +495,7 @@
         "collection_images_8kAEGB",
         "collection_images_JkPbCR"
       ],
+      "disabled": true,
       "settings": {
         "padding_top": 0,
         "padding_bottom": 0,
@@ -667,6 +573,7 @@
         "images_L7w7Et",
         "images_wLUmUN"
       ],
+      "disabled": true,
       "settings": {
         "section_heading": "Our Customers Love Us!",
         "font_size": 24,
