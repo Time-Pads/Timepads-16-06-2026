@@ -4,39 +4,54 @@
 {%- if request.page_type == 'product' -%}
   {%- liquid
     assign seo_variant = product.selected_or_first_available_variant
-    assign days_price_valid  = 1
-    assign secs_in_day       = 86400
-    assign price_valid_until = 'now' | date: '%s' | plus: secs_in_day | date: '%Y-%m-%d'
+    assign price_valid_until = 'now' | date: '%s' | plus: 31536000 | date: '%Y-%m-%d'
+    assign rating_value = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count
   -%}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org/",
     "@type": "Product",
-    "@id": "{{ product.url | absolute_url }}#product",
+    "@id": {{ product.url | absolute_url | json }},
     "name": {{ product.title | json }},
-    "image": [{% for img in product.images %}"{{ img | image_url: width: 1400 }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
-    "description": {{ product.description | strip_html | escape | json }},
-    "sku": "{{ seo_variant.sku }}",
-    "brand": { "@type": "Brand", "name": "Timepads" },
-    "category": "{% if collection %}{{ collection.title | escape }}{% else %}Sanitary Pads{% endif %}",
-    "url": "{{ product.url | absolute_url }}",
+    "image": [
+      {%- if product.images.size > 0 -%}
+        {%- for img in product.images -%}
+          {{ img | image_url: width: 1400 | prepend: "https:" | json }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      {%- elsif product.featured_image -%}
+        {{ product.featured_image | image_url: width: 1400 | prepend: "https:" | json }}
+      {%- endif -%}
+    ],
+    "description": {{ product.description | strip_html | truncate: 500 | json }},
+    "sku": {{ seo_variant.sku | json }},
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | default: shop.name | json }}
+    },
     "offers": {
       "@type": "Offer",
-      "url": "{{ product.url | absolute_url }}",
-      "priceCurrency": "{{ shop.currency }}",
-      "price": "{{ seo_variant.price | money_without_currency | strip_html }}",
-      "priceValidUntil": "{{ price_valid_until }}",
-      "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "url": {{ product.url | absolute_url | json }},
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "price": {{ seo_variant.price | divided_by: 100.00 | json }},
+      "priceValidUntil": {{ price_valid_until | json }},
+      "availability": "{% if seo_variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
       "itemCondition": "https://schema.org/NewCondition",
-      "seller": { "@type": "Organization", "name": "Timepads" }
-    },
+      "seller": {
+        "@type": "Organization",
+        "name": {{ shop.name | json }}
+      }
+    }
+    {%- if rating_value != blank and rating_count != blank and rating_count > 0 -%}
+    ,
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "bestRating": "5",
-      "worstRating": "1",
-      "ratingCount": "500"
+      "ratingValue": "{{ rating_value }}",
+      "ratingCount": "{{ rating_count }}",
+      "bestRating": "{{ rating_value.scale_max | default: 5 }}",
+      "worstRating": "{{ rating_value.scale_min | default: 1 }}"
     }
+    {%- endif -%}
   }
   </script>
 {%- endif -%}
@@ -191,9 +206,29 @@ details#product-details .read-more-btn { font-size: 14px; }
 
 /* Judge.me overrides */
 .rating__wrapper__title { display: none; }
-.jdgm-widget.jdgm-preview-badge.jdgm-preview-badge--with-link.jdgm--done-setup { margin: 1rem 0; }
+.jdgm-widget.jdgm-preview-badge,
+.jdgm-widget.jdgm-preview-badge.jdgm-preview-badge--with-link.jdgm--done-setup {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin: 1rem 0 !important;
+}
 .product__block__title { padding-bottom: 0 !important; }
 span.jdgm-rev__timestamp { display: none; }
+.jdgm-prev-badge { display: inline-flex !important; align-items: center !important; gap: 6px !important; }
+.jdgm-prev-badge__stars { display: inline-flex !important; align-items: center !important; line-height: 1 !important; }
+.jdgm-prev-badge__text,
+.jdgm-widget.jdgm-preview-badge .jdgm-prev-badge__text {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-size: 13px !important;
+  color: #555555 !important;
+  font-weight: 500 !important;
+  margin-left: 4px !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
 
 /* Payment icons */
 .payment-icons-wrapper { margin-bottom: 12px; }
@@ -561,6 +596,9 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
                     </div>
                   </div>
 
+                  {%- comment -%} Rebuilt PDP additions: Spec table, Who This Is For, FAQ, Siblings {%- endcomment -%}
+                  {%- render 'pdp-additions', product: product -%}
+
                   {%- assign recommended_product = product.metafields.custom.product_recommendation.value -%}
                   {%- if recommended_product != blank -%}
                     <div class="product-recommendation-offer">
@@ -590,22 +628,22 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
 
                 {%- when 'Product-Features' -%}
                   <div class="product-benefits" {{ block.shopify_attributes }}>
-                    <span class="benefit-pill pill-1">High Absorption</span>
-                    <span class="benefit-pill pill-2">Leak Protection</span>
-                    <span class="benefit-pill pill-4">Breathable Layers</span>
-                    <span class="benefit-pill pill-5">Odour Control</span>
-                    <span class="benefit-pill pill-3">Soft &amp; Skin-Friendly</span>
-                    <span class="benefit-pill pill-6">Rash-Free Comfort</span>
+                    <span class="benefit-pill pill-1"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>High Absorption</span>
+                    <span class="benefit-pill pill-2"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Leak Protection</span>
+                    <span class="benefit-pill pill-4"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.59-6.59A2 2 0 1 1 18 13H2"/></svg>Breathable Layers</span>
+                    <span class="benefit-pill pill-5"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0 M12 8v4 M12 16h.01"/></svg>Odour Control</span>
+                    <span class="benefit-pill pill-3"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69c.5.5.9 1 1.2 1.6.3-.6.7-1.1 1.2-1.6 2-2 5.66.66 3.66 3.66L12 19.8 6.14 7.95c-2-3 1.66-5.66 3.66-3.66.5.5.9 1 1.2 1.6"/></svg>Soft &amp; Skin-Friendly</span>
+                    <span class="benefit-pill pill-6"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M20 6L9 17l-5-5"/></svg>Rash-Free Comfort</span>
                   </div>
 
                 {%- when 'Product-Featuress' -%}
                   <div class="product-benefits" {{ block.shopify_attributes }}>
-                    {%- if block.settings.heading1 != blank -%}<span class="benefit-pill pill-1">{{ block.settings.heading1 | escape }}</span>{%- endif -%}
-                    {%- if block.settings.heading2 != blank -%}<span class="benefit-pill pill-2">{{ block.settings.heading2 | escape }}</span>{%- endif -%}
-                    {%- if block.settings.heading3 != blank -%}<span class="benefit-pill pill-4">{{ block.settings.heading3 | escape }}</span>{%- endif -%}
-                    {%- if block.settings.heading4 != blank -%}<span class="benefit-pill pill-5">{{ block.settings.heading4 | escape }}</span>{%- endif -%}
-                    {%- if block.settings.heading5 != blank -%}<span class="benefit-pill pill-3">{{ block.settings.heading5 | escape }}</span>{%- endif -%}
-                    {%- if block.settings.heading6 != blank -%}<span class="benefit-pill pill-6">{{ block.settings.heading6 | escape }}</span>{%- endif -%}
+                    {%- if block.settings.heading1 != blank -%}<span class="benefit-pill pill-1"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>{{ block.settings.heading1 | escape }}</span>{%- endif -%}
+                    {%- if block.settings.heading2 != blank -%}<span class="benefit-pill pill-2"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>{{ block.settings.heading2 | escape }}</span>{%- endif -%}
+                    {%- if block.settings.heading3 != blank -%}<span class="benefit-pill pill-4"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.59-6.59A2 2 0 1 1 18 13H2"/></svg>{{ block.settings.heading3 | escape }}</span>{%- endif -%}
+                    {%- if block.settings.heading4 != blank -%}<span class="benefit-pill pill-5"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0 M12 8v4 M12 16h.01"/></svg>{{ block.settings.heading4 | escape }}</span>{%- endif -%}
+                    {%- if block.settings.heading5 != blank -%}<span class="benefit-pill pill-3"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69c.5.5.9 1 1.2 1.6.3-.6.7-1.1 1.2-1.6 2-2 5.66.66 3.66 3.66L12 19.8 6.14 7.95c-2-3 1.66-5.66 3.66-3.66.5.5.9 1 1.2 1.6"/></svg>{{ block.settings.heading5 | escape }}</span>{%- endif -%}
+                    {%- if block.settings.heading6 != blank -%}<span class="benefit-pill pill-6"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M20 6L9 17l-5-5"/></svg>{{ block.settings.heading6 | escape }}</span>{%- endif -%}
                   </div>
 
                 {%- when 'selling-fast' -%}
@@ -616,12 +654,12 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
 
                 {%- when 'product-cup' -%}
                   <div class="product-benefits cup" {{ block.shopify_attributes }}>
-                    <span class="benefit-pill pill-1">Medical-Grade Silicone</span>
-                    <span class="benefit-pill pill-2">Up to 10 Hours Comfort</span>
-                    <span class="benefit-pill pill-4">Reusable &amp; No-Toxins</span>
-                    <span class="benefit-pill pill-5">Soft &amp; Flexible Fit</span>
-                    <span class="benefit-pill pill-3">Safe &amp; Comfortable</span>
-                    <span class="benefit-pill pill-6">Leak-Proof Protection</span>
+                    <span class="benefit-pill pill-1"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>Medical-Grade Silicone</span>
+                    <span class="benefit-pill pill-2"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Up to 10 Hours Comfort</span>
+                    <span class="benefit-pill pill-4"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.59-6.59A2 2 0 1 1 18 13H2"/></svg>Reusable &amp; No-Toxins</span>
+                    <span class="benefit-pill pill-5"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0 M12 8v4 M12 16h.01"/></svg>Soft &amp; Flexible Fit</span>
+                    <span class="benefit-pill pill-3"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69c.5.5.9 1 1.2 1.6.3-.6.7-1.1 1.2-1.6 2-2 5.66.66 3.66 3.66L12 19.8 6.14 7.95c-2-3 1.66-5.66 3.66-3.66.5.5.9 1 1.2 1.6"/></svg>Safe &amp; Comfortable</span>
+                    <span class="benefit-pill pill-6"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M20 6L9 17l-5-5"/></svg>Leak-Proof Protection</span>
                   </div>
 
                 {%- when 'quantity' -%}
@@ -644,6 +682,7 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
                 {%- when 'description' -%}
                   {%- unless product.metafields.custom.product_descriptions == 'yes' -%}
                     <div class="product__block__description rte body-size-4" style="--PB:{{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
+                      {%- render 'product-description-promo', product: product -%}
                       {%- assign product_description_content = product.description | strip -%}
                       {%- assign truncate_string = 'products.general.read_more' | t -%}
                       {%- assign truncate_html = '<button type="button" class="p button-with-underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}
@@ -686,6 +725,7 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
                       <span class="arrow-icon" aria-hidden="true"></span>
                     </summary>
                     <div class="product-description__holder">
+                      {%- render 'product-description-promo', product: product -%}
                       {{ product.description }}
                     </div>
                     <button class="read-more-btn" type="button" aria-expanded="false">Read More</button>
@@ -955,6 +995,62 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
         this.textContent = this._msg.replace('[count]', count);
       }
     });
+  }
+
+  /* ── Judge.me review count display ── */
+  function formatJudgemeReviewCount() {
+    var badges = document.querySelectorAll('.jdgm-prev-badge, .jdgm-preview-badge');
+    badges.forEach(function(badge) {
+      var prevBadge = badge.classList.contains('jdgm-prev-badge') ? badge : badge.querySelector('.jdgm-prev-badge');
+      if (!prevBadge) return;
+      var numReviews = prevBadge.getAttribute('data-number-of-reviews') || prevBadge.dataset.numberOfReviews;
+      if (!numReviews) {
+        var widget = prevBadge.closest('.jdgm-widget');
+        if (widget) numReviews = widget.getAttribute('data-number-of-reviews') || widget.dataset.numberOfReviews;
+      }
+      if (!numReviews) {
+        // Fallback for main product badge
+        numReviews = {{ product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count | default: 0 | json }};
+      }
+      
+      var textEl = prevBadge.querySelector('.jdgm-prev-badge__text');
+      if (numReviews && parseInt(numReviews, 10) > 0) {
+        var count = parseInt(numReviews, 10);
+        var label = '(' + count + (count === 1 ? ' review' : ' reviews') + ')';
+        if (!textEl) {
+          textEl = document.createElement('span');
+          textEl.className = 'jdgm-prev-badge__text';
+          prevBadge.appendChild(textEl);
+        }
+        if (!textEl.textContent || !textEl.textContent.trim() || textEl.textContent.trim() === 'No reviews') {
+          textEl.textContent = label;
+        }
+        textEl.style.setProperty('display', 'inline-block', 'important');
+        textEl.style.setProperty('visibility', 'visible', 'important');
+        textEl.style.setProperty('opacity', '1', 'important');
+        textEl.style.setProperty('color', '#555555', 'important');
+        textEl.style.setProperty('font-size', '13px', 'important');
+        textEl.style.setProperty('font-weight', '500', 'important');
+        textEl.style.setProperty('margin-left', '4px', 'important');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', formatJudgemeReviewCount);
+  } else {
+    formatJudgemeReviewCount();
+  }
+  document.addEventListener('jdgm.doneSetup', formatJudgemeReviewCount);
+
+  if (window.MutationObserver) {
+    var jmObserver = new MutationObserver(function() {
+      formatJudgemeReviewCount();
+    });
+    var jmTarget = document.querySelector('.product-section');
+    if (jmTarget) {
+      jmObserver.observe(jmTarget, { childList: true, subtree: true });
+    }
   }
 
 }());

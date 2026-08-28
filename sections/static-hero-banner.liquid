@@ -1,0 +1,192 @@
+{% comment %}
+  Static Hero Banner Section
+  File: sections/static-hero-banner.liquid
+  Purpose: Lightweight static hero banner replacing carousel slideshow to optimize LCP & eliminate CLS.
+{% endcomment %}
+
+{%- liquid
+  assign desktop_image = section.settings.image
+  assign mobile_image = section.settings.mobile_image
+  assign link_url = section.settings.link
+
+  assign desktop_aspect = desktop_image.aspect_ratio | default: 2.35
+  assign mobile_aspect = mobile_image.aspect_ratio | default: desktop_aspect | default: 1.2
+-%}
+
+{% style %}
+  .static-hero-banner-{{ section.id }} {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  .static-hero-banner__container-{{ section.id }} {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .static-hero-banner__picture-{{ section.id }} {
+    display: block;
+    width: 100%;
+    aspect-ratio: {{ mobile_aspect }};
+    overflow: hidden;
+  }
+
+  .static-hero-banner__image-{{ section.id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  @media screen and (min-width: 768px) {
+    .static-hero-banner-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .static-hero-banner__picture-{{ section.id }} {
+      aspect-ratio: {{ desktop_aspect }};
+    }
+  }
+{% endstyle %}
+
+<div class="static-hero-banner-{{ section.id }}">
+  <div class="static-hero-banner__container-{{ section.id }}">
+    {%- if link_url != blank -%}
+      <a href="{{ link_url }}" class="static-hero-banner__link block w-full h-full text-decoration-none">
+    {%- endif -%}
+
+    {%- if desktop_image != blank or mobile_image != blank -%}
+      <picture class="static-hero-banner__picture-{{ section.id }}">
+        {%- if desktop_image != blank -%}
+          <!-- Desktop Image Source (min-width: 768px) -->
+          <source
+            media="(min-width: 768px)"
+            type="image/webp"
+            srcset="
+              {{ desktop_image | image_url: width: 750, format: 'webp', quality: 50 }} 750w,
+              {{ desktop_image | image_url: width: 1100, format: 'webp', quality: 50 }} 1100w,
+              {{ desktop_image | image_url: width: 1440, format: 'webp', quality: 50 }} 1440w,
+              {{ desktop_image | image_url: width: 1920, format: 'webp', quality: 50 }} 1920w
+            "
+            sizes="100vw"
+            width="{{ desktop_image.width }}"
+            height="{{ desktop_image.height }}"
+          >
+        {%- endif -%}
+
+        <!-- Mobile / Primary Fallback Image -->
+        {%- liquid
+          assign main_image = mobile_image | default: desktop_image
+          assign image_alt = main_image.alt | default: shop.name | escape
+          assign image_class = 'static-hero-banner__image static-hero-banner__image-' | append: section.id
+        -%}
+        <img
+          src="{{ main_image | image_url: width: 550, format: 'webp', quality: 40 }}"
+          srcset="{{ main_image | image_url: width: 375, format: 'webp', quality: 40 }} 375w, {{ main_image | image_url: width: 550, format: 'webp', quality: 40 }} 550w, {{ main_image | image_url: width: 750, format: 'webp', quality: 40 }} 750w"
+          sizes="100vw"
+          width="{{ main_image.width }}"
+          height="{{ main_image.height }}"
+          class="{{ image_class }}"
+          alt="{{ image_alt }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="sync"
+        >
+      </picture>
+    {%- else -%}
+      <div class="static-hero-banner__placeholder">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg w-full h-auto' }}
+      </div>
+    {%- endif -%}
+
+    {%- if link_url != blank -%}
+      </a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Static Hero Banner",
+  "tag": "section",
+  "class": "static-hero-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Image",
+      "info": "Recommended aspect ratio ~ 16:9 or 21:9 (e.g. 1920x800px)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Recommended aspect ratio ~ 4:5 or 1:1 (e.g. 750x937px)"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Banner Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Static Hero Banner"
+    }
+  ]
+}
+{% endschema %}

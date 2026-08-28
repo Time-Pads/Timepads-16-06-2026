@@ -2,7 +2,7 @@
   (function () {
     // Define the array of strings to look for in the script or content
     const stringsToMatch = [
-      'uppromote', 'searchpie', 'googletagmanager', 'clarity',
+      'uppromote', 'searchpie', 'googletagmanager', 'clarity', 'klaviyo'
     ];
 
     // Function to check if a script src or content contains any of the strings in the array
@@ -57,18 +57,55 @@
       // Dispatch asyncLazyLoad for Shopify storefront non-critical features
       document.dispatchEvent(new CustomEvent('asyncLazyLoad'));
 
-      // Find and evaluate all scripts marked as lazy-script
-      document.querySelectorAll('script[type="lazy-script"]').forEach(function(script) {
+      // Find all scripts marked as lazy-script
+      const lazyScripts = Array.from(document.querySelectorAll('script[type="lazy-script"]'));
+
+      function loadNextScript() {
+        if (lazyScripts.length === 0) return;
+        const script = lazyScripts.shift();
+        if (!script) return;
+
         var newScript = document.createElement('script');
         if (script.src) {
           newScript.src = script.src;
+          newScript.async = true;
+          
+          let resolved = false;
+          const resolveAndNext = () => {
+            if (resolved) return;
+            resolved = true;
+            // Introduce a 500ms pacing delay to yield main thread control to the browser
+            setTimeout(scheduleNext, 500);
+          };
+
+          newScript.onload = resolveAndNext;
+          newScript.onerror = resolveAndNext;
+          
+          // Safety timeout of 4 seconds in case script fails to respond
+          setTimeout(resolveAndNext, 4000);
+          
+          document.head.appendChild(newScript);
         } else {
           newScript.textContent = script.textContent;
+          document.head.appendChild(newScript);
+          // Inline scripts execute synchronously, yield 200ms before next script
+          setTimeout(scheduleNext, 200);
         }
-        newScript.async = true;
-        document.head.appendChild(newScript);
+        
         script.remove();
-      });
+      }
+
+      function scheduleNext() {
+        if (lazyScripts.length === 0) return;
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(() => loadNextScript(), { timeout: 2000 });
+        } else {
+          setTimeout(loadNextScript, 100);
+        }
+      }
+
+      // Start the paced sequential script loading
+      scheduleNext();
     }
 
     window.triggerInteraction = triggerInteraction;

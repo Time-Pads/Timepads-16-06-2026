@@ -1,0 +1,160 @@
+{%- comment -%}
+  Reusable product badge snippet.
+  Renders badges based on product metafields:
+  - product.metafields.custom.badges.value (list of strings)
+  - Individual metafields in custom namespace
+{%- endcomment -%}
+
+{%- liquid
+  assign badge_items = ""
+  
+  # 1. Read from the standard list metafield if available
+  if product.metafields.custom.badges.value != blank
+    for badge in product.metafields.custom.badges.value
+      assign badge_items = badge_items | append: badge | append: "::"
+    endfor
+  endif
+
+  # 2. Check individual custom metafields for common badges
+  if product.metafields.custom.badge_best_seller.value == true or product.metafields.custom.badge_best_seller == "true" or product.metafields.custom.badge_best_seller == true
+    assign badge_items = badge_items | append: "Best Seller::"
+  elsif product.metafields.custom.best_seller.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.best_seller.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_new.value == true or product.metafields.custom.badge_new == "true" or product.metafields.custom.badge_new == true
+    assign badge_items = badge_items | append: "New::"
+  elsif product.metafields.custom.new_badge.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.new_badge.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_bogo.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.badge_bogo.value | append: "::"
+  elsif product.metafields.custom.buy_1_get_1.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.buy_1_get_1.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_combo.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.badge_combo.value | append: "::"
+  elsif product.metafields.custom.combo_offer.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.combo_offer.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_rash_free.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.badge_rash_free.value | append: "::"
+  elsif product.metafields.custom.rash_free.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.rash_free.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_dermatologically_tested.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.badge_dermatologically_tested.value | append: "::"
+  elsif product.metafields.custom.dermatologically_tested.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.dermatologically_tested.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_cotton.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.badge_cotton.value | append: "::"
+  elsif product.metafields.custom.cotton_100.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.cotton_100.value | append: "::"
+  endif
+
+  if product.metafields.custom.badge_flow.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.badge_flow.value | append: "::"
+  elsif product.metafields.custom.heavy_flow.value != blank
+    assign badge_items = badge_items | append: product.metafields.custom.heavy_flow.value | append: "::"
+  endif
+
+  assign badges_list = badge_items | split: "::"
+-%}
+
+{%- if badges_list.size > 0 -%}
+  <style>
+    .product-badges-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+      padding: 0;
+    }
+    .product-badge-pill {
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1.2;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .product-badge-pill:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+    .product-badge-pill.badge-best-seller {
+      background-color: #ffe5a4;
+      color: #5b3e00;
+    }
+    .product-badge-pill.badge-new {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+    }
+    .product-badge-pill.badge-buy-1-get-1, 
+    .product-badge-pill.badge-bogo,
+    .product-badge-pill.badge-combo-offer {
+      background-color: #fce4ec;
+      color: #880e4f;
+    }
+    .product-badge-pill.badge-rash-free, 
+    .product-badge-pill.badge-dermatologically-tested {
+      background-color: #e8f5e9;
+      color: #1b5e20;
+    }
+    .product-badge-pill.badge-100-cotton {
+      background-color: #f3e5f5;
+      color: #4a148c;
+    }
+    .product-badge-pill.badge-heavy-flow {
+      background-color: #ffebee;
+      color: #b71c1c;
+    }
+    .product-badge-pill.badge-medium-flow {
+      background-color: #fff3e0;
+      color: #e65100;
+    }
+    .product-badge-pill.badge-default {
+      background-color: #f5f5f5;
+      color: #333333;
+      border: 1px solid #e2e8f0;
+    }
+  </style>
+
+  <div class="product-badges-container">
+    {%- for badge_text in badges_list -%}
+      {%- if badge_text != blank -%}
+        {%- assign badge_handle = badge_text | handleize -%}
+        {%- assign badge_class = "badge-default" -%}
+        
+        {%- if badge_handle contains "best-seller" -%}
+          {%- assign badge_class = "badge-best-seller" -%}
+        {%- elsif badge_handle contains "new" -%}
+          {%- assign badge_class = "badge-new" -%}
+        {%- elsif badge_handle contains "buy-1-get-1" or badge_handle contains "bogo" or badge_handle contains "combo" -%}
+          {%- assign badge_class = "badge-buy-1-get-1" -%}
+        {%- elsif badge_handle contains "rash-free" or badge_handle contains "dermatologic" -%}
+          {%- assign badge_class = "badge-rash-free" -%}
+        {%- elsif badge_handle contains "cotton" -%}
+          {%- assign badge_class = "badge-100-cotton" -%}
+        {%- elsif badge_handle contains "heavy-flow" -%}
+          {%- assign badge_class = "badge-heavy-flow" -%}
+        {%- elsif badge_handle contains "medium-flow" -%}
+          {%- assign badge_class = "badge-medium-flow" -%}
+        {%- endif -%}
+
+        <span class="product-badge-pill {{ badge_class }}">{{ badge_text | strip }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

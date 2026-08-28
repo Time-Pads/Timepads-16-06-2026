@@ -191,13 +191,15 @@
     align-items: center;
     flex-shrink: 0;
   }
-  .header__logo picture,
-  .header__logo picture img {
+  .header__logo picture {
     display: contents;
-    /* width: {{ logo_width }}px; */
+  }
+  .header__logo picture img {
+    display: block;
     height: auto;
     aspect-ratio: {{ section.settings.logo.aspect_ratio | default: '2.5' }};
     max-width: {{ logo_width }}px;
+    max-height: 48px;
   }
 
   /* 5. Desktop buttons: fixed 40x40 */
@@ -324,7 +326,9 @@
           >
           <!-- Fallback Img (WebP format for lightweight fallback) -->
           <img
-            src="{{ section.settings.logo | image_url: width: 220, format: 'webp', quality: 75 }}"
+            src="{{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }}"
+            srcset="{{ section.settings.logo | image_url: width: 160, format: 'webp', quality: 75 }} 160w, {{ section.settings.logo | image_url: width: 220, format: 'webp', quality: 75 }} 220w, {{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w"
+            sizes="(max-width: 767px) 130px, 180px"
             alt="{{ alt }}"
             class="tw-w-full tw-max-h-[60rem]"
             width="{{ logo_width }}"

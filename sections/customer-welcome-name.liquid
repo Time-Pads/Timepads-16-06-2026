@@ -1,0 +1,467 @@
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  Section: Customer Welcome Greeting (KwikPass)
+  File: sections/customer-welcome-name.liquid
+  -----------------------------------------------------------------------------
+  Displays dynamic personalized greeting: "Hi [Customer Name], welcome back!"
+  - Uses /pages/kp-account as the single source of truth for customer identity
+  - Silently loads /pages/kp-account in the background via hidden same-origin iframe
+  - Customer remains strictly on the homepage with no redirects or visible flashes
+  - Instant 0ms render for cached/returning visitors
+  - Automatic cleanup of background resources once name is resolved
+  - Completely hidden for logged-out visitors
+{%- endcomment -%}
+
+
+
+{%- liquid
+  assign server_customer_name = ''
+  if customer
+    if customer.first_name != blank
+      assign server_customer_name = customer.first_name
+    elsif customer.name != blank
+      assign server_customer_name = customer.name | split: ' ' | first
+    endif
+  endif
+
+  assign is_logged_in = false
+  if server_customer_name != blank
+    assign is_logged_in = true
+  endif
+-%}
+
+<div
+  id="CustomerWelcome-{{ section.id }}"
+  class="customer-welcome-section customer-welcome-{{ section.id }} wrapper"
+  data-section-id="{{ section.id }}"
+  {% unless is_logged_in %}style="display: none;"{% endunless %}
+>
+  <div class="customer-welcome__container text-{{ section.settings.alignment }}">
+    <h2 class="customer-welcome__heading">
+      <span class="customer-welcome__highlight">
+        <span class="customer-welcome__prefix">{{ section.settings.prefix | default: 'Hi' }}</span>
+        <span class="customer-welcome__name" data-customer-name>{{ server_customer_name }}</span>,
+      </span>
+      <span class="customer-welcome__suffix">{{ section.settings.suffix | default: 'welcome back!' }}</span>
+    </h2>
+  </div>
+</div>
+
+<style>
+  .customer-welcome-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    opacity: {% if is_logged_in %}1{% else %}0{% endif %};
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  .customer-welcome-{{ section.id }} .customer-welcome__container {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .customer-welcome-{{ section.id }} .customer-welcome__container.text-left {
+    text-align: left;
+  }
+  .customer-welcome-{{ section.id }} .customer-welcome__container.text-center {
+    text-align: center;
+  }
+  .customer-welcome-{{ section.id }} .customer-welcome__container.text-right {
+    text-align: right;
+  }
+
+  .customer-welcome-{{ section.id }} .customer-welcome__heading {
+    margin: 0;
+    padding: 0;
+    font-size: {{ section.settings.font_size_mobile }}px;
+    line-height: 1.25;
+    font-weight: 400;
+    color: {{ section.settings.text_color }};
+    letter-spacing: -0.02em;
+  }
+
+  .customer-welcome-{{ section.id }} .customer-welcome__highlight {
+    font-family: Georgia, 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: {{ section.settings.highlight_color }};
+    display: inline;
+  }
+
+  .customer-welcome-{{ section.id }} .customer-welcome__suffix {
+    font-style: normal;
+    font-weight: 400;
+    color: {{ section.settings.text_color }};
+    display: inline;
+  }
+
+  @media screen and (min-width: 768px) {
+    .customer-welcome-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+    .customer-welcome-{{ section.id }} .customer-welcome__heading {
+      font-size: {{ section.settings.font_size_desktop }}px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    var sectionId = {{ section.id | json }};
+    var sectionEl = document.getElementById('CustomerWelcome-' + sectionId);
+    if (!sectionEl) return;
+
+    var nameEl = sectionEl.querySelector('[data-customer-name]');
+    var bgFrame = null;
+    var bgPollInterval = null;
+    var bgTimeoutTimer = null;
+
+    function capitalize(str) {
+      if (!str || typeof str !== 'string') return '';
+      str = str.trim();
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function showGreeting(name) {
+      if (!name || typeof name !== 'string') return;
+      var cleanName = capitalize(name);
+      if (!cleanName || /customer|user|guest|account|there/i.test(cleanName)) return;
+
+      if (nameEl) {
+        nameEl.textContent = cleanName;
+      }
+      sectionEl.style.display = 'block';
+      void sectionEl.offsetWidth;
+      sectionEl.style.opacity = '1';
+
+      // Persist in storage
+      try {
+        localStorage.setItem('kp_customer_name', cleanName);
+        sessionStorage.setItem('kp_customer_name', cleanName);
+      } catch (e) {}
+
+      // Clean up background context once resolved
+      cleanupBackgroundContext();
+    }
+
+    function hideGreeting() {
+      sectionEl.style.opacity = '0';
+      sectionEl.style.display = 'none';
+      if (nameEl) {
+        nameEl.textContent = '';
+      }
+      try {
+        localStorage.removeItem('kp_customer_name');
+        sessionStorage.removeItem('kp_customer_name');
+      } catch (e) {}
+      cleanupBackgroundContext();
+    }
+
+    function isLoggedOut() {
+      return sessionStorage.getItem('isLogout') === 'true';
+    }
+
+    function getStorage(name) {
+      try {
+        return localStorage.getItem(name) || sessionStorage.getItem(name);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function cleanupBackgroundContext() {
+      if (bgPollInterval) {
+        clearInterval(bgPollInterval);
+        bgPollInterval = null;
+      }
+      if (bgTimeoutTimer) {
+        clearTimeout(bgTimeoutTimer);
+        bgTimeoutTimer = null;
+      }
+      if (bgFrame) {
+        try {
+          if (bgFrame.parentNode) {
+            bgFrame.parentNode.removeChild(bgFrame);
+          }
+        } catch (e) {}
+        bgFrame = null;
+      }
+      var existing = document.getElementById('kp-silent-account-loader');
+      if (existing && existing.parentNode) {
+        existing.parentNode.removeChild(existing);
+      }
+    }
+
+    // Step 1: Liquid Server Name (Instant)
+    var currentName = nameEl ? nameEl.textContent.trim() : '';
+    if (currentName) {
+      showGreeting(currentName);
+      return;
+    }
+
+    // Step 2: Instant Cache Display (0ms)
+    if (isLoggedOut()) {
+      hideGreeting();
+      return;
+    }
+
+    var cachedName = getStorage('kp_customer_name');
+    if (cachedName) {
+      showGreeting(cachedName);
+    }
+
+    // Step 3: Scan current DOM (if elements exist on current page)
+    function scanCurrentPageDOM() {
+      var hosts = document.querySelectorAll('#kp-account-wrapper, main, [id^="kp-"]');
+      for (var i = 0; i < hosts.length; i++) {
+        var sr = hosts[i].shadowRoot;
+        if (sr) {
+          var text = sr.textContent || '';
+          var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
+          if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
+            showGreeting(m[1]);
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    // Step 4: Launch Silent Background Loader for /pages/kp-account
+    function launchSilentAccountSync() {
+      if (isLoggedOut()) {
+        hideGreeting();
+        return;
+      }
+
+      // If user is already on the account page itself, no iframe needed
+      if (window.location.pathname.indexOf('/pages/kp-account') !== -1) {
+        scanCurrentPageDOM();
+        return;
+      }
+
+      if (document.getElementById('kp-silent-account-loader')) return;
+
+      // Create visually hidden offscreen iframe (layout dimensions preserved so Svelte / Vite boots)
+      bgFrame = document.createElement('iframe');
+      bgFrame.id = 'kp-silent-account-loader';
+      bgFrame.src = '/pages/kp-account';
+      bgFrame.title = 'KwikPass Auth Loader';
+      bgFrame.setAttribute('aria-hidden', 'true');
+      bgFrame.tabIndex = -1;
+      bgFrame.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:350px;height:450px;opacity:0;pointer-events:none;border:none;z-index:-9999;visibility:hidden;';
+      document.body.appendChild(bgFrame);
+
+      var pollAttempts = 0;
+      var maxAttempts = 30; // 30 * 250ms = 7.5 seconds max
+
+      bgPollInterval = setInterval(function() {
+        pollAttempts++;
+        if (pollAttempts > maxAttempts) {
+          cleanupBackgroundContext();
+          return;
+        }
+
+        try {
+          if (!bgFrame || !bgFrame.contentWindow) return;
+          var doc = bgFrame.contentDocument || bgFrame.contentWindow.document;
+          if (doc) {
+            var hosts = doc.querySelectorAll('#kp-account-wrapper, main, div');
+            for (var i = 0; i < hosts.length; i++) {
+              var sr = hosts[i].shadowRoot;
+              if (sr) {
+                var text = sr.textContent || '';
+                var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
+                if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
+                  showGreeting(m[1]);
+                  return;
+                }
+              }
+            }
+          }
+        } catch (e) {
+          // Cross-origin fallback handled via postMessage
+        }
+      }, 250);
+
+      // Hard safety timeout
+      bgTimeoutTimer = setTimeout(function() {
+        cleanupBackgroundContext();
+      }, 8000);
+    }
+
+    // Step 5: Initialize Resolution
+    if (!scanCurrentPageDOM()) {
+      launchSilentAccountSync();
+    }
+
+    // Listen to PostMessage events from the background frame
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'kp-name-ready' && e.data.name) {
+        showGreeting(e.data.name);
+      }
+    });
+
+    // Listen to custom KwikPass events
+    window.addEventListener('kp-name-ready', function(e) {
+      if (e && e.detail && e.detail.name) {
+        showGreeting(e.detail.name);
+      }
+    });
+
+    window.addEventListener('update-dom', function() {
+      if (isLoggedOut()) {
+        hideGreeting();
+      } else {
+        if (!scanCurrentPageDOM()) {
+          launchSilentAccountSync();
+        }
+      }
+    });
+
+    window.addEventListener('user-loggedin', function() {
+      launchSilentAccountSync();
+    });
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'kp_customer_name' && e.newValue) {
+        showGreeting(e.newValue);
+      }
+      if (e.key === 'isLogout' && e.newValue === 'true') {
+        hideGreeting();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer Welcome Greeting",
+  "tag": "section",
+  "class": "shopify-section-customer-welcome",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Greeting Content"
+    },
+    {
+      "type": "text",
+      "id": "prefix",
+      "label": "Prefix Text (Italic/Highlighted)",
+      "default": "Hi",
+      "info": "Appears before the customer name, e.g. 'Hi'"
+    },
+    {
+      "type": "text",
+      "id": "suffix",
+      "label": "Suffix Text (Normal)",
+      "default": "welcome back!",
+      "info": "Appears after the customer name, e.g. 'welcome back!'"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Typography"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight Color (Prefix & Name)",
+      "default": "#ee3d43"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color (Suffix)",
+      "default": "#1f1919"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 18,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size (Desktop)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 16,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Welcome Greeting",
+      "settings": {
+        "prefix": "Hi",
+        "suffix": "welcome back!",
+        "alignment": "left",
+        "highlight_color": "#ee3d43",
+        "text_color": "#1f1919"
+      }
+    }
+  ]
+}
+{% endschema %}

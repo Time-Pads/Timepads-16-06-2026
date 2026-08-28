@@ -1,0 +1,29 @@
+{% comment %}
+  snippets/content-tldr.liquid
+  T039 — Reusable TL;DR Box component
+
+  Parameters:
+    tldr       {String|Object} — article.metafields.custom.tldr (or .value)
+                                 Accepts plain text or rich text (HTML).
+                                 Hides automatically when blank.
+
+  Usage (in article sections or future P3 templates):
+    {%- render 'content-tldr', tldr: article.metafields.custom.tldr -%}
+
+  Also accepts a pre-resolved value:
+    {%- assign tldr_val = article.metafields.custom.tldr.value | default: article.metafields.custom.tldr -%}
+    {%- render 'content-tldr', tldr: tldr_val -%}
+{% endcomment %}
+
+{%- assign tldr_content = tldr.value | default: tldr -%}
+{%- if tldr_content != blank -%}
+  <div class="content-module content-tldr" role="note" aria-label="Quick Summary">
+    <p class="content-tldr__label">
+      <span class="content-tldr__label-icon" aria-hidden="true">✦</span>
+      TL;DR — Quick Summary
+    </p>
+    <div class="content-tldr__body rte">
+      {{ tldr_content }}
+    </div>
+  </div>
+{%- endif -%}

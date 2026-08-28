@@ -639,37 +639,7 @@ function createBubble(button) {
 
 
 
-// Click listener delegated to document on window.load (see bottom of file)
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.querySelector(
-    'input[data-predictive-search-input="search-popdown-results"]'
-  );
-
-  if (!searchInput) return;
-
-  // Texts to rotate
-  const placeholders = [
-    "Search for Night Pads",
-    "Search for Day Pads",
-    "Search for Sanitary Pads",
-    "Search for Cotton Pads",
-    "Search for Regular Pads"
-  ];
-
-  let index = 0;
-
-  // Function to update placeholder
-  function updatePlaceholder() {
-    searchInput.setAttribute("placeholder", placeholders[index]);
-    index = (index + 1) % placeholders.length;
-  }
-
-  // First text immediately
-  updatePlaceholder();
-
-  // Change every 2 seconds
-  setInterval(updatePlaceholder, 2000);
-});
+// Redundant searchInput placeholder setInterval updater removed to avoid layout thrashing conflict.
 
 
 
@@ -914,20 +884,5 @@ window.addEventListener('load', function() {
       }
     }
 
-    // Handler for .add-cart-button-singale-variant
-    const singleVariantBtn = e.target.closest('.add-cart-button-singale-variant');
-    if (singleVariantBtn) {
-      e.preventDefault();
-      const productCard = singleVariantBtn.closest('.product-grid-item__container');
-      if (productCard) {
-        const popup = productCard.querySelector('.popup-message');
-        if (popup) {
-          popup.classList.add('show');
-          setTimeout(() => {
-            popup.classList.remove('show');
-          }, 3000);
-        }
-      }
-    }
   });
 });

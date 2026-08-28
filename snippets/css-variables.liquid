@@ -420,7 +420,7 @@
 
 /* ================ Typography ================ */
 
---FONT-STACK-BODY: {{ body_font.family }}, {{ body_font.fallback_families }};
+--FONT-STACK-BODY: 'Poppins', sans-serif;
 --FONT-STYLE-BODY: {{ body_font.style }};
 --FONT-WEIGHT-BODY: {{ body_font.weight | default: 400 }};
 --FONT-WEIGHT-BODY-BOLD: {{ body_font_bold.weight | default: 700 }};
@@ -433,7 +433,7 @@
   --FONT-BODY-LETTER-SPACING: normal;
 {% endif %}
 
---FONT-STACK-HEADING: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+--FONT-STACK-HEADING: 'Poppins', sans-serif;
 --FONT-STYLE-HEADING: {{ heading_font.style }};
 --FONT-WEIGHT-HEADING: {{ heading_font.weight | default: 400 }};
 --FONT-WEIGHT-HEADING-BOLD: {{ heading_font_bold.weight | default: 700 }};
@@ -446,7 +446,7 @@
   --FONT-HEADING-LETTER-SPACING: normal;
 {% endif %}
 
---FONT-STACK-ACCENT: {{ accent_font.family }}, {{ heading_font.fallback_families }};
+--FONT-STACK-ACCENT: 'Poppins', sans-serif;
 --FONT-STYLE-ACCENT: {{ accent_font.style }};
 --FONT-WEIGHT-ACCENT: {{ accent_font.weight | default: 400 }};
 --FONT-WEIGHT-ACCENT-BOLD: {{ accent_font_bold.weight | default: 700 }};
@@ -459,7 +459,7 @@
   --FONT-ACCENT-LETTER-SPACING: normal;
 {% endif %}
 
---TYPE-STACK-NAV: {{ nav_font_drop.family }}, {{ nav_font_drop.fallback_families }};
+--TYPE-STACK-NAV: 'Poppins', sans-serif;
 --TYPE-STYLE-NAV: {{ nav_font_drop.style }};
 --TYPE-ADJUST-NAV: {{ type_nav_size | divided_by: 100.0 }};
 --TYPE-WEIGHT-NAV: {{ nav_font_drop.weight | default: 400 }};

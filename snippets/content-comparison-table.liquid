@@ -1,0 +1,81 @@
+{% comment %}
+  snippets/content-comparison-table.liquid
+  T039 — Reusable Comparison Table component
+
+  Parameters:
+    title       {String} — Table heading (optional)
+    data        {String} — Pipe-delimited multi-line text.
+                           Format: one row per line, values separated by |
+                           First line = header row.
+                           Example metafield value:
+                             Feature|Ultra Feather|Ultra Velvet
+                             Flow|Regular|Heavy
+                             Comfort|Soft|Velvet
+                             Wings|Yes|Yes
+    is_demo     {Boolean} — If true, displays a demo notice banner.
+                             Set to false or omit in production.
+
+  Data source:
+    custom.comparison_title  — Single-line text metafield
+    custom.comparison_data   — Multi-line text metafield (pipe-delimited rows)
+
+  Hides automatically when data is blank.
+
+  Usage:
+    {%- render 'content-comparison-table',
+        title: article.metafields.custom.comparison_title,
+        data: article.metafields.custom.comparison_data,
+        is_demo: false -%}
+{% endcomment %}
+
+{%- assign table_data = data.value | default: data -%}
+{%- if table_data != blank -%}
+  {%- assign table_title = title.value | default: title -%}
+  {%- assign rows = table_data | strip | split: "\n" -%}
+  {%- assign valid_rows = 0 -%}
+  {%- for row in rows -%}
+    {%- if row != blank -%}{%- assign valid_rows = valid_rows | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+  {%- if valid_rows >= 2 -%}
+    <div class="content-module content-module__divider content-comparison">
+      {%- if is_demo -%}
+        <p style="font-size:11px;color:#e65c00;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:0 0 10px;">⚠ TEST DATA — Remove before production launch</p>
+      {%- endif -%}
+      {%- if table_title != blank -%}
+        <h4 class="content-module__title">{{ table_title | escape }}</h4>
+      {%- else -%}
+        <h4 class="content-module__title">Comparison</h4>
+      {%- endif -%}
+      <div class="content-comparison__scroll" role="region" aria-label="Comparison table">
+        <table class="content-comparison__table">
+          {%- for row in rows -%}
+            {%- if row != blank -%}
+              {%- assign cols = row | split: "|" -%}
+              {%- if forloop.first -%}
+                <thead>
+                  <tr>
+                    {%- for col in cols -%}
+                      <th scope="col">{{ col | strip | escape }}</th>
+                    {%- endfor -%}
+                  </tr>
+                </thead>
+                <tbody>
+              {%- else -%}
+                <tr>
+                  {%- for col in cols -%}
+                    {%- if forloop.first -%}
+                      <th scope="row">{{ col | strip | escape }}</th>
+                    {%- else -%}
+                      <td>{{ col | strip | escape }}</td>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tr>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

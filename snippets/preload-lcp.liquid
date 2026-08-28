@@ -65,4 +65,38 @@
   {%- endif -%}
 {%- elsif request.page_type == 'collection' -%}
   {%- comment -%} Collection LCP preload is handled directly in theme.liquid {%- endcomment -%}
+{%- elsif request.page_type == 'index' -%}
+  {%- assign lcp_desktop = settings.preload_image_desktop -%}
+  {%- assign lcp_mobile = settings.preload_image_mobile -%}
+ 
+  {%- if lcp_desktop != blank or lcp_mobile != blank -%}
+    {%- comment -%} Mobile preload (max-width: 767px) {%- endcomment -%}
+    {%- if lcp_mobile != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        type="image/webp"
+        fetchpriority="high"
+        media="(max-width: 767px)"
+        href="{{ lcp_mobile | image_url: width: 550, format: 'webp', quality: 40 }}"
+        imagesrcset="{{ lcp_mobile | image_url: width: 375, format: 'webp', quality: 40 }} 375w, {{ lcp_mobile | image_url: width: 550, format: 'webp', quality: 40 }} 550w, {{ lcp_mobile | image_url: width: 750, format: 'webp', quality: 40 }} 750w"
+        imagesizes="100vw"
+      >
+    {%- endif -%}
+ 
+    {%- comment -%} Desktop preload (min-width: 768px) {%- endcomment -%}
+    {%- if lcp_desktop != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        type="image/webp"
+        fetchpriority="high"
+        media="(min-width: 768px)"
+        href="{{ lcp_desktop | image_url: width: 1440, format: 'webp', quality: 50 }}"
+        imagesrcset="{{ lcp_desktop | image_url: width: 750, format: 'webp', quality: 50 }} 750w, {{ lcp_desktop | image_url: width: 1100, format: 'webp', quality: 50 }} 1100w, {{ lcp_desktop | image_url: width: 1440, format: 'webp', quality: 50 }} 1440w, {{ lcp_desktop | image_url: width: 1920, format: 'webp', quality: 50 }} 1920w"
+        imagesizes="100vw"
+      >
+    {%- endif -%}
+  {%- endif -%}
+
 {%- endif -%}

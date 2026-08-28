@@ -1,4 +1,8 @@
 <!-- /sections/article.liquid -->
+{%- comment %} T039 — Load shared component styles once {%- endcomment -%}
+{%- render 'content-component-styles' -%}
+{%- assign medical_reviewer = article.metafields.custom.medical_reviewer.value | default: article.metafields.custom.medical_reviewer -%}
+{%- assign reviewed_date = article.metafields.custom.reviewed_date.value | default: article.metafields.custom.reviewed_date -%}
 {% assign number_of_comments = article.comments_count %}
 {% assign show_featured_image = section.settings.show_featured_image %}
 
@@ -27,12 +31,15 @@
   data-section-id="{{ section.id }}"
   data-section-type="article"
   style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  {% comment %}
+    Featured image has been relocated below the Article Header in the main column to match the required layout ordering.
   {%- if article.image and show_featured_image -%}
     <div data-overlay-header>
       {%- assign alt = article.image.alt | default: 'Banner Image' -%}
       {% render 'image-parallax', img_object: article.image, frame_height_class: section.settings.image_height, bg_position: section.settings.bg_position, preload: true, loading: 'eager', fetchpriority: 'high', alt: alt %}
     </div>
   {%- endif -%}
+  {% endcomment %}
 
 <!-- Mobile Share Bar -->
 
@@ -247,29 +254,529 @@ document.addEventListener("DOMContentLoaded", () => {
   <div class="{{ section.settings.width }} section-padding">
     <div class="float-grid">
       <article class="grid__item {{ blog_grid }}">
-        <div class="blog__article{% if article.image and show_featured_image %} blog__article--over-image{% endif %}">
-          <header>
-            <h1 class="blog__article__title heading-size-9">{{ article.title }}</h1>
-            {% if section.settings.blog_show_meta %}
-              {% capture author %}<span class="strong">{{ article.author }}</span>{% endcapture %}
-              {% capture date %}<time>{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
-              <p class="blog__article--light">{{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}</p>
-            {% endif %}
+        <!-- Breadcrumbs -->
+        <nav class="breadcrumb" aria-label="breadcrumbs" style="margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: #666; line-height: 1.5; text-align: left; width: 100%;">
+          <a href="{{ routes.root_url }}" title="Home" style="white-space: nowrap; display: inline-block; flex-shrink: 0; color: inherit;">Home</a>
+          <span class="divider" aria-hidden="true" style="opacity: 0.5; flex-shrink: 0;">/</span>
+          <a href="{{ blog.url }}" title="{{ blog.title | escape }}" style="white-space: nowrap; display: inline-block; flex-shrink: 0; color: inherit;">{{ blog.title }}</a>
+          <span class="divider" aria-hidden="true" style="opacity: 0.5; flex-shrink: 0;">/</span>
+          <span style="opacity: 0.7; min-width: 0; word-wrap: break-word;">{{ article.title | escape }}</span>
+        </nav>
+
+        <div class="blog__article" style="background: #ffffff; padding: 0; border: none; box-shadow: none; max-width: 100%;">
+          
+          <!-- Article Header -->
+          <header class="tp-article-header" style="margin-bottom: 30px;">
+            <!-- Category -->
+            <span class="tp-article-category" style="display: inline-block; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #ab7841; letter-spacing: 0.1em; margin-bottom: 10px;">
+              {{ blog.title }}
+            </span>
+            
+            <!-- Title -->
+            <h1 class="blog__article__title heading-size-9" style="margin-top: 0; margin-bottom: 16px; font-weight: 600; line-height: 1.25; color: #1a1a1a;">
+              {{ article.title }}
+            </h1>
+            
+            <!-- Excerpt/Intro -->
+            {%- if article.excerpt != blank -%}
+              <div class="tp-article-excerpt body-size-2" style="font-size: 17px; line-height: 1.6; color: #666; margin-bottom: 20px; font-style: italic; border-left: 2px solid #ab7841; padding-left: 14px;">
+                {{ article.excerpt }}
+              </div>
+            {%- endif -%}
+            
+            <!-- Byline + Published Date -->
+            <div class="tp-article-byline" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; color: #555; border-top: 1px solid #ebe6df; padding-top: 16px; margin-bottom: 8px;">
+              <span class="tp-article-author">
+                Written by <strong>{{ article.author }}</strong>
+              </span>
+              <span style="color: #ccc;">|</span>
+              <span class="tp-article-pub-date">
+                Published on <strong>{{ article.published_at | date: "%B %d, %Y" }}</strong>
+              </span>
+            </div>
+            
+            <!-- Medical Review Information -->
+            {%- if medical_reviewer != blank -%}
+              <div class="tp-article-reviewer-line" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; color: #666; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #ebe6df;">
+                <span class="tp-article-reviewer" style="color: #4c688d; display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 16px;">🛡</span> Medically reviewed by <strong>{{ medical_reviewer }}</strong>
+                </span>
+                {%- if reviewed_date != blank -%}
+                  <span style="color: #ccc;">|</span>
+                  <span class="tp-article-reviewed-date">
+                    Reviewed on <strong>{{ reviewed_date | date: "%B %d, %Y" }}</strong>
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <!-- spacing if no reviewer -->
+              <div style="border-bottom: 1px solid #ebe6df; margin-bottom: 16px;"></div>
+            {%- endif -%}
           </header>
 
-          <div class="blog__article__content rte">
+          <!-- Featured Image -->
+          {%- if article.image and show_featured_image -%}
+            <div class="tp-article-featured-image" style="margin-bottom: 30px; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+              <img 
+                src="{{ article.image | img_url: '1200x' }}" 
+                alt="{{ article.image.alt | default: article.title | escape }}"
+                style="width: 100%; height: auto; display: block;"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </div>
+          {%- endif -%}
+
+          <!-- TL;DR Box — T039 component -->
+          {%- render 'content-tldr', tldr: article.metafields.custom.tldr -%}
+
+          <!-- Comparison Table — T039 component (shows if custom.comparison_data is set) -->
+          {%- render 'content-comparison-table',
+              title: article.metafields.custom.comparison_title,
+              data: article.metafields.custom.comparison_data -%}
+
+          <!-- Video Embed — T039 component (shows if custom.video_url is set) -->
+          {%- render 'content-video',
+              url: article.metafields.custom.video_url,
+              title: article.title -%}
+
+          {% style %}
+          .tp-toc-container {
+            background: #ffffff;
+            border: 1px solid #ece7e0;
+            border-radius: 24px;
+            padding: 32px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(171, 120, 65, 0.03);
+          }
+          .tp-toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f2eee9;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+          }
+          .tp-toc-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+          }
+          .tp-toc-header-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fdf3eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ab7841;
+            flex-shrink: 0;
+          }
+          .tp-toc-header-icon svg {
+            width: 24px;
+            height: 24px;
+          }
+          .tp-toc-header-text h3 {
+            margin: 0 0 4px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f1f1f;
+            text-align: left;
+          }
+          .tp-toc-header-text p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+          }
+          .tp-toc-header-graphic {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            opacity: 0.85;
+          }
+          .tp-toc-grid {
+            column-count: 2;
+            column-gap: 24px;
+            text-align: left;
+          }
+          @media (max-width: 768px) {
+            .tp-toc-grid {
+              column-count: 1;
+            }
+            .tp-toc-container {
+              padding: 20px;
+            }
+            .tp-toc-header-graphic {
+              display: none;
+            }
+          }
+          .tp-toc-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
+            background: #ffffff;
+            border: 1px solid #f2eee9;
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.25s ease;
+            text-align: left;
+          }
+          .tp-toc-item:hover {
+            border-color: #dcd3c9;
+            background: #fdfbf7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(171, 120, 65, 0.04);
+          }
+          .tp-toc-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none !important;
+            color: inherit !important;
+            width: 100%;
+          }
+          .tp-toc-number {
+            width: 28px;
+            height: 28px;
+            background: #a33d1d;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+          }
+          .tp-toc-icon-wrapper {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #eaf1eb;
+            color: #5d8564;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+          }
+          .tp-toc-icon-wrapper svg {
+            width: 18px;
+            height: 18px;
+          }
+          .tp-toc-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c2c2c;
+            flex-grow: 1;
+            line-height: 1.35;
+            text-align: left;
+          }
+          .tp-toc-chevron {
+            color: #a33d1d;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+          }
+          .tp-toc-subitems-timeline {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px dashed #f2eee9;
+            padding-left: 14px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+          }
+          .tp-toc-subitems-timeline::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 14px;
+            bottom: 14px;
+            width: 2px;
+            background: #e8d0bd;
+          }
+          .tp-toc-subitem {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 22px;
+            text-align: left;
+          }
+          .tp-toc-subitem::before {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ab7841;
+            z-index: 2;
+          }
+          .tp-toc-subitem-num {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ab7841;
+            margin-right: 8px;
+            flex-shrink: 0;
+          }
+          .tp-toc-subitem-link {
+            font-size: 13px;
+            color: #4a4a4a;
+            text-decoration: none !important;
+            line-height: 1.4;
+            transition: color 0.2s ease;
+            text-align: left;
+          }
+          .tp-toc-subitem-link:hover {
+            color: #ab7841 !important;
+          }
+          {% endstyle %}
+
+          <!-- Table of Contents Wrapper -->
+          <div id="tp-article-toc" class="tp-toc-container" style="display: none;">
+            <div class="tp-toc-header">
+              <div class="tp-toc-header-left">
+                <div class="tp-toc-header-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </div>
+                <div class="tp-toc-header-text">
+                  <h3>In This Article</h3>
+                  <p>A quick-access guide to the chapters and topics discussed below.</p>
+                </div>
+              </div>
+              <div class="tp-toc-header-graphic">
+                <svg width="120" height="90" viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M70 65C85 45 105 40 115 45C118 47 110 60 90 70C75 78 70 75 70 75Z" fill="#dbe5df" />
+                  <path d="M70 65C85 55 98 52 108 55" stroke="#a2baa9" stroke-width="1.5" stroke-linecap="round" />
+                  <path d="M45 40C65 15 88 10 98 18C103 22 93 42 70 55C52 65 45 60 45 40Z" fill="#e2ebd9" />
+                  <path d="M45 40C62 28 78 22 88 26" stroke="#b9caa7" stroke-width="1.5" stroke-linecap="round" />
+                  <path d="M90 75C80 82 65 85 55 80C45 75 52 62 68 58C80 55 90 75 90 75Z" fill="#f5ebe1" />
+                </svg>
+              </div>
+            </div>
+            
+            <div id="tp-toc-grid" class="tp-toc-grid">
+            </div>
+          </div>
+
+          <!-- Article Content -->
+          <div class="blog__article__content rte" style="font-size: 16px; line-height: 1.8; color: #2d2d2d; max-width: 100%;">
             {{ article.content }}
           </div>
 
-          {% if section.settings.tags %}
-            {% render 'tags-article', article: article %}
-          {% endif %}
-          {% if section.settings.social %}
-            <div class="text-center">
-              {% render 'share' article: article, label: section.settings.share_label %}
+          <!-- Key Takeaways -->
+          {%- assign key_takeaways = article.metafields.custom.key_takeaways.value | default: article.metafields.custom.key_takeaways -%}
+          {%- if key_takeaways != blank -%}
+            <div class="tp-article-takeaways" style="margin: 35px 0; padding: 24px; border-radius: 16px; background-color: #f7faf8; border: 1px solid #e1ebe6;">
+              <h4 style="margin: 0 0 16px; font-weight: 700; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px;">Key Takeaways</h4>
+              <ul style="margin: 0; padding: 0; list-style: none;">
+                {%- for item in key_takeaways -%}
+                  <li style="position: relative; padding-left: 28px; margin-bottom: 12px; font-size: 15px; line-height: 1.6; color: #2e3b2e;">
+                    <span style="position: absolute; left: 0; top: 1px; color: #2e7d32; font-weight: bold; font-size: 16px;">✓</span>
+                    {{ item | escape }}
+                  </li>
+                {%- endfor -%}
+              </ul>
             </div>
-          {% endif %}
+          {%- endif -%}
+
+          <!-- Relevant CTA / Related Products (Middle Section) -->
+          {%- assign related_products = article.metafields.custom.related_products.value -%}
+          {%- if related_products != blank and related_products.count > 0 -%}
+            <div class="tp-related-products" style="margin: 40px 0; padding-top: 30px; border-top: 1px solid #ece7e0;">
+              <h4 style="margin: 0 0 24px; font-weight: 700; color: #1f1f1f; text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px;">Products related to this article</h4>
+              <div class="grid grid--uniform" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; width: 100%;">
+                {%- for product in related_products -%}
+                  <div class="grid__item" style="padding-left: 0;">
+                    {% render 'product-grid-item', product: product %}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          <!-- FAQ Block — T039 reusable component -->
+          {%- render 'content-faq',
+              questions: article.metafields.custom.faq_questions.value,
+              answers: article.metafields.custom.faq_answers.value,
+              section_id: section.id -%}
+
+          <!-- References — T039 reusable component -->
+          {%- render 'content-references', references: article.metafields.custom.references -%}
+
+          <!-- Author + Reviewer — T039 reusable component -->
+          {%- render 'content-author-reviewer',
+              author: article.author,
+              author_bio: article.metafields.custom.author_bio,
+              reviewer: article.metafields.custom.medical_reviewer,
+              reviewer_bio: article.metafields.custom.reviewer_bio,
+              reviewed_date: article.metafields.custom.reviewed_date -%}
+
+          <!-- Related Articles — T039 reusable component (metafield-only, no tag fallback) -->
+          {%- render 'content-related-articles',
+              articles: article.metafields.custom.related_articles.value,
+              current_handle: article.handle,
+              section: section -%}
+
+          <!-- Tags -->
+          {%- if section.settings.tags -%}
+            <div style="margin: 30px 0;">
+              {%- render 'tags-article', article: article -%}
+            </div>
+          {%- endif -%}
+
+          <!-- Share -->
+          {%- if section.settings.social -%}
+            <div class="text-center" style="margin: 30px 0;">
+              {%- render 'share' article: article, label: section.settings.share_label -%}
+            </div>
+          {%- endif -%}
+
         </div>
+
+        <script>
+        function getIconForHeading(text) {
+          const t = text.toLowerCase();
+          const icons = {
+            checklist: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+            price: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+            cost: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+            value: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+            support: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+            review: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+            testimonial: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+            flag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`,
+            redflag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`,
+            storage: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+            care: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+            faq: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+            question: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+            practice: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+            action: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+          };
+          for (const key in icons) {
+            if (t.includes(key)) {
+              return icons[key];
+            }
+          }
+          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          const content = document.querySelector(".blog__article__content.rte");
+          const toc = document.getElementById("tp-article-toc");
+          const grid = document.getElementById("tp-toc-grid");
+          if (!content || !toc || !grid) return;
+          
+          const h2s = Array.from(content.querySelectorAll("h2"));
+          if (h2s.length < 2) {
+            toc.style.display = "none";
+            return;
+          }
+          
+          const headingsData = [];
+          h2s.forEach((h2, index) => {
+            let nextH2 = h2s[index + 1];
+            const subheadings = [];
+            let sib = h2.nextElementSibling;
+            while (sib && sib !== nextH2) {
+              if (sib.tagName.toLowerCase() === 'h3') {
+                subheadings.push(sib);
+              } else {
+                const innerH3s = sib.querySelectorAll("h3");
+                innerH3s.forEach(inner => subheadings.push(inner));
+              }
+              sib = sib.nextElementSibling;
+            }
+            
+            headingsData.push({
+              element: h2,
+              subheadings: subheadings
+            });
+          });
+
+          headingsData.forEach((item, index) => {
+            const heading = item.element;
+            const number = index + 1;
+            
+            let id = heading.id;
+            if (!id) {
+              id = "toc-heading-" + index;
+              heading.id = id;
+            }
+            
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "tp-toc-item";
+            
+            const iconSvg = getIconForHeading(heading.textContent);
+            
+            const cardLink = document.createElement("a");
+            cardLink.href = "#" + id;
+            cardLink.className = "tp-toc-card";
+            cardLink.addEventListener("click", (e) => {
+              e.preventDefault();
+              heading.scrollIntoView({ behavior: "smooth" });
+              history.pushState(null, null, "#" + id);
+            });
+            
+            cardLink.innerHTML = `
+              <div class="tp-toc-number">${number}</div>
+              <div class="tp-toc-icon-wrapper">${iconSvg}</div>
+              <span class="tp-toc-title">${heading.textContent}</span>
+              <span class="tp-toc-chevron">&rsaquo;</span>
+            `;
+            
+            itemDiv.appendChild(cardLink);
+            
+            if (item.subheadings.length > 0) {
+              const timelineDiv = document.createElement("div");
+              timelineDiv.className = "tp-toc-subitems-timeline";
+              
+              item.subheadings.forEach((sub, subIndex) => {
+                const subNumber = `${number}.${subIndex + 1}`;
+                let subId = sub.id;
+                if (!subId) {
+                  subId = `toc-subheading-${index}-${subIndex}`;
+                  sub.id = subId;
+                }
+                
+                const subItemDiv = document.createElement("div");
+                subItemDiv.className = "tp-toc-subitem";
+                
+                const subLink = document.createElement("a");
+                subLink.href = "#" + subId;
+                subLink.className = "tp-toc-subitem-link";
+                subLink.textContent = sub.textContent;
+                subLink.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  sub.scrollIntoView({ behavior: "smooth" });
+                  history.pushState(null, null, "#" + subId);
+                });
+                
+                subItemDiv.innerHTML = `<span class="tp-toc-subitem-num">${subNumber}</span>`;
+                subItemDiv.appendChild(subLink);
+                timelineDiv.appendChild(subItemDiv);
+              });
+              
+              itemDiv.appendChild(timelineDiv);
+            }
+            
+            grid.appendChild(itemDiv);
+          });
+          
+          toc.style.display = "block";
+        });
+        </script>
 
         {% if blog.next_article or blog.previous_article %}
           <p class="clearfix">
@@ -1127,36 +1634,53 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "Article",
-    "articleBody": {{ article.content | strip_html | json }},
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": {{ shop.url | append: page.url | json }}
-    },
-    "headline": {{ article.title | json }},
-    {% if article.excerpt != blank %}
-      "description": {{ article.excerpt | strip_html | json }},
-    {% endif %}
-    {% if article.image %}
-      {% assign image_size = article.image.width | append: 'x' %}
-      "image": [
-        {{ article | img_url: image_size | prepend: "https:" | json }}
-      ],
-    {% endif %}
-    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
-    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
-    "author": {
-      "@type": "Person",
-      "name": {{ article.author | json }}
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": {{ shop.name | json }}
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ article.title | json }},
+  "articleBody": {{ article.content | strip_html | json }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ shop.url | append: article.url | json }}
+  },
+  {%- if article.excerpt != blank -%}
+    "description": {{ article.excerpt | strip_html | json }},
+  {%- else -%}
+    "description": {{ article.content | strip_html | truncatewords: 50 | json }},
+  {%- endif -%}
+  {%- if article.image -%}
+    "image": [
+      {{ article.image | image_url: width: 1200 | prepend: "https:" | json }}
+    ],
+  {%- endif -%}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateModified": {{ article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ 'timepads_logo.png' | asset_url | prepend: "https:" | json }}
     }
   }
-  </script>
+  {%- if medical_reviewer != blank -%}
+    ,"reviewedBy": {
+      "@type": "Person",
+      "name": {{ medical_reviewer | json }}
+    }
+    {%- if reviewed_date != blank -%}
+      ,"lastReviewed": {{ reviewed_date | date: '%Y-%m-%d' | json }}
+    {%- endif -%}
+  {%- endif -%}
+}
+</script>
+
+{%- comment %} FAQPage JSON-LD is now emitted by snippets/content-faq.liquid (T039). {%- endcomment -%}
 
 {% schema %}
 {

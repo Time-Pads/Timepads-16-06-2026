@@ -1,0 +1,497 @@
+{% comment %}
+  snippets/content-component-styles.liquid
+  T039 — Reusable Content Component Library: Shared CSS
+  Render this ONCE at the top of sections/article.liquid.
+  Usage: {%- render 'content-component-styles' -%}
+{% endcomment %}
+
+<style>
+/* ============================================================
+   T039 CONTENT COMPONENT LIBRARY — SHARED STYLES
+   TimePads Design System
+   ============================================================ */
+
+.content-module {
+  margin: 36px 0;
+  text-align: left;
+}
+
+.content-module__title {
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1a1a1a;
+}
+
+.content-module__divider {
+  padding-top: 30px;
+  border-top: 1px solid #ece7e0;
+}
+
+/* TL;DR -------------------------------------------------------- */
+.content-tldr {
+  background: #faf6f0;
+  border-left: 4px solid #ab7841;
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 4px 20px rgba(171,120,65,0.04);
+}
+
+.content-tldr__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ab7841;
+  margin: 0 0 12px;
+}
+
+.content-tldr__label-icon {
+  width: 18px;
+  height: 18px;
+  background: #ab7841;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.content-tldr__body {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+.content-tldr__body p { margin: 0 0 8px; }
+.content-tldr__body p:last-child { margin-bottom: 0; }
+.content-tldr__body ul,
+.content-tldr__body ol { margin: 8px 0 0; padding-left: 20px; }
+.content-tldr__body li { margin-bottom: 6px; }
+
+/* FAQ ---------------------------------------------------------- */
+.content-faq__list {
+  border-top: 1px solid #ece7e0;
+}
+
+.content-faq details {
+  border-bottom: 1px solid #ece7e0;
+}
+
+.content-faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+  list-style: none;
+  text-align: left;
+  transition: color 0.2s ease;
+  gap: 12px;
+}
+
+.content-faq summary::-webkit-details-marker { display: none; }
+.content-faq summary:hover { color: #ab7841; }
+
+.content-faq__chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+  color: #ab7841;
+}
+
+.content-faq details[open] .content-faq__chevron {
+  transform: rotate(180deg);
+}
+
+.content-faq__answer {
+  padding: 0 4px 18px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #555;
+}
+
+.content-faq__answer p { margin: 0 0 8px; }
+.content-faq__answer p:last-child { margin-bottom: 0; }
+
+/* Comparison Table --------------------------------------------- */
+.content-comparison__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid #ece7e0;
+}
+
+.content-comparison__table {
+  width: 100%;
+  min-width: 400px;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.content-comparison__table thead tr {
+  background: #fdf6f0;
+}
+
+.content-comparison__table th {
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #1a1a1a;
+  border-bottom: 2px solid #ece7e0;
+  white-space: nowrap;
+}
+
+.content-comparison__table th:first-child {
+  color: #888;
+  font-weight: 600;
+}
+
+.content-comparison__table td {
+  padding: 12px 16px;
+  color: #3a3a3a;
+  border-bottom: 1px solid #f2eee9;
+  vertical-align: middle;
+}
+
+.content-comparison__table tr:last-child td { border-bottom: none; }
+.content-comparison__table tbody tr:hover { background: #fdfaf7; }
+
+.content-comparison__table td:first-child {
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* Product Module ----------------------------------------------- */
+.content-product__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.content-product__card {
+  border: 1px solid #ece7e0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.content-product__card:hover {
+  box-shadow: 0 8px 24px rgba(171,120,65,0.08);
+  transform: translateY(-3px);
+}
+
+.content-product__image-wrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #f8f5f2;
+}
+
+.content-product__image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.content-product__card:hover .content-product__image-wrap img {
+  transform: scale(1.04);
+}
+
+.content-product__info {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.content-product__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.content-product__price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.content-product__price {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ab7841;
+}
+
+.content-product__compare-price {
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.content-product__cta {
+  display: inline-block;
+  margin-top: auto;
+  padding: 9px 16px;
+  background: #ab7841;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.content-product__cta:hover { background: #8f6030; }
+
+/* Video -------------------------------------------------------- */
+.content-video__container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.content-video__iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Author + Reviewer -------------------------------------------- */
+.content-author-reviewer {
+  background: #faf8f5;
+  border: 1px solid #ece7e0;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.content-author-reviewer__block {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.content-author-reviewer__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ece7e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #888;
+}
+
+.content-author-reviewer__avatar svg { width: 22px; height: 22px; }
+
+.content-author-reviewer__role {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ab7841;
+  margin: 0 0 4px;
+}
+
+.content-author-reviewer__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.content-author-reviewer__bio {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.55;
+  margin: 0;
+  font-style: italic;
+}
+
+.content-author-reviewer__divider {
+  border: none;
+  border-top: 1px solid #ebe6df;
+  margin: 0;
+}
+
+.content-author-reviewer__reviewed-date {
+  font-size: 12px;
+  color: #999;
+  margin: 6px 0 0;
+}
+
+/* Related Articles --------------------------------------------- */
+.content-related-articles__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.content-related-articles__card {
+  border: 1px solid #ece7e0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.content-related-articles__card:hover {
+  box-shadow: 0 8px 24px rgba(171,120,65,0.07);
+  transform: translateY(-3px);
+}
+
+.content-related-articles__thumb {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #f5f1ed;
+}
+
+.content-related-articles__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.content-related-articles__card:hover .content-related-articles__thumb img {
+  transform: scale(1.04);
+}
+
+.content-related-articles__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.content-related-articles__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.content-related-articles__excerpt {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.content-related-articles__meta {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.content-related-articles__read-more {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ab7841;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+/* References --------------------------------------------------- */
+.content-references__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: ref-counter;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content-references__item {
+  counter-increment: ref-counter;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.content-references__item::before {
+  content: counter(ref-counter) ".";
+  font-size: 12px;
+  font-weight: 700;
+  color: #ab7841;
+  flex-shrink: 0;
+  min-width: 18px;
+}
+
+.content-references__link {
+  color: #ab7841;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.content-references__link:hover { color: #8f6030; }
+
+/* Responsive overrides ----------------------------------------- */
+@media (max-width: 640px) {
+  .content-tldr { padding: 18px 20px; }
+  .content-comparison__table { font-size: 13px; }
+  .content-comparison__table th,
+  .content-comparison__table td { padding: 10px 12px; }
+  .content-product__grid { grid-template-columns: 1fr 1fr; }
+  .content-related-articles__grid { grid-template-columns: 1fr; }
+  .content-author-reviewer { padding: 18px; }
+}
+
+@media (max-width: 400px) {
+  .content-product__grid { grid-template-columns: 1fr; }
+}
+</style>

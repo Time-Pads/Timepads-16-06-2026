@@ -504,6 +504,10 @@
       "settings": {
         "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
       }
+    },
+    "product_comparison_table": {
+      "type": "product-comparison",
+      "settings": {}
     }
   },
   "order": [
@@ -511,6 +515,7 @@
     "menstrual_cup_sizes_mEYnVW",
     "period_benefits_KyAMJE",
     "gif_images_gb6mrC",
+    "product_comparison_table",
     "counting_number_arqh6C",
     "1734695772f9935df8",
     "product_a_pluse_content_kKtNqB",

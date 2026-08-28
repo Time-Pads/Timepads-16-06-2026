@@ -1,0 +1,135 @@
+{%- liquid
+  # Input can be product or product.title. If product is passed, use product.title
+  assign title_to_clean = clean_product_title | default: product.title
+
+  # Strip out target promotional phrases case-sensitively to handle variations
+  assign promo_phrases = "Buy 1 Get 1 Free,buy 1 get 1 free,BUY 1 GET 1 FREE,Buy 1 Get 1,buy 1 get 1,BUY 1 GET 1,Limited Offer,limited offer,LIMITED OFFER,Ultra Comfort,ultra comfort,ULTRA COMFORT,Extra Soft,extra soft,EXTRA SOFT,Rash Free,rash free,RASH FREE,Rash-Free,rash-free,RASH-FREE,Leak Proof,leak proof,LEAK PROOF,Leak-Proof,leak-proof,LEAK-PROOF,No Leak,no leak,NO LEAK,Premium,premium,PREMIUM,Best,best,BEST,Offer,offer,OFFER,Free,free,FREE,Super,super,SUPER,Sale,sale,SALE" | split: ','
+
+  assign cleaned = title_to_clean
+  for phrase in promo_phrases
+    assign cleaned = cleaned | replace: phrase, ''
+  endfor
+
+  # Collapse whitespace and split into clean words
+  assign raw_words = cleaned | split: ' '
+  assign clean_words = ''
+  for word in raw_words
+    assign w = word | strip
+    if w != '' and w != '|' and w != '-' and w != '•'
+      assign clean_words = clean_words | append: w | append: ' '
+    endif
+  endfor
+  assign clean_words = clean_words | strip
+
+  # Extract Size
+  assign size = ''
+  assign words_array = clean_words | split: ' '
+  for word in words_array
+    assign w_up = word | upcase
+    # Exact match for sizes
+    if w_up == 'XXL+' or w_up == 'XXL' or w_up == 'XL+' or w_up == 'XL' or w_up == 'L' or w_up == 'M' or w_up == 'S' or w_up == 'XS'
+      assign size = word
+      break
+    endif
+  endfor
+
+  # Extract Quantity (e.g. "15 Pads", "30 Pads", etc., or check digits + "Pads")
+  assign quantity = ''
+  
+  # Try to find a numeric word followed by "Pads", "pads", "Pack", "pack", or similar
+  for i in (0..words_array.size)
+    assign word = words_array[i]
+    assign next_idx = i | plus: 1
+    assign next_word = words_array[next_idx]
+    assign word_num = word | plus: 0
+    
+    # Check if this word is a number (e.g. "15") and next word is "Pads"/"Pack"/"packs"/"pads"
+    if word_num > 0 and next_word != blank
+      assign next_up = next_word | upcase
+      if next_up contains 'PAD' or next_up contains 'PACK'
+        assign quantity = word | append: ' ' | append: next_word
+        break
+      endif
+    endif
+
+    # Also support single tokens like "15Pads" or "30pads"
+    assign w_up = word | upcase
+    if w_up contains 'PAD' or w_up contains 'PACK'
+      # Check if word starts with a digit
+      assign first_char = word | slice: 0, 1 | plus: 0
+      if first_char > 0
+        assign quantity = word
+        break
+      endif
+    endif
+  endfor
+
+  # If still no quantity found, look for common formats
+  if quantity == ''
+    for word in words_array
+      assign w_up = word | upcase
+      if w_up contains 'PADS' or w_up contains 'PACK'
+        assign quantity = word
+        break
+      endif
+    endfor
+  endif
+
+  # Reconstruct Product Name by filtering out size and quantity words from clean_words
+  assign name_acc = ''
+  for word in words_array
+    assign is_part_of_size = false
+    if size != '' and word == size
+      assign is_part_of_size = true
+    endif
+
+    assign is_part_of_qty = false
+    if quantity != ''
+      assign qty_parts = quantity | split: ' '
+      for q_part in qty_parts
+        if q_part == word
+          assign is_part_of_qty = true
+        endif
+      endfor
+    endif
+
+    if is_part_of_size == false and is_part_of_qty == false
+      assign name_acc = name_acc | append: word | append: ' '
+    endif
+  endfor
+
+  assign product_name = name_acc | strip
+  
+  # Fallback if product_name ended up empty
+  if product_name == ''
+    assign product_name = title_to_clean
+  endif
+
+  # Set default Brand to TIMEPADS if not already present or if requested
+  assign brand_suffix = 'TIMEPADS'
+  
+  # Format target output: [Product Name] [Size] | [Quantity] | [Brand]
+  assign final_name = product_name
+  if size != ''
+    # Only append if size isn't already inside final_name
+    unless final_name contains size
+      assign final_name = final_name | append: ' ' | append: size
+    endunless
+  endif
+
+  assign seo_title = final_name
+  if quantity != ''
+    assign seo_title = seo_title | append: ' | ' | append: quantity
+  endif
+  
+  # Append Brand if it's not already in the name
+  assign name_up = final_name | upcase
+  unless name_up contains 'TIMEPADS'
+    assign seo_title = seo_title | append: ' | ' | append: brand_suffix
+  endunless
+
+  # Clean double pipes or trailing separators if any
+  assign seo_title = seo_title | replace: '||', '|' | replace: '|  |', '|' | strip
+
+  echo seo_title
+-%}

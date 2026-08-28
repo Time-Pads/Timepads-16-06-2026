@@ -17,18 +17,7 @@
           "settings": {
             "image": "shopify://shop_images/Meno-Cup-Banner_1_1.jpg",
             "mobile_image": "shopify://shop_images/Meno-Cup-Banner-Mobile-Version_1.jpg",
-            "overlay_opacity": 0,
-            "overlay_color": "#000000",
-            "enable_overlay_text": false,
-            "kicker": "",
-            "title": "",
-            "richtext": "",
-            "text_align": "align--middle-center",
-            "text_color": "text--white",
-            "link_text": "",
-            "link": "shopify://products/menstrual-cup",
-            "button_color": "btn--white",
-            "button_style": "btn"
+            "link": "shopify://products/menstrual-cup"
           }
         }
       },
@@ -37,12 +26,6 @@
       ],
       "name": "Slideshow",
       "settings": {
-        "autoplay": false,
-        "autoplay_speed": 8,
-        "preload_first_image": false,
-        "height": "use_image",
-        "color_bg": "palette--light bg--neutral",
-        "width": "wrapper--none",
         "padding_top": 0,
         "padding_bottom": 0
       }

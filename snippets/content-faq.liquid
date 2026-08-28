@@ -1,0 +1,97 @@
+{% comment %}
+  snippets/content-faq.liquid
+  T039 — Reusable FAQ Accordion component
+
+  Parameters:
+    questions   {Array}  — article.metafields.custom.faq_questions.value
+                           List of single-line text metafield values.
+    answers     {Array}  — article.metafields.custom.faq_answers.value
+                           List of single-line text metafield values.
+    section_id  {String} — section.id (for unique IDs)
+
+  Behaviour:
+    - Pairs questions[i] with answers[i] by index.
+    - Skips pairs where either Q or A is blank.
+    - Hides entire component if no complete pairs exist.
+    - Uses native <details>/<summary> — zero JS required.
+    - Also emits FAQPage JSON-LD structured data.
+
+  Usage:
+    {%- render 'content-faq',
+        questions: article.metafields.custom.faq_questions.value,
+        answers: article.metafields.custom.faq_answers.value,
+        section_id: section.id -%}
+{% endcomment %}
+
+{%- if questions != blank and answers != blank -%}
+  {%- assign q_size = questions.size -%}
+  {%- assign a_size = answers.size -%}
+  {%- assign min_size = q_size -%}
+  {%- if a_size < q_size -%}{%- assign min_size = a_size -%}{%- endif -%}
+  {%- if min_size > 0 -%}
+    {%- assign faq_limit = min_size | minus: 1 -%}
+
+    {%- comment %} Count valid pairs before rendering the wrapper {%- endcomment -%}
+    {%- assign valid_count = 0 -%}
+    {%- for i in (0..faq_limit) -%}
+      {%- assign _q = questions[i] | strip -%}
+      {%- assign _a = answers[i] | strip -%}
+      {%- if _q != blank and _a != blank -%}
+        {%- assign valid_count = valid_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if valid_count > 0 -%}
+      <div class="content-module content-module__divider content-faq">
+        <h4 class="content-module__title">Frequently Asked Questions</h4>
+        <div class="content-faq__list">
+          {%- for i in (0..faq_limit) -%}
+            {%- assign faq_q = questions[i] | strip -%}
+            {%- assign faq_a = answers[i] | strip -%}
+            {%- if faq_q != blank and faq_a != blank -%}
+              {%- assign faq_item_id = "faq-" | append: section_id | append: "-" | append: i -%}
+              <details id="{{ faq_item_id }}">
+                <summary>
+                  <span>{{ faq_q | escape }}</span>
+                  <svg class="content-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </summary>
+                <div class="content-faq__answer">
+                  <p>{{ faq_a | escape }}</p>
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment %} FAQPage structured data — emitted alongside the component {%- endcomment -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {%- assign ld_count = 0 -%}
+          {%- for i in (0..faq_limit) -%}
+            {%- assign ld_q = questions[i] | strip -%}
+            {%- assign ld_a = answers[i] | strip -%}
+            {%- if ld_q != blank and ld_a != blank -%}
+              {%- if ld_count > 0 -%},{%- endif -%}
+              {
+                "@type": "Question",
+                "name": {{ ld_q | json }},
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": {{ ld_a | json }}
+                }
+              }
+              {%- assign ld_count = ld_count | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      }
+      </script>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

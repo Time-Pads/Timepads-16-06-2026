@@ -1,0 +1,562 @@
+<!-- /sections/pdp-product-card.liquid -->
+
+{%- assign sid = section.id -%}
+
+{% style %}
+  .section-padding-{{ sid }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 767px) {
+    .section-padding-{{ sid }} {
+      padding-top: {{ section.settings.mpadding_top }}px;
+      padding-bottom: {{ section.settings.mpadding_bottom }}px;
+    }
+  }
+
+  /* Extracted Product Card Styles (rendered once per grid) */
+  .tp-perf-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E2D3C7;
+    padding: 0 0 14px 0;
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease;
+    contain-intrinsic-size: 260px 420px;
+  }
+  .tp-perf-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Full Bleed Image Header */
+  .tp-perf-card__image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: #F8F8F8;
+    contain-intrinsic-size: 260px 260px;
+  }
+  .tp-perf-card__image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .tp-perf-card__image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+  .tp-perf-card__badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    z-index: 2;
+    line-height: 1;
+  }
+  .tp-perf-card__badge--sale {
+    background-color: #890303;
+    color: #FFFFFF;
+  }
+  .tp-perf-card__badge--sold {
+    background-color: #767676;
+    color: #FFFFFF;
+  }
+
+  /* Card Body */
+  .tp-perf-card__details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 14px 14px 0 14px;
+  }
+  .tp-perf-card__title-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .tp-perf-card__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1A1A1A;
+    line-height: 1.35;
+    margin: 0 0 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.7em;
+    min-height: 2.7em;
+  }
+  @media only screen and (max-width: 749px){
+    .tp-perf-card__title{
+      font-size: 12px;
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 3.7em;
+      min-height: 3.7em;
+    }
+  }
+  /* Variant Options & Pills */
+  .tp-perf-card__options {
+    margin-bottom: 14px;
+    min-height: 48px;
+  }
+  .tp-perf-card__option-group {
+    margin-bottom: 8px;
+  }
+  .tp-perf-card__option-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #777777;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .tp-perf-card__radio-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .tp-perf-card__radio-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tp-perf-card__radio-item {
+    position: relative;
+    display: inline-block;
+  }
+  .tp-perf-card__radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+  .tp-perf-card__radio-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 6px;
+    background-color: #B59E85;
+    color: #0f0c0c;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease;
+  }
+  .tp-perf-card__radio-input:checked + .tp-perf-card__radio-label {
+    background-color: #B59E85 !important;
+    color: #070606 !important;
+  }
+
+  /* Footer & Unified Split Price / Add-To-Cart Button */
+  .tp-perf-card__footer {
+    margin-top: auto;
+    padding: 0 14px;
+  }
+  .tp-split-btn-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 44px;
+    border-radius: 25px;
+    border: 1.5px solid #000000;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+  }
+  .tp-split-price {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-right: 1.5px solid #000000;
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+  .tp-split-price .variant-price-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+  }
+  .tp-split-price .current-price {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    display: inline-block !important;
+    width: auto !important;
+    font-family: 'Poppins', sans-serif !important;
+  }
+  .tp-split-price .compare-at-price {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #888888 !important;
+    text-decoration: line-through !important;
+    display: inline-block !important;
+    margin-left: 3px !important;
+    font-family: 'Poppins', sans-serif !important;
+  }
+  .tp-split-price .offer-percentage {
+    display: none !important;
+  }
+
+  .tp-split-atc {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tp-split-atc form {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .tp-perf-card__atc-btn {
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.15s ease;
+  }
+  .tp-perf-card__atc-btn:hover:not([disabled]) {
+    background-color: #222222;
+  }
+  .tp-perf-card__atc-btn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #555555;
+  }
+
+  .pdp-more-products-heading {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* CSS Scroll-Snap Speed Friendly Carousel */
+  .tp-scroll-snap-carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding-bottom: 16px;
+  }
+  
+  /* Hide scrollbars but keep functionality */
+  .tp-scroll-snap-carousel::-webkit-scrollbar {
+    height: 6px;
+  }
+  .tp-scroll-snap-carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  .tp-scroll-snap-carousel::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+  .tp-scroll-snap-carousel::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  .tp-scroll-snap-item {
+    flex: 0 0 calc((100% - (16px * ({{ section.settings.grid }} - 1))) / {{ section.settings.grid }});
+    scroll-snap-align: start;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 991px) {
+    .tp-scroll-snap-item {
+      flex: 0 0 calc((100% - (16px * 2)) / 3);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tp-scroll-snap-item {
+      flex: 0 0 calc((100% - (16px * ({{ section.settings.grid_mobile_num }} - 0.2))) / {{ section.settings.grid_mobile_num }});
+    }
+  }
+{% endstyle %}
+
+<div
+  class="section-padding-{{ sid }} {{ section.settings.bg }}"
+  data-section-id="{{ sid }}"
+  data-section-type="pdp-more-products"
+>
+  <div class="{{ section.settings.width }}">
+    {%- if section.settings.title != blank -%}
+      <h2 class="pdp-more-products-heading" style="font-size: {{ section.settings.font_size }}px;">
+        {{ section.settings.title | escape }}
+      </h2>
+    {%- endif -%}
+
+    {%- paginate collections.all.products by 250 -%}
+      {%- if section.settings.enable_carousel -%}
+        <div class="tp-scroll-snap-carousel">
+          {%- assign counter = 0 -%}
+          {%- for related_product in collections.all.products -%}
+            {%- if related_product.id != product.id and related_product.available -%}
+              {%- assign eagerload = false -%}
+              {%- if counter < section.settings.grid -%}
+                {%- assign eagerload = true -%}
+              {%- endif -%}
+              <div class="tp-scroll-snap-item">
+                {%- render 'product-card-performance',
+                  product: related_product,
+                  placeholder: 'product',
+                  columns_desktop: section.settings.grid,
+                  columns_mobile: section.settings.grid_mobile_num,
+                  eagerload: eagerload
+                -%}
+              </div>
+              {%- assign counter = counter | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if counter == 0 -%}
+            <p class="text-center" style="width: 100%;">No other products available.</p>
+          {%- endif -%}
+        </div>
+
+      {%- else -%}
+        <div
+          class="js-grid"
+          data-grid-large="{{ section.settings.grid }}"
+          data-grid-small="{{ section.settings.grid_mobile_num }}"
+        >
+          {%- assign counter = 0 -%}
+          {%- for related_product in collections.all.products -%}
+            {%- if related_product.id != product.id and related_product.available -%}
+              {%- assign eagerload = false -%}
+              {%- if counter < section.settings.grid -%}
+                {%- assign eagerload = true -%}
+              {%- endif -%}
+              {%- render 'product-card-performance',
+                product: related_product,
+                placeholder: 'product',
+                columns_desktop: section.settings.grid,
+                columns_mobile: section.settings.grid_mobile_num,
+                eagerload: eagerload
+              -%}
+              {%- assign counter = counter | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if counter == 0 -%}
+            <p class="text-center">No other products available.</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    if (window.tpPerfCardInit) return;
+    window.tpPerfCardInit = true;
+
+    function handleVariantUpdate(target) {
+      if (target && target.classList.contains('tp-perf-card__radio-input')) {
+        var card = target.closest('dynamic-card');
+        if (!card) return;
+        var variantId = target.getAttribute('data-variant-id');
+        var hiddenInput = card.querySelector('.tp-perf-card__hidden-id');
+        var atcBtn = card.querySelector('.tp-perf-card__atc-btn');
+
+        if (hiddenInput && variantId) {
+          hiddenInput.value = variantId;
+        }
+        if (atcBtn && variantId) {
+          atcBtn.setAttribute('data-selected-value-data-value', variantId);
+        }
+      }
+    }
+
+    document.addEventListener('change', function(e) {
+      handleVariantUpdate(e.target);
+    });
+    document.addEventListener('input', function(e) {
+      handleVariantUpdate(e.target);
+    });
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('tp-perf-card__radio-input')) {
+        handleVariantUpdate(e.target);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "PDP More Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop More Products"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "default": 24,
+      "unit": "px",
+      "label": "Heading Font Size"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable Carousel Slider",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Products per row (desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "grid_mobile_num",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Products per row (mobile)",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral",        "label": "Default" },
+        { "value": "palette--light bg--accent",         "label": "Light" },
+        { "value": "palette--dark bg--invert",          "label": "Dark" },
+        { "value": "palette--dark bg--invert--accent",  "label": "Dark accent" },
+        { "value": "palette--bright bg--bright",        "label": "Bright" },
+        { "value": "palette--bright bg--bright--accent","label": "Bright accent" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full",   "label": "Full width padded" },
+        { "value": "wrapper",         "label": "Page width" },
+        { "value": "wrapper--narrow", "label": "Page width narrow" },
+        { "value": "wrapper--tiny",   "label": "Page width extra narrow" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "mpadding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mpadding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP More Products",
+      "category": "Product"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "aside", "footer"]
+  }
+}
+{% endschema %}

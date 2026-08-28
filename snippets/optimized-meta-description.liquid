@@ -1,0 +1,84 @@
+{%- liquid
+  # Determine page variables
+  assign brand_name = 'TIMEPADS'
+  assign clean_desc = ''
+
+  if request.page_type == 'product'
+    assign desc_text = product.description | strip_html | strip | replace: '  ', ' '
+    
+    # Primary keyword determination
+    assign p_keyword = 'Sanitary Pads'
+    assign title_up = product.title | upcase
+    if title_up contains 'CREAM'
+      assign p_keyword = 'Period Pain Relief Cream'
+    elsif title_up contains 'CUP'
+      assign p_keyword = 'Menstrual Cup'
+    endif
+    
+    # Construct base string: "Shop [p_keyword] by TIMEPADS. [description]"
+    # Let's target exactly 155 chars
+    assign base_prefix = "Shop " | append: p_keyword | append: " by " | append: brand_name | append: ". "
+    assign remaining_len = 155 | minus: base_prefix.size
+    assign suffix = desc_text | truncate: remaining_len, ""
+    assign clean_desc = base_prefix | append: suffix
+
+  elsif request.page_type == 'collection'
+    assign desc_text = collection.description | default: collection.title | strip_html | strip | replace: '  ', ' '
+    assign p_keyword = 'Sanitary Pads Online'
+    
+    assign base_prefix = "Buy " | append: p_keyword | append: " on " | append: brand_name | append: ": Explore " | append: collection.title | append: ". "
+    assign remaining_len = 155 | minus: base_prefix.size
+    assign suffix = desc_text | truncate: remaining_len, ""
+    assign clean_desc = base_prefix | append: suffix
+
+  elsif request.page_type == 'article'
+    assign desc_text = article.excerpt_or_content | default: article.content | strip_html | strip | replace: '  ', ' '
+    assign p_keyword = 'Period Care'
+    
+    assign base_prefix = "Learn about " | append: p_keyword | append: " with this article from " | append: brand_name | append: ": " | append: article.title | append: ". "
+    assign remaining_len = 155 | minus: base_prefix.size
+    assign suffix = desc_text | truncate: remaining_len, ""
+    assign clean_desc = base_prefix | append: suffix
+
+  elsif request.page_type == 'blog'
+    assign desc_text = blog.title | strip_html | strip | replace: '  ', ' '
+    assign p_keyword = 'Women Hygiene products'
+    assign clean_desc = "Discover articles about " | append: p_keyword | append: " and period care on the " | append: brand_name | append: " official blog. Stay healthy and informed."
+
+  elsif request.page_type == 'page'
+    assign desc_text = page.content | default: page.title | strip_html | strip | replace: '  ', ' '
+    assign p_keyword = 'Women Hygiene products'
+    
+    assign base_prefix = "Get details on " | append: page.title | append: " by " | append: brand_name | append: ", dedicated to premium " | append: p_keyword | append: ". "
+    assign remaining_len = 155 | minus: base_prefix.size
+    assign suffix = desc_text | truncate: remaining_len, ""
+    assign clean_desc = base_prefix | append: suffix
+
+  else
+    # Home page or fallback
+    assign desc_text = page_description | default: shop.description | strip_html | strip | replace: '  ', ' '
+    assign p_keyword = 'Sanitary Pads'
+    
+    assign base_prefix = "Welcome to " | append: brand_name | append: ", your home for premium " | append: p_keyword | append: " and hygiene care. "
+    assign remaining_len = 155 | minus: base_prefix.size
+    assign suffix = desc_text | truncate: remaining_len, ""
+    assign clean_desc = base_prefix | append: suffix
+  endif
+
+  # Ensure the description fits exactly 150-160 characters (target 155)
+  # If it is slightly shorter, we pad it. If it is longer, we truncate/slice it.
+  assign clean_desc_stripped = clean_desc | strip
+  assign current_len = clean_desc_stripped.size
+
+  if current_len < 150
+    assign needed = 150 | minus: current_len
+    # Append padding up to 150
+    assign padding = " Premium comfort and protection guaranteed on every period day." | truncate: needed, ""
+    assign clean_desc_stripped = clean_desc_stripped | append: padding
+  endif
+
+  # Slice to exactly 155 characters to guarantee 150-160 range
+  assign final_meta_desc = clean_desc_stripped | slice: 0, 155
+
+  echo final_meta_desc
+-%}

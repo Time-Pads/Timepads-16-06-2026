@@ -1,25 +1,8 @@
 <!-- /sections/product.liquid -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/", 
-  "@type": "Product", 
-  "name": "{{ product.title | escape }}",
-  "image": "{{ product.featured_image | image_url }}",
-  "description": "{{ product.description | strip_html | escape }}",
-  "brand": {
-    "@type": "Brand",
-    "name": "Time Pads"
-  },
-  "sku": "{{ product.variants.first.sku }}",
-  "offers": {
-    "@type": "AggregateOffer",
-    "url": "{{ product.url | prepend: shop.url }}",
-    "priceCurrency": "{{ cart.currency.iso_code }}",
-    "price": "{{ product.price | money_without_currency }}",
-    "availability": "{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
-  }
-}
-</script>
+{% comment %}
+  Duplicate JSON-LD structured data removed to prevent duplicates.
+  All product schemas are rendered via sections/product.liquid.
+{% endcomment %}
 
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
@@ -348,6 +331,7 @@
 
                   {% else %}
                   <div class="product__block__description rte body-size-4" style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
+                    {%- render 'product-description-promo', product: product -%}
                     {%- assign product_description_content = product.description | strip -%}
                     {%- assign truncate_string = 'products.general.read_more' | t -%}
                     {%- assign truncate_html = '<button type="button" class="p button-with-underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}
@@ -861,61 +845,10 @@ collapsibleButton.textContent = isCollapsed ? collapsibleButton.getAttribute('da
 });
 </script>
 
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org/",
-  "@type": "Product",
-  "name": {{ product.title | json }},
-  "url": {{ request.origin | append: product.url | json }},
-  {% if seo_media -%}
-    "image": [
-      {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
-    ],
-  {%- endif %}
-  "description": {{ product.description | strip_html | json }},
-  {% if product.selected_or_first_available_variant.sku != blank -%}
-    "sku": {{ product.selected_or_first_available_variant.sku | json }},
-  {%- endif %}
-  "category": {{ product.type | json }},
-  {%- if product.metafields.reviews.rating.value != blank -%}
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "{{ product.metafields.reviews.rating.value }}",
-      "ratingCount": "{{ product.metafields.reviews.rating_count.value }}",
-      "bestRating": "{{ product.metafields.reviews.rating.value.scale_max }}",
-      "worstRating": "{{ product.metafields.reviews.rating.value.scale_min }}"
-    },
-  {%- endif -%}
-  "brand": {
-    "@type": "Brand",
-    "name": {{ product.vendor | default: shop.name | json }}
-  },
-  "offers": [
-    {%- for variant in product.variants -%}
-      {
-        "@type" : "Offer",
-        {%- if variant.sku != blank -%}
-          "sku": {{ variant.sku | json }},
-        {%- endif -%}
-        {%- if variant.barcode.size == 12 -%}
-          "gtin12": {{ variant.barcode | json }},
-        {%- endif -%}
-        {%- if variant.barcode.size == 13 -%}
-          "gtin13": {{ variant.barcode | json }},
-        {%- endif -%}
-        {%- if variant.barcode.size == 14 -%}
-          "gtin14": {{ variant.barcode | json }},
-        {%- endif -%}
-        "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
-        "price" : {{ variant.price | divided_by: 100.00 | json }},
-        "priceCurrency" : {{ cart.currency.iso_code | json }},
-        "priceValidUntil": "{{ 'now' | date: '%s' | plus: seconds_price_valid | date: '%Y-%m-%d' }}",
-        "url" : {{ request.origin | append: variant.url | json }}
-      }{% unless forloop.last %},{% endunless %}
-    {%- endfor -%}
-  ]
-}
-</script>
+{% comment %}
+  Duplicate JSON-LD structured data removed to prevent duplicates.
+  All product schemas are rendered via sections/product.liquid.
+{% endcomment %}
 
 
 {% schema %}

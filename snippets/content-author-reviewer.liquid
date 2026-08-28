@@ -1,0 +1,91 @@
+{% comment %}
+  snippets/content-author-reviewer.liquid
+  T039 — Reusable Author + Medical Reviewer Trust Block
+
+  Parameters:
+    author          {String} — Author name (usually article.author)
+    author_bio      {String} — Author bio (custom.author_bio metafield value)
+    reviewer        {String} — Reviewer name (custom.medical_reviewer metafield)
+    reviewer_bio    {String} — Reviewer bio/credentials (custom.reviewer_bio metafield)
+    reviewed_date   {String|Date} — Reviewed date (custom.reviewed_date metafield)
+    is_demo         {Boolean} — Show demo notice when true.
+
+  IMPORTANT:
+    - Do NOT pass fabricated reviewer names or credentials.
+    - Test data passed via is_demo=true must be clearly marked as demo.
+    - Reviewer bio is displayed as-is — do not use it for medical claims.
+
+  Hides automatically when all parameters are blank.
+
+  Usage:
+    {%- render 'content-author-reviewer',
+        author: article.author,
+        author_bio: article.metafields.custom.author_bio,
+        reviewer: article.metafields.custom.medical_reviewer,
+        reviewer_bio: article.metafields.custom.reviewer_bio,
+        reviewed_date: article.metafields.custom.reviewed_date -%}
+{% endcomment %}
+
+{%- assign rev_name = reviewer.value | default: reviewer | strip -%}
+{%- assign rev_bio = reviewer_bio.value | default: reviewer_bio | strip -%}
+{%- assign rev_date = reviewed_date.value | default: reviewed_date -%}
+{%- assign auth_bio_text = author_bio.value | default: author_bio | strip -%}
+
+{%- assign has_author = false -%}
+{%- assign has_reviewer = false -%}
+{%- if author != blank -%}{%- assign has_author = true -%}{%- endif -%}
+{%- if rev_name != blank -%}{%- assign has_reviewer = true -%}{%- endif -%}
+
+{%- if has_author or has_reviewer -%}
+  <div class="content-module content-module__divider content-author-reviewer" role="complementary" aria-label="Author and Reviewer Information">
+    {%- if is_demo -%}
+      <p style="font-size:11px;color:#e65c00;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:0 0 14px;padding:8px 12px;background:#fff8f0;border-radius:6px;border:1px solid #f5c49a;">⚠ DEMO DATA — This is test content only. Not production medical credentials.</p>
+    {%- endif -%}
+
+    {%- if has_author -%}
+      <div class="content-author-reviewer__block">
+        <div class="content-author-reviewer__avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="content-author-reviewer__content">
+          <p class="content-author-reviewer__role">Written by</p>
+          <p class="content-author-reviewer__name">{{ author | escape }}</p>
+          {%- if auth_bio_text != blank -%}
+            <p class="content-author-reviewer__bio">{{ auth_bio_text | escape }}</p>
+          {%- else -%}
+            <p class="content-author-reviewer__bio">Contributor to the TimePads wellness blog.</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if has_author and has_reviewer -%}
+      <hr class="content-author-reviewer__divider" />
+    {%- endif -%}
+
+    {%- if has_reviewer -%}
+      <div class="content-author-reviewer__block">
+        <div class="content-author-reviewer__avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="content-author-reviewer__content">
+          <p class="content-author-reviewer__role">Medically reviewed by</p>
+          <p class="content-author-reviewer__name">{{ rev_name | escape }}</p>
+          {%- if rev_bio != blank -%}
+            <p class="content-author-reviewer__bio">{{ rev_bio | escape }}</p>
+          {%- endif -%}
+          {%- if rev_date != blank -%}
+            <p class="content-author-reviewer__reviewed-date">
+              Reviewed: {{ rev_date | date: "%B %d, %Y" }}
+            </p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

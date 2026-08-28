@@ -1,0 +1,61 @@
+{% comment %}
+  snippets/content-product-module.liquid
+  T039 — Reusable In-Article Product Module
+
+  Parameters:
+    products    {Array}  — Resolved product reference list.
+                           Pass article.metafields.custom.related_products.value
+    title       {String} — Optional override heading. Defaults to "Recommended for You"
+    is_demo     {Boolean} — Show demo notice when true.
+
+  Data source:
+    custom.related_products — List of product references (Shopify metafield type)
+
+  Hides automatically when products is blank or empty.
+
+  Usage:
+    {%- render 'content-product-module',
+        products: article.metafields.custom.related_products.value,
+        title: 'Products mentioned in this article' -%}
+{% endcomment %}
+
+{%- if products != blank and products.size > 0 -%}
+  {%- assign module_title = title | default: 'Recommended for You' -%}
+  <div class="content-module content-module__divider content-product">
+    {%- if is_demo -%}
+      <p style="font-size:11px;color:#e65c00;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:0 0 10px;">⚠ TEST DATA — Remove before production launch</p>
+    {%- endif -%}
+    <h4 class="content-module__title">{{ module_title | escape }}</h4>
+    <div class="content-product__grid">
+      {%- for product in products limit: 3 -%}
+        <a href="{{ product.url }}" class="content-product__card" aria-label="{{ product.title | escape }}">
+          {%- if product.featured_image -%}
+            <div class="content-product__image-wrap">
+              <img
+                src="{{ product.featured_image | image_url: width: 400 }}"
+                alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                loading="lazy"
+                width="400"
+                height="400"
+              />
+            </div>
+          {%- endif -%}
+          <div class="content-product__info">
+            <p class="content-product__name">{{ product.title | escape }}</p>
+            <div class="content-product__price-wrap">
+              <span class="content-product__price">
+                {{ product.price | money }}
+              </span>
+              {%- if product.compare_at_price > product.price -%}
+                <span class="content-product__compare-price">
+                  {{ product.compare_at_price | money }}
+                </span>
+              {%- endif -%}
+            </div>
+            <span class="content-product__cta">View Product</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

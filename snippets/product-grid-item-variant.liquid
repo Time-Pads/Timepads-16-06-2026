@@ -513,30 +513,14 @@
         :disabled="{{sold_out}} || isDisabled"
         aria-label="{{ button_text }}"
       >
-        <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap">
-          <span class="hidden md:block">
-            <span class="mobile-hide">
-              {% if sold_out %}
-                Sold Out
-              {% else %}
-                Add to Cart
-              {% endif %}
-            </span>
-            <span class="desktop-hide">
-              {% if sold_out %}
-                Sold
-              {% else %}
-                Add
-              {% endif %}
-            </span>
-          </span>
-          <span aria-hidden class="block md:hidden" style="color: white">
-            {% if sold_out %}
-              Sold
-            {% else %}
-              Add
-            {% endif %}
-          </span>
+        <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap" style="color: #ffffff !important;">
+          {% if sold_out %}
+            <span class="mobile-hide">SOLD OUT</span>
+            <span class="desktop-hide">Sold</span>
+          {% else %}
+            <span class="mobile-hide">ADD TO CART</span>
+            <span class="desktop-hide">Add</span>
+          {% endif %}
         </span>
         <span class="btn-state-loading">
           <svg height="18" width="18" class="svg-loader" style="--border: rgb(var(--rgb-button-contrast) / 50%); --text: rgb(var(--rgb-button-contrast));">
@@ -603,22 +587,17 @@
 
 
  {% else %}
- 
 <div class="{{quick_action_toolbar_classes}}">
      <a href="{{ product.url }}" >
-   <div class="product__grid__title__wrapper">
+    <div class="product__grid__title__wrapper">
                            
         <p id="product-{{ product.id }}-title" class="product__grid__title">
           {{ product.title | strip_html | escape }}
         </p>
        
-      {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
-      <div class="rating__wrapper__grid">
-         {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
-      </div>
-      {%- endif -%}
-   </div>
-   </a>
+    </div>
+     
+    </a>
    {%- assign current_variant = product.selected_or_first_available_variant -%}
    <noscript>
       <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
@@ -742,12 +721,8 @@
           {{ product.title | strip_html | escape }}
         </p>
     
-        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
-          <div class="rating__wrapper__grid">
-            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
-          </div>
-        {%- endif -%}
       </div>
+    
           </a>
        {% if product.title contains 'Menstrual Cup' or product.title contains 'Period Pain Relief Cream' %}
       {% assign current_variant = product.selected_or_first_available_variant %}
@@ -805,12 +780,12 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
  display: none;
 }
 .variant-options.menstrual-variants{
-  height: 8.8rem;
+  height: 8rem;
 }
 
 @media only screen and (max-width: 767px){
   .variant-options.menstrual-variants{
-    height: 9.5rem;
+    height: 8rem;
   }
 }
 .variant-options {
@@ -1070,12 +1045,8 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
           {{ product.title | strip_html | escape }}
         </p>
        
-        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
-          <div class="rating__wrapper__grid">
-            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
-          </div>
-        {%- endif -%}
       </div>
+    
        </a>
                 <!----variants options ----->
       {%  render 'product-variant-options'  %}

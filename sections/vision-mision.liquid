@@ -4,7 +4,16 @@
         <div class="vision-wrapper animate-on-scroll">
           {% if block.settings.image != blank %}
             <a href="{{ block.settings.url }}">
-             <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.image.alt | default: 'Vision Mission' | escape }}" loading="lazy" decoding="async" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+             <img 
+                src="{{ block.settings.image | image_url: width: 600 }}" 
+                srcset="{{ block.settings.image | image_url: width: 300 }} 300w, {{ block.settings.image | image_url: width: 450 }} 450w, {{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 800 }} 800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                alt="{{ block.settings.image.alt | default: 'Vision Mission' | escape }}" 
+                loading="lazy" 
+                decoding="async" 
+                width="{{ block.settings.image.width }}" 
+                height="{{ block.settings.image.height }}"
+              >
             </a>
           {% endif %}
         </div>

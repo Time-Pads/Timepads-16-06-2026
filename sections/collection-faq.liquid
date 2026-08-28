@@ -1,0 +1,109 @@
+<!-- /sections/collection-faq.liquid -->
+
+{%- if request.page_type == 'collection' and collection -%}
+  {%- assign faq_questions = collection.metafields.custom.faq_questions.value -%}
+  {%- assign faq_answers = collection.metafields.custom.faq_answers.value -%}
+  {%- if faq_questions != blank and faq_answers != blank -%}
+    {%- assign q_size = faq_questions.size -%}
+    {%- assign a_size = faq_answers.size -%}
+    {%- assign min_size = q_size -%}
+    {%- if a_size < q_size -%}
+      {%- assign min_size = a_size -%}
+    {%- endif -%}
+    {%- if min_size > 0 -%}
+      {%- assign limit = min_size | minus: 1 -%}
+      
+      <section class="section-faq palette--light bg--neutral"
+        data-section-id="{{ section.id }}"
+        data-section-type="page-faq"
+        style="--PT: 36px; --PB: 36px;">
+        <div class="wrapper section-padding">
+          <div class="text__standard" data-accordion-group>
+            
+            <p class="standard__kicker text-left accent-size-5" style="margin-bottom: 2rem; font-weight: 600; text-align: left;">
+              Frequently Asked Questions
+            </p>
+            
+            {%- for i in (0..limit) -%}
+              {%- assign q = faq_questions[i] | strip -%}
+              {%- assign a = faq_answers[i] | strip -%}
+              {%- if q != blank and a != blank -%}
+                {%- assign accordion_id = "collection-faq-" | append: section.id | append: "-" | append: i -%}
+                <div class="accordion__wrapper">
+                  <button class="accordion__title js accent-size-3"
+                    data-accordion-trigger="{{ accordion_id }}"
+                    aria-controls="{{ accordion_id }}"
+                    aria-haspopup="false"
+                    aria-expanded="false">
+                    {{ q }}
+                  </button>
+                  <input type="checkbox"
+                    name="{{ accordion_id }}"
+                    id="{{ accordion_id }}-checkbox"
+                    class="no-js no-js-checkbox">
+
+                  <label for="{{ accordion_id }}-checkbox" class="accordion__title no-js">
+                    {{ q }}
+                  </label>
+
+                  <div class="accordion__body no-js-accordion rte body-size-2"
+                    data-accordion-body
+                    id="{{ accordion_id }}">
+                    <p style="text-align: left;">{{ a }}</p>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+            
+          </div>
+        </div>
+      </section>
+      
+      {% style %}
+        #shopify-section-{{ section.id }} .section-faq {
+          padding-top: 60px;
+          padding-bottom: 60px;
+        }
+        #shopify-section-{{ section.id }} .section-padding {
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+        }
+        @media only screen and (max-width: 767px) {
+          #shopify-section-{{ section.id }} .section-faq {
+            padding-top: 30px;
+            padding-bottom: 30px;
+          }
+        }
+        .accordion__body {
+          background: rgba(26, 26, 26, 0.05);
+          padding: 15px;
+          text-align: left;
+        }
+        .accordion__body p {
+          color: #424242;
+          margin: 0;
+          font-size: 14px;
+          line-height: 1.6;
+          text-align: left;
+        }
+        .accordion__wrapper {
+          border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+        }
+      {% endstyle %}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection FAQ Accordions",
+  "tag": "section",
+  "class": "collection-faq-section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Collection FAQ Accordions"
+    }
+  ]
+}
+{% endschema %}

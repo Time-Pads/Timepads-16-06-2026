@@ -1,25 +1,8 @@
 <!-- /sections/section-product.liquid -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/", 
-  "@type": "Product", 
-  "name": "{{ product.title | escape }}",
-  "image": "{{ product.featured_image | image_url }}",
-  "description": "{{ product.description | strip_html | escape }}",
-  "brand": {
-    "@type": "Brand",
-    "name": "Time Pads"
-  },
-  "sku": "{{ product.variants.first.sku }}",
-  "offers": {
-    "@type": "AggregateOffer",
-    "url": "{{ product.url | prepend: shop.url }}",
-    "priceCurrency": "{{ cart.currency.iso_code }}",
-    "price": "{{ product.price | money_without_currency }}",
-    "availability": "{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
-  }
-}
-</script>
+{% comment %}
+  Duplicate JSON-LD structured data removed to prevent duplicates.
+  All product schemas are rendered via sections/product.liquid.
+{% endcomment %}
 
 {% assign product = all_products[section.settings.home_product] %}
 
@@ -292,6 +275,7 @@
               {% when 'description' %}
 
                     <div class="product__block__description rte body-size-4" style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
+                      {%- render 'product-description-promo', product: product -%}
                       {%- assign product_description_content = product.description | strip -%}
                       {%- assign truncate_string = 'products.general.read_more' | t -%}
                       {%- assign truncate_html = '<button type="button" class="p button-with-underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}

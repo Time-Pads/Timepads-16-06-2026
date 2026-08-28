@@ -34,7 +34,7 @@
             "collection_title": "Period Pain Relief Cream",
             "collection_size": "",
             "font_weight_title": 600,
-            "collection_url": "shopify://products/period-pain-relief-cream"
+            "collection_url": "shopify://collections/period-pain-relief-cream"
           }
         },
         "collection_images_Y4TFrC": {
@@ -45,7 +45,7 @@
             "collection_title": "Menstrual Cup",
             "collection_size": "",
             "font_weight_title": 600,
-            "collection_url": "shopify://products/menstrual-cup"
+            "collection_url": "shopify://collections/menstrual-cups"
           }
         },
         "collection_images_cPeNV9": {
@@ -220,6 +220,10 @@
         "padding_bottom": 64
       }
     },
+    "collection_faq": {
+      "type": "collection-faq",
+      "settings": {}
+    },
     "section_recent_products_QeVh6Q": {
       "type": "section-recent-products",
       "disabled": true,
@@ -277,6 +281,7 @@
     "subcollections",
     "collection_metafield_6GzyWj",
     "main",
+    "collection_faq",
     "section_recent_products_QeVh6Q",
     "section_list_collections_products_A94YbU"
   ]

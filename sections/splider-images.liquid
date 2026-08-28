@@ -66,9 +66,10 @@
                           <a href="{{ block.settings.link }}">
                           {{
                             block.settings.image
-                            | image_url: width: 3200
+                            | image_url: width: 1500
                             | image_tag:
-                              widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
+                              widths: '150, 200, 300, 400, 500, 750, 1000, 1250, 1500',
+                              sizes: '(max-width: 767px) 50vw, (max-width: 990px) 33vw, 20vw'
                           }}
                           </a>
                           {% if block.settings.heading != blank %}

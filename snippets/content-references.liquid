@@ -1,0 +1,51 @@
+{% comment %}
+  snippets/content-references.liquid
+  T039 — Reusable References & Sources component
+
+  Parameters:
+    references  {Array|String} — article.metafields.custom.references (list or rich text)
+                                  List of single-line text: each item is one reference.
+                                  If item contains a URL, a clickable "Source" link is rendered.
+                                  Format: "Title text https://url.com" or just "https://url.com"
+
+  Hides automatically when blank.
+
+  Usage:
+    {%- render 'content-references',
+        references: article.metafields.custom.references -%}
+{% endcomment %}
+
+{%- assign refs_value = references.value | default: references -%}
+{%- if refs_value != blank -%}
+  <div class="content-module content-module__divider content-references">
+    <h4 class="content-module__title">References &amp; Sources</h4>
+    {%- if refs_value.size > 0 -%}
+      <ol class="content-references__list">
+        {%- for ref in refs_value -%}
+          {%- assign ref_text = ref | strip -%}
+          {%- if ref_text != blank -%}
+            <li class="content-references__item">
+              <span>
+                {%- if ref_text contains 'http://' or ref_text contains 'https://' -%}
+                  {%- assign ref_parts = ref_text | split: 'http' -%}
+                  {%- assign ref_title_raw = ref_parts[0] | strip -%}
+                  {%- assign ref_url = 'http' | append: ref_parts[1] | strip -%}
+                  {%- if ref_title_raw != blank -%}
+                    {{ ref_title_raw | escape }} &mdash;
+                    <a href="{{ ref_url }}" class="content-references__link" target="_blank" rel="noopener noreferrer">Source ↗</a>
+                  {%- else -%}
+                    <a href="{{ ref_url }}" class="content-references__link" target="_blank" rel="noopener noreferrer">{{ ref_url }}</a>
+                  {%- endif -%}
+                {%- else -%}
+                  {{ ref_text | escape }}
+                {%- endif -%}
+              </span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+    {%- else -%}
+      <div class="rte">{{ refs_value }}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

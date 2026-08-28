@@ -1,0 +1,66 @@
+{% comment %}
+  snippets/content-video.liquid
+  T039 — Reusable Video Embed component
+
+  Supports YouTube and Vimeo URLs.
+  Renders a responsive 16:9 iframe. Lazy-loaded. No autoplay.
+  Hides automatically when url is blank.
+
+  Parameters:
+    url         {String} — Full YouTube or Vimeo URL.
+                           e.g. https://www.youtube.com/watch?v=XXXXXXXX
+                                https://vimeo.com/XXXXXXXXX
+    title       {String} — Accessible title for the iframe (required for accessibility).
+                           Defaults to "Video".
+
+  Data source:
+    custom.video_url — Single-line text metafield
+
+  Usage:
+    {%- render 'content-video',
+        url: article.metafields.custom.video_url,
+        title: article.title -%}
+{% endcomment %}
+
+{%- assign video_url = url | strip -%}
+{%- if video_url != blank -%}
+  {%- assign video_title = title | default: 'Video' -%}
+
+  {%- comment %} Parse YouTube URL → extract video ID {%- endcomment -%}
+  {%- assign is_youtube = false -%}
+  {%- assign is_vimeo = false -%}
+  {%- assign embed_url = "" -%}
+
+  {%- if video_url contains "youtube.com" or video_url contains "youtu.be" -%}
+    {%- assign is_youtube = true -%}
+    {%- if video_url contains "youtu.be/" -%}
+      {%- assign yt_id_raw = video_url | split: "youtu.be/" | last -%}
+    {%- elsif video_url contains "watch?v=" -%}
+      {%- assign yt_id_raw = video_url | split: "watch?v=" | last -%}
+    {%- elsif video_url contains "embed/" -%}
+      {%- assign yt_id_raw = video_url | split: "embed/" | last -%}
+    {%- endif -%}
+    {%- assign yt_id = yt_id_raw | split: "&" | first | split: "?" | first | strip -%}
+    {%- assign embed_url = "https://www.youtube.com/embed/" | append: yt_id | append: "?rel=0&modestbranding=1" -%}
+  {%- elsif video_url contains "vimeo.com" -%}
+    {%- assign is_vimeo = true -%}
+    {%- assign vimeo_id = video_url | split: "vimeo.com/" | last | split: "?" | first | split: "/" | first | strip -%}
+    {%- assign embed_url = "https://player.vimeo.com/video/" | append: vimeo_id | append: "?dnt=1" -%}
+  {%- endif -%}
+
+  {%- if embed_url != blank -%}
+    <div class="content-module content-module__divider content-video">
+      <h4 class="content-module__title">Watch</h4>
+      <div class="content-video__container">
+        <iframe
+          class="content-video__iframe"
+          src="{{ embed_url }}"
+          title="{{ video_title | escape }}"
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

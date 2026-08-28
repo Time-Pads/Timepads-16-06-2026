@@ -1,0 +1,342 @@
+{% comment %}
+  sections/t039-component-showcase.liquid
+  T039 — Component Library Showcase & Test Page
+
+  PURPOSE: Development/testing only.
+  Renders every T039 reusable content component using hardcoded demo data.
+  This section proves the component library works end-to-end.
+
+  IMPORTANT:
+    - Do NOT use as a production section.
+    - All data on this page is clearly labelled as TEST DATA.
+    - No real medical information is represented.
+    - No production articles or metafields are modified.
+
+  To activate: Assign this section via templates/page.t039-showcase.json
+  to any Shopify Page (e.g. "T039 Component Showcase").
+{% endcomment %}
+
+{%- comment %} ── SHARED STYLES ── Load once at top {%- endcomment -%}
+{%- render 'content-component-styles' -%}
+
+<style>
+/* ─── Showcase chrome — for this test page only ─── */
+.t039-showcase {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.t039-showcase__header {
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+  border-bottom: 3px solid #ab7841;
+}
+
+.t039-showcase__header h1 {
+  font-size: clamp(22px, 5vw, 34px);
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.t039-showcase__header p {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+.t039-showcase__warning {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 24px 0;
+  font-size: 13px;
+  color: #6d4c00;
+  line-height: 1.5;
+}
+
+.t039-showcase__warning-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.t039-component-block {
+  margin: 56px 0 0;
+}
+
+.t039-component-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.t039-component-label__number {
+  background: #ab7841;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.t039-divider {
+  border: none;
+  border-top: 1px dashed #ddd;
+  margin: 56px 0 0;
+}
+
+.t039-showcase__footer {
+  margin-top: 64px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.t039-showcase__footer strong { color: #1a1a1a; }
+</style>
+
+<div class="t039-showcase">
+
+  {%- comment %} ── PAGE HEADER ── {%- endcomment -%}
+  <div class="t039-showcase__header">
+    <h1>T039 — Reusable Component Library Showcase</h1>
+    <p>Development test page · {{ 'now' | date: "%d %b %Y" }}</p>
+    <div class="t039-showcase__warning">
+      <span class="t039-showcase__warning-icon">⚠️</span>
+      <div>
+        <strong>Development &amp; Testing Only.</strong>
+        All content on this page is synthetic test data. No production articles or metafields are modified. No real medical information is presented. This page exists solely to verify T039 reusable components.
+      </div>
+    </div>
+  </div>
+
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 01 — TL;DR
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c01-tldr">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">01</span>
+      TL;DR Box
+    </div>
+
+    {%- assign demo_tldr = "<p><strong>[TEST DATA]</strong> This is a sample TL;DR summary box used only to verify the reusable content-tldr snippet. It is not production content. The box should display with an amber left border, the ✦ TL;DR label, and body text beneath.</p><ul><li>Verify amber accent border appears</li><li>Verify label badge renders</li><li>Verify rich text with bullets works</li></ul>" -%}
+    {%- render 'content-tldr', tldr: demo_tldr -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 02 — COMPARISON TABLE
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c02-comparison">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">02</span>
+      Comparison Table
+    </div>
+
+    {%- assign demo_table_data = "Feature|Ultra Feather|Ultra Velvet
+Flow|Regular|Heavy
+Comfort|Soft|Velvet
+Wings|Yes|Yes
+Skin-safe|Test Value|Test Value
+Price|Test Value|Test Value" -%}
+
+    {%- render 'content-comparison-table',
+        title: 'TEST DATA — Product Comparison',
+        data: demo_table_data,
+        is_demo: true -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 03 — IN-ARTICLE PRODUCT MODULE
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c03-products">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">03</span>
+      Product Module
+    </div>
+
+    {%- comment %} Pull real products from the store catalog. Limit 3. {%- endcomment -%}
+    {%- assign demo_products = collections.all.products | limit: 3 -%}
+    {%- if demo_products != blank and demo_products.size > 0 -%}
+      {%- render 'content-product-module',
+          products: demo_products,
+          title: 'TEST DATA — Real Products from Catalog',
+          is_demo: true -%}
+    {%- else -%}
+      <p style="font-size:13px;color:#888;padding:20px;border:1px dashed #ddd;border-radius:8px;text-align:center;">
+        ⚠ No products found in collections.all. Add products to the store to test this component.
+      </p>
+    {%- endif -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 04 — VIDEO EMBED
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c04-video">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">04</span>
+      Video Embed
+    </div>
+
+    {%- comment %} Using BigBuckBunny open-source test clip hosted on YouTube {%- endcomment -%}
+    {%- render 'content-video',
+        url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+        title: 'TEST VIDEO — Big Buck Bunny (Open Source)' -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 05 — FAQ BLOCK
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c05-faq">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">05</span>
+      FAQ Block
+    </div>
+
+    {%- assign demo_faq_q = "TEST QUESTION 1 — What is this FAQ component testing?|TEST QUESTION 2 — Does the FAQ accordion work on mobile?|TEST QUESTION 3 — Is the FAQPage JSON-LD emitted correctly?" | split: "|" -%}
+    {%- assign demo_faq_a = "TEST ANSWER 1 — This sample answer verifies the reusable content-faq snippet. It uses native HTML details/summary for zero-JS accessibility. If you see this text when you click the question, the component is working.|TEST ANSWER 2 — This sample answer verifies responsive accordion behavior. On mobile, tap the question to expand. The chevron should rotate when open.|TEST ANSWER 3 — Yes. When FAQ data is present, the content-faq snippet emits a FAQPage JSON-LD block. Inspect the page source to verify the structured data is present." | split: "|" -%}
+
+    {%- render 'content-faq',
+        questions: demo_faq_q,
+        answers: demo_faq_a,
+        section_id: section.id -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 06 — AUTHOR + MEDICAL REVIEWER
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c06-author">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">06</span>
+      Author + Medical Reviewer
+    </div>
+
+    {%- render 'content-author-reviewer',
+        author: 'TEST AUTHOR (Demo Only)',
+        author_bio: 'Demo author information used only for component testing. This is not a real person.',
+        reviewer: 'TEST MEDICAL REVIEWER (Demo Only)',
+        reviewer_bio: 'Demo reviewer information used only for component testing. No real medical credentials are represented.',
+        reviewed_date: '2026-08-01',
+        is_demo: true -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 07 — RELATED ARTICLES
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c07-related">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">07</span>
+      Related Articles
+    </div>
+
+    {%- comment %}
+      Pull real articles from the store's first blog.
+      The component requires an array of article objects.
+      We use blogs.first to be store-agnostic.
+    {%- endcomment -%}
+    {%- assign demo_blog = blogs.first -%}
+    {%- if demo_blog != blank -%}
+      {%- assign demo_articles = demo_blog.articles | limit: 3 -%}
+      {%- if demo_articles != blank and demo_articles.size > 0 -%}
+        {%- render 'content-related-articles',
+            articles: demo_articles,
+            current_handle: '__t039-showcase-no-article__',
+            section: section -%}
+      {%- else -%}
+        <p style="font-size:13px;color:#888;padding:20px;border:1px dashed #ddd;border-radius:8px;text-align:center;">
+          ⚠ No articles found in the first blog. Publish at least one article to test this component.
+        </p>
+      {%- endif -%}
+    {%- else -%}
+      <p style="font-size:13px;color:#888;padding:20px;border:1px dashed #ddd;border-radius:8px;text-align:center;">
+        ⚠ No blog found. Create a blog and publish at least one article to test this component.
+      </p>
+    {%- endif -%}
+  </div>
+
+  <hr class="t039-divider">
+
+  {%- comment %} ══════════════════════════════════════
+    COMPONENT 08 — REFERENCES
+  ══════════════════════════════════════ {%- endcomment -%}
+  <div class="t039-component-block" id="c08-references">
+    <div class="t039-component-label">
+      <span class="t039-component-label__number">08</span>
+      References &amp; Sources
+    </div>
+
+    {%- assign demo_refs = "TEST REFERENCE — Example citation used only to verify plain-text reference rendering.|TEST REFERENCE WITH LINK — Example source with URL. https://example.com|TEST REFERENCE — Second example with a different URL. https://example.org/sample-article|TEST REFERENCE — Plain text reference without a hyperlink, used to verify plain rendering." | split: "|" -%}
+
+    {%- render 'content-references', references: demo_refs -%}
+  </div>
+
+
+  {%- comment %} ── PAGE FOOTER ── {%- endcomment -%}
+  <div class="t039-showcase__footer" style="margin-top:64px;">
+    <strong>T039 — Test page summary</strong><br>
+    Components tested on this page:
+    <ul style="margin:8px 0 0;padding-left:18px;">
+      <li>content-component-styles ✓ (loaded once, line 1)</li>
+      <li>content-tldr ✓ — Component 01</li>
+      <li>content-comparison-table ✓ — Component 02</li>
+      <li>content-product-module ✓ — Component 03</li>
+      <li>content-video ✓ — Component 04</li>
+      <li>content-faq ✓ — Component 05 (includes FAQPage JSON-LD)</li>
+      <li>content-author-reviewer ✓ — Component 06</li>
+      <li>content-related-articles ✓ — Component 07</li>
+      <li>content-references ✓ — Component 08</li>
+    </ul>
+    <br>
+    No production articles or metafields were modified to generate this page.
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "T039 Component Showcase",
+  "settings": [],
+  "presets": [
+    {
+      "name": "T039 Component Showcase"
+    }
+  ]
+}
+{% endschema %}

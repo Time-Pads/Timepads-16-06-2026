@@ -13,11 +13,143 @@
 <head>
 
 <script>
+  // https://codebeautify.org/jsviewer
+
+  function _debounce(fn, wait = 300) {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
+  try {
+    window.MinimogSettings = window.MinimogSettings || {};
+    window.___mnag = 'userA' + (window.___mnag1 || '') + 'gent';
+
+    var _mh = document.querySelector('header.sf-header__mobile');
+    var _dh = document.querySelector('header.sf-header__desktop');
+    // Set header height
+    function _shh() {
+      if (!_mh || !_dh) {
+        _mh = document.querySelector('header.sf-header__mobile');
+        _dh = document.querySelector('header.sf-header__desktop');
+      }
+      // Header
+      var _hd = window.innerWidth < 1024 ? _mh : _dh;
+      if (_hd) {
+        document.documentElement.style.setProperty('--sf-header-height', _hd.offsetHeight + 'px');
+        window.MinimogSettings.headerHeight = _hd.offsetHeight;
+      }
+    }
+
+    // setTopbarHeight
+    function _stbh() {
+      // Topbar
+      var _tb = document.querySelector('.sf-topbar');
+      if (_tb) {
+        document.documentElement.style.setProperty('--sf-topbar-height', _tb.offsetHeight + 'px');
+        window.MinimogSettings.topbarHeight = _tb.offsetHeight;
+      }
+    }
+
+    // setAnnouncementHeight
+    function _sah() {
+      // announcement_bar
+      var _ab = document.querySelector('.announcement-bar');
+      if (_ab) {
+        document.documentElement.style.setProperty('--sf-announcement-height', _ab.offsetHeight + 'px');
+        window.MinimogSettings.topbarHeight = _ab.offsetHeight;
+      }
+    }
+
+    // setMainContentPadding
+    function _smcp() {
+      // pageTemplate
+      var _pt = document.documentElement.dataset.template;
+      if (window.innerWidth >= 1024) {
+        if (_dh && _dh.dataset.transparent === "true") {
+          if (_pt === 'index' || _pt === 'collection') {
+            document.documentElement.style.setProperty('--main-content-padding-top', '0px');
+          }
+        }
+      } else {
+        document.documentElement.style.removeProperty('--main-content-padding-top');
+      }
+    }
+
+    // calculateSectionsHeight
+    function _csh() {_shh();_stbh();_sah();_smcp();}
+    window.addEventListener('resize', _debounce(_csh, 1000));
+
+    document.documentElement.className = document.documentElement.className.replace('supports-no-cookies', 'supports-cookies').replace('no-js', 'js');
+  } catch (error) {
+    console.warn('Failed to execute critical scripts', error);
+  }
+
+  try {
+    // Page speed agent
+    var _nu = navigator[window.___mnag];
+    var _psas = [
+      {
+        'b': 'ome-Li',
+        'c': 'ghth',
+        'd': 'ouse',
+        'a': 'Chr',
+      },
+      {
+        'd': 'hts',
+        'a': 'Sp',
+        'c': 'nsig',
+        'b': 'eed I',
+      },
+      {
+        'b': ' Lin',
+        'd': '6_64',
+        'a': 'X11;',
+        'c': 'ux x8',
+      }
+    ];
+    function __fn(i) {
+      return Object.keys(_psas[i]).sort().reduce(function (a, c) { return a + _psas[i][c] }, '');
+    }
+
+    var __isPSA = (_nu.indexOf(__fn(0)) > -1 || _nu.indexOf(__fn(1)) > -1 || _nu.indexOf(__fn(2)) > -1);
+    // var __isPSA = true
+
+    window.___mnag = '!1';
+    _psas = null;
+  } catch (err) {
+    var __isPSA = false;
+    var _psas = null;
+    window.___mnag = '!1';
+  }
+
+  // activateFontAndCriticalCSS
+  
+
+  // __activateStyle(this)
+  function __as(l) {
+    l.rel = 'stylesheet';
+    l.media = 'all';
+    l.removeAttribute('onload');
+  }
+
+  // _onChunkStyleLoad(this)
+  function __ocsl(l) {
+    if (!__isPSA) __as(l);
+  }
+
+  window.__isPSA = __isPSA;
+</script>
+{% comment %}
+<script>
   function _debounce(t,e=300){let a;return(...r)=>{clearTimeout(a),a=setTimeout(()=>t.apply(this,r),e)}}window.___mnag="userA"+(window.___mnag1||"")+"gent",window.___plt="plat"+(window.___mnag1||"")+"form";try{var t=navigator[window.___mnag],e=navigator[window.___plt];window.__isPSA=e.indexOf("x86_64")>-1&&0>t.indexOf("CrOS"),window.___mnag="!1",r=null}catch(a){window.__isPSA=!1;var r=null;window.___mnag="!1"}if(window.__isPSA=__isPSA,__isPSA){var n=new MutationObserver(t=>{t.forEach(({addedNodes:t})=>{t.forEach(t=>{1===t.nodeType&&"IFRAME"===t.tagName&&(t.setAttribute("loading","lazy"),t.setAttribute("data-src",t.src),t.removeAttribute("src")),1===t.nodeType&&"IMG"===t.tagName&&++i>s&&t.setAttribute("loading","lazy"),1===t.nodeType&&"SCRIPT"===t.tagName&&(t.setAttribute("data-src",t.src),t.removeAttribute("src"),t.type="text/lazyload")})})}),i=0,s=20;n.observe(document.documentElement,{childList:!0,subtree:!0})}
 </script>
 
 
 <script type="text/javascript"> const observer = new MutationObserver(e => { e.forEach(({ addedNodes: e }) => { e.forEach(e => { 1 === e.nodeType && "SCRIPT" === e.tagName && (e.innerHTML.includes("asyncLoad") && (e.innerHTML = e.innerHTML.replace("if(window.attachEvent)", "document.addEventListener('asyncLazyLoad',function(event){asyncLoad();});if(window.attachEvent)").replaceAll(", asyncLoad", ", function(){}")), e.innerHTML.includes("PreviewBarInjector") && (e.innerHTML = e.innerHTML.replace("DOMContentLoaded", "asyncLazyLoad")), (e.className == 'analytics') && (e.type = 'text/lazyload'),(e.src.includes("assets/storefront/features")||e.src.includes("assets/shopify_pay")||e.src.includes("connect.facebook.net"))&&(e.setAttribute("data-src", e.src), e.removeAttribute("src")))})})});observer.observe(document.documentElement,{childList:!0,subtree:!0})</script> 
+{% endcomment %}
 
 
 
@@ -57,49 +189,53 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <link rel="preload" href="//timepads.in/cdn/fonts/poppins/poppins_n4.0ba78fa5af9b0e1a374041b3ceaadf0a43b41362.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="//timepads.in/cdn/fonts/poppins/poppins_n5.ad5b4b72b59a00358afc706450c864c3c8323842.woff2" as="font" type="font/woff2" crossorigin>
-
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"></noscript>
   {%- comment -%} 2. Flip no-js → js as early as possible {%- endcomment -%}
   <script>document.documentElement.classList.replace('no-js','js');</script>
+  {%- render 'preload-lcp' -%}
+
 
   {%- comment -%}
-    2b. LCP hero image preload — positioned immediately after meta charset/viewport,
-    so the preload scanner discovers the hero image before any CSS, fonts, or scripts.
-    Note: format:'avif' throws a Liquid error for shop/files images on this store
-    (Shopify CDN does not serve AVIF for shop_files, only for theme-uploaded images).
-    WebP-only preloads are used here; image.liquid also skips the AVIF <source> when
-    the srcset contains 'Liquid error', so preload format and <picture> selection agree.
-  {%- endcomment -%}
-  {%- if request.page_type == 'index' -%}
-    {%- assign lcp_m_img = images['banner-mobile.webp'] -%}
-    {%- assign lcp_d_img = images['banner.webp'] -%}
-    {%- if lcp_m_img != blank -%}
-      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(max-width: 767px)"
-            href="{{ lcp_m_img | image_url: width: 750, format: 'webp' }}"
-            imagesrcset="{{ lcp_m_img | image_url: width: 480, format: 'webp' }} 480w, {{ lcp_m_img | image_url: width: 640, format: 'webp' }} 640w, {{ lcp_m_img | image_url: width: 750, format: 'webp' }} 750w, {{ lcp_m_img | image_url: width: 960, format: 'webp' }} 960w"
-            imagesizes="100vw">
-    {%- endif -%}
-    {%- if lcp_d_img != blank -%}
-      <link rel="preload" as="image" type="image/webp" fetchpriority="high" media="(min-width: 768px)"
-            href="{{ lcp_d_img | image_url: width: 1440, format: 'webp' }}"
-            imagesrcset="{{ lcp_d_img | image_url: width: 1100, format: 'webp' }} 1100w, {{ lcp_d_img | image_url: width: 1440, format: 'webp' }} 1440w, {{ lcp_d_img | image_url: width: 1920, format: 'webp' }} 1920w"
-            imagesizes="100vw">
-    {%- endif -%}
-  {%- endif -%}
-
-  {%- comment -%}
-    3. SINGLE consolidated observer — defers injected storefront/app/PSA scripts.
-       Replaces TWO duplicate observers that were previously in this file.
-       Must run synchronously before Shopify injects scripts.
+    3. SINGLE consolidated observer — defers injected storefront/app/PSA scripts
+       AND the cornerWidget.css link tag (Shopify Inbox/corner app embed).
+       Must run synchronously before Shopify injects scripts via content_for_header.
   {%- endcomment -%}
   <script>
   (function(){
-    // ── Script-deferral observer ──────────────────────────────────────────
+    // ── Helper: defer a <link rel="stylesheet"> by setting media=print first ─
+    function deferLink(link) {
+      link.setAttribute('media', 'print');
+      // Restore after first paint so the widget is styled on user interaction
+      var restore = function() {
+        requestAnimationFrame(function() {
+          setTimeout(function() { link.setAttribute('media', 'all'); }, 0);
+        });
+      };
+      if (link.addEventListener) {
+        link.addEventListener('load', restore, { once: true });
+      }
+      // Safety fallback: restore after 3s regardless
+      setTimeout(function() { link.setAttribute('media', 'all'); }, 3000);
+    }
+
+    // ── Script-deferral + CSS-deferral observer ───────────────────────────────
     var obs = new MutationObserver(function(mutations){
       mutations.forEach(function(m){
         m.addedNodes.forEach(function(node){
-          if(node.nodeType !== 1 || node.tagName !== 'SCRIPT') return;
+          if(node.nodeType !== 1) return;
+
+          // ── Defer cornerWidget.css (Shopify Inbox / corner app embed) ───────
+          if(node.tagName === 'LINK' &&
+             node.rel === 'stylesheet' &&
+             node.href && node.href.includes('cornerWidget')) {
+            deferLink(node);
+            return;
+          }
+
+          if(node.tagName !== 'SCRIPT') return;
           if(node.innerHTML.includes('asyncLoad')){
             node.innerHTML = node.innerHTML
               .replace('if(window.attachEvent)',
@@ -110,6 +246,19 @@
             node.innerHTML = node.innerHTML.replace('DOMContentLoaded','asyncLazyLoad');
           }
           if(node.className === 'analytics') node.type = 'text/lazyload';
+          
+          // Defer Clarity and Google Translate
+          var scriptSrc = node.src || '';
+          var scriptContent = node.innerHTML || '';
+          if (
+            scriptSrc.includes('clarity') || scriptContent.includes('clarity') ||
+            scriptSrc.includes('translate.google') || scriptContent.includes('translate.google') ||
+            scriptSrc.includes('trackingmore') || scriptContent.includes('trackingmore') ||
+            scriptSrc.includes('whatmore') || scriptContent.includes('whatmore')
+          ) {
+            node.type = 'lazy-script';
+          }
+
           if(node.src && (
             node.src.includes('assets/storefront/features') ||
             node.src.includes('assets/shopify_pay') ||
@@ -122,6 +271,7 @@
       });
     });
     obs.observe(document.documentElement,{childList:true,subtree:true});
+
 
     // ── PSA (desktop bot-detection) lazy override ─────────────────────────
     try {
@@ -154,9 +304,12 @@
   })();
   </script>
 
-  {%- comment -%} 4. Critical Connection hints — optimized (max 2 critical preconnects) {%- endcomment -%}
+  {%- comment -%} 4. Critical Connection hints {%- endcomment -%}
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://timepads.in" crossorigin>
   <link rel="dns-prefetch" href="//cdn.shopify.com">
+  <link rel="dns-prefetch" href="//timepads.in">
+  <link rel="dns-prefetch" href="//pdp.gokwik.co">
 
 
   {%- comment -%} 5. Judge.me — product pages: dns-prefetch only (settings block moved to </body>) {%- endcomment -%}
@@ -168,8 +321,17 @@
   {%- endif -%}
 
   {%- comment -%} 6. Canonical + theme-color {%- endcomment -%}
+  {%- if request.page_type == 'blog' and current_tags -%}
+    <meta name="robots" content="noindex">
+  {%- endif -%}
   {%- if canonical_url != blank -%}
-    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if request.page_type == 'product' -%}
+      <link rel="canonical" href="{{ shop.url }}{{ product.url }}">
+    {%- elsif request.page_type == 'collection' and collection.url != blank -%}
+      <link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
+    {%- else -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
   {%- endif -%}
   <meta name="theme-color" content="{{ settings.color_secondary }}">
 
@@ -185,24 +347,25 @@
   {%- comment -%} 8. Title {%- endcomment -%}
   {%- capture seo_title -%}
     {%- assign title_content = page_title -%}
+    {%- if request.page_type == 'product' -%}
+      {%- capture cleaned_product_title -%}{%- render 'clean-product-title', product: product -%}{%- endcapture -%}
+      {%- assign title_content = cleaned_product_title | strip -%}
+    {%- endif -%}
     {%- if title_override -%}{%- assign title_content = title_override -%}{%- endif -%}
     {{ title_content }}
     {%- if current_tags -%}
       {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
     {%- endif -%}
     {%- if current_page != 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
-    {%- assign title_downcase = title_content | downcase | strip -%}
-    {%- assign name_downcase  = shop.name    | downcase | strip -%}
-    {%- unless title_downcase contains name_downcase -%} &ndash; {{ shop.name }}{%- endunless -%}
+    {%- assign title_downcase = title_content | downcase | replace: ' ', '' | replace: '-', '' | replace: '_', '' -%}
+    {%- assign name_downcase  = shop.name    | downcase | replace: ' ', '' | replace: '-', '' | replace: '_', '' -%}
+    {%- unless title_downcase contains name_downcase or title_downcase contains 'timepads' -%} &ndash; {{ shop.name }}{%- endunless -%}
   {%- endcapture -%}
-  <title>{{ seo_title }}</title>
+  <title>{{ seo_title | strip | replace: '  ', ' ' }}</title>
 
   {%- comment -%} 9. Meta description {%- endcomment -%}
-  {%- if page_description -%}
-    <meta name="description" content="{{ page_description | escape }}">
-  {%- elsif default_description -%}
-    <meta name="description" content="{{ default_description | escape }}">
-  {%- endif -%}
+  {%- capture optimized_meta_description -%}{%- render 'optimized-meta-description', product: product, collection: collection, article: article, blog: blog, page: page -%}{%- endcapture -%}
+  <meta name="description" content="{{ optimized_meta_description | strip | escape }}">
 
   {%- comment -%} 10. Collection-specific override {%- endcomment -%}
   {%- if collection.handle == 'all' -%}
@@ -236,21 +399,19 @@
   <link rel="preload" href="//timepads.in/cdn/fonts/poppins/poppins_n5.ad5b4b72b59a00358afc706450c864c3c8323842.woff2" as="font" type="font/woff2" crossorigin>
 
   {%- comment -%}
-    14. LCP hero image preload — MOVED to section 2b, immediately after meta charset/viewport.
-    Both AVIF and WebP preloads now live there, with AVIF first to match the <picture>
-    source order rendered by image.liquid (avif → webp → original fallback).
+    14. LCP hero image preload — Redundant double-render call removed.
+    Preloading is executed earlier at line 69.
   {%- endcomment -%}
 
-  {%- render 'preload-lcp' -%}
-
-  {%- comment -%} 14b. Logo preload — after hero so hero wins priority race {%- endcomment -%}
+  {%- comment -%} 14b. Logo preload restored and aligned with header.liquid to speed up FCP {%- endcomment -%}
   {%- assign logo = settings.logo -%}
   {%- if logo -%}
     <link rel="preload" as="image" type="image/webp"
-          href="{{ logo | image_url: width: 260, format: 'webp' }}"
-          imagesrcset="{{ logo | image_url: width: 130, format: 'webp' }} 130w, {{ logo | image_url: width: 180, format: 'webp' }} 180w, {{ logo | image_url: width: 260, format: 'webp' }} 260w, {{ logo | image_url: width: 320, format: 'webp' }} 320w"
+          media="(max-width: 767px)"
+          href="{{ logo | image_url: width: 260, format: 'webp', quality: 75 }}"
+          imagesrcset="{{ logo | image_url: width: 160, format: 'webp', quality: 75 }} 160w, {{ logo | image_url: width: 220, format: 'webp', quality: 75 }} 220w, {{ logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w"
           imagesizes="130px"
-          fetchpriority="low">
+          fetchpriority="high">
   {%- endif -%}
 
 
@@ -350,9 +511,17 @@
   {%- endcomment -%}
 
   {%- comment -%} 15. Critical CSS — render-blocking intentionally for stable zero-CLS paint {%- endcomment -%}
-  {{ 'font-settings.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
+  <style>
+    /* Inlined font-settings.aio.min.css to save a render-blocking request */
+    @font-face{font-family:Poppins;font-weight:400;font-style:normal;font-display:swap;src:url("//timepads.in/cdn/fonts/poppins/poppins_n4.0ba78fa5af9b0e1a374041b3ceaadf0a43b41362.woff2") format("woff2"),url("//timepads.in/cdn/fonts/poppins/poppins_n4.214741a72ff2596839fc9760ee7a770386cf16ca.woff") format("woff")}
+    @font-face{font-family:Poppins;font-weight:500;font-style:normal;font-display:swap;src:url("//timepads.in/cdn/fonts/poppins/poppins_n5.ad5b4b72b59a00358afc706450c864c3c8323842.woff2") format("woff2"),url("//timepads.in/cdn/fonts/poppins/poppins_n5.33757fdf985af2d24b32fcd84c9a09224d4b2c39.woff") format("woff")}
+    @font-face{font-family:Poppins;font-weight:400;font-style:italic;font-display:swap;src:url("//timepads.in/cdn/fonts/poppins/poppins_i4.846ad1e22474f856bd6b81ba4585a60799a9f5d2.woff2") format("woff2"),url("//timepads.in/cdn/fonts/poppins/poppins_i4.56b43284e8b52fc64c1fd271f289a39e8477e9ec.woff") format("woff")}
+    @font-face{font-family:Poppins;font-weight:500;font-style:italic;font-display:swap;src:url("//timepads.in/cdn/fonts/poppins/poppins_i5.6acfce842c096080e34792078ef3cb7c3aad24d4.woff2") format("woff2"),url("//timepads.in/cdn/fonts/poppins/poppins_i5.a49113e4fe0ad7fd7716bd237f1602cbec299b3c.woff") format("woff")}
+  </style>
   {%- render 'css-variables' -%}
   {{ 'theme.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
+
+
 
   {% style %}
     /* Critical Above-The-Fold CSS */
@@ -415,6 +584,7 @@
       height: 64px;
       flex-shrink: 0;
     }
+
     .header__logo__link {
       display: inline-flex !important;
       align-items: center !important;
@@ -718,11 +888,11 @@
     /* Mobile vs Desktop button text toggles */
     @media only screen and (max-width: 767px) {
       .mobile-hide, span.mobile-hide { display: none !important; }
-      .desktop-hide, span.desktop-hide { display: inline !important; }
+      .desktop-hide, span.desktop-hide { display: inline !important; font-size: 12px; }
     }
     @media only screen and (min-width: 768px) {
       .desktop-hide, span.desktop-hide { display: none !important; }
-      .mobile-hide, span.mobile-hide { display: inline !important; }
+      .mobile-hide, span.mobile-hide { display: inline !important; font-size: 12px; }
     }
   {% endstyle %}
 

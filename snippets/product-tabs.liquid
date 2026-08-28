@@ -24,6 +24,7 @@
         <div class="tab-content__holder {% if block.settings.read_more %}tab-content__holder--truncate{% endif %}" {% if block.settings.read_more %}data-truncated-holder{% endif %} >
           <div class="tab-content__inner">
             <div class="tab-content__entry" {% if block.settings.read_more %}data-truncated-content="tab-content__entry--truncate"{% endif %}>
+              {%- render 'product-description-promo', product: product -%}
               {% if block.settings.read_more %}
                 {{ product_description_content }}
               {% else %}
@@ -170,6 +171,7 @@
           <div class="accordion-content__holder {% if block.settings.read_more %}accordion-content__holder--truncate{% endif %}" {% if block.settings.read_more %}data-truncated-holder{% endif %}>
             <div class="accordion-content__inner">
               <div class="accordion-content__entry" {% if block.settings.read_more %}data-truncated-content="accordion-content__entry--truncate"{% endif %}>
+                {%- render 'product-description-promo', product: product -%}
                 {% if block.settings.read_more %}
                   {{ product_description_content }}
                 {% else %}

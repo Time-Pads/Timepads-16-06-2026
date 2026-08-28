@@ -8,6 +8,12 @@ class DynamicCard extends HTMLElement {
     
     // Bind event listeners
     this.addEventListener('change', this.onVariantChange.bind(this));
+    this.addEventListener('input', this.onVariantChange.bind(this));
+    this.addEventListener('click', (e) => {
+      if (e.target && e.target.closest('.variant-radio-input')) {
+        this.onVariantChange();
+      }
+    });
     this.addTocartButton?.addEventListener('click', this.addTocart.bind(this));
     this.select = this.querySelector('select[select]');
     this.querySelector('.select-wrapper')?.addEventListener('click', this.handleClickSelect.bind(this));

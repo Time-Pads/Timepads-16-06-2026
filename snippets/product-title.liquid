@@ -7,13 +7,16 @@
 <div class="product__block__title" style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
   <div class="product__headline">
     <div class="product__title__wrapper">
+      {%- capture cleaned_title -%}{%- render 'clean-product-title', product: product -%}{%- endcapture -%}
       <h1 class="product__title {{ heading_size_class }}">
         {% if template contains 'product' and block %}
-          {{ product.title }}
+          {{ cleaned_title | strip }}
         {% else %}
-          <a href="{{ product.url }}">{{ product.title }}</a>
+          <a href="{{ product.url }}">{{ cleaned_title | strip }}</a>
         {% endif %}
       </h1>
+
+      {%- render 'product-badges', product: product -%}
 
       {%- if block.settings.show_rating and product.metafields.reviews.rating.value != blank -%}
         <div class="rating__wrapper__title">

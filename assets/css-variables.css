@@ -25,7 +25,7 @@ div#one-click-popup-main-content .branding{
 }
 @media only screen and (min-width: 768px) {
 .product-single .product__inner {
-    max-width: 88% !important;
+    max-width: 100% !important;
 }
 }
 

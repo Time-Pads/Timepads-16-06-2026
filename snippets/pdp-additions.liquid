@@ -1,0 +1,301 @@
+<!-- /snippets/pdp-additions.liquid -->
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign prod_type_down = product.type | downcase
+  assign prod_handle = product.handle
+
+  # Determine product category for dynamic FAQs
+  assign cat_pads = false
+  assign cat_cup = false
+  assign cat_cream = false
+
+  if prod_type_down contains 'cup' or prod_handle contains 'cup'
+    assign cat_cup = true
+  elsif prod_type_down contains 'cream' or prod_type_down contains 'pain' or prod_handle contains 'cream' or prod_handle contains 'pain'
+    assign cat_cream = true
+  else
+    assign cat_pads = true
+  endif
+-%}
+
+<style>
+  /* Dynamic Accordion Styles for pdp-additions */
+  .pdp-accordion-item {
+    margin-bottom: 1rem;
+  }
+  .pdp-accordion-content {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background: #fff;
+    border-top: 1px solid #ddd;
+  }
+</style>
+
+<div class="pdp-additions-wrapper" style="margin-top: 20px;">
+  
+  <!-- 1. Specification Table -->
+  <details class="product-details pdp-accordion-item">
+    <summary class="product-summary">
+      <span>Product Specifications</span>
+      <span class="arrow-icon" aria-hidden="true"></span>
+    </summary>
+    <div class="pdp-accordion-content">
+      <table class="spec-table" style="width: 100%; border-collapse: collapse;">
+        {%- if product.vendor != blank -%}
+          <tr style="border-bottom: 1px solid #f4f4f4;">
+            <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555; width: 45%;">Brand</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ product.vendor }}</td>
+          </tr>
+        {%- endif -%}
+        {%- if product.type != blank -%}
+          <tr style="border-bottom: 1px solid #f4f4f4;">
+            <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555;">Category</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ product.type }}</td>
+          </tr>
+        {%- endif -%}
+        {%- if current_variant.sku != blank -%}
+          <tr style="border-bottom: 1px solid #f4f4f4;">
+            <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555;">SKU</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ current_variant.sku }}</td>
+          </tr>
+        {%- endif -%}
+        
+        {%- liquid
+          assign material_val = product.metafields.custom.material.value | default: product.metafields.custom.material
+          if material_val == blank
+            if cat_pads
+              assign material_val = "Premium organic cotton top cover, super-absorbent core"
+            elsif cat_cup
+              assign material_val = "100% Medical-grade liquid silicone"
+            elsif cat_cream
+              assign material_val = "Natural Ayurvedic formulation"
+            endif
+          endif
+        -%}
+        {%- if material_val != blank -%}
+          <tr style="border-bottom: 1px solid #f4f4f4;">
+            <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555;">Material</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ material_val }}</td>
+          </tr>
+        {%- endif -%}
+
+        {%- liquid
+          assign size_val = ""
+          for option in product.options_with_values
+            assign opt_name = option.name | downcase
+            if opt_name contains 'size' or opt_name contains 'dimension'
+              assign size_val = current_variant.options[forloop.index0]
+            endif
+          endfor
+        -%}
+        {%- if size_val != blank -%}
+          <tr style="border-bottom: 1px solid #f4f4f4;">
+            <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555;">Size / Dimension</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ size_val }}</td>
+          </tr>
+        {%- endif -%}
+
+        {%- liquid
+          assign usage_val = product.metafields.custom.usage.value | default: product.metafields.custom.usage
+          if usage_val == blank
+            if cat_pads
+              if product.title contains 'Overnight' or product.title contains 'XXL'
+                assign usage_val = "Heavy Flow (Overnight & Day Wear)"
+              else
+                assign usage_val = "Medium to Regular Flow (Day Wear)"
+              endif
+            elsif cat_cup
+              assign usage_val = "12 Hours Leak-Proof Protection"
+            elsif cat_cream
+              assign usage_val = "External application for cramp relief"
+            endif
+          endif
+        -%}
+        {%- if usage_val != blank -%}
+          <tr>
+            <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555;">Recommended Usage</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ usage_val }}</td>
+          </tr>
+        {%- endif -%}
+      </table>
+    </div>
+  </details>
+
+  <!-- 2. "Who This Is For" Section -->
+  <details class="product-details pdp-accordion-item">
+    <summary class="product-summary">
+      <span>Who This Is For</span>
+      <span class="arrow-icon" aria-hidden="true"></span>
+    </summary>
+    <div class="pdp-accordion-content">
+      <ul class="who-list" style="list-style: none; padding: 0; margin: 0;">
+        {%- if cat_pads -%}
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Skin-friendly, completely rash-free period experience.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Heavy flows requiring secure leak-proof protection.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Active comfort with breathable, ultra-soft layers.</li>
+        {%- elsif cat_cup -%}
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Transition to an eco-friendly, zero-waste period.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Active users requiring 12 hours of secure hold.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Chemical-free protection respecting natural pH.</li>
+        {%- elsif cat_cream -%}
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Individuals suffering from painful menstrual cramps.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Fast-acting Ayurvedic relief without pills.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Portable, mess-free cramp relief solution.</li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </details>
+
+  <!-- 3. Dynamic FAQ Section -->
+  {%- liquid
+    if cat_pads
+      assign q1 = "What is this product?"
+      assign a1 = "Premium, rash-free sanitary pads designed with an ultra-soft cotton cover for high comfort and superior leak protection."
+      assign q2 = "Who is it suitable for?"
+      assign a2 = "Suitable for women and teens of all age groups, specifically optimized to protect sensitive skin from friction rashes."
+      assign q3 = "How should it be used?"
+      assign a3 = "Peel the paper backing, press the pad firmly into undergarment. Change every 4 to 6 hours for optimal hygiene."
+      assign q4 = "What makes it different?"
+      assign a4 = "Features an ultra-breathable organic cotton top-sheet and specialized absorbency layers to prevent rash and irritation."
+      assign q5 = "Can it be worn overnight?"
+      assign a5 = "Yes, our XL+ and XXL+ sizes feature wider back wings that are designed specifically to prevent leakages during sleep."
+    elsif cat_cup
+      assign q1 = "What is this product?"
+      assign a1 = "A reusable menstrual cup made of 100% medical-grade silicone that offers safe, leak-proof period protection."
+      assign q2 = "Who is it suitable for?"
+      assign a2 = "Suitable for all menstruators looking for a comfortable, cost-effective, and environmentally friendly period solution."
+      assign q3 = "How should it be used?"
+      assign a3 = "Sterilize in boiling water first. Fold, insert gently, and let it pop open to form a seal. Empty every 8 to 12 hours."
+      assign q4 = "What makes it different?"
+      assign a4 = "Made of medical-grade silicone, reusable for up to 10 years, and contains absolutely zero toxins or bleaching agents."
+      assign q5 = "How do I choose the right size?"
+      assign a5 = "S is for teenagers, M is for women who haven't given birth, and L is for mothers or heavy flow."
+    elsif cat_cream
+      assign q1 = "What is this product?"
+      assign a1 = "A fast-acting Ayurvedic cramp relief cream formulated specifically to alleviate menstrual cramps and backaches."
+      assign q2 = "Who is it suitable for?"
+      assign a2 = "Suitable for anyone experiencing lower abdomen or back pain during their menstrual cycle."
+      assign q3 = "How should it be used?"
+      assign a3 = "Apply a thin layer to lower abdomen or back, and massage gently until absorbed."
+      assign q4 = "What makes it different?"
+      assign a4 = "Uses a natural Ayurvedic blend of herbal extracts that provides warmth and relief without any greasy residue."
+      assign q5 = "Is it safe to use daily?"
+      assign a5 = "Yes, completely safe and natural. We recommend a patch test before first use."
+    endif
+  -%}
+
+  <details class="product-details pdp-accordion-item">
+    <summary class="product-summary">
+      <span>Frequently Asked Questions</span>
+      <span class="arrow-icon" aria-hidden="true"></span>
+    </summary>
+    <div class="pdp-accordion-content" style="padding: 10px 15px;">
+      <div class="faq-accordion-group">
+        <div class="faq-accordion" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+          <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700;">{{ q1 }}</h4>
+          <p style="margin: 0; font-size: 13px; color: #555;">{{ a1 }}</p>
+        </div>
+        <div class="faq-accordion" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+          <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700;">{{ q2 }}</h4>
+          <p style="margin: 0; font-size: 13px; color: #555;">{{ a2 }}</p>
+        </div>
+        <div class="faq-accordion" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+          <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700;">{{ q3 }}</h4>
+          <p style="margin: 0; font-size: 13px; color: #555;">{{ a3 }}</p>
+        </div>
+        <div class="faq-accordion" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+          <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700;">{{ q4 }}</h4>
+          <p style="margin: 0; font-size: 13px; color: #555;">{{ a4 }}</p>
+        </div>
+        <div class="faq-accordion" style="padding: 10px 0 0 0;">
+          <h4 style="margin: 0 0 6px 0; font-size: 14px; font-weight: 700;">{{ q5 }}</h4>
+          <p style="margin: 0; font-size: 13px; color: #555;">{{ a5 }}</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 4. Sibling Cross-links -->
+  {%- liquid
+    assign related_col = product.collections | first
+    assign sibling_count = 0
+  -%}
+  {%- if related_col.products.size > 1 -%}
+    <details class="product-details pdp-accordion-item">
+      <summary class="product-summary">
+        <span>Explore Sibling Products</span>
+        <span class="arrow-icon" aria-hidden="true"></span>
+      </summary>
+      <div class="pdp-accordion-content">
+        <div class="siblings-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+          {%- for sib in related_col.products -%}
+            {%- if sib.handle != product.handle and sibling_count < 3 -%}
+              {%- assign sibling_count = sibling_count | plus: 1 -%}
+              <a href="{{ sib.url }}" class="sibling-card" style="text-align: center; text-decoration: none; display: block; border: 1px solid #eee; border-radius: 6px; padding: 6px; background: #fafafa;">
+                <div class="sibling-img-wrapper" style="position: relative; padding-bottom: 100%; overflow: hidden; border-radius: 4px;">
+                  <img src="{{ sib.featured_image | image_url: width: 400 }}" alt="{{ sib.title | escape }}" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;" loading="lazy">
+                </div>
+                <h5 style="font-size: 11px; margin: 4px 0; color: #333; height: 32px; overflow: hidden;">{%- render 'clean-product-title', product: sib -%}</h5>
+                <span class="sibling-price" style="font-size: 11px; font-weight: bold; color: #ee3d43;">{{ sib.price | money }}</span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </details>
+  {%- endif -%}
+
+</div>
+
+<!-- 5. Dynamic FAQ Structured Data (Schema JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": {{ q1 | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ a1 | json }}
+      }
+    },
+    {
+      "@type": "Question",
+      "name": {{ q2 | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ a2 | json }}
+      }
+    },
+    {
+      "@type": "Question",
+      "name": {{ q3 | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ a3 | json }}
+      }
+    },
+    {
+      "@type": "Question",
+      "name": {{ q4 | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ a4 | json }}
+      }
+    },
+    {
+      "@type": "Question",
+      "name": {{ q5 | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ a5 | json }}
+      }
+    }
+  ]
+}
+</script>

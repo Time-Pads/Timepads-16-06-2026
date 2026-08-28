@@ -18727,6 +18727,7 @@ label.quatity-selector {
 .collection__content {
   display: flex;
   flex-flow: row;
+  margin-bottom: 2rem;
 }
 .collection__products {
   align-self: flex-start;

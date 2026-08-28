@@ -166,6 +166,110 @@
     kwikpassLoggedInElementMbl.style.display="flex";
     updateDOM();
   });
+
+  // Global KwikPass Direct Token Exchange & Profile Resolver
+  function resolveKwikpassProfileGlobal() {
+    try {
+      if (sessionStorage.getItem('isLogout') === 'true') return;
+      var mid = (window.merchantInfo && window.merchantInfo.mid) ? window.merchantInfo.mid : '19g6im5f43qe6';
+      var env = (window.merchantInfo && window.merchantInfo.environment) ? window.merchantInfo.environment : 'production';
+      var sToken = null;
+      if (typeof getValueFromCookiesOrLocalStorage === 'function' && typeof XGokwikCoreToken === 'function') {
+        sToken = getValueFromCookiesOrLocalStorage(XGokwikCoreToken(env));
+      }
+      if (!sToken) {
+        sToken = localStorage.getItem('KWIKSESSIONTOKEN') || (document.cookie.match(/(?:^|;\s*)KWIKSESSIONTOKEN=([^;]+)/) || [])[1];
+      }
+      var uToken = localStorage.getItem('KWIKUSERTOKEN') || (document.cookie.match(/(?:^|;\s*)KWIKUSERTOKEN=([^;]+)/) || [])[1] || localStorage.getItem('ELRTOKEN');
+      var reqId = localStorage.getItem('kp-request-id') || 'kwikPass_plugin';
+
+      function callProfile(token) {
+        fetch('https://gkx.gokwik.co/kp/api/v1/customer/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'gk-merchant-id': mid,
+            'kp-merchant-id': mid,
+            'gk-access-token': token,
+            'kp-request-id': reqId,
+            'kp-integration-type': 'PLUGIN',
+            'gk-platform': 'shopify'
+          }
+        })
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(res) {
+          var p = res && res.data && res.data.profile;
+          if (p) {
+            var rawName = p.firstName || p.fullName || '';
+            if (rawName && !/customer|user|account/i.test(rawName)) {
+              var clean = rawName.trim().charAt(0).toUpperCase() + rawName.trim().slice(1);
+              localStorage.setItem('kp_customer_name', clean);
+              sessionStorage.setItem('kp_customer_name', clean);
+              window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: clean } }));
+            }
+          }
+        })
+        .catch(function() {});
+      }
+
+      if (uToken) {
+        callProfile(uToken);
+      } else if (sToken) {
+        fetch('https://gkx.gokwik.co/kp/api/v1/auth/core-token/login', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'gk-merchant-id': mid,
+            'kp-merchant-id': mid,
+            'kp-request-id': reqId,
+            'token': sToken
+          }
+        })
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          var exchanged = data && data.data && data.data.token;
+          if (exchanged) {
+            localStorage.setItem('KWIKUSERTOKEN', exchanged);
+            callProfile(exchanged);
+          } else {
+            callProfile(sToken);
+          }
+        })
+        .catch(function() {});
+      }
+    } catch(e) {}
+  }
+
+  // Continuous Shadow DOM extractor
+  setInterval(function() {
+    try {
+      var hosts = document.querySelectorAll('#kp-account-wrapper, main, [id^="kp-"]');
+      for (var i = 0; i < hosts.length; i++) {
+        var sr = hosts[i].shadowRoot;
+        if (sr) {
+          var h2 = sr.querySelector('h1, h2, h3, .kp-account-name');
+          var text = (h2 ? h2.textContent : '') || sr.textContent || '';
+          var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
+          if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
+            var n = m[1].trim().charAt(0).toUpperCase() + m[1].trim().slice(1);
+            localStorage.setItem('kp_customer_name', n);
+            sessionStorage.setItem('kp_customer_name', n);
+            window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: n } }));
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type: 'kp-name-ready', name: n }, '*');
+            }
+          }
+        }
+      }
+    } catch(e) {}
+  }, 400);
+
+  // Trigger profile resolution on login/DOM update
+  window.addEventListener('user-loggedin', resolveKwikpassProfileGlobal);
+  window.addEventListener('kp_data_sent', resolveKwikpassProfileGlobal);
+  document.addEventListener('DOMContentLoaded', resolveKwikpassProfileGlobal);
 </script>
 <script defer src="https://pdp.gokwik.co/kwikpass/kwikpass-core-functions-min.js"></script>
 <script defer src="https://pdp.gokwik.co/kwikpass/plugin/build/kp-merchant-v2.js"></script>

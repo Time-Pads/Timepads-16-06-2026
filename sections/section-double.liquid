@@ -94,7 +94,16 @@
 
        {% if section.settings.bg_images != blank %}
          <div class="image-bg-mobile">
-          <img src="{{ section.settings.bg_images | image_url: width: 1400 }}" alt="{{ section.settings.bg_images.alt | default: 'Background Image' | escape }}" loading="lazy" decoding="async" width="{{ section.settings.bg_images.width }}" height="{{ section.settings.bg_images.height }}">
+          <img 
+            src="{{ section.settings.bg_images | image_url: width: 1400 }}" 
+            srcset="{{ section.settings.bg_images | image_url: width: 400 }} 400w, {{ section.settings.bg_images | image_url: width: 600 }} 600w, {{ section.settings.bg_images | image_url: width: 800 }} 800w, {{ section.settings.bg_images | image_url: width: 1200 }} 1200w, {{ section.settings.bg_images | image_url: width: 1400 }} 1400w"
+            sizes="100vw"
+            alt="{{ section.settings.bg_images.alt | default: 'Background Image' | escape }}" 
+            loading="lazy" 
+            decoding="async" 
+            width="{{ section.settings.bg_images.width }}" 
+            height="{{ section.settings.bg_images.height }}"
+          >
          </div>
        {% endif %}
     

@@ -102,10 +102,7 @@
                   {%- endif -%}
                 </div>
 
-                {%- if cat_title != blank -%}
-                  <span class="tp-categories__title">{{ cat_title }}</span>
-                {%- endif -%}
-
+         
               </a>
             </li>
           {%- endif -%}
@@ -118,7 +115,6 @@
               <div class="tp-categories__image-wrapper">
                 <div class="tp-categories__placeholder"></div>
               </div>
-              <span class="tp-categories__title">Category {{ i }}</span>
             </a>
           </li>
         {%- endfor -%}
@@ -134,7 +130,7 @@
     padding-top: var(--tp-cat-pt);
     padding-bottom: var(--tp-cat-pb);
     width: 100%;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 
   .tp-categories-{{ section.id }} .tp-categories__container {
@@ -269,25 +265,8 @@
   } */
 
   /* Category Title */
-  .tp-categories-{{ section.id }} .tp-categories__title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    color: #2D2D2D;
-    line-height: 1.3;
-    min-height: 15.6px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    max-width: 160px;
-    contain: layout style;
-  }
-  @media (min-width: 768px) {
-    .tp-categories-{{ section.id }} .tp-categories__title {
-      font-size: 12px;
-    }
-  }
+
+
 </style>
 
 {% schema %}

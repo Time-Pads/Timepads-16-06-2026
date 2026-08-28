@@ -1,0 +1,56 @@
+{%- liquid
+  assign promo_line = product.metafields.custom.promo_line.value
+  
+  if promo_line == blank
+    # Build it dynamically by scanning product.title for the common promotional words
+    assign found_promos = ""
+    
+    if product.title contains "Buy 1 Get 1" or product.title contains "buy 1 get 1" or product.title contains "BOGO"
+      assign found_promos = found_promos | append: "Buy 1 Get 1 Free" | append: "::"
+    endif
+    
+    if product.title contains "Rash Free" or product.title contains "rash free" or product.title contains "Rash-Free"
+      assign found_promos = found_promos | append: "Rash-Free Comfort" | append: "::"
+    endif
+    
+    if product.title contains "Leak Proof" or product.title contains "leak proof" or product.title contains "Leak-Proof" or product.title contains "No Leak"
+      assign found_promos = found_promos | append: "Leak-Proof Protection" | append: "::"
+    endif
+    
+    if product.title contains "Ultra Comfort" or product.title contains "Extra Soft"
+      assign found_promos = found_promos | append: "Ultra-Soft Comfort" | append: "::"
+    endif
+    
+    if product.title contains "Heavy Flow"
+      assign found_promos = found_promos | append: "Heavy Flow Protection" | append: "::"
+    endif
+    
+    assign promo_array = found_promos | split: "::"
+    if promo_array.size > 0
+      assign promo_line = promo_array | join: " • "
+    endif
+  endif
+-%}
+
+{%- if promo_line != blank -%}
+  <style>
+    .product-description-promo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #9d174d; /* Warm brand dark pink/red color */
+      margin-bottom: 14px;
+      margin-top: 4px;
+      padding: 8px 14px;
+      background-color: #fdf2f8;
+      border-left: 3px solid #ec4899;
+      border-radius: 4px;
+      display: block;
+      line-height: 1.4;
+      width: fit-content;
+    }
+  </style>
+  <p class="product-description-promo">
+    {{ promo_line }}
+  </p>
+{%- endif -%}

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "t039-showcase": {
+      "type": "t039-component-showcase",
+      "settings": {}
+    }
+  },
+  "order": [
+    "t039-showcase"
+  ]
+}

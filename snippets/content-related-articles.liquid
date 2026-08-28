@@ -1,0 +1,66 @@
+{% comment %}
+  snippets/content-related-articles.liquid
+  T039 — Reusable Related Articles Module
+
+  IMPORTANT:
+    - Uses ONLY explicit article-reference metafields (custom.related_articles).
+    - Does NOT fall back to tag-based discovery.
+    - Hides entirely if no articles are configured.
+
+  Parameters:
+    articles        {Array}  — Resolved article reference list.
+                               Pass article.metafields.custom.related_articles.value
+    current_handle  {String} — article.handle — used to exclude current article.
+    section         {Object} — section (for grid settings).
+
+  Usage:
+    {%- render 'content-related-articles',
+        articles: article.metafields.custom.related_articles.value,
+        current_handle: article.handle,
+        section: section -%}
+{% endcomment %}
+
+{%- if articles != blank and articles.size > 0 -%}
+  {%- comment %} Count renderable articles (excluding current) {%- endcomment -%}
+  {%- assign renderable_count = 0 -%}
+  {%- for rel_art in articles limit: 3 -%}
+    {%- if rel_art.handle != current_handle -%}
+      {%- assign renderable_count = renderable_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if renderable_count > 0 -%}
+    <div class="content-module content-module__divider content-related-articles">
+      <h4 class="content-module__title">Continue Reading</h4>
+      <div class="content-related-articles__grid">
+        {%- for rel_art in articles limit: 3 -%}
+          {%- if rel_art.handle != current_handle -%}
+            <a href="{{ rel_art.url }}" class="content-related-articles__card" aria-label="{{ rel_art.title | escape }}">
+              {%- if rel_art.image -%}
+                <div class="content-related-articles__thumb">
+                  <img
+                    src="{{ rel_art.image | image_url: width: 600 }}"
+                    alt="{{ rel_art.image.alt | default: rel_art.title | escape }}"
+                    loading="lazy"
+                    width="600"
+                    height="338"
+                  />
+                </div>
+              {%- endif -%}
+              <div class="content-related-articles__body">
+                <p class="content-related-articles__title">{{ rel_art.title | escape }}</p>
+                {%- if rel_art.excerpt != blank -%}
+                  <p class="content-related-articles__excerpt">{{ rel_art.excerpt | strip_html | escape }}</p>
+                {%- endif -%}
+                <p class="content-related-articles__meta">{{ rel_art.published_at | date: "%B %d, %Y" }}</p>
+                <span class="content-related-articles__read-more" aria-hidden="true">
+                  Read more &rsaquo;
+                </span>
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

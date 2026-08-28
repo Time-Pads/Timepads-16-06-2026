@@ -88,7 +88,8 @@
               label.classList.add('label--float');
           }
       });
-  }
+  } 
+
   function errorTabIndex(container) {
       const errata = container.querySelectorAll('.errors');
       errata.forEach((element)=>{
@@ -103,7 +104,7 @@
       container.querySelectorAll('img').forEach((el)=>{
           if (el.complete) {
               el.parentNode.classList.remove('loading-shimmer');
-          }
+        }
       });
   }
   // Remove loading class from image on `load` event
@@ -183,7 +184,14 @@
           return 0;
       }
   }
+  let cachedScrollbarWidth = null;
   function getScrollbarWidth() {
+      if (cachedScrollbarWidth !== null) {
+          return cachedScrollbarWidth;
+      }
+      if (!document.body) {
+          return 0;
+      }
       // Creating invisible container
       const outer = document.createElement('div');
       outer.style.visibility = 'hidden';
@@ -197,6 +205,9 @@
       const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
       // Removing temporary elements from the DOM
       outer.parentNode.removeChild(outer);
+      if (scrollbarWidth > 0) {
+          cachedScrollbarWidth = scrollbarWidth;
+      }
       return scrollbarWidth;
   }
 
@@ -3699,102 +3710,7 @@
       }
   };
 
-  const selectors$O = {
-      wrapper: '[data-product-add-popdown-wrapper]',
-      closeDrawer: '[data-close-popdown]',
-      apiContent: '[data-api-content]',
-      cartAjaxEnabled: '[data-ajax-disable="false"]',
-      cartAjaxDisabled: '[data-ajax-disable="true"]',
-      cartToggleButton: '[data-drawer-toggle="drawer-cart"]',
-      cartDrawer: '[data-drawer="drawer-cart"]'
-  };
-  const classes$w = {
-      visible: 'is-visible',
-      focusEnable: 'focus-enabled'
-  };
-  let globalTimer;
-  let CartPopdown = class CartPopdown {
-      renderPopdown(event) {
-          const variant = event.detail.variant;
-          const url = `${window.theme.routes.root_url}variants/${variant.id}/?section_id=api-product-popdown`;
-          const instance = this;
-          axios.get(url).then(function(response) {
-              // handle success
-              const fresh = document.createElement('div');
-              fresh.innerHTML = response.data;
-              instance.popdown.innerHTML = fresh.querySelector(selectors$O.apiContent).innerHTML;
-              instance.connectCartButton();
-              instance.connectCloseButton();
-              // If user is navigating with keyboard, focus on the view cart button after popdown opens
-              if (document.body.classList.contains(classes$w.focusEnable)) {
-                  const cartButton = instance.popdown.querySelector(selectors$O.cartToggleButton);
-                  setTimeout(()=>{
-                      cartButton.focus();
-                  }, 0);
-              }
-          }).catch(function(error) {
-              console.warn(error);
-          });
-      }
-      connectCloseButton() {
-          // Enable close button
-          this.popdown.classList.add(classes$w.visible);
-          const closer = this.popdown.querySelector(selectors$O.closeDrawer);
-          closer.addEventListener('click', (function(e) {
-              e.preventDefault();
-              this.popdown.classList.remove(classes$w.visible);
-          }).bind(this));
-          this.popdownTimer();
-      }
-      connectCartButton() {
-          // Hook into cart drawer
-          const cartButton = this.popdown.querySelector(selectors$O.cartToggleButton);
-          const cartDrawer = document.querySelector(selectors$O.cartDrawer);
-          if (cartDrawer) {
-              cartButton.addEventListener('click', (function(e) {
-                  e.preventDefault();
-                  this.popdown.classList.remove(classes$w.visible);
-                  cartDrawer.dispatchEvent(new CustomEvent('theme:drawer:open', {
-                      bubbles: false
-                  }));
-              }).bind(this));
-          }
-      }
-      popdownTimer() {
-          clearTimeout(globalTimer);
-          globalTimer = setTimeout(()=>{
-              if (this.popdown.contains(document.activeElement)) {
-                  // While the user is focused inside of the popdown keep restarting the auto-close timer
-                  this.popdownTimer();
-              } else {
-                  this.popdown.classList.remove(classes$w.visible);
-              }
-          }, 5000);
-      }
-      constructor(){
-          this.popdown = document.querySelector(selectors$O.wrapper);
-          this.cartAjaxEnabled = document.querySelector(selectors$O.cartAjaxEnabled);
-          this.cartAjaxDisabled = document.querySelector(selectors$O.cartAjaxDisabled);
-          document.addEventListener('theme:cart:popdown', (e)=>{
-              if (this.cartAjaxEnabled) {
-                  // if we are on the cart page, refresh the cart without popdown
-                  this.cartAjaxEnabled.dispatchEvent(new CustomEvent('theme:cart:reload', {
-                      bubbles: true
-                  }));
-              } else if (this.cartAjaxDisabled) {
-                  // ajax is disabled, refresh the whole page
-                  window.location.reload();
-              } else {
-                  this.renderPopdown(e);
-              }
-          });
-      }
-  };
-  const cartPopdown = {
-      onLoad () {
-          new CartPopdown(this);
-      }
-  };
+
 
   const selectors$N = {
       dataGridItemVariant: 'data-grid-item-variant',
@@ -5266,8 +5182,10 @@
           this.deadLinks = document.querySelectorAll(selectors$E.deadLink);
           this.killDeadLinks();
           if (this.style !== 'drawer' && this.desktop) {
-              this.minWidth = this.getMinWidth();
-              this.listenWidth();
+              requestAnimationFrame(() => {
+                  this.minWidth = this.getMinWidth();
+                  this.listenWidth();
+              });
           }
           this.checkForImage();
           window.dispatchEvent(new Event('resize'));
@@ -5314,7 +5232,6 @@
       hoverUnderline,
       headerTotals,
       searchPopdown,
-      cartPopdown,
       swatchGridSection,
       accordion,
       ticker
@@ -11186,7 +11103,9 @@
       updateTotal() {
           if (this.cart && this.cart.total_price != undefined) {
               const price = themeCurrency.formatMoney(this.cart.total_price, theme.moneyFormat);
-              this.finalPrice.innerHTML = price + ` ${theme.currencyCode}`;
+              if (this.finalPrice) {
+                  this.finalPrice.innerHTML = price + ` ${theme.currencyCode}`;
+              }
           }
           if (this.subtotal && this.cart) {
               window.fetch(`${window.theme.routes.root_url}?section_id=api-cart-subtotal`).then(this.handleErrors).then((response)=>{
@@ -11194,7 +11113,10 @@
               }).then((response)=>{
                   const fresh = document.createElement('div');
                   fresh.innerHTML = response;
-                  this.subtotal.innerHTML = fresh.querySelector(selectors$7.apiContent).innerHTML;
+                  const apiContentEl = fresh.querySelector(selectors$7.apiContent);
+                  if (this.subtotal && apiContentEl) {
+                      this.subtotal.innerHTML = apiContentEl.innerHTML;
+                  }
               });
           }
       }
@@ -18474,7 +18396,6 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
       ERROR: 3
   };
   const selectors$2 = {
-      popdown: '[data-product-add-popdown-wrapper]',
       errors: '[data-add-action-errors]',
       errorBoundary: '[data-error-boundary]',
       errorDisplay: '[data-error-display]',
@@ -18517,9 +18438,6 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
           },
           get button () {
               return this.$el.querySelector('button');
-          },
-          get popdown () {
-              return document.querySelector(selectors$2.popdown);
           },
           get errorDisplay () {
               let errorsEl = this.$el.querySelector(selectors$2.errors);
@@ -18579,11 +18497,12 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
               if (this.isInsideQuickViewModal) {
                   this.closeQuickView();
               }
-              // If cart is open, reload the cart instead of opening a popdown
+              // If cart is open, reload the cart
               if (window.theme.state.cartOpen || this.isInCartPage || this.isOnCartPage) {
                   this.reloadCart();
               } else {
-                  this.openPopdown(variant);
+                  // Do not open default theme cart drawer, let the third-party app handle it.
+                  this.reloadCart();
               }
           },
           handleError (error) {
@@ -18644,14 +18563,6 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
           },
           reloadCart () {
               document.dispatchEvent(new CustomEvent('theme:cart:reload', {
-                  bubbles: true
-              }));
-          },
-          openPopdown (variant) {
-              this.popdown.dispatchEvent(new CustomEvent('theme:cart:popdown', {
-                  detail: {
-                      variant: variant
-                  },
                   bubbles: true
               }));
           },

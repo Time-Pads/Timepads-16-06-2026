@@ -21,18 +21,174 @@
         </span>
       </span>
 
+      {% comment %} --- Dynamic Price-Per-Pad Calculation --- {% endcomment %}
+      {%- liquid
+        assign v_title_down = current_variant.title | downcase
+        assign pad_qty = 0
+        if v_title_down contains 'pad' or v_title_down contains 'pack'
+          if v_title_down contains 'pad'
+            assign parts = v_title_down | split: 'pad'
+          else
+            assign parts = v_title_down | split: 'pack'
+          endif
+          assign first_part = parts[0] | strip
+          assign words = first_part | split: ' '
+          assign last_idx = words.size | minus: 1
+          assign last_word = words[last_idx] | strip
+          assign last_word_num = last_word | plus: 0
+          if last_word_num > 0
+            assign pad_qty = last_word_num
+          endif
+        endif
+        
+        if pad_qty == 0
+          assign p_title_down = product.title | downcase
+          if p_title_down contains 'pad'
+            assign parts = p_title_down | split: 'pad'
+            assign first_part = parts[0] | strip
+            assign words = first_part | split: ' '
+            assign last_idx = words.size | minus: 1
+            assign last_word = words[last_idx] | strip
+            assign last_word_num = last_word | plus: 0
+            if last_word_num > 0
+              assign pad_qty = last_word_num
+            endif
+          endif
+        endif
+      -%}
+
+      <span class="tp-price-per-pad" style="margin-left: 8px; font-size: 16px; color: #555; font-weight: 600;">
+        {%- if pad_qty > 0 -%}
+          {%- assign p_per_pad = current_variant.price | times: 1.0 | divided_by: pad_qty | round -%}
+          ({{ p_per_pad | money }} / pad)
+        {%- endif -%}
+      </span>
+
+      <script>
+        (function() {
+          const variantQtys = {
+            {%- for variant in product.variants -%}
+              {%- liquid
+                assign v_title_down = variant.title | downcase
+                assign v_qty = 0
+                if v_title_down contains 'pad' or v_title_down contains 'pack'
+                  if v_title_down contains 'pad'
+                    assign parts = v_title_down | split: 'pad'
+                  else
+                    assign parts = v_title_down | split: 'pack'
+                  endif
+                  assign first_part = parts[0] | strip
+                  assign words = first_part | split: ' '
+                  assign last_idx = words.size | minus: 1
+                  assign last_word = words[last_idx] | strip
+                  assign last_word_num = last_word | plus: 0
+                  if last_word_num > 0
+                    assign v_qty = last_word_num
+                  endif
+                endif
+                if v_qty == 0
+                  assign p_title_down = product.title | downcase
+                  if p_title_down contains 'pad'
+                    assign parts = p_title_down | split: 'pad'
+                    assign first_part = parts[0] | strip
+                    assign words = first_part | split: ' '
+                    assign last_idx = words.size | minus: 1
+                    assign last_word = words[last_idx] | strip
+                    assign last_word_num = last_word | plus: 0
+                    if last_word_num > 0
+                      assign v_qty = last_word_num
+                    endif
+                  endif
+                endif
+              -%}
+              "{{ variant.id }}": {{ v_qty }}{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          };
+
+          const updatePricePerPad = () => {
+            const priceWrapper = document.querySelector('[data-price-wrapper]');
+            if (!priceWrapper) return;
+            
+            // Toggle MRP label based on compare-at price visibility
+            const comparePriceSpan = priceWrapper.querySelector('[data-compare-price]');
+            const compareLabel = priceWrapper.querySelector('[data-compare-label]');
+            if (comparePriceSpan && compareLabel) {
+              // Check if comparePriceSpan is hidden
+              const isHidden = comparePriceSpan.classList.contains('hide') || 
+                               window.getComputedStyle(comparePriceSpan).display === 'none' ||
+                               comparePriceSpan.textContent.trim() === '';
+              if (isHidden) {
+                compareLabel.classList.add('hide');
+              } else {
+                compareLabel.classList.remove('hide');
+              }
+            }
+
+            const idInput = document.querySelector('form[action="/cart/add"] [name="id"], select[name="id"], [data-product-select]');
+            if (!idInput) return;
+            const variantId = idInput.value;
+            const qty = variantQtys[variantId];
+            
+            const priceSpan = priceWrapper.querySelector('[data-product-price]');
+            if (!priceSpan) return;
+            
+            const priceText = priceSpan.textContent;
+            const cleanPrice = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+            
+            let perPadContainer = priceWrapper.querySelector('.tp-price-per-pad');
+            if (qty && qty > 0 && cleanPrice && cleanPrice > 0) {
+              const perPadValue = (cleanPrice / qty).toFixed(2);
+              if (!perPadContainer) {
+                perPadContainer = document.createElement('span');
+                perPadContainer.className = 'tp-price-per-pad';
+                perPadContainer.style.marginLeft = '8px';
+                perPadContainer.style.fontSize = '16px';
+                perPadContainer.style.color = '#555';
+                perPadContainer.style.fontWeight = '600';
+                priceSpan.parentNode.appendChild(perPadContainer);
+              }
+              perPadContainer.textContent = ` (₹${perPadValue} / pad)`;
+              perPadContainer.style.display = 'inline';
+            } else {
+              if (perPadContainer) {
+                perPadContainer.style.display = 'none';
+              }
+            }
+          };
+
+          setTimeout(updatePricePerPad, 500);
+
+          const observer = new MutationObserver(updatePricePerPad);
+          const pSpan = document.querySelector('[data-product-price]');
+          if (pSpan) {
+            observer.observe(pSpan, { childList: true, characterData: true, subtree: true });
+          }
+          const cSpan = document.querySelector('[data-compare-price]');
+          if (cSpan) {
+            observer.observe(cSpan, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+          }
+
+          document.addEventListener('change', function(e) {
+            if (e.target && (e.target.name === 'id' || e.target.closest('[data-product-form]'))) {
+              setTimeout(updatePricePerPad, 100);
+            }
+          });
+        })();
+      </script>
+
       {% comment %} <span class="comparated-price" data-compare-price.value>{{ current_variant.compare_at_price | money_without_currency |  remove: 'INR'  }}</span> {% endcomment %}
 
       <span class="compare-at em">
-      <span data-compare-price class="{% unless current_variant.compare_at_price > current_variant.price %}hide{% endunless %}">
-        {%- if settings.currency_code_enable -%}
-          {{ current_variant.compare_at_price | money_with_currency }}
-        {%- else -%}
-          {{ current_variant.compare_at_price | money }}
-        {%- endif -%}              
+        <span class="compare-at-label {% unless current_variant.compare_at_price > current_variant.price %}hide{% endunless %}" data-compare-label style="text-decoration: none !important; display: inline-block;">MRP: </span>
+        <span data-compare-price class="{% unless current_variant.compare_at_price > current_variant.price %}hide{% endunless %}">
+          {%- if settings.currency_code_enable -%}
+            {{ current_variant.compare_at_price | money_with_currency }}
+          {%- else -%}
+            {{ current_variant.compare_at_price | money }}
+          {%- endif -%}              
         </span>
         <span data-compare-text style="display: none"></span>
-    </span>
+      </span>
 
 
      <span data-price-off class="product__price--off hide">

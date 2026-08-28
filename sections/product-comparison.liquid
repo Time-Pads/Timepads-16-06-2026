@@ -1,0 +1,301 @@
+<!-- /sections/product-comparison.liquid -->
+
+{%- liquid
+  assign prod_type_down = product.type | downcase
+  assign prod_handle = product.handle
+
+  assign cat_pads = false
+  assign cat_cup = false
+  assign cat_cream = false
+
+  if prod_type_down contains 'cup' or prod_handle contains 'cup'
+    assign cat_cup = true
+  elsif prod_type_down contains 'cream' or prod_type_down contains 'pain' or prod_handle contains 'cream' or prod_handle contains 'pain'
+    assign cat_cream = true
+  else
+    assign cat_pads = true
+  endif
+-%}
+
+<section class="section-product-comparison" style="background: #FFF; padding: 80px 20px; position: relative; overflow: hidden;">
+  
+  <!-- Subtle Botanical leaf decorations -->
+  <div style="position: absolute; left: 2%; top: 5%; width: 100px; opacity: 0.08; pointer-events: none; color: #000;">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M17 8C8 10 5.9 16.12 5.9 16.12S3 12 7 8c2.22-2.22 6-3 10-4 .5 1.5.5 3 .5 4z"/></svg>
+  </div>
+  <div style="position: absolute; right: 2%; bottom: 8%; width: 100px; opacity: 0.08; pointer-events: none; transform: scaleX(-1); color: #000;">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%"><path d="M17 8C8 10 5.9 16.12 5.9 16.12S3 12 7 8c2.22-2.22 6-3 10-4 .5 1.5.5 3 .5 4z"/></svg>
+  </div>
+
+  <div class="wrapper" style="max-width: 1200px; margin: 0 auto; position: relative;">
+    
+    <!-- 1. Improved Section Header -->
+    <div style="text-align: center; margin-bottom: 50px;">
+      <span style="font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #B07E56; text-transform: uppercase; display: block; margin-bottom: 12px;">WHY CHOOSE TIME?</span>
+      <h2 style="font-size: clamp(26px, 4.5vw, 42px); font-weight: 800; color: #000; margin: 0 0 16px 0; line-height: 1.25;">
+        {%- if cat_cup -%}
+          TIME Menstrual Cup <span style="font-style: italic; color: #B07E56;">vs</span> Other Brands
+        {%- elsif cat_cream -%}
+          TIME Period Pain Relief Cream <span style="font-style: italic; color: #B07E56; ">vs</span> Other Brands
+        {%- else -%}
+          TIME Premium Sanitary Pads <span style="font-style: italic; color: #B07E56; ">vs</span> Other Brands
+        {%- endif -%}
+      </h2>
+      <p style="font-size: 16px; color: #6E7E73; margin: 0; font-weight: 500; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+        See what makes our formula a thoughtful choice for period comfort.
+      </p>
+    </div>
+
+    <!-- 2. Desktop Card Layout (Hidden on Mobile) -->
+    <div class="comp-desktop-grid" style="display: grid; grid-template-columns: 1fr 1.05fr 1fr; gap: 0; border-radius: 20px; overflow: hidden; background: #ffffff; border: 1px solid rgba(46,74,50,0.08); box-shadow: 0 12px 36px rgba(46,74,50,0.03);">
+      
+      <!-- COLUMN 1: WHAT MATTERS TO YOU -->
+      <div style="background: #ffffff; display: flex; flex-direction: column;">
+        <div style="background: #FAF6F0; padding: 24px; color: #000; display: flex; align-items: center; justify-content: center; min-height: 110px; box-sizing: border-box; border-bottom: 1px solid rgba(46,74,50,0.08);">
+          <span style="font-weight: 800; letter-spacing: 1px; font-size: 14px; text-transform: uppercase;">What matters to you</span>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+          {%- if cat_cup -%}
+            {%- assign f_names = "Adaptive Seal Rim,Ergo-Tulip Shape,Air-Relief Rim,Medical-Grade Silicone,Secure Grip Design" | split: ',' -%}
+            {%- assign f_sub = "Designed to prevent leaks,Shapes to your comfort,Easy insertion & removal,Pure skin-friendly material,Easy handling control" | split: ',' -%}
+            {%- assign f_icons = "leaf,lotus,drop,heart,sparkle" | split: ',' -%}
+          {%- elsif cat_cream -%}
+            {%- assign f_names = "Natural Ayurvedic Formula,Quick Absorption Formula,Non-Greasy Formula,Soothing Effect,Gentle on Skin" | split: ',' -%}
+            {%- assign f_sub = "Thoughtfully formulated with Ayurvedic ingredients,Designed to absorb easily on skin,Leaves skin feeling clean and light,Provides warming and calming relief,Tested to be soft and safe for everyday wear" | split: ',' -%}
+            {%- assign f_icons = "leaf,drop,sparkle,lotus,heart" | split: ',' -%}
+          {%- else -%}
+            {%- assign f_names = "XXL+ 330 mm Extra Long,High Absorption Technology,Advanced Leak Protection,Breathable Comfort Layers,Rash-Free Soft Surface" | split: ',' -%}
+            {%- assign f_sub = "Extra coverage for heavy flows & nights,Locks fluid instantly for dryness,Prevents side leakages completely,Allows airflow to keep you fresh,Organic cotton layer for sensitive skin" | split: ',' -%}
+            {%- assign f_icons = "lotus,drop,leaf,sparkle,heart" | split: ',' -%}
+          {%- endif -%}
+
+          {%- for f in f_names -%}
+            <div class="comp-row-hover" style="padding: 24px; border-bottom: 1px solid rgba(46,74,50,0.06); display: flex; align-items: center; gap: 16px; flex-grow: 1; min-height: 110px; box-sizing: border-box; transition: background-color 0.25s, transform 0.25s;">
+              <!-- Circle Icon Background -->
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: #FAF6F0; display: flex; align-items: center; justify-content: center; color: #000; flex-shrink: 0;">
+                {%- assign current_icon = f_icons[forloop.index0] -%}
+                {%- if current_icon == 'leaf' -%}
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.12 5.9 16.12S3 12 7 8c2.22-2.22 6-3 10-4 .5 1.5.5 3 .5 4z"/></svg>
+                {%- elsif current_icon == 'drop' -%}
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                {%- elsif current_icon == 'sparkle' -%}
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2L22 10l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8 7.6-.8z"/></svg>
+                {%- elsif current_icon == 'lotus' -%}
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2s-5 4-5 9a5 5 0 0 0 10 0c0-5-5-9-5-9z"/></svg>
+                {%- elsif current_icon == 'heart' -%}
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                {%- endif -%}
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-weight: 700; color: #000; font-size: 15px;">{{ f }}</span>
+                <span style="font-size: 12px; color: #7B8A80; line-height: 1.3;">{{ f_sub[forloop.index0] }}</span>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- COLUMN 2: TIME HIGHLIGHTED COLUMN -->
+      <div style="background: rgba(78, 122, 83, 0.04); display: flex; flex-direction: column; border-left: 2px solid rgba(46,74,50,0.1); border-right: 2px solid rgba(46,74,50,0.1); position: relative; z-index: 2; box-shadow: 0 8px 30px rgba(46,74,50,0.06); border-radius: 12px 12px 0 0;">
+        <div style="background: #4E7A53; padding: 24px 20px; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 110px; box-sizing: border-box; position: relative; border-radius: 10px 10px 0 0;">
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 99px; margin-bottom: 6px; text-transform: uppercase;">TIME CARE</span>
+          
+          <div style="display: flex; align-items: center; gap: 10px; justify-content: center; width: 100%;">
+            <span style="font-weight: 800; font-size: 15px; letter-spacing: 0.5px; text-transform: uppercase;">
+              {%- if cat_cup -%}
+                TIME Menstrual Cup
+              {%- elsif cat_cream -%}
+                TIME Pain Relief Cream
+              {%- else -%}
+                TIME Premium Pads
+              {%- endif -%}
+            </span>
+            <!-- Floating Product Image -->
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1.5px solid #4E7A53; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.06); flex-shrink: 0;">
+              <img src="{{ product.featured_image | image_url: width: 90 }}" alt="{{ product.title | escape }}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+          {%- if cat_cup -%}
+            {%- assign t_headers = "Secure Leak-Proof Seal,Better Comfort Fit,Easy Insertion & Removal,Skin-Friendly & Safe,Easy Handling Control" | split: ',' -%}
+            {%- assign t_desc = "Adaptive Seal Rim Technology,Ergo-Tulip Shape Design,Air-Relief Rim Technology,Medical-Grade Silicone,Secure Grip Design" | split: ',' -%}
+          {%- elsif cat_cream -%}
+            {%- assign t_headers = "Herbal Care for Menstrual Comfort,Lightweight & Easy to Apply,Comfortable Skin Feel,Helps Calm Discomfort,Skin-Friendly Care" | split: ',' -%}
+            {%- assign t_desc = "Made with Ayurvedic herbs,Absorbs quickly without sticky residue,Lightweight texture and quick drying,Cooling and relaxing relief,Dermatologically tested and safe" | split: ',' -%}
+          {%- else -%}
+            {%- assign t_headers = "Extra Coverage & Protection,Superior Absorption,Double Wing Leak Protection,Fresh & Breathable layers,Gentle & Rash-free cover" | split: ',' -%}
+            {%- assign t_desc = "XXL+ 330 mm length for heavy flows,Locks fluid instantly for dryness,Prevents side leakages completely,Allows air flow to prevent wetness,Organic cotton layer for skin safety" | split: ',' -%}
+          {%- endif -%}
+
+          {%- for head in t_headers -%}
+            <div class="comp-row-hover" style="padding: 24px 20px; border-bottom: 1px solid rgba(46,74,50,0.08); display: flex; align-items: flex-start; gap: 12px; flex-grow: 1; min-height: 110px; box-sizing: border-box; background: rgba(78, 122, 83, 0.02); transition: background-color 0.25s;">
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: #385A3C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px;">✓</div>
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-weight: 700; color: #000; font-size: 14px; line-height: 1.3;">{{ head }}</span>
+                <span style="font-size: 12px; color: #556B2F; line-height: 1.3;">{{ t_desc[forloop.index0] }}</span>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- COLUMN 3: OTHER BRANDS -->
+      <div style="background: #ffffff; display: flex; flex-direction: column;">
+        <div style="background: #FAF6F0; padding: 24px; color: #7B8A80; display: flex; align-items: center; justify-content: center; min-height: 110px; box-sizing: border-box; border-bottom: 1px solid rgba(46,74,50,0.08);">
+          <span style="font-weight: 800; letter-spacing: 1px; font-size: 14px; text-transform: uppercase;">Other Brands</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+          {%- if cat_cup -%}
+            {%- assign o_headers = "Standard Rim design,Stiff/Awkward fit,Hard to remove,Toxin-prone materials,Slippery grip base" | split: ',' -%}
+            {%- assign o_desc = "Prone to minor leakages,Causes minor discomfort,Lacks proper vacuum release,May use low-grade silicone,Harder to control" | split: ',' -%}
+          {%- elsif cat_cream -%}
+            {%- assign o_headers = "Formula varies,Texture varies,Absorption varies,Soothing varies,Suitability varies" | split: ',' -%}
+            {%- assign o_desc = "May contain varying chemical concentrations,May leave sticky or greasy sensations,Varies by formulation and brand,Experience differs by product base,May vary based on skin sensitivity" | split: ',' -%}
+          {%- else -%}
+            {%- assign o_headers = "Standard Size,Normal absorption core,Leakage prone,Plastic non-breathable layers,Synthetic top sheet" | split: ',' -%}
+            {%- assign o_desc = "Lacks wide overnight wings,Slower liquid locking,No advanced side barriers,Causes sweating and wetness,Prone to friction rashes" | split: ',' -%}
+          {%- endif -%}
+
+          {%- for head in o_headers -%}
+            <div class="comp-row-hover" style="padding: 24px 20px; border-bottom: 1px solid rgba(46,74,50,0.06); display: flex; align-items: flex-start; gap: 12px; flex-grow: 1; min-height: 110px; box-sizing: border-box; transition: background-color 0.25s;">
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: #E8EDE9; color: #7B8A80; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0; margin-top: 2px;">—</div>
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-weight: 700; color: #556B2F; font-size: 14px; line-height: 1.3;">{{ head }}</span>
+                <span style="font-size: 12px; color: #889C8F; line-height: 1.3;">{{ o_desc[forloop.index0] }}</span>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. Mobile Stacked Cards Layout (Hidden on Desktop) -->
+    <div class="comp-mobile-grid" style="display: none; flex-direction: column; gap: 20px;">
+      {%- for f in f_names -%}
+        <div style="background: #ffffff; border: 1px solid rgba(46,74,50,0.08); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+          
+          <!-- Feature Title -->
+          <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f4f4f4; padding-bottom: 12px; margin-bottom: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #FAF6F0; display: flex; align-items: center; justify-content: center; color: #000; flex-shrink: 0;">
+              {%- assign current_icon = f_icons[forloop.index0] -%}
+              {%- if current_icon == 'leaf' -%}
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.12 5.9 16.12S3 12 7 8c2.22-2.22 6-3 10-4 .5 1.5.5 3 .5 4z"/></svg>
+              {%- elsif current_icon == 'drop' -%}
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              {%- elsif current_icon == 'sparkle' -%}
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2L22 10l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8 7.6-.8z"/></svg>
+              {%- elsif current_icon == 'lotus' -%}
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2s-5 4-5 9a5 5 0 0 0 10 0c0-5-5-9-5-9z"/></svg>
+              {%- elsif current_icon == 'heart' -%}
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              {%- endif -%}
+            </div>
+            <span style="font-weight: 700; color: #000; font-size: 15px;">{{ f }}</span>
+          </div>
+
+          <!-- TIME Info -->
+          <div style="background: rgba(78, 122, 83, 0.04); border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; background: #385A3C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; flex-shrink: 0; margin-top: 2px;">✓</div>
+            <div>
+              <div style="font-weight: 700; color: #000; font-size: 13px;">TIME: {{ t_headers[forloop.index0] }}</div>
+              <div style="font-size: 11px; color: #556B2F; line-height: 1.3; margin-top: 2px;">{{ t_desc[forloop.index0] }}</div>
+            </div>
+          </div>
+
+          <!-- Other Brands Info -->
+          <div style="background: #FAF6F0; border-radius: 8px; padding: 12px; display: flex; align-items: flex-start; gap: 8px;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; background: #E8EDE9; color: #7B8A80; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; flex-shrink: 0; margin-top: 2px;">—</div>
+            <div>
+              <div style="font-weight: 700; color: #556B2F; font-size: 13px;">Other Brands: {{ o_headers[forloop.index0] }}</div>
+              <div style="font-size: 11px; color: #889C8F; line-height: 1.3; margin-top: 2px;">{{ o_desc[forloop.index0] }}</div>
+            </div>
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- 4. Why Choose TIME? Visual Summary -->
+    <div style="margin-top: 50px; text-align: center; background: #ffffff; border: 1px solid rgba(46,74,50,0.06); border-radius: 16px; padding: 30px; box-shadow: 0 8px 24px rgba(46,74,50,0.02);">
+      <h4 style="font-size: 16px; font-weight: 800; color: #000; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 20px 0;">Why Choose TIME?</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+          <span style="font-size: 20px;">🌿</span>
+          <span style="font-size: 14px; font-weight: 700; color: #000;">Ayurvedic-inspired care</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+          <span style="font-size: 20px;">💧</span>
+          <span style="font-size: 14px; font-weight: 700; color: #000;">Lightweight application</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+          <span style="font-size: 20px;">✨</span>
+          <span style="font-size: 14px; font-weight: 700; color: #000;">Non-greasy feel</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+          <span style="font-size: 20px;">♡</span>
+          <span style="font-size: 14px; font-weight: 700; color: #000;">Made with care</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Lighter Premium Trust Bar -->
+    <div style="background: rgba(78, 122, 83, 0.03); border-radius: 16px; padding: 30px; margin-top: 40px; border: 1px solid rgba(46,74,50,0.05); text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: space-around; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #000;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Dermatologically Tested
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #000;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+          Soft &amp; Breathable
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #000;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          Made With Care
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #000;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+          Thoughtfully Formulated
+        </div>
+      </div>
+      <p style="font-size: 14px; font-weight: 600; font-style: italic; color: #556B2F; margin: 0; letter-spacing: 0.5px;">
+        Because You Deserve The Best, Every Day.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Hover effects on desktop comparison rows */
+  .comp-row-hover:hover {
+    background-color: rgba(78, 122, 83, 0.02) !important;
+    transform: translateY(-1px);
+  }
+  
+  @media (max-width: 767px) {
+    .comp-desktop-grid {
+      display: none !important;
+    }
+    .comp-mobile-grid {
+      display: flex !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Comparison",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product Comparison"
+    }
+  ]
+}
+{% endschema %}

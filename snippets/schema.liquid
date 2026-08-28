@@ -1,4 +1,6 @@
     {%- if request.page_type == 'article' and article -%}
+      {% comment %}
+        Article/BlogPosting schema has been relocated to sections/article.liquid to support rich fields (e.g. medical reviewer, FAQs, references) without duplication.
       <script type="application/ld+json">
         {
           "@context":"https://schema.org",
@@ -12,6 +14,7 @@
           "datePublished":"{{ article.published_at | date: "%Y-%m-%d" }}"
         }
       </script>
+      {% endcomment %}
     {%- endif -%}
 
     <!-- Structured data (kept but trimmed/validated) -->
@@ -135,95 +138,48 @@
       }
     </script>
 
-        {% unless template == 'index' %}
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          document.querySelectorAll('link[rel="dns-prefetch"]').forEach((el) => {
-            if (el.href.includes('cdnwidget.judge.me') && window.location.pathname === '/') {
-              console.warn('🗑 Removed Judge.me prefetch on homepage');
-              el.remove();
+    {%- if request.page_type == 'collection' and collection -%}
+      {%- assign faq_questions = collection.metafields.custom.faq_questions.value -%}
+      {%- assign faq_answers = collection.metafields.custom.faq_answers.value -%}
+      {%- if faq_questions != blank and faq_answers != blank -%}
+        {%- assign q_size = faq_questions.size -%}
+        {%- assign a_size = faq_answers.size -%}
+        {%- assign min_size = q_size -%}
+        {%- if a_size < q_size -%}
+          {%- assign min_size = a_size -%}
+        {%- endif -%}
+        {%- if min_size > 0 -%}
+          {%- assign limit = min_size | minus: 1 -%}
+          {%- assign output_count = 0 -%}
+          {%- capture faq_entities -%}
+            {%- for i in (0..limit) -%}
+              {%- assign q = faq_questions[i] | strip -%}
+              {%- assign a = faq_answers[i] | strip -%}
+              {%- if q != blank and a != blank -%}
+                {%- if output_count > 0 -%},{%- endif -%}
+                {
+                  "@type": "Question",
+                  "name": {{ q | json }},
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": {{ a | json }}
+                  }
+                }
+                {%- assign output_count = output_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if output_count > 0 -%}
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {{ faq_entities }}
+              ]
             }
-          });
-        });
-      </script>
-      <script>
-        window.whatmore = {};
-        window.whatmore.storyEvents = null;
-        window.whatmore.frontendCustomizations = null;
-        window.whatmore.collectionActivationMap = null;
-
-        let abTestingConfig = window?.whatmore?.frontendCustomizations?.ab_testing_config;
-        if (abTestingConfig?.is_active) {
-          let landingLocation = 'index';
-          if (landingLocation.startsWith('product')) {
-            let abTestId = localStorage.getItem('wht_ab_test_id');
-            let userGroup = localStorage.getItem('wht_user_group');
-            if (!userGroup || abTestId != abTestingConfig.ab_test_id) {
-              localStorage.setItem('wht_ab_test_id', abTestingConfig.ab_test_id);
-              let groupIndex = Math.floor(Math.random() * 2);
-              let group_names = Object.keys(abTestingConfig.group_config);
-              userGroup = group_names[groupIndex];
-              localStorage.setItem('wht_user_group', userGroup);
-            }
-            let widgetType = abTestingConfig.group_config[userGroup];
-            if (widgetType != 'floating_card') {
-              document.querySelector('.whatmore-template-type').setAttribute('data-wh', 'invalid-template');
-            }
-          }
-        }
-      </script>
-
-      <div class="whatmore-base">
-        <div id="whatmoreShopId" data-wh="84578861371"></div>
-        <div id="whatmoreProductId" data-wh=""></div>
-        <div id="whatmoreExtensionType" data-wh="index"></div>
-        <div class="whatmore-template-type" data-wh="template-embed"></div>
-        <div id="whatmoreVariantId" data-wh=""></div>
-        <div id="whatmoreEmbedAppPositionPortrait" data-wh="right"></div>
-        <div id="whatmoreEmbedAppHorizontalPaddingPortrait" data-wh="5"></div>
-        <div id="whatmoreEmbedAppVerticalPaddingPortrait" data-wh="150"></div>
-        <div id="whatmoreEmbedAppVideoPlayerSizePortrait" data-wh="50"></div>
-        <div id="whatmoreEmbedAppPositionLandscape" data-wh="right"></div>
-        <div id="whatmoreEmbedAppHorizontalPaddingLandscape" data-wh="5"></div>
-        <div id="whatmoreEmbedAppVerticalPaddingLandscape" data-wh="150"></div>
-        <div id="whatmoreEmbedAppVideoPlayerSizeLandscape" data-wh="50"></div>
-        <div id="whatmoreEmbedAppUseVariant" data-wh="false"></div>
-        <div id="whatmoreEmbedAppVideoTitle" data-wh=""></div>
-        <div id="whatmoreIsInDesignMode" data-wh="false"></div>
-
-        <div class="whatmore-widget" data-wh="embed"></div>
-        <div id="whatmore-anchor" style="width:0px; height: 0px;">
-          <a aria-label="Visit Whatmore homepage" href="https://apps.shopify.com/whatmore-live"></a>
-        </div>
-        <div class="whatmore-render-root">
-          <div id="#whatmoreRoot0" class="whatmore-root" style="display: block; height: 100%;"><div></div></div>
-        </div>
-      </div>
-
-      <script>
-        window.whatmore = {};
-        window.whatmore.storyEvents = null;
-        window.whatmore.frontendCustomizations = null;
-        window.whatmore.collectionActivationMap = null;
-
-        let abTestingConfig = window?.whatmore?.frontendCustomizations?.ab_testing_config;
-        if (abTestingConfig?.is_active) {
-          let landingLocation = 'index';
-          if (landingLocation.startsWith('product')) {
-            let abTestId = localStorage.getItem('wht_ab_test_id');
-            let userGroup = localStorage.getItem('wht_user_group');
-            if (!userGroup || abTestId != abTestingConfig.ab_test_id) {
-              localStorage.setItem('wht_ab_test_id', abTestingConfig.ab_test_id);
-              let groupIndex = Math.floor(Math.random() * 2);
-              let group_names = Object.keys(abTestingConfig.group_config);
-              userGroup = group_names[groupIndex];
-              localStorage.setItem('wht_user_group', userGroup);
-            }
-            let widgetType = abTestingConfig.group_config[userGroup];
-            if (widgetType != 'floating_card') {
-              document.querySelector('.whatmore-template-type').setAttribute('data-wh', 'invalid-template');
-            }
-          }
-        }
-      </script>
-    {% endunless %}
+            </script>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}

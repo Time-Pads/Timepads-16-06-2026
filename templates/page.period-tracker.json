@@ -168,9 +168,7 @@
     "period_calculator_UwPHJp": {
       "type": "period-calculator",
       "name": "Period calculator",
-      "settings": {
-        "tagline": ""
-      }
+      "settings": {}
     }
   },
   "order": [

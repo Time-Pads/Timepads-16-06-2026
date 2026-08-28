@@ -3,15 +3,20 @@
   <div class="why-time-item {% if block.settings.direction == 'left' %}direction-left{% else %}direction-right{% endif %}">
     <div class="image-container">
       {% if block.settings.image != blank %}
-        <img src="{{ block.settings.image | image_url: width: 640 }}" alt="{{ block.settings.heading_text | default: 'Why Time' | escape }}" loading="lazy" decoding="async" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+        <img 
+          src="{{ block.settings.image | image_url: width: 640 }}" 
+          srcset="{{ block.settings.image | image_url: width: 320 }} 320w, {{ block.settings.image | image_url: width: 480 }} 480w, {{ block.settings.image | image_url: width: 640 }} 640w, {{ block.settings.image | image_url: width: 800 }} 800w"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          alt="{{ block.settings.heading_text | default: 'Why Time' | escape }}" 
+          loading="lazy" 
+          decoding="async" 
+          width="{{ block.settings.image.width }}" 
+          height="{{ block.settings.image.height }}"
+        >
       {% endif %}
     </div>
     <div class="text-container">
-      {% if forloop.first %}
-        <h1>{{ block.settings.heading_text }}</h1>
-      {% else %}
-        <h2>{{ block.settings.heading_text }}</h2>
-      {% endif %}
+      <h2>{{ block.settings.heading_text }}</h2>
       <p>{{ block.settings.paragraph_text }}</p>
     </div>
   </div>
