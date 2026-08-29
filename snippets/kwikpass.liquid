@@ -167,54 +167,113 @@
     updateDOM();
   });
 
-  // Global KwikPass Direct Token Exchange & Profile Resolver
+  // Global KwikPass Direct Token Exchange & Profile Resolver — uses real mountApp header flow
+  // Priority: ELRTOKEN -> KWIKUSERTOKEN -> KWIKSESSIONTOKEN exchange. No token values are logged.
   function resolveKwikpassProfileGlobal() {
     try {
       if (sessionStorage.getItem('isLogout') === 'true') return;
       var mid = (window.merchantInfo && window.merchantInfo.mid) ? window.merchantInfo.mid : '19g6im5f43qe6';
       var env = (window.merchantInfo && window.merchantInfo.environment) ? window.merchantInfo.environment : 'production';
-      var sToken = null;
-      if (typeof getValueFromCookiesOrLocalStorage === 'function' && typeof XGokwikCoreToken === 'function') {
-        sToken = getValueFromCookiesOrLocalStorage(XGokwikCoreToken(env));
+
+      function getVal(key) {
+        try {
+          if (typeof getValueFromCookiesOrLocalStorage === 'function') {
+            var v = getValueFromCookiesOrLocalStorage(key);
+            if (v) return v;
+          }
+        } catch(e) {}
+        try {
+          var m = document.cookie.match(new RegExp('(?:^|;\\s*)' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]+)'));
+          if (m) return decodeURIComponent(m[1]);
+        } catch(e) {}
+        try { return localStorage.getItem(key); } catch(e) { return null; }
       }
-      if (!sToken) {
-        sToken = localStorage.getItem('KWIKSESSIONTOKEN') || (document.cookie.match(/(?:^|;\s*)KWIKSESSIONTOKEN=([^;]+)/) || [])[1];
+
+      function coreTokenName(e) {
+        if (typeof XGokwikCoreToken === 'function') { try { return XGokwikCoreToken(e); } catch(err) {} }
+        if (e === 'production' || e === 'pci-prod') return 'KWIKSESSIONTOKEN';
+        if (e === 'sandbox') return 'SANDBOXKWIKSESSIONTOKEN';
+        if (e === 'qa') return 'QAKWIKSESSIONTOKEN';
+        return 'KWIKSESSIONTOKEN';
       }
-      var uToken = localStorage.getItem('KWIKUSERTOKEN') || (document.cookie.match(/(?:^|;\s*)KWIKUSERTOKEN=([^;]+)/) || [])[1] || localStorage.getItem('ELRTOKEN');
-      var reqId = localStorage.getItem('kp-request-id') || 'kwikPass_plugin';
+
+      var sToken = getVal(coreTokenName(env));
+      if (!sToken) { try { sToken = localStorage.getItem('KWIKSESSIONTOKEN') || (document.cookie.match(/(?:^|;\s*)KWIKSESSIONTOKEN=([^;]+)/) || [])[1]; if (sToken) sToken = decodeURIComponent(sToken); } catch(e) {} }
+
+      var eToken = getVal('ELRTOKEN');
+      var uToken = getVal('KWIKUSERTOKEN');
+      var accessToken = eToken || uToken || null;
+
+      var reqId = getVal('kp-request-id') || 'kwikPass_plugin';
+      var acsTkn = getVal('acs_tkn');
+
+      function tokenFingerprint(t) {
+        if (!t || typeof t !== 'string') return null;
+        var h = 0; for (var i=0;i<t.length;i++) h = (h*31 + t.charCodeAt(i)) >>> 0;
+        return String(t.length) + '_' + String(h);
+      }
+
+      function persistName(rawName, srcToken) {
+        var clean = rawName.trim().charAt(0).toUpperCase() + rawName.trim().slice(1);
+        if (!clean || /customer|user|guest|account|there/i.test(clean)) return;
+        try {
+          localStorage.setItem('kp_customer_name', clean);
+          sessionStorage.setItem('kp_customer_name', clean);
+          var fp = tokenFingerprint(srcToken);
+          if (fp) {
+            localStorage.setItem('kp_customer_name_fp', fp);
+            sessionStorage.setItem('kp_customer_name_fp', fp);
+          }
+        } catch(e) {}
+        window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: clean } }));
+      }
 
       function callProfile(token) {
+        if (!token) return;
+        var headers = {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'gk-merchant-id': mid,
+          'kp-merchant-id': mid,
+          'gk-access-token': token,
+          'kp-request-id': reqId,
+          'kp-integration-type': 'PLUGIN',
+          'gk-platform': 'shopify'
+        };
+        if (acsTkn) headers['X-Shopify-Customer-Access-Token'] = acsTkn;
         fetch('https://gkx.gokwik.co/kp/api/v1/customer/profile', {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'gk-merchant-id': mid,
-            'kp-merchant-id': mid,
-            'gk-access-token': token,
-            'kp-request-id': reqId,
-            'kp-integration-type': 'PLUGIN',
-            'gk-platform': 'shopify'
-          }
+          headers: headers
         })
-        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(r) {
+          if (!r.ok) {
+            if (r.status === 401 || r.status === 403 || r.status === 404) {
+              try {
+                localStorage.removeItem('kp_customer_name');
+                sessionStorage.removeItem('kp_customer_name');
+                localStorage.removeItem('kp_customer_name_fp');
+                sessionStorage.removeItem('kp_customer_name_fp');
+                window.dispatchEvent(new CustomEvent('kp_user_logged_out'));
+              } catch(e) {}
+            }
+            return null;
+          }
+          return r.json();
+        })
         .then(function(res) {
           var p = res && res.data && res.data.profile;
           if (p) {
-            var rawName = p.firstName || p.fullName || '';
-            if (rawName && !/customer|user|account/i.test(rawName)) {
-              var clean = rawName.trim().charAt(0).toUpperCase() + rawName.trim().slice(1);
-              localStorage.setItem('kp_customer_name', clean);
-              sessionStorage.setItem('kp_customer_name', clean);
-              window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: clean } }));
-            }
+            var rawName = '';
+            if (p.firstName && typeof p.firstName === 'string' && p.firstName.trim()) rawName = p.firstName.trim();
+            else if (p.fullName && typeof p.fullName === 'string' && p.fullName.trim()) rawName = p.fullName.trim().split(/\s+/)[0];
+            if (rawName) persistName(rawName, token);
           }
         })
         .catch(function() {});
       }
 
-      if (uToken) {
-        callProfile(uToken);
+      if (accessToken) {
+        callProfile(accessToken);
       } else if (sToken) {
         fetch('https://gkx.gokwik.co/kp/api/v1/auth/core-token/login', {
           method: 'GET',
@@ -231,7 +290,7 @@
         .then(function(data) {
           var exchanged = data && data.data && data.data.token;
           if (exchanged) {
-            localStorage.setItem('KWIKUSERTOKEN', exchanged);
+            try { localStorage.setItem('KWIKUSERTOKEN', exchanged); } catch(e) {}
             callProfile(exchanged);
           } else {
             callProfile(sToken);
@@ -242,33 +301,61 @@
     } catch(e) {}
   }
 
-  // Continuous Shadow DOM extractor
-  setInterval(function() {
-    try {
-      var hosts = document.querySelectorAll('#kp-account-wrapper, main, [id^="kp-"]');
-      for (var i = 0; i < hosts.length; i++) {
-        var sr = hosts[i].shadowRoot;
-        if (sr) {
-          var h2 = sr.querySelector('h1, h2, h3, .kp-account-name');
-          var text = (h2 ? h2.textContent : '') || sr.textContent || '';
-          var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
-          if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
-            var n = m[1].trim().charAt(0).toUpperCase() + m[1].trim().slice(1);
-            localStorage.setItem('kp_customer_name', n);
-            sessionStorage.setItem('kp_customer_name', n);
-            window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: n } }));
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage({ type: 'kp-name-ready', name: n }, '*');
+  // Shadow DOM extractor — only on the real account page, not homepage
+  (function() {
+    var isAccountPage = window.location.pathname.indexOf('/pages/kp-account') !== -1;
+    if (!isAccountPage) return;
+    var shadowInterval = setInterval(function() {
+      try {
+        var hosts = document.querySelectorAll('#kp-account-wrapper, main, [id^="kp-"]');
+        for (var i = 0; i < hosts.length; i++) {
+          var sr = hosts[i].shadowRoot;
+          if (sr) {
+            var h2 = sr.querySelector('h1, h2, h3, .kp-account-name');
+            var text = (h2 ? h2.textContent : '') || sr.textContent || '';
+            var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
+            if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
+              var n = m[1].trim().charAt(0).toUpperCase() + m[1].trim().slice(1);
+              try {
+                localStorage.setItem('kp_customer_name', n);
+                sessionStorage.setItem('kp_customer_name', n);
+              } catch(e) {}
+              window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: n } }));
             }
           }
         }
-      }
-    } catch(e) {}
-  }, 400);
+      } catch(e) {}
+    }, 600);
+    // stop after 20s on account page to avoid endless polling
+    setTimeout(function() { try { clearInterval(shadowInterval); } catch(e) {} }, 20000);
+  })();
 
-  // Trigger profile resolution on login/DOM update
+  // Ensure logout clears cached greeting
+  window.addEventListener('kp_user_logged_out', function() {
+    try {
+      localStorage.removeItem('kp_customer_name');
+      sessionStorage.removeItem('kp_customer_name');
+      localStorage.removeItem('kp_customer_name_fp');
+      sessionStorage.removeItem('kp_customer_name_fp');
+    } catch(e) {}
+    window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: '' } }));
+  });
+  // Also listen to the core logout broadcast
+  window.addEventListener('update-dom', function() {
+    if (sessionStorage.getItem('isLogout') === 'true') {
+      try {
+        localStorage.removeItem('kp_customer_name');
+        sessionStorage.removeItem('kp_customer_name');
+        localStorage.removeItem('kp_customer_name_fp');
+        sessionStorage.removeItem('kp_customer_name_fp');
+      } catch(e) {}
+    }
+  });
+
+  // Trigger profile resolution on login/DOM update — covers cold-load race
   window.addEventListener('user-loggedin', resolveKwikpassProfileGlobal);
   window.addEventListener('kp_data_sent', resolveKwikpassProfileGlobal);
+  window.addEventListener('update-dom', resolveKwikpassProfileGlobal);
   document.addEventListener('DOMContentLoaded', resolveKwikpassProfileGlobal);
 </script>
 <script defer src="https://pdp.gokwik.co/kwikpass/kwikpass-core-functions-min.js"></script>

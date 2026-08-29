@@ -4,12 +4,30 @@
   File: sections/customer-welcome-name.liquid
   -----------------------------------------------------------------------------
   Displays dynamic personalized greeting: "Hi [Customer Name], welcome back!"
-  - Uses /pages/kp-account as the single source of truth for customer identity
-  - Silently loads /pages/kp-account in the background via hidden same-origin iframe
-  - Customer remains strictly on the homepage with no redirects or visible flashes
-  - Instant 0ms render for cached/returning visitors
-  - Automatic cleanup of background resources once name is resolved
-  - Completely hidden for logged-out visitors
+  TRACE BACKWARDS (required):
+  [data-kp-target="i18n.sidenav.greeting"] -> Svelte i18n.sidenav.greeting
+  "Hey, {name}" -> E.name = profile.firstName || fullName.split()[0]
+  -> mountApp.js: Cp.loadProfile -> Pp.getProfile -> tt.get(
+     /kp/api/v1/customer/profile) -> ut() builds {gk-access-token: $f(),
+     kp-request-id, X-Shopify-Customer-Access-Token: acs_tkn,
+     gk/kp-merchant-id: mid, kp-integration-type:PLUGIN, gk-platform:shopify}
+  -> $f() = fn(ELRTOKEN) || fn(KWIKUSERTOKEN) || Wf() exchange fn(KWIKSESSIONTOKEN)
+     via GET /kp/api/v1/auth/core-token/login header token:sToken
+  -> source tokens: ELRTOKEN / KWIKUSERTOKEN / KWIKSESSIONTOKEN (via
+     XGokwikCoreToken(env)) / kp-request-id / acs_tkn from cookie/localStorage.
+  INVESTIGATION (snippets/kwikpass.liquid, kwikpass-add-button.liquid,
+  kp-core.js, kp-mountApp.js, kp-account/init.js):
+  - handleDrawer1() only toggles dropdown UI — no init.
+  - Order History [kwikpass-add-button.liquid:216,265] calls
+    handleShopifyLogin(event,'/account') -> hndlRedrctn -> window.location.href
+    top-level navigation required; Shopify headers x-frame-options:DENY &
+    frame-ancestors 'none' block iframe, so invisible navigation impossible.
+  - Therefore homepage resolves SAME identity via direct profile API using
+    exact mountApp header flow, NOT via navigation/iframe/popup.
+  - Fallback DOM extraction, if used, ONLY [data-kp-target="i18n.sidenav.greeting"]
+    text "Hey, balaji" -> extract "balaji" -> Balaji.
+  - No iframe, no account page load, no redirect, no popup on homepage.
+  -----------------------------------------------------------------------------
 {%- endcomment -%}
 
 
@@ -63,9 +81,11 @@
   .customer-welcome-{{ section.id }} .customer-welcome__container.text-left {
     text-align: left;
   }
+
   .customer-welcome-{{ section.id }} .customer-welcome__container.text-center {
     text-align: center;
   }
+
   .customer-welcome-{{ section.id }} .customer-welcome__container.text-right {
     text-align: right;
   }
@@ -113,14 +133,65 @@
     if (!sectionEl) return;
 
     var nameEl = sectionEl.querySelector('[data-customer-name]');
-    var bgFrame = null;
-    var bgPollInterval = null;
-    var bgTimeoutTimer = null;
+    var abortCtrl = null;
+    var profileFetchInFlight = false;
+    var hasResolved = false;
 
     function capitalize(str) {
       if (!str || typeof str !== 'string') return '';
       str = str.trim();
-      return str.charAt(0).toUpperCase() + str.slice(1);
+      if (!str) return '';
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
+
+    function extractNameFromGreetingEl(el) {
+      if (!el) return '';
+      var raw = (el.textContent || '').trim();
+      // Expected: "Hey, balaji" — extract after "Hey,"
+      var m = raw.match(/Hey,\s*([A-Za-z0-9_\-\.]+)/i);
+      if (m && m[1]) return m[1].trim();
+      return '';
+    }
+
+    function tokenFingerprint(t) {
+      if (!t || typeof t !== 'string') return null;
+      var h = 0;
+      for (var i = 0; i < t.length; i++) {
+        h = (h * 31 + t.charCodeAt(i)) >>> 0;
+      }
+      return String(t.length) + '_' + String(h);
+    }
+
+    function getCurrentTokenRaw() {
+      try {
+        var eToken = null;
+        try { eToken = localStorage.getItem('ELRTOKEN'); } catch(e) {}
+        if (!eToken) {
+          try { var m = document.cookie.match(/(?:^|;\s*)ELRTOKEN=([^;]+)/); if (m) eToken = decodeURIComponent(m[1]); } catch(e) {}
+        }
+        if (eToken) return eToken;
+        var uToken = null;
+        try { uToken = localStorage.getItem('KWIKUSERTOKEN'); } catch(e) {}
+        if (!uToken) {
+          try { var m2 = document.cookie.match(/(?:^|;\s*)KWIKUSERTOKEN=([^;]+)/); if (m2) uToken = decodeURIComponent(m2[1]); } catch(e) {}
+        }
+        if (uToken) return uToken;
+        var sToken = null;
+        var env = (window.merchantInfo && window.merchantInfo.environment) ? window.merchantInfo.environment : 'production';
+        if (typeof getValueFromCookiesOrLocalStorage === 'function' && typeof XGokwikCoreToken === 'function') {
+          try { sToken = getValueFromCookiesOrLocalStorage(XGokwikCoreToken(env)); } catch(e) {}
+        }
+        if (!sToken) {
+          try { sToken = localStorage.getItem('KWIKSESSIONTOKEN'); } catch(e) {}
+        }
+        if (!sToken) {
+          try { var ms = document.cookie.match(/(?:^|;\s*)KWIKSESSIONTOKEN=([^;]+)/); if (ms) sToken = decodeURIComponent(ms[1]); } catch(e) {}
+        }
+        if (!sToken) {
+          try { sToken = localStorage.getItem('SANDBOXKWIKSESSIONTOKEN') || localStorage.getItem('QAKWIKSESSIONTOKEN'); } catch(e) {}
+        }
+        return sToken;
+      } catch(e) { return null; }
     }
 
     function showGreeting(name) {
@@ -135,14 +206,19 @@
       void sectionEl.offsetWidth;
       sectionEl.style.opacity = '1';
 
-      // Persist in storage
       try {
         localStorage.setItem('kp_customer_name', cleanName);
         sessionStorage.setItem('kp_customer_name', cleanName);
+        var tok = getCurrentTokenRaw();
+        var fp = tokenFingerprint(tok);
+        if (fp) {
+          localStorage.setItem('kp_customer_name_fp', fp);
+          sessionStorage.setItem('kp_customer_name_fp', fp);
+        }
       } catch (e) {}
 
-      // Clean up background context once resolved
-      cleanupBackgroundContext();
+      hasResolved = true;
+      cleanupPending();
     }
 
     function hideGreeting() {
@@ -154,12 +230,15 @@
       try {
         localStorage.removeItem('kp_customer_name');
         sessionStorage.removeItem('kp_customer_name');
+        localStorage.removeItem('kp_customer_name_fp');
+        sessionStorage.removeItem('kp_customer_name_fp');
       } catch (e) {}
-      cleanupBackgroundContext();
+      hasResolved = false;
+      cleanupPending();
     }
 
     function isLoggedOut() {
-      return sessionStorage.getItem('isLogout') === 'true';
+      try { return sessionStorage.getItem('isLogout') === 'true'; } catch(e) { return false; }
     }
 
     function getStorage(name) {
@@ -170,140 +249,312 @@
       }
     }
 
-    function cleanupBackgroundContext() {
-      if (bgPollInterval) {
-        clearInterval(bgPollInterval);
-        bgPollInterval = null;
+    function cleanupPending() {
+      if (abortCtrl) {
+        try { abortCtrl.abort(); } catch(e) {}
+        abortCtrl = null;
       }
-      if (bgTimeoutTimer) {
-        clearTimeout(bgTimeoutTimer);
-        bgTimeoutTimer = null;
+      profileFetchInFlight = false;
+    }
+
+    // Attempt to trigger the SAME underlying KwikPass init that Account→Order History would,
+    // but WITHOUT navigation/iframe/popup. Returns true if underlying call was made.
+    function triggerKwikPassBackgroundInit() {
+      // 1) If snippets/kwikpass.liquid's global resolver exists, call it — it already
+      //    does ELRTOKEN→KWIKUSERTOKEN→exchange→profile with correct headers.
+      if (typeof resolveKwikpassProfileGlobal === 'function') {
+        try { resolveKwikpassProfileGlobal(); return true; } catch(e) {}
       }
-      if (bgFrame) {
-        try {
-          if (bgFrame.parentNode) {
-            bgFrame.parentNode.removeChild(bgFrame);
+      // 2) Also dispatch the events that KwikPass core listens to.
+      //    These do NOT cause navigation; they trigger session/profile listeners.
+      try {
+        window.dispatchEvent(new CustomEvent('kp_data_sent'));
+        window.dispatchEvent(new Event('update-dom'));
+      } catch(e) {}
+      return false;
+    }
+
+    function isOnAccountPage() {
+      try { return window.location.pathname.indexOf('/pages/kp-account') !== -1; } catch(e) { return false; }
+    }
+
+    function scanCurrentPageDOM() {
+      // Fallback ONLY via [data-kp-target="i18n.sidenav.greeting"] as required.
+      // Never scan random divs for "Hey" or phone/Total Orders.
+      if (!isOnAccountPage()) return false;
+      try {
+        var hosts = document.querySelectorAll('#kp-account-wrapper, main, [id^="kp-"]');
+        for (var i = 0; i < hosts.length; i++) {
+          var sr = hosts[i].shadowRoot;
+          if (!sr) continue;
+          // Exact element specified in requirement
+          var greetingEl = sr.querySelector('[data-kp-target="i18n.sidenav.greeting"]');
+          if (!greetingEl) continue;
+          var name = extractNameFromGreetingEl(greetingEl);
+          if (name && !/^(customer|user|guest|account|there)$/i.test(name)) {
+            showGreeting(name);
+            return true;
           }
-        } catch (e) {}
-        bgFrame = null;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function getValueFallback(key) {
+      if (typeof getValueFromCookiesOrLocalStorage === 'function') {
+        try { var v = getValueFromCookiesOrLocalStorage(key); if (v) return v; } catch(e) {}
       }
-      var existing = document.getElementById('kp-silent-account-loader');
-      if (existing && existing.parentNode) {
-        existing.parentNode.removeChild(existing);
+      try {
+        var cv = (document.cookie.match(new RegExp('(?:^|;\\s*)' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]+)')) || [])[1];
+        if (cv) return decodeURIComponent(cv);
+      } catch(e) {}
+      try { return localStorage.getItem(key); } catch(e) { return null; }
+    }
+
+    function getXGokwikCoreToken(env) {
+      if (typeof XGokwikCoreToken === 'function') {
+        try { return XGokwikCoreToken(env); } catch(e) {}
+      }
+      if (env === 'production' || env === 'pci-prod') return 'KWIKSESSIONTOKEN';
+      if (env === 'sandbox') return 'SANDBOXKWIKSESSIONTOKEN';
+      if (env === 'qa') return 'QAKWIKSESSIONTOKEN';
+      return 'KWIKSESSIONTOKEN';
+    }
+
+    async function fetchProfileDirect() {
+      if (profileFetchInFlight) return;
+      if (isLoggedOut()) {
+        hideGreeting();
+        return;
+      }
+
+      var mid = (window.merchantInfo && window.merchantInfo.mid) ? window.merchantInfo.mid : '19g6im5f43qe6';
+      var env = (window.merchantInfo && window.merchantInfo.environment) ? window.merchantInfo.environment : 'production';
+      var reqId = null;
+      try {
+        reqId = getValueFallback('kp-request-id') || localStorage.getItem('kp-request-id') || 'kwikPass_plugin';
+      } catch(e) { reqId = 'kwikPass_plugin'; }
+
+      var acsTkn = null;
+      try { acsTkn = getValueFallback('acs_tkn'); } catch(e) {}
+      if (!acsTkn) {
+        try {
+          var mAcs = document.cookie.match(/(?:^|;\s*)acs_tkn=([^;]+)/);
+          if (mAcs) acsTkn = decodeURIComponent(mAcs[1]);
+        } catch(e) {}
+      }
+
+      var sToken = null;
+      try { sToken = getValueFallback(getXGokwikCoreToken(env)); } catch(e) {}
+      if (!sToken) {
+        try { sToken = localStorage.getItem('KWIKSESSIONTOKEN') || (document.cookie.match(/(?:^|;\s*)KWIKSESSIONTOKEN=([^;]+)/) || [])[1]; if (sToken) sToken = decodeURIComponent(sToken); } catch(e) {}
+      }
+      if (!sToken) {
+        try { sToken = localStorage.getItem('SANDBOXKWIKSESSIONTOKEN') || localStorage.getItem('QAKWIKSESSIONTOKEN'); } catch(e) {}
+      }
+
+      var eToken = getValueFallback('ELRTOKEN');
+      if (!eToken) { try { eToken = localStorage.getItem('ELRTOKEN'); } catch(e) {} }
+
+      var uToken = getValueFallback('KWIKUSERTOKEN');
+      if (!uToken) { try { uToken = localStorage.getItem('KWIKUSERTOKEN'); } catch(e) {} }
+
+      var gkAccessToken = eToken || uToken || null;
+
+      profileFetchInFlight = true;
+      if (abortCtrl) { try { abortCtrl.abort(); } catch(e) {} }
+      abortCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var signal = abortCtrl ? abortCtrl.signal : undefined;
+      var timeoutId = null;
+      if (signal) {
+        timeoutId = setTimeout(function() { try { abortCtrl.abort(); } catch(e) {} }, 6000);
+      }
+
+      if (!gkAccessToken && sToken) {
+        try {
+          var exHeaders = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'gk-merchant-id': mid,
+            'kp-merchant-id': mid,
+            'kp-request-id': reqId,
+            'token': sToken
+          };
+          var exResp = await fetch('https://gkx.gokwik.co/kp/api/v1/auth/core-token/login', {
+            method: 'GET',
+            headers: exHeaders,
+            signal: signal
+          });
+          if (timeoutId) clearTimeout(timeoutId);
+          if (exResp.ok) {
+            var exJson = await exResp.json();
+            var exchanged = exJson && exJson.data && exJson.data.token;
+            if (exchanged) {
+              try { localStorage.setItem('KWIKUSERTOKEN', exchanged); } catch(e) {}
+              gkAccessToken = exchanged;
+            } else {
+              gkAccessToken = sToken;
+            }
+          } else if (exResp.status === 401 || exResp.status === 403 || exResp.status === 404) {
+            if (timeoutId) clearTimeout(timeoutId);
+            hideGreeting();
+            profileFetchInFlight = false;
+            abortCtrl = null;
+            return;
+          } else {
+            gkAccessToken = sToken;
+          }
+        } catch (err) {
+          if (timeoutId) clearTimeout(timeoutId);
+          if (err && err.name === 'AbortError') {
+            profileFetchInFlight = false;
+            abortCtrl = null;
+            return;
+          }
+          gkAccessToken = sToken;
+        }
+        if (signal && !timeoutId) {
+          // reset timeout for profile call
+          timeoutId = setTimeout(function() { try { abortCtrl.abort(); } catch(e) {} }, 6000);
+        } else if (signal && timeoutId) {
+          // need fresh timeout for next fetch
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(function() { try { abortCtrl.abort(); } catch(e) {} }, 6000);
+        }
+      }
+
+      if (!gkAccessToken) {
+        if (timeoutId) clearTimeout(timeoutId);
+        profileFetchInFlight = false;
+        abortCtrl = null;
+        var hasCache = !!getStorage('kp_customer_name');
+        if (!hasCache) hideGreeting();
+        return;
+      }
+
+      try {
+        var headers = {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'gk-merchant-id': mid,
+          'kp-merchant-id': mid,
+          'gk-access-token': gkAccessToken,
+          'kp-request-id': reqId,
+          'kp-integration-type': 'PLUGIN',
+          'gk-platform': 'shopify'
+        };
+        if (acsTkn) headers['X-Shopify-Customer-Access-Token'] = acsTkn;
+
+        var resp = await fetch('https://gkx.gokwik.co/kp/api/v1/customer/profile', {
+          method: 'GET',
+          headers: headers,
+          signal: signal
+        });
+        if (timeoutId) clearTimeout(timeoutId);
+        if (!resp.ok) {
+          if (resp.status === 401 || resp.status === 403 || resp.status === 404) {
+            hideGreeting();
+            try { localStorage.removeItem('KWIKUSERTOKEN'); } catch(e) {}
+            profileFetchInFlight = false;
+            abortCtrl = null;
+            return;
+          }
+          throw new Error('profile status ' + resp.status);
+        }
+        var data = await resp.json();
+        var p = data && data.data && data.data.profile;
+        if (!p) {
+          profileFetchInFlight = false;
+          abortCtrl = null;
+          return;
+        }
+        var rawName = '';
+        if (p.firstName && typeof p.firstName === 'string' && p.firstName.trim()) rawName = p.firstName.trim();
+        else if (p.fullName && typeof p.fullName === 'string' && p.fullName.trim()) rawName = p.fullName.trim().split(/\s+/)[0];
+        if (!rawName || /^(customer|user|guest|account|there)$/i.test(rawName)) {
+          profileFetchInFlight = false;
+          abortCtrl = null;
+          return;
+        }
+        var clean = capitalize(rawName);
+        if (!clean || /^(customer|user|guest|account|there)$/i.test(clean)) {
+          profileFetchInFlight = false;
+          abortCtrl = null;
+          return;
+        }
+        showGreeting(clean);
+        try {
+          window.dispatchEvent(new CustomEvent('kp-name-ready', { detail: { name: clean } }));
+        } catch(e) {}
+      } catch (err) {
+        if (timeoutId) clearTimeout(timeoutId);
+        if (err && err.name === 'AbortError') {
+          profileFetchInFlight = false;
+          abortCtrl = null;
+          return;
+        }
+      }
+      profileFetchInFlight = false;
+      abortCtrl = null;
+    }
+
+    function scheduleProfileFetch() {
+      if (isLoggedOut()) { hideGreeting(); return; }
+      // First, try the underlying KwikPass background init (no navigation)
+      triggerKwikPassBackgroundInit();
+      // Then ensure our own direct profile fetch runs (covers first-load race
+      // where defer scripts not yet loaded). Single request, idle scheduling.
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(function() { fetchProfileDirect(); }, { timeout: 2000 });
+      } else {
+        setTimeout(function() { fetchProfileDirect(); }, 80);
       }
     }
 
-    // Step 1: Liquid Server Name (Instant)
+    // Step 1: Liquid Server Name (Instant) — Shopify authoritative, no network needed
     var currentName = nameEl ? nameEl.textContent.trim() : '';
     if (currentName) {
       showGreeting(currentName);
       return;
     }
 
-    // Step 2: Instant Cache Display (0ms)
+    // Step 2: Logout check
     if (isLoggedOut()) {
       hideGreeting();
       return;
     }
 
+    // Step 3: Cache display with fingerprint validation
     var cachedName = getStorage('kp_customer_name');
+    var cachedFp = getStorage('kp_customer_name_fp');
+    var currentFp = tokenFingerprint(getCurrentTokenRaw());
     if (cachedName) {
-      showGreeting(cachedName);
-    }
-
-    // Step 3: Scan current DOM (if elements exist on current page)
-    function scanCurrentPageDOM() {
-      var hosts = document.querySelectorAll('#kp-account-wrapper, main, [id^="kp-"]');
-      for (var i = 0; i < hosts.length; i++) {
-        var sr = hosts[i].shadowRoot;
-        if (sr) {
-          var text = sr.textContent || '';
-          var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
-          if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
-            showGreeting(m[1]);
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    // Step 4: Launch Silent Background Loader for /pages/kp-account
-    function launchSilentAccountSync() {
-      if (isLoggedOut()) {
-        hideGreeting();
-        return;
-      }
-
-      // If user is already on the account page itself, no iframe needed
-      if (window.location.pathname.indexOf('/pages/kp-account') !== -1) {
-        scanCurrentPageDOM();
-        return;
-      }
-
-      if (document.getElementById('kp-silent-account-loader')) return;
-
-      // Create visually hidden offscreen iframe (layout dimensions preserved so Svelte / Vite boots)
-      bgFrame = document.createElement('iframe');
-      bgFrame.id = 'kp-silent-account-loader';
-      bgFrame.src = '/pages/kp-account';
-      bgFrame.title = 'KwikPass Auth Loader';
-      bgFrame.setAttribute('aria-hidden', 'true');
-      bgFrame.tabIndex = -1;
-      bgFrame.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:350px;height:450px;opacity:0;pointer-events:none;border:none;z-index:-9999;visibility:hidden;';
-      document.body.appendChild(bgFrame);
-
-      var pollAttempts = 0;
-      var maxAttempts = 30; // 30 * 250ms = 7.5 seconds max
-
-      bgPollInterval = setInterval(function() {
-        pollAttempts++;
-        if (pollAttempts > maxAttempts) {
-          cleanupBackgroundContext();
-          return;
-        }
-
+      if (cachedFp && currentFp && cachedFp !== currentFp) {
         try {
-          if (!bgFrame || !bgFrame.contentWindow) return;
-          var doc = bgFrame.contentDocument || bgFrame.contentWindow.document;
-          if (doc) {
-            var hosts = doc.querySelectorAll('#kp-account-wrapper, main, div');
-            for (var i = 0; i < hosts.length; i++) {
-              var sr = hosts[i].shadowRoot;
-              if (sr) {
-                var text = sr.textContent || '';
-                var m = text.match(/(?:Hey|Hi|Hello),?\s+([A-Za-z0-9_\-\.]+)/i);
-                if (m && m[1] && !/customer|user|account|there/i.test(m[1])) {
-                  showGreeting(m[1]);
-                  return;
-                }
-              }
-            }
-          }
-        } catch (e) {
-          // Cross-origin fallback handled via postMessage
-        }
-      }, 250);
-
-      // Hard safety timeout
-      bgTimeoutTimer = setTimeout(function() {
-        cleanupBackgroundContext();
-      }, 8000);
-    }
-
-    // Step 5: Initialize Resolution
-    if (!scanCurrentPageDOM()) {
-      launchSilentAccountSync();
-    }
-
-    // Listen to PostMessage events from the background frame
-    window.addEventListener('message', function(e) {
-      if (e.data && e.data.type === 'kp-name-ready' && e.data.name) {
-        showGreeting(e.data.name);
+          localStorage.removeItem('kp_customer_name');
+          sessionStorage.removeItem('kp_customer_name');
+          localStorage.removeItem('kp_customer_name_fp');
+          sessionStorage.removeItem('kp_customer_name_fp');
+        } catch(e) {}
+      } else {
+        showGreeting(cachedName);
+        // still validate via network, do not return
       }
-    });
+    }
 
-    // Listen to custom KwikPass events
+    // Step 4: If on account page, try Shadow DOM fallback; homepage will use API
+    if (isOnAccountPage()) {
+      if (scanCurrentPageDOM()) {
+        // found via shadow, still schedule profile fetch to validate cache association
+        scheduleProfileFetch();
+        return;
+      }
+    }
+
+    // Step 5: Schedule direct profile resolution (covers both tokens already exist and tokens arriving shortly)
+    scheduleProfileFetch();
+
+    // Event listeners — handle cold-load race where tokens arrive after section init
     window.addEventListener('kp-name-ready', function(e) {
       if (e && e.detail && e.detail.name) {
         showGreeting(e.detail.name);
@@ -314,24 +565,66 @@
       if (isLoggedOut()) {
         hideGreeting();
       } else {
-        if (!scanCurrentPageDOM()) {
-          launchSilentAccountSync();
+        // re-validate cache fingerprint after DOM update
+        var cf = getStorage('kp_customer_name_fp');
+        var cur = tokenFingerprint(getCurrentTokenRaw());
+        if (cf && cur && cf !== cur) {
+          try {
+            localStorage.removeItem('kp_customer_name');
+            sessionStorage.removeItem('kp_customer_name');
+            localStorage.removeItem('kp_customer_name_fp');
+            sessionStorage.removeItem('kp_customer_name_fp');
+          } catch(e2) {}
+          hideGreeting();
         }
+        fetchProfileDirect();
       }
     });
 
     window.addEventListener('user-loggedin', function() {
-      launchSilentAccountSync();
+      fetchProfileDirect();
+    });
+
+    window.addEventListener('kp_data_sent', function() {
+      fetchProfileDirect();
+    });
+
+    window.addEventListener('kp_user_logged_out', function() {
+      hideGreeting();
     });
 
     window.addEventListener('storage', function(e) {
       if (e.key === 'kp_customer_name' && e.newValue) {
         showGreeting(e.newValue);
       }
+      if (e.key === 'kp_customer_name_fp' && !e.newValue) {
+        // fingerprint cleared — treat as switch
+      }
       if (e.key === 'isLogout' && e.newValue === 'true') {
         hideGreeting();
       }
+      if (e.key === 'KWIKUSERTOKEN' || e.key === 'ELRTOKEN' || e.key === 'KWIKSESSIONTOKEN') {
+        var newFp = tokenFingerprint(e.newValue);
+        var oldFp = getStorage('kp_customer_name_fp');
+        if (newFp && oldFp && newFp !== oldFp) {
+          try {
+            localStorage.removeItem('kp_customer_name');
+            sessionStorage.removeItem('kp_customer_name');
+            localStorage.removeItem('kp_customer_name_fp');
+            sessionStorage.removeItem('kp_customer_name_fp');
+          } catch(err) {}
+        }
+        if (e.newValue) fetchProfileDirect();
+        else hideGreeting();
+      }
     });
+
+    // Also handle DOMContentLoaded late case
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        if (!hasResolved && !isLoggedOut()) fetchProfileDirect();
+      });
+    }
   })();
 </script>
 

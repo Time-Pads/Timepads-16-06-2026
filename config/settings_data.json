@@ -10,13 +10,13 @@
 {
   "current": {
     "enable_lazy_loading_sections": true,
-    "hp_eager_section_count": 1,
+    "hp_eager_section_count": 10,
     "pdp_eager_section_count": 1,
     "enable_lazy_loading_header_sections": true,
     "header_eager_section_count": 1,
     "logo": "shopify://shop_images/logo.webp",
-    "preload_image_desktop": "shopify://shop_images/desktop-banner.jpg",
-    "preload_image_mobile": "shopify://shop_images/mobile-banner.jpg",
+    "preload_image_desktop": "shopify://shop_images/Desktop-w_1.webp",
+    "preload_image_mobile": "shopify://shop_images/mobile-w_1.webp",
     "free_shipping": "1500",
     "color_main_body_bg": "#e80d0d",
     "color_announcement_bg": "#ffffff",

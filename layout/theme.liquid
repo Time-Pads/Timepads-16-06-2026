@@ -189,10 +189,6 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"></noscript>
   {%- comment -%} 2. Flip no-js → js as early as possible {%- endcomment -%}
   <script>document.documentElement.classList.replace('no-js','js');</script>
   {%- render 'preload-lcp' -%}
@@ -408,8 +404,8 @@
   {%- if logo -%}
     <link rel="preload" as="image" type="image/webp"
           media="(max-width: 767px)"
-          href="{{ logo | image_url: width: 260, format: 'webp', quality: 75 }}"
-          imagesrcset="{{ logo | image_url: width: 160, format: 'webp', quality: 75 }} 160w, {{ logo | image_url: width: 220, format: 'webp', quality: 75 }} 220w, {{ logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w"
+          href="{{ logo | image_url: width: 260, format: 'webp', quality: 65 }}"
+          imagesrcset="{{ logo | image_url: width: 160, format: 'webp', quality: 65 }} 160w, {{ logo | image_url: width: 220, format: 'webp', quality: 65 }} 220w, {{ logo | image_url: width: 260, format: 'webp', quality: 65 }} 260w"
           imagesizes="130px"
           fetchpriority="high">
   {%- endif -%}

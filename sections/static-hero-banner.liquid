@@ -64,7 +64,19 @@
     {%- if desktop_image != blank or mobile_image != blank -%}
       <picture class="static-hero-banner__picture-{{ section.id }}">
         {%- if desktop_image != blank -%}
-          <!-- Desktop Image Source (min-width: 768px) -->
+          <!-- Desktop AVIF Source (min-width: 768px) - Shopify CDN transcodes safely -->
+          <source
+            media="(min-width: 768px)"
+            type="image/avif"
+            srcset="
+              {{ desktop_image | image_url: width: 750, format: 'avif' }} 750w,
+              {{ desktop_image | image_url: width: 1100, format: 'avif' }} 1100w,
+              {{ desktop_image | image_url: width: 1440, format: 'avif' }} 1440w,
+              {{ desktop_image | image_url: width: 1920, format: 'avif' }} 1920w
+            "
+            sizes="100vw"
+          >
+          <!-- Desktop WebP Source (min-width: 768px) -->
           <source
             media="(min-width: 768px)"
             type="image/webp"
@@ -96,7 +108,7 @@
           alt="{{ image_alt }}"
           loading="eager"
           fetchpriority="high"
-          decoding="sync"
+          decoding="async"
         >
       </picture>
     {%- else -%}

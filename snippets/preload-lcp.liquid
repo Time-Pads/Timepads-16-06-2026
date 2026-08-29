@@ -70,7 +70,20 @@
   {%- assign lcp_mobile = settings.preload_image_mobile -%}
  
   {%- if lcp_desktop != blank or lcp_mobile != blank -%}
-    {%- comment -%} Mobile preload (max-width: 767px) {%- endcomment -%}
+    {%- comment -%} Mobile AVIF preload (max-width: 767px) - matches hero AVIF source {%- endcomment -%}
+    {%- if lcp_mobile != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        type="image/avif"
+        fetchpriority="high"
+        media="(max-width: 767px)"
+        href="{{ lcp_mobile | image_url: width: 550, format: 'avif' }}"
+        imagesrcset="{{ lcp_mobile | image_url: width: 375, format: 'avif' }} 375w, {{ lcp_mobile | image_url: width: 550, format: 'avif' }} 550w, {{ lcp_mobile | image_url: width: 750, format: 'avif' }} 750w"
+        imagesizes="100vw"
+      >
+    {%- endif -%}
+    {%- comment -%} Mobile WebP preload (max-width: 767px) {%- endcomment -%}
     {%- if lcp_mobile != blank -%}
       <link
         rel="preload"
@@ -84,7 +97,20 @@
       >
     {%- endif -%}
  
-    {%- comment -%} Desktop preload (min-width: 768px) {%- endcomment -%}
+    {%- comment -%} Desktop AVIF preload (min-width: 768px) - matches hero AVIF source {%- endcomment -%}
+    {%- if lcp_desktop != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        type="image/avif"
+        fetchpriority="high"
+        media="(min-width: 768px)"
+        href="{{ lcp_desktop | image_url: width: 1440, format: 'avif' }}"
+        imagesrcset="{{ lcp_desktop | image_url: width: 750, format: 'avif' }} 750w, {{ lcp_desktop | image_url: width: 1100, format: 'avif' }} 1100w, {{ lcp_desktop | image_url: width: 1440, format: 'avif' }} 1440w, {{ lcp_desktop | image_url: width: 1920, format: 'avif' }} 1920w"
+        imagesizes="100vw"
+      >
+    {%- endif -%}
+    {%- comment -%} Desktop WebP preload (min-width: 768px) {%- endcomment -%}
     {%- if lcp_desktop != blank -%}
       <link
         rel="preload"
