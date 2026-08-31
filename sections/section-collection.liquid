@@ -32,13 +32,21 @@
   }
   @media (max-width: 767px) {
     .title-{{ sid }} { font-size: {{ fs_m }}px; }
+      #shopify-section-{{ sid }} .js-grid {
+    gap: 5px !important;
+}
+  }
+
+  @media (min-width: 768px){
+        #shopify-section-{{ sid }} .js-grid {
+    gap: 14px !important;
+}
   }
 
   /* Grid Layout with Zero Layout Shift */
   #shopify-section-{{ sid }} .js-grid {
     display: grid !important;
     grid-template-columns: repeat({{ grid_mobile }}, 1fr) !important;
-    gap: 14px !important;
     width: 100%;
     box-sizing: border-box;
   }
@@ -150,258 +158,456 @@
     margin-bottom: 2rem !important;
   }
 
-  /* Extracted Product Card Styles (rendered once per grid) */
+  /* ===== PREMIUM PRODUCT CARD — matches second reference, spacious, modern ===== */
   .tp-perf-card {
     display: flex;
     flex-direction: column;
-    background-color: #FFFFFF;
-    border-radius: 12px;
-    border: 1px solid #E2D3C7;
-    padding: 0 0 14px 0;
-    position: relative;
+    background: #FFFFFF;
+    border: 1px solid #e9e6e2;
+    border-radius: 14px;
+    overflow: hidden;
     height: 100%;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
-    overflow: hidden;
-    transition: box-shadow 0.15s ease;
-    contain-intrinsic-size: 260px 420px;
+    transition: box-shadow 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
   }
   .tp-perf-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: #e2ddd8;
+    box-shadow: 0 8px 24px rgba(17,18,22,0.07), 0 2px 8px rgba(17,18,22,0.04);
+    transform: translateY(-2px);
   }
 
-  /* Full Bleed Image Header */
+  /* Large image area — clean, centered, consistent */
   .tp-perf-card__image-container {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background-color: #F8F8F8;
-    contain-intrinsic-size: 260px 260px;
+    background: #fcfaf7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
   }
   .tp-perf-card__image-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
   }
   .tp-perf-card__image {
     width: 100%;
     height: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     display: block;
+    transition: transform 0.45s ease;
   }
+  .tp-perf-card:hover .tp-perf-card__image { transform: scale(1.03); }
   .tp-perf-card__badge {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    padding: 4px 8px;
-    font-size: 11px;
+    top: 10px;
+    left: 10px;
+    padding: 5px 9px;
+    font-size: 10px;
     font-weight: 700;
-    border-radius: 4px;
+    border-radius: 999px;
+    background: #0a7a42;
+    color: #fff;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
     z-index: 2;
     line-height: 1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   }
-  .tp-perf-card__badge--sale {
-    background-color: #890303;
-    color: #FFFFFF;
+  .tp-perf-card__badge--sold { background: #111; }
+  .tp-perf-card__wishlist{
+    position:absolute; top:10px; right:10px; z-index:2;
+    width:36px; height:36px; border-radius:50%; background:#fff;
+    border:1px solid #ebe7e2; box-shadow:0 2px 8px rgba(0,0,0,0.10);
+    display:flex; align-items:center; justify-content:center; color:#222;
   }
-  .tp-perf-card__badge--sold {
-    background-color: #767676;
-    color: #FFFFFF;
+  .tp-perf-card__benefits{
+    display:flex; gap:6px; padding:8px 12px; background:#fcfaf7;
+    border-top:1px solid #f0ece8; border-bottom:1px solid #f0ece8;
+    overflow-x:auto; scrollbar-width:none;
   }
+  .tp-perf-card__benefits::-webkit-scrollbar{ display:none; }
 
-  /* Card Body */
+  .pcp-combined{
+    display:grid; grid-template-columns:1fr 1fr; gap:0;
+    border:1px solid #e8e6e2; border-radius:10px; background:#fff; overflow:hidden;
+    margin: 12px 0 0;
+  }
+  .pcp-combined__col{ padding:10px 12px; display:flex; flex-direction:column; gap:2px; }
+  .pcp-combined__col + .pcp-combined__col{ border-left:1px solid #e8e6e2; }
+  .pcp-combined__label{ font-size:10px; font-weight:600; color:#777; text-transform:uppercase; letter-spacing:0.02em; }
+  .pcp-combined__value{ font-size:13px; font-weight:600; color:#111; line-height:1.3; }
+
+  .tp-perf-card__benefit-pill{
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:10px; font-weight:500; color:#5a5a5a;
+    background:#fff; border:1px solid #eee9e3; border-radius:999px;
+    padding:4px 8px; white-space:nowrap;
+  }
+  .tp-perf-card__qty{
+    flex: 0 0 25% !important;
+    max-width: 90px !important;
+    display:flex; align-items:center; justify-content:space-between;
+    border:1px solid #e8e6e2; border-radius:10px; height:38px !important; background:#fff; padding:0 4px !important;
+  }
+  .tp-qty-btn{ width:24px !important; height:24px !important; border:none; background:transparent; font-size:16px !important; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .tp-qty-num{ font-size:13px !important; font-weight:700; min-width:14px !important; text-align:center; }
+
+  /* Remove countdown only inside this card (scoped, not global) */
+  .tp-perf-card .tp-perf-card__countdown,
+  .tp-perf-card countdown-timer,
+  .tp-perf-card [data-countdown],
+  .tp-perf-card .flash-deal-timer { display: none !important; }
+
+  /* Body — spacious */
   .tp-perf-card__details {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    padding: 14px 14px 0 14px;
+    flex: 1;
+    padding: 3px;
+    gap: 0;
   }
-  .tp-perf-card__title-link {
-    text-decoration: none;
-    color: inherit;
+  .tp-perf-card__radio-input:checked + .tp-variant-card{
+    margin-left: 0;
   }
+  .tp-perf-card__title-link { text-decoration: none; color: inherit; display: block; }
   .tp-perf-card__title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #1A1A1A;
-    line-height: 1.35;
-    margin: 0 0 10px 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: #17120e;
+    line-height: 1.28;
+    margin: 0;
+    letter-spacing: -0.01em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 2.7em;
-    min-height: 2.7em;
+    min-height: calc(19px * 1.28 * 2);
+    max-height: calc(19px * 1.28 * 2);
   }
+  .tp-perf-card__subtitle {
+    font-size: 13px;
+    font-weight: 400;
+    color: #6b6b6b;
+    line-height: 1.35;
+    margin: 4px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tp-perf-card__short-info {
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    color: #8c8c8c !important;
+    line-height: 1.3 !important;
+    margin: 4px 0 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .tp-perf-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 0;
+    min-height: 18px;
+  }
+  .tp-perf-card__stars { display: inline-flex; gap: 2px; color: #f5a623; font-size: 13px; line-height: 1; }
+  .tp-star--full { color: #f5a623; }
+  .tp-star--half { color: #f5a623; }
+  .tp-star--empty { color: #e7e7e7; }
+  .tp-perf-card__rating-text { font-size: 12.5px; font-weight: 600; color: #1a1a1a; }
+  .tp-rating-count { font-weight: 400; color: #6b6b6b; }
+
   @media only screen and (max-width: 749px){
     .tp-perf-card__title{
-      font-size: 12px;
-      font-weight: 500;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      height: 3.7em;
-      min-height: 3.7em;
+      font-size: 16px;
+      min-height: calc(16px * 1.28 * 2);
+      max-height: calc(16px * 1.28 * 2);
     }
+    .tp-perf-card__subtitle { font-size: 12px; }
+    .tp-perf-card__image-container { padding: 8px; }
   }
-  /* Variant Options & Pills */
-  .tp-perf-card__options {
-    margin-bottom: 14px;
-    min-height: 48px;
+
+  /* Hide the discount percentage badge in the main product price row */
+  .tp-perf-card__price-discount, [data-tp-discount] {
+    display: none !important;
   }
-  .tp-perf-card__option-group {
-    margin-bottom: 8px;
+
+  /* Show the main product price row below the variant box */
+  .tp-perf-card__price-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    margin: 12px 0 0 !important;
   }
-  .tp-perf-card__option-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: #777777;
-    display: block;
-    margin-bottom: 4px;
+
+  /* Variants Grid Layout */
+  .tp-perf-card__variants-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px 8px !important;
+    margin: 16px 0 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
-  .tp-perf-card__radio-fieldset {
-    border: none;
-    padding: 0;
-    margin: 0;
+  
+  /* If only a single variant, span full width */
+  .tp-perf-card__variants-grid--single {
+    grid-template-columns: 1fr !important;
   }
-  .tp-perf-card__radio-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+
+  /* 3-column variant cards side-by-side */
+  .tp-perf-card__variants-grid--three {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px 6px !important;
   }
-  .tp-perf-card__radio-item {
+  .tp-perf-card__variants-grid--three .tp-variant-card {
+    padding: 8px 6px !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .tp-perf-card__variants-grid--three .tp-variant-card .variant-name {
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  .tp-perf-card__variants-grid--three .tp-variant-card .discount,
+  .tp-perf-card__variants-grid--three .tp-variant-card .variant-discount {
+    font-size: 9px !important;
+    left: 4px !important;
+    top: -7px !important;
+  }
+
+  .tp-variant-card-wrapper {
     position: relative;
-    display: inline-block;
+    display: block;
+    width: 100%;
+    margin-top: 10px !important; /* space for the overlapping discount badge */
   }
+
+  /* Hide radio input but keep functionality */
   .tp-perf-card__radio-input {
     position: absolute;
     opacity: 0;
     width: 0;
     height: 0;
-    margin: 0;
     pointer-events: none;
   }
-  .tp-perf-card__radio-label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: 6px;
-    background-color: #B59E85;
-    color: #0f0c0c;
-    border: none;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.15s ease;
-  }
-  .tp-perf-card__radio-input:checked + .tp-perf-card__radio-label {
-    background-color: #B59E85 !important;
-    color: #070606 !important;
+
+  /* Variant Card Styles (Compact for Name and Discount only) */
+  .tp-variant-card {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    border: 1.5px solid #e8e6e2 !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    padding: 10px 12px !important;
+    cursor: pointer !important;
+    transition: border-color 0.18s ease, background 0.18s ease !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+    min-height: 48px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-left: 0 !important;
   }
 
-  /* Footer & Unified Split Price / Add-To-Cart Button */
+  .tp-variant-card:hover {
+    border-color: #d9d4ce !important;
+    background: #fdfcfa !important;
+  }
+
+  /* Selected State */
+  .tp-perf-card__radio-input:checked + .tp-variant-card {
+    border-color: #006d44 !important;
+    background: #f4f9f6 !important;
+    box-shadow: 0 0 0 1px rgba(0,109,68,0.06) inset !important;
+  }
+
+  /* Specific Variant Card Elements (Discount Badge sits on top of top border line) */
+  .tp-variant-card .discount,
+  .tp-variant-card .variant-discount {
+    position: absolute !important;
+    top: -8px !important;
+    left: 8px !important;
+    background: inherit !important;
+    padding: 0 4px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #006d44 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    text-transform: lowercase !important;
+    z-index: 2 !important;
+  }
+  .tp-variant-card .discount::first-letter,
+  .tp-variant-card .variant-discount::first-letter {
+    text-transform: uppercase !important;
+  }
+
+  .tp-variant-card .variant-name {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #121212 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0 !important;
+    word-break: break-word !important;
+    font-family: 'Outfit', 'Poppins', sans-serif !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Price row — dominant current price */
+  .tp-perf-card__price-row {
+    margin: 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tp-perf-card__price-main {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tp-perf-card__price-current {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .tp-perf-card__price-compare {
+    font-size: 13px;
+    color: #a1a1a1;
+    text-decoration: line-through;
+    line-height: 1;
+  }
+  .tp-perf-card__price-discount {
+    font-size: 11px;
+    font-weight: 700;
+    color: #0a7a42;
+    background: #e6f4ec;
+    border-radius: 999px;
+    padding: 2px 6px;
+    line-height: 1;
+  }
+  .tp-perf-card__save{
+    font-size:11px; font-weight:500; color:#0a7a42; background:#f0faf4; border:1px solid #dbeee3; border-radius:999px; padding:2px 6px; line-height:1;
+  }
+  .tp-perf-card__unit-price {
+    font-size: 11px;
+    color: #8a8a8a;
+    line-height: 1.2;
+  }
+
+  /* Footer — prominent + ADD */
   .tp-perf-card__footer {
-    margin-top: auto;
-    padding: 0 14px;
+    margin-top: auto !important;
+    padding: 8px 0 0 !important;
+    margin-bottom: 5px !important;
   }
   .tp-split-btn-group {
     display: flex;
-    align-items: stretch;
-    width: 100%;
-    height: 44px;
-    border-radius: 25px;
-    border: 1.5px solid #000000;
-    overflow: hidden;
-    box-sizing: border-box;
-    background-color: #FFFFFF;
-  }
-  .tp-split-price {
-    flex: 1;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #FFFFFF;
-    border-right: 1.5px solid #000000;
-    padding: 0 8px;
-    white-space: nowrap;
-  }
-  .tp-split-price .variant-price-wrapper {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 4px !important;
-    width: 100% !important;
-    border: none !important;
-    background: transparent !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    color: #000000 !important;
-  }
-  .tp-split-price .current-price {
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    color: #000000 !important;
-    display: inline-block !important;
-    width: auto !important;
-    font-family: 'Poppins', sans-serif !important;
-  }
-  .tp-split-price .compare-at-price {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    color: #888888 !important;
-    text-decoration: line-through !important;
-    display: inline-block !important;
-    margin-left: 3px !important;
-    font-family: 'Poppins', sans-serif !important;
-  }
-  .tp-split-price .offer-percentage {
-    display: none !important;
-  }
-
-  .tp-split-atc {
-    flex: 1.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .tp-split-atc form {
     width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    height: auto;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
   }
+  .tp-split-price { display: none !important; }
+  .tp-split-atc { flex: 1; display: flex; }
+  .tp-split-atc form { width: 100%; margin: 0; }
   .tp-perf-card__atc-btn {
     width: 100%;
-    height: 100%;
-    background-color: #000000;
-    color: #FFFFFF;
-    font-size: 12px;
+    height: 38px !important;
+    border-radius: 10px !important;
+    background: #111;
+    color: #fff;
+    border: 1px solid #111;
+    font-size: 13px;
     font-weight: 700;
-    border: none;
-    cursor: pointer;
-    display: flex;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-family: 'Poppins', sans-serif;
-    transition: background-color 0.15s ease;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
   }
-  .tp-perf-card__atc-btn:hover:not([disabled]) {
-    background-color: #222222;
-  }
-  .tp-perf-card__atc-btn[disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #555555;
+  .tp-perf-card__atc-btn:hover:not([disabled]) { background: #222; border-color: #222; box-shadow: 0 6px 14px rgba(0,0,0,0.12); }
+  .tp-perf-card__atc-btn:active { transform: scale(0.98); }
+  .tp-perf-card__atc-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 767px){
+    .tp-perf-card__save{
+      font-size: 8px;
+      padding: 2px 2px;
+    }
+    .tp-perf-card__variants-grid {
+      grid-template-columns: 1fr -1fr !important;
+      gap: 12px 6px !important;
+    }
+    .tp-perf-card__variants-grid--three {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 12px 4px !important;
+    }
+    .tp-perf-card__variants-grid--three .tp-variant-card {
+      padding: 6px 2px !important;
+      min-height: 42px !important;
+    }
+    .tp-perf-card__variants-grid--three .tp-variant-card .variant-name {
+      font-size: 10px !important;
+    }
+    .tp-perf-card__variants-grid--three .tp-variant-card .discount,
+    .tp-perf-card__variants-grid--three .tp-variant-card .variant-discount {
+      font-size: 8.5px !important;
+      left: 2px !important;
+      top: -7px !important;
+    }
+    .tp-variant-card {
+      padding: 8px 6px !important;
+      min-height: 48px !important;
+    }
+    .tp-variant-card .variant-name {
+      font-size: 12px !important;
+    }
+    .tp-perf-card__qty {
+      flex: 0 0 25% !important;
+      max-width: 80px !important;
+      height: 36px !important;
+    }
+    .tp-perf-card__atc-btn { 
+      height: 36px !important; 
+      font-size: 11px !important; 
+      padding: 0 10px !important; 
+    }
+    .tp-perf-card__atc-btn .mobile-hide {
+      display: none !important;
+    }
+    .tp-perf-card__atc-btn .desktop-hide {
+      display: inline-block !important;
+    }
+    .tp-perf-card__price-current { font-size: 16px; }
   }
 </style>
 
@@ -410,6 +616,13 @@
     if (window.tpPerfCardInit) return;
     window.tpPerfCardInit = true;
 
+    function formatMoney(cents){
+      var rupees = cents / 100;
+      if (rupees % 1 === 0) return '₹' + rupees;
+      var s = rupees.toFixed(2).replace(/\.00$/, '');
+      return '₹' + s;
+    }
+
     function handleVariantUpdate(target) {
       if (target && target.classList.contains('tp-perf-card__radio-input')) {
         var card = target.closest('dynamic-card');
@@ -417,13 +630,61 @@
         var variantId = target.getAttribute('data-variant-id');
         var hiddenInput = card.querySelector('.tp-perf-card__hidden-id');
         var atcBtn = card.querySelector('.tp-perf-card__atc-btn');
+        if (hiddenInput && variantId) hiddenInput.value = variantId;
+        if (atcBtn && variantId) atcBtn.setAttribute('data-selected-value-data-value', variantId);
 
-        if (hiddenInput && variantId) {
-          hiddenInput.value = variantId;
-        }
-        if (atcBtn && variantId) {
-          atcBtn.setAttribute('data-selected-value-data-value', variantId);
-        }
+        // Update price row from variants JSON
+        try {
+          var jsonEl = card.querySelector('script[data-product-variants]');
+          if (!jsonEl) return;
+          var variants = JSON.parse(jsonEl.textContent);
+          var v = null;
+          for (var i=0;i<variants.length;i++){ if (String(variants[i].id) === String(variantId)){ v = variants[i]; break; } }
+          if (!v) return;
+          var curEl = card.querySelector('[data-tp-current]');
+          var compEl = card.querySelector('[data-tp-compare]');
+          var discEl = card.querySelector('[data-tp-discount]');
+          var saveEl = card.querySelector('[data-tp-save]');
+          var unitEl = card.querySelector('[data-tp-unit]');
+          if (curEl) curEl.textContent = formatMoney(v.price);
+          if (compEl){
+            if (v.compare_at_price && v.compare_at_price > v.price){
+              compEl.textContent = formatMoney(v.compare_at_price);
+              compEl.style.display = '';
+            } else {
+              compEl.textContent = '';
+              compEl.style.display = 'none';
+            }
+          }
+          if (saveEl){
+            if (v.compare_at_price && v.compare_at_price > v.price){
+              var saveAmt = v.compare_at_price - v.price;
+              saveEl.textContent = 'Save ' + formatMoney(saveAmt);
+              saveEl.style.display = '';
+            } else {
+              saveEl.textContent = '';
+              saveEl.style.display = 'none';
+            }
+          }
+          if (discEl){
+            if (v.compare_at_price && v.compare_at_price > v.price){
+              var disc = Math.round((v.compare_at_price - v.price)*100 / v.compare_at_price);
+              discEl.textContent = disc + '% off';
+              discEl.style.display = '';
+            } else {
+              discEl.style.display = 'none';
+            }
+          }
+          if (unitEl){
+            if (v.unit_price){
+              var unit = v.unit_price_measurement ? v.unit_price_measurement.reference_unit : 'unit';
+              unitEl.textContent = formatMoney(v.unit_price) + '/' + unit;
+              unitEl.style.display = '';
+            } else {
+              unitEl.style.display = 'none';
+            }
+          }
+        } catch(e){}
       }
     }
 
@@ -436,6 +697,24 @@
     document.addEventListener('click', function(e) {
       if (e.target && e.target.classList.contains('tp-perf-card__radio-input')) {
         handleVariantUpdate(e.target);
+      }
+      var qBtn = e.target.closest('[data-qty-minus], [data-qty-plus]');
+      if(qBtn){
+        var card = qBtn.closest('dynamic-card');
+        if(!card) return;
+        var display = card.querySelector('[data-qty-display]');
+        var form = card.querySelector('form');
+        var qtyInput = form ? form.querySelector('input[name="quantity"]') : null;
+        if(!qtyInput && form){
+          qtyInput = document.createElement('input');
+          qtyInput.type='hidden'; qtyInput.name='quantity'; qtyInput.value='1';
+          form.appendChild(qtyInput);
+        }
+        var cur = parseInt(display ? display.textContent : '1', 10) || 1;
+        if(qBtn.hasAttribute('data-qty-plus')) cur++;
+        else cur = Math.max(1, cur-1);
+        if(display) display.textContent = cur;
+        if(qtyInput) qtyInput.value = cur;
       }
     });
   })();

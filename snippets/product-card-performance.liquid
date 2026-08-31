@@ -53,7 +53,7 @@
           sizes="(min-width: 1200px) 260px, (min-width: 992px) 220px, (min-width: 768px) 33vw, 110px"
           width="{{ featured_img.width | default: 260 }}"
           height="{{ featured_img.height | default: 260 }}"
-          style="width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover;"
+          style="width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: contain;"
           alt="{{ img_alt }}"
           class="tp-perf-card__image"
           decoding="async"
@@ -72,62 +72,218 @@
     {%- if sold_out -%}
       <span class="tp-perf-card__badge tp-perf-card__badge--sold">Sold Out</span>
     {%- elsif discount_percent > 0 -%}
+      <span class="tp-perf-card__badge">{{ discount_percent }}% OFF</span>
     {%- endif -%}
   </div>
+  {%- liquid
+    assign pcp_benefits = ''
+    assign hide_subtitle = false
+    if product.metafields.custom.benefits.value != blank
+      for b in product.metafields.custom.benefits.value
+        assign pcp_benefits = pcp_benefits | append: b | append: '|'
+      endfor
+    else
+      for tag in product.tags
+        assign t = tag | downcase
+        if t contains 'overnight'
+          unless pcp_benefits contains 'Overnight'
+            assign pcp_benefits = pcp_benefits | append: '🌙 Overnight Protection|'
+          endunless
+        elsif t contains 'rash'
+          unless pcp_benefits contains 'Rash Free'
+            assign pcp_benefits = pcp_benefits | append: '🛡 Rash Free Comfort|'
+          endunless
+        elsif t contains 'cotton'
+          unless pcp_benefits contains 'Cotton'
+            assign pcp_benefits = pcp_benefits | append: '🌿 Cotton Top Sheet|'
+          endunless
+        endif
+      endfor
+
+      if pcp_benefits == ''
+        assign p_title_dc = product.title | downcase
+        assign p_type_dc = product.type | downcase
+        if p_title_dc contains 'cream' or p_type_dc contains 'cream' or p_title_dc contains 'cramp'
+          assign pcp_benefits = '🌿 100% Natural & Safe|⚡ Fast Pain Relief|'
+        elsif p_title_dc contains 'cup' or p_type_dc contains 'cup'
+          assign pcp_benefits = '🛡️ Medical Grade Silicone|🌍 Eco-Friendly|'
+          assign hide_subtitle = true
+        elsif product.metafields.theme.cutline.value != blank
+          assign pcp_benefits = product.metafields.theme.cutline.value | prepend: '✨ ' | append: '|'
+          assign hide_subtitle = true
+        endif
+      endif
+    endif
+  -%}
+  {%- if pcp_benefits != '' -%}
+    <div class="tp-perf-card__benefits">
+      {%- assign pcb_list = pcp_benefits | split: '|' -%}
+      {%- for b in pcb_list limit:3 -%}
+        {%- if b != '' -%}<span class="tp-perf-card__benefit-pill">{{ b }}</span>{%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 
   <div class="tp-perf-card__details">
+    {%- liquid
+      assign display_title = product.title
+      assign subtitle_text = product.metafields.theme.cutline.value | default: ''
+      if hide_subtitle
+        assign subtitle_text = ''
+      endif
+      if subtitle_text == blank and product.title contains ' | '
+        assign title_parts = product.title | split: ' | '
+        assign display_title = title_parts[0]
+        assign subtitle_text = title_parts[1]
+      endif
+    -%}
     <a href="{{ product.url }}" class="tp-perf-card__title-link">
-      <h3 class="tp-perf-card__title">{{ product.title | escape }}</h3>
+      <h3 class="tp-perf-card__title">{{ display_title | escape }}</h3>
+      {%- if subtitle_text != blank -%}
+        {% comment %} <p class="tp-perf-card__subtitle">{{ subtitle_text | escape }}</p> {% endcomment %}
+      {%- endif -%}
+      {%- assign short_info = product.metafields.custom.short_info_product.value | default: product.metafields.custom.short_info_product -%}
+      {%- if short_info == blank -%}
+        {%- assign p_title_dc = product.title | downcase -%}
+        {%- assign p_type_dc = product.type | downcase -%}
+        {%- if p_title_dc contains 'cream' or p_type_dc contains 'cream' or p_title_dc contains 'cramp' -%}
+          {%- assign short_info = 'Fast-acting pain relief cream made with natural Ayurvedic ingredients.' -%}
+        {%- elsif p_title_dc contains 'cup' or p_type_dc contains 'cup' -%}
+          {%- assign short_info = '100% medical-grade silicone menstrual cup for eco-friendly comfort.' -%}
+        {%- else -%}
+          {%- assign short_info = 'Premium sanitary pads for superior absorption and comfort.' -%}
+        {%- endif -%}
+      {%- endif -%}
+      <p class="tp-perf-card__short-info">{{ short_info | escape }}</p>
     </a>
 
-    {%- comment -%} Judge.me Review Badge with Count {%- endcomment -%}
+    {%- liquid
+      assign rating_val = product.metafields.reviews.rating.value.rating | default: product.metafields.reviews.rating.value | default: ''
+      assign rating_cnt = product.metafields.reviews.rating_count | default: 0
+      assign rating_cnt_num = rating_cnt | plus: 0
+    -%}
+    {%- if rating_val != blank and rating_val != 0 -%}
+      <div class="tp-perf-card__rating" role="img" aria-label="Rated {{ rating_val }} out of 5">
+        {%- liquid
+          assign full_stars = rating_val | floor
+          assign rem = rating_val | minus: full_stars
+          assign has_half = false
+          if rem >= 0.3 and rem < 0.8
+            assign has_half = true
+          elsif rem >= 0.8
+            assign full_stars = full_stars | plus: 1
+          endif
+          if full_stars > 5
+            assign full_stars = 5
+            assign has_half = false
+          endif
+          assign half_target = full_stars | plus: 1
+        -%}
+        <span class="tp-perf-card__stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            {%- if i <= full_stars -%}
+              <span class="tp-star tp-star--full">★</span>
+            {%- elsif has_half and i == half_target -%}
+              <span class="tp-star tp-star--half">★</span>
+            {%- else -%}
+              <span class="tp-star tp-star--empty">☆</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+        <span class="tp-perf-card__rating-text">{{ rating_val | round: 1 }}{% if rating_cnt_num > 0 %} <span class="tp-rating-count">({{ rating_cnt_num }})</span>{% endif %}</span>
+      </div>
+    {%- endif -%}
 
 
-    <div class="tp-perf-card__options">
-      {%- unless product.has_only_default_variant -%}
-        {%- for option in product.options_with_values -%}
-          <div class="tp-perf-card__option-group" data-option-position="{{ forloop.index }}">
-            <span class="tp-perf-card__option-title">
-              {%- if option.name contains 'Size' or option.name contains 'size' -%}
-                Size
-              {%- else -%}
-                Available In
-              {%- endif -%}
-            </span>
-            <fieldset class="tp-perf-card__radio-fieldset">
-              <legend class="visually-hidden">{{ option.name }}</legend>
-              <div class="tp-perf-card__radio-list">
-                {%- for value in option.values -%}
-                  {%- assign option_index = 'option' | append: forloop.parentloop.index -%}
-                  {%- assign variant = product.variants | where: option_index, value | first -%}
-                  <span class="tp-perf-card__radio-item">
-                    <input
-                      type="radio"
-                      name="opt-{{ option.name | handleize }}-{{ product.id }}"
-                      value="{{ value | escape }}"
-                      id="opt-{{ product.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
-                      data-variant-id="{{ variant.id }}"
-                      {% if forloop.first %}checked="checked"{% endif %}
-                      class="variant-radio-input tp-perf-card__radio-input"
-                    >
-                    <label
-                      for="opt-{{ product.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
-                      class="variant-label tp-perf-card__radio-label"
-                    >
-                      <span>{{ value }}</span>
-                    </label>
-                  </span>
-                {%- endfor -%}
-              </div>
-            </fieldset>
-          </div>
-        {%- endfor -%}
-      {%- endunless -%}
+    <div class="tp-perf-card__variants-grid{% if product.variants.size == 1 %} tp-perf-card__variants-grid--single{% elsif product.variants.size == 3 %} tp-perf-card__variants-grid--three{% endif %}">
+      {%- for variant in product.variants -%}
+        {%- liquid
+          assign pcp_v_price = variant.price
+          assign pcp_v_compare = variant.compare_at_price
+          assign pcp_v_discount = 0
+          if pcp_v_compare and pcp_v_compare > pcp_v_price
+            assign pcp_v_disc_amt = pcp_v_compare | minus: pcp_v_price
+            assign pcp_v_discount = pcp_v_disc_amt | times: 100 | divided_by: pcp_v_compare | round
+          endif
+
+          assign is_selected = false
+          if variant.id == current_variant.id
+            assign is_selected = true
+          endif
+        -%}
+        <span class="tp-variant-card-wrapper">
+          <input
+            type="radio"
+            name="variant-select-{{ product.id }}"
+            value="{{ variant.id }}"
+            id="variant-{{ product.id }}-{{ variant.id }}"
+            data-variant-id="{{ variant.id }}"
+            class="variant-radio-input tp-perf-card__radio-input"
+            {% if is_selected %}checked="checked"{% endif %}
+          >
+          <label
+            for="variant-{{ product.id }}-{{ variant.id }}"
+            class="tp-variant-card"
+          >
+            {%- if pcp_v_discount > 0 -%}
+              <div class="discount variant-discount">{{ pcp_v_discount }}% off</div>
+            {%- endif -%}
+
+            {%- liquid
+              assign v_display = variant.title
+              if v_display contains 'Default Title' or v_display == 'Title'
+                assign v_display = ''
+              endif
+              assign v_display_clean = v_display | replace: ' + ', ' · '
+            -%}
+            {%- if v_display_clean != blank -%}
+              <div class="variant-name">{{ v_display_clean }}</div>
+            {%- endif -%}
+          </label>
+        </span>
+      {%- endfor -%}
+    </div>
+
+    {%- liquid
+      assign price_row_current = current_variant.price
+      assign price_row_compare = current_variant.compare_at_price
+      assign price_row_has_compare = false
+      assign price_row_discount = 0
+      if price_row_compare and price_row_compare > price_row_current
+        assign price_row_has_compare = true
+        assign price_row_disc_amt = price_row_compare | minus: price_row_current
+        assign price_row_discount = price_row_disc_amt | times: 100 | divided_by: price_row_compare | round
+      endif
+      assign price_row_unit = current_variant.unit_price
+    -%}
+    <div class="tp-perf-card__price-row" data-tp-price-row>
+      <div class="tp-perf-card__price-main" style="display:flex; align-items:center; gap:6px; flex-wrap:nowrap;">
+        <span class="tp-perf-card__price-current" data-tp-current>₹{{ price_row_current | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>
+        {%- if price_row_has_compare -%}
+          <span class="tp-perf-card__price-compare" data-tp-compare>₹{{ price_row_compare | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>
+          {%- assign save_amt = price_row_compare | minus: price_row_current -%}
+          <span class="tp-perf-card__save" data-tp-save>Save ₹{{ save_amt | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>
+        {%- else -%}
+          <span class="tp-perf-card__price-compare" data-tp-compare style="display:none"></span>
+          <span class="tp-perf-card__price-discount" data-tp-discount style="display:none"></span>
+          <span class="tp-perf-card__save" data-tp-save style="display:none"></span>
+        {%- endif -%}
+      </div>
+      {%- if price_row_unit -%}
+        <span class="tp-perf-card__unit-price" data-tp-unit style="font-size:11px; color:#8a8a8a;">₹{{ price_row_unit | money_without_trailing_zeros | remove: '₹' | strip }}/{{ current_variant.unit_price_measurement.reference_unit }}</span>
+      {%- else -%}
+        <span class="tp-perf-card__unit-price" data-tp-unit style="display:none"></span>
+      {%- endif -%}
     </div>
 
     <div class="tp-perf-card__footer">
-      <div class="tp-split-btn-group">
-        <div class="tp-split-price">
+      <div style="display:flex; gap:5px; align-items:center;">
+        <div class="tp-perf-card__qty" data-pcp-qty>
+          <button type="button" class="tp-qty-btn" data-qty-minus aria-label="Decrease">−</button>
+          <span class="tp-qty-num" data-qty-display>1</span>
+          <button type="button" class="tp-qty-btn" data-qty-plus aria-label="Increase">+</button>
+        </div>
+        <div class="tp-split-price" style="display:none">
           <div class="variant-price-wrapper">
             <span class="current-price">
               ₹{{ current_variant.price | divided_by: 100 }}
@@ -140,7 +296,7 @@
           </div>
         </div>
 
-        <div class="tp-split-atc" x-data="productAddButtonForm()">
+        <div class="tp-split-atc" style="flex:1" x-data="productAddButtonForm()">
           {%- form 'product', product, class: 'tp-perf-card__form', data-product-form: '' -%}
             <input type="hidden" name="id" value="{{ current_variant.id }}" class="tp-perf-card__hidden-id">
             
@@ -154,7 +310,8 @@
               {% if sold_out %}disabled="disabled"{% endif %}
               aria-label="{% if sold_out %}Sold Out{% else %}Add to Cart{% endif %}"
             >
-              <span class="btn-state-ready">
+              <span class="btn-state-ready" style="display:flex; align-items:center; gap:6px; justify-content:center;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-13z"/><path d="M6 6L5 2H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
                 {% if sold_out %}Sold Out{% else %}<span class="mobile-hide">Add to Cart</span><span class="desktop-hide">Add</span>{% endif %}
               </span>
               <span class="btn-state-loading" style="display: none;">

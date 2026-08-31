@@ -11,6 +11,195 @@
     button[id^="quick-add-menu-button"] { display: none !important; }
   {% endif %}
 </style>
+<style>
+/* ===== PREMIUM CARD — 4-col fit, spacious, modern ===== */
+.product-grid-item-variant .product-grid-item__container{
+  background:#fff; border:1px solid #e9e6e2; border-radius:14px; overflow:hidden;
+  display:flex; flex-direction:column; height:100%;
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+}
+.product-grid-item-variant .product-grid-item__container:hover{
+  box-shadow:0 8px 24px rgba(17,18,22,0.07);
+  transform:translateY(-1px);
+}
+/* Image — larger, 38-42% of card, clean */
+.product-grid-item-variant .product-grid-item__images{
+  background:#fff; padding:14px; aspect-ratio:1/1; overflow:hidden;
+  border-bottom:1px solid #f5f1ec;
+}
+.product-grid-item-variant .lazy-image-wrapper{ background:#fff !important; }
+.product-grid-item-variant .product-grid-item__image,
+.product-grid-item-variant .main-image{
+  object-fit:contain !important; object-position:center !important;
+  width:100% !important; height:100% !important;
+}
+/* Discount badge — compact top-left, scoped only inside card */
+.product-grid-item-variant .tp-card-badges{ position:absolute; top:10px; left:10px; z-index:3; display:flex; }
+.product-grid-item-variant .tp-badge{ display:inline-flex; align-items:center; padding:5px 8px; font-size:11px; font-weight:700; line-height:1; border-radius:999px; background:#0a7a42; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.12); }
+.product-grid-item-variant .tp-badge--sold{ background:#111; }
+.product-grid-item-variant .product-discount-badge{ position:absolute; top:10px; left:10px; z-index:3; background:#0a7a42; color:#fff; padding:5px 8px; border-radius:999px; font-size:11px; font-weight:700; line-height:1; box-shadow:0 4px 12px rgba(0,0,0,0.12); display:inline-flex !important; }
+.product-grid-item-variant .product-discount-badge:empty{ display:none !important; }
+/* Hide countdown only inside this card */
+.product-grid-item-variant countdown-timer,
+.product-grid-item-variant .countdown__timer,
+.product-grid-item-variant [data-countdown]{ display:none !important; }
+/* Wishlist heart — circular top-right, 40px */
+.product-grid-item-variant .pgiv-wishlist{
+  position:absolute; top:10px; right:10px; z-index:3;
+  width:40px; height:40px; border-radius:50%; background:#fff;
+  border:1px solid #ebe7e2; box-shadow:0 2px 8px rgba(0,0,0,0.10);
+  display:flex; align-items:center; justify-content:center; color:#222;
+}
+.product-grid-item-variant .pgiv-wishlist svg{ stroke:#222; fill:none; }
+/* Benefits strip — compact pills */
+.product-grid-item-variant .pgiv-benefits{
+  display:flex; gap:6px; padding:8px 12px; background:#fcfaf7;
+  border-top:1px solid #f0ece8; border-bottom:1px solid #f0ece8;
+  overflow-x:auto; scrollbar-width:none;
+}
+.product-grid-item-variant .pgiv-benefits::-webkit-scrollbar{ display:none; }
+.product-grid-item-variant .pgiv-benefit-pill{
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:11px; font-weight:500; color:#5a5a5a;
+  background:#fff; border:1px solid #eee9e3; border-radius:999px;
+  padding:5px 9px; white-space:nowrap;
+}
+/* Title — 16-18px, 700, 2 lines, consistent height */
+.product-grid-item-variant .product__grid__title{
+  font-size:17px !important; font-weight:700 !important; line-height:1.25 !important;
+  color:#17120e !important; letter-spacing:-0.01em !important;
+  display:-webkit-box !important; -webkit-line-clamp:2 !important; -webkit-box-orient:vertical !important;
+  overflow:hidden !important; min-height:calc(17px*1.25*2) !important; max-height:calc(17px*1.25*2) !important;
+  margin:0 !important;
+}
+.product-grid-item-variant .product__grid__title__wrapper{ display:block !important; text-align:left !important; padding:12px 12px 0 !important; }
+.product-grid-item-variant .pgiv-subtitle{
+  font-size:13px; font-weight:400; color:#6b6b6b; line-height:1.35; margin:4px 0 0;
+  display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
+}
+/* Rating — stars */
+.product-grid-item-variant .rating__wrapper__grid{ display:flex !important; justify-content:flex-start !important; margin:6px 12px 0 !important; }
+.product-grid-item-variant .product__rating{ display:flex !important; align-items:center !important; gap:6px !important; font-size:12px !important; }
+.product-grid-item-variant .product__rating__star:before{ color:#f5a623 !important; margin:0 2px 0 0 !important; }
+/* Variants — large pricing cards side-by-side */
+.product-grid-item-variant .variant-options{ margin:10px 12px 0 !important; }
+.product-grid-item-variant .pgiv-combined{
+  display:grid !important; grid-template-columns:1fr 1fr !important; gap:0 !important;
+  border:1px solid #e8e6e2 !important; border-radius:10px !important; background:#fff !important; overflow:hidden !important;
+  margin:0 12px !important;
+}
+.product-grid-item-variant .pgiv-combined__col{
+  padding:10px 12px !important; display:flex !important; flex-direction:column !important; gap:2px !important;
+}
+.product-grid-item-variant .pgiv-combined__col + .pgiv-combined__col{ border-left:1px solid #e8e6e2 !important; }
+.product-grid-item-variant .pgiv-combined__label{
+  font-size:10px !important; font-weight:600 !important; color:#777 !important; text-transform:uppercase !important; letter-spacing:0.02em !important;
+}
+.product-grid-item-variant .pgiv-combined__value{
+  font-size:13px !important; font-weight:600 !important; color:#111 !important; line-height:1.3 !important;
+}
+.product-grid-item-variant .product-card .form__selectors,
+.product-grid-item-variant .form__selectors{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:8px !important; margin:0 !important; align-items:start !important; }
+.product-grid-item-variant .form__selectors:has(> :only-child){ grid-template-columns:1fr !important; }
+
+.product-grid-item-variant .selector-wrapper{ margin:0 !important; width:100% !important; }
+.product-grid-item-variant .radio__legend{ display:block !important; margin:0 0 4px 0 !important; }
+.product-grid-item-variant .radio__legend__label{ font-size:10px !important; font-weight:600 !important; color:#777 !important; display:block !important; text-transform:uppercase !important; letter-spacing:0.02em !important; }
+.product-grid-item-variant .radio__inputs{ display:flex !important; flex-wrap:wrap !important; gap:6px !important; grid-template-columns:none !important; }
+.product-grid-item-variant .option-values{ display:flex !important; flex-wrap:wrap !important; gap:6px !important; grid-template-columns:none !important; }
+.product-grid-item-variant .radio__button{ display:block !important; width:100% !important; }
+.product-grid-item-variant .radio__button label,
+.product-grid-item-variant .option-values .variant-label{
+  display:inline-flex !important; align-items:center !important; justify-content:center !important; flex-wrap:wrap !important;
+  border:1.5px solid #e0ddd8 !important; border-radius:999px !important; background:#fff !important;
+  padding:7px 14px !important; min-height:36px !important; height:auto !important; cursor:pointer !important;
+  transition:all 0.2s ease !important;
+  font-size:12.5px !important; font-weight:600 !important; color:#222 !important; text-align:center !important; line-height:1.3 !important;
+  box-shadow:0 1px 3px rgba(0,0,0,0.05) !important; white-space:normal !important; word-break:break-word !important; max-width:100% !important;
+}
+.product-grid-item-variant .option-values .variant-label:has(input:checked){
+  border-color:#0a7a42 !important; background:#f3faf6 !important; box-shadow:0 0 0 1px rgba(10,122,66,0.08) inset !important;
+}
+.product-grid-item-variant .option-values .variant-label:has(.tp-variant-box){
+  display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:flex-start !important;
+  border-radius:10px !important; padding:8px 10px !important; min-height:78px !important; width:100% !important; white-space:normal !important;
+}
+.product-grid-item-variant .tp-variant-box{ display:flex !important; flex-direction:column !important; width:100% !important; gap:2px !important; text-align:left !important; }
+.product-grid-item-variant .radio__button label:hover{ border-color:#d9d4ce !important; background:#fdfcfa !important; }
+.product-grid-item-variant .radio__button input:checked + label{
+  border-color:#0a7a42 !important; background:#f3faf6 !important; box-shadow:0 0 0 1px rgba(10,122,66,0.08) inset !important;
+}
+.product-grid-item-variant .variant-label span{ font-size:inherit !important; white-space:normal !important; word-break:break-word !important; }
+.product-grid-item-variant .tp-variant-name{ font-size:12px; font-weight:600; color:#1a1a1a; line-height:1.25; display:block; }
+.product-grid-item-variant .tp-variant-prices{ display:flex; align-items:baseline; gap:5px; margin-top:4px; flex-wrap:wrap; }
+.product-grid-item-variant .tp-variant-current{ font-size:15px; font-weight:800; color:#111; line-height:1; }
+.product-grid-item-variant .tp-variant-compare{ font-size:11px; color:#9a9a9a; text-decoration:line-through; line-height:1; }
+.product-grid-item-variant .tp-variant-discount{ font-size:10px; font-weight:700; color:#0a7a42; line-height:1; }
+.product-grid-item-variant .tp-variant-unit{ font-size:11px; color:#8a8a8a; margin-top:2px; line-height:1; }
+.product-grid-item-variant .pgiv-variant-inner{ display:flex; flex-direction:column; gap:1px; width:100%; text-align:left; }
+.product-grid-item-variant .pgiv-variant-discount{ font-size:10px; font-weight:700; color:#0a7a42; line-height:1; }
+.product-grid-item-variant .pgiv-variant-name{ font-size:12px; font-weight:600; color:#1a1a1a; line-height:1.2; }
+.product-grid-item-variant .pgiv-variant-secondary{ font-size:11px; font-weight:400; color:#5a5a5a; line-height:1.2; }
+.product-grid-item-variant .pgiv-variant-prices{ display:flex; gap:4px; align-items:baseline; margin-top:2px; flex-wrap:wrap; }
+.product-grid-item-variant .pgiv-variant-current{ font-size:13px; font-weight:700; color:#111; line-height:1; }
+.product-grid-item-variant .pgiv-variant-compare{ font-size:11px; color:#9a9a9a; text-decoration:line-through; line-height:1; }
+.product-grid-item-variant .pgiv-variant-unit{ font-size:10px; color:#8a8a8a; line-height:1; }
+/* Price area — horizontal clean */
+.product-grid-item-variant .pgiv-price-area{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  padding:12px 12px 0; font-family:'Poppins', sans-serif;
+}
+.product-grid-item-variant .pgiv-price-current{ font-size:18px; font-weight:800; color:#111; letter-spacing:-0.02em; line-height:1; }
+.product-grid-item-variant .pgiv-price-compare{ font-size:13px; color:#a1a1a1; text-decoration:line-through; line-height:1; }
+.product-grid-item-variant .pgiv-discount-pill{ font-size:11px; font-weight:700; color:#0a7a42; background:#e6f4ec; border-radius:999px; padding:3px 7px; line-height:1; }
+.product-grid-item-variant .pgiv-save-pill{ font-size:11px; font-weight:500; color:#0a7a42; background:#f0faf4; border:1px solid #dbeee3; border-radius:999px; padding:3px 7px; line-height:1; }
+.product-grid-item-variant .price{ font-size:18px !important; font-weight:800 !important; color:#111 !important; letter-spacing:-0.02em !important; }
+.product-grid-item-variant .compare-at{ font-size:13px !important; color:#a1a1a1 !important; text-decoration:line-through !important; }
+/* Quantity + ATC — 30/70, 46-48px high */
+.product-grid-item-variant .pgiv-action-row{
+  display:flex; gap:8px; padding:12px 12px 14px; margin-top:auto; align-items:center;
+}
+.product-grid-item-variant .pgiv-qty{
+  flex:0 0 30%; display:flex; align-items:center; justify-content:space-between;
+  border:1px solid #e8e6e2; border-radius:999px; height:46px; background:#fff; padding:0 6px;
+}
+.product-grid-item-variant .pgiv-qty-btn{
+  width:32px; height:32px; border:none; background:transparent; font-size:18px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.product-grid-item-variant .pgiv-qty-num{ font-size:14px; font-weight:700; min-width:20px; text-align:center; }
+.product-grid-item-variant .pgiv-atc-wrap{ flex:1; display:flex; }
+.product-grid-item-variant .add-to-cart-button-card{
+  display:flex !important; flex-direction:column !important; gap:8px !important; padding:0 12px !important;
+  background:transparent !important; border:none !important; width:100% !important;
+}
+.product-grid-item-variant .product-price-card-product{
+  display:flex !important; align-items:center !important; justify-content:flex-start !important;
+  background:transparent !important; border:none !important; padding:6px 0 !important; width:100% !important; height:auto !important;
+  cursor:default !important;
+}
+.product-grid-item-variant .product__grid__price{ display:flex !important; align-items:center !important; gap:6px !important; flex-wrap:wrap !important; width:100% !important; }
+.product-grid-item-variant .product-add-button-form{ flex:1; }
+.product-grid-item-variant .add-cart-button-singale-variant,
+.product-grid-item-variant .add-to-cart-button-for-product-card{
+  width:100% !important; height:46px !important; border-radius:999px !important;
+  background:#0a3d1a !important; color:#fff !important; border:1px solid #0a3d1a !important;
+  font-size:13px !important; font-weight:700 !important; letter-spacing:0.02em !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+}
+.product-grid-item-variant .free-shipping-text-product{ display:none !important; }
+@media (max-width:767px){
+  .product-grid-item-variant .product__grid__title{ font-size:15px !important; min-height:calc(15px*1.25*2) !important; max-height:calc(15px*1.25*2) !important; }
+  .product-grid-item-variant .product-grid-item__images{ padding:10px !important; }
+  .product-grid-item-variant .radio__inputs{ gap:6px !important; }
+  .product-grid-item-variant .radio__button label{ min-height:72px !important; }
+  .product-grid-item-variant .pgiv-price-current{ font-size:16px !important; }
+  .product-grid-item-variant .pgiv-qty{ height:44px !important; }
+  .product-grid-item-variant .add-cart-button-singale-variant{ height:44px !important; }
+}
+@media (max-width:360px){
+  .product-grid-item-variant .radio__inputs{ grid-template-columns:1fr !important; }
+}
+</style>
 {% unless product.tags contains 'hide' %}
 {% comment %}
   Inner content for a grid item
@@ -149,16 +338,11 @@
 {%- capture tp_badges -%}
   {%- if left_badge_content != blank or sold_out or show_save_badge -%}
     <div class="tp-card-badges">
-      {% comment %} <div>
-        {%- if left_badge_content != blank -%}
-          <span class="tp-badge tp-badge--best tp-badge--pulse">{{ left_badge_content }}</span>
-        {%- endif -%}
-      </div> {% endcomment %}
       <div>
         {%- if sold_out -%}
           <span class="tp-badge tp-badge--sold">Sold out</span>
         {%- elsif show_save_badge -%}
-          {% comment %} <span class="tp-badge tp-badge--save">Save {{ save_percent }}%</span> {% endcomment %}
+          <span class="tp-badge tp-badge--save">{{ save_percent }}% OFF</span>
         {%- endif -%}
       </div>
     </div>
@@ -257,6 +441,52 @@
     </div>
     <div data-error-display class="product-grid-item__error-display">&nbsp;</div>
     {{ tp_badges }}
+    <div class="pgiv-wishlist" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2l-1.45-1.32C5.4 14.2 2 10.9 2 6.95 2 3.4 4.76 1 8.1 1c1.86 0 3.63.93 4.9 2.4 1.27-1.47 3.04-2.4 4.9-2.4C21.24 1 24 3.4 24 6.95c0 3.95-3.4 7.25-8.55 11.93L12 20.2z"/></svg></div>
+    {%- liquid
+      assign pgiv_benefit_items = ''
+      if product.metafields.custom.benefits.value != blank
+        for b in product.metafields.custom.benefits.value
+          assign pgiv_benefit_items = pgiv_benefit_items | append: b | append: '|'
+        endfor
+      elsif product.metafields.custom.benefits != blank
+        assign pgiv_benefit_items = product.metafields.custom.benefits | append: '|'
+      else
+        for tag in product.tags
+          assign t = tag | downcase
+          if t contains 'overnight'
+            unless pgiv_benefit_items contains 'Overnight'
+              assign pgiv_benefit_items = pgiv_benefit_items | append: '🌙 Overnight Protection|'
+            endunless
+          elsif t contains 'rash'
+            unless pgiv_benefit_items contains 'Rash Free'
+              assign pgiv_benefit_items = pgiv_benefit_items | append: '🛡 Rash Free Comfort|'
+            endunless
+          elsif t contains 'cotton'
+            unless pgiv_benefit_items contains 'Cotton Top'
+              assign pgiv_benefit_items = pgiv_benefit_items | append: '🌿 Cotton Top Sheet|'
+            endunless
+          elsif t contains 'super'
+            unless pgiv_benefit_items contains 'Super Absorbent'
+              assign pgiv_benefit_items = pgiv_benefit_items | append: '💧 Super Absorbent|'
+            endunless
+          elsif t contains 'leakage' or t contains 'leak'
+            unless pgiv_benefit_items contains 'Leakage'
+              assign pgiv_benefit_items = pgiv_benefit_items | append: '🔒 Leakage Protection|'
+            endunless
+          endif
+        endfor
+      endif
+    -%}
+    {%- if pgiv_benefit_items != '' -%}
+      <div class="pgiv-benefits">
+        {%- assign pgiv_b_list = pgiv_benefit_items | split: '|' -%}
+        {%- for b in pgiv_b_list limit:3 -%}
+          {%- if b != '' -%}
+            <span class="pgiv-benefit-pill">{{ b }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
     <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}">
       <div
         class="product-grid-item__images aspect-[--wh-ratio]"
@@ -513,7 +743,8 @@
         :disabled="{{sold_out}} || isDisabled"
         aria-label="{{ button_text }}"
       >
-        <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap" style="color: #ffffff !important;">
+        <span class="btn-state-ready text-button-contrast group-hover/quick-action-button:text-button-contrast/50 whitespace-nowrap" style="color: #ffffff !important; display:flex; align-items:center; gap:6px; justify-content:center;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-13z"/><path d="M6 6L5 2H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
           {% if sold_out %}
             <span class="mobile-hide">SOLD OUT</span>
             <span class="desktop-hide">Sold</span>
@@ -587,14 +818,24 @@
 
 
  {% else %}
-<div class="{{quick_action_toolbar_classes}}">
-     <a href="{{ product.url }}" >
-    <div class="product__grid__title__wrapper">
-                           
-        <p id="product-{{ product.id }}-title" class="product__grid__title">
-          {{ product.title | strip_html | escape }}
-        </p>
-       
+ <div class="{{quick_action_toolbar_classes}}">
+      <a href="{{ product.url }}" >
+     <div class="product__grid__title__wrapper">
+        {%- liquid
+          assign pgiv_display_title = product.title
+          assign pgiv_subtitle = product.metafields.theme.cutline.value | default: ''
+          if pgiv_subtitle == '' and product.title contains ' | '
+            assign pgiv_title_parts = product.title | split: ' | '
+            assign pgiv_display_title = pgiv_title_parts[0]
+            assign pgiv_subtitle = pgiv_title_parts[1]
+          endif
+        -%}
+         <p id="product-{{ product.id }}-title" class="product__grid__title">
+           {{ pgiv_display_title | strip_html | escape }}
+         </p>
+         {%- if pgiv_subtitle != blank -%}
+           <p class="pgiv-subtitle">{{ pgiv_subtitle | escape }}</p>
+         {%- endif -%}
     </div>
      
     </a>
@@ -617,40 +858,71 @@
              <script type="application/json" data-product-variants>
                [{%- for v in product.variants -%}{"id":{{ v.id }},"available":{{ v.available | json }},"price":{{ v.price }},"compare_at_price":{% if v.compare_at_price %}{{ v.compare_at_price }}{% else %}null{% endif %},"options":{{ v.options | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
              </script>
-            <div class="form__selectors">
-               <!-- Loop through each option (e.g., Size, Packs) -->
-               {% for option in product.options_with_values %}
-               <div class="selector-wrapper selector-wrapper--fullwidth js" data-select-label="{{ option.name }}" data-option-position="{{ forloop.index }}">
-                  <fieldset class="radio__fieldset">
-                     <legend class="radio__legend" aria-label="{{ option.name }}">
-                        <span class="radio__legend__label">{{ option.name }}</span>
-                     </legend>
-                     <div class="radio__inputs bbbbb">
-                        <!-- Loop through values of the current option -->
-                        {% for value in option.values %}
-                        <span class="radio__button">
-                        {% assign is_first = forloop.first %}
-                        {% assign variant = product.variants | where: "option" | append: forloop.index | where: value | first %}
-                        <input 
-                        type="radio" 
-                        name="{{ option.name }}-{{ product.id }}"
-                        value="{{ value }}" 
-                        id="{{ product.id }}-{{ option.name | handleize }}-{{ forloop.index }}" 
-                        data-variant-id="{% if variant %}{{ variant.id }}{% endif %}" 
-                        {% if is_first %} checked = checked {% endif %} 
-                        class="variant-radio-input">  
-                        <label 
-                           for="{{ product.id }}-{{ option.name | handleize }}-{{ forloop.index }}" 
-                           class="variant-label template----{{ template }}" style="background-color: #e3ced0; color: white">
-                        <span>{{ value }}</span>
-                        </label>
-                        </span>
-                        {% endfor %}
-                     </div>
-                  </fieldset>
+             {%- liquid
+               assign is_single_combo = false
+               if product.variants.size == 1 and product.options.size == 2
+                 assign c0 = product.options[0].values.size
+                 assign c1 = product.options[1].values.size
+                 if c0 == 1 and c1 == 1
+                   assign is_single_combo = true
+                 endif
+               endif
+             -%}
+             {% if is_single_combo %}
+               <div class="pgiv-combined">
+                 <div class="pgiv-combined__col">
+                   <div class="pgiv-combined__label">{{ product.options[0].name }}</div>
+                   <div class="pgiv-combined__value">{{ product.options[0].values[0] | replace: ' + ', ' · ' }}</div>
+                 </div>
+                 <div class="pgiv-combined__col">
+                   <div class="pgiv-combined__label">{{ product.options[1].name }}</div>
+                   <div class="pgiv-combined__value">{{ product.options[1].values[0] }}</div>
+                 </div>
                </div>
-               {% endfor %}
-            </div>
+               <div style="display:none">
+                 {% for option in product.options_with_values %}
+                   {% for value in option.values %}
+                     {% assign variant = product.variants | where: "option" | append: forloop.index | where: value | first %}
+                     <input type="radio" name="{{ option.name }}-{{ product.id }}" value="{{ value }}" data-variant-id="{% if variant %}{{ variant.id }}{% endif %}" checked class="variant-radio-input">
+                   {% endfor %}
+                 {% endfor %}
+               </div>
+             {% else %}
+             <div class="form__selectors">
+                <!-- Loop through each option (e.g., Size, Packs) -->
+                {% for option in product.options_with_values %}
+                <div class="selector-wrapper selector-wrapper--fullwidth js" data-select-label="{{ option.name }}" data-option-position="{{ forloop.index }}">
+                   <fieldset class="radio__fieldset">
+                      <legend class="radio__legend" aria-label="{{ option.name }}">
+                         <span class="radio__legend__label">{{ option.name }}</span>
+                      </legend>
+                      <div class="radio__inputs bbbbb">
+                         <!-- Loop through values of the current option -->
+                         {% for value in option.values %}
+                         <span class="radio__button">
+                         {% assign is_first = forloop.first %}
+                         {% assign variant = product.variants | where: "option" | append: forloop.index | where: value | first %}
+                         <input 
+                         type="radio" 
+                         name="{{ option.name }}-{{ product.id }}"
+                         value="{{ value }}" 
+                         id="{{ product.id }}-{{ option.name | handleize }}-{{ forloop.index }}" 
+                         data-variant-id="{% if variant %}{{ variant.id }}{% endif %}" 
+                         {% if is_first %} checked = checked {% endif %} 
+                         class="variant-radio-input">  
+                          <label 
+                            for="{{ product.id }}-{{ option.name | handleize }}-{{ forloop.index }}" 
+                            class="variant-label template----{{ template }}">
+                         <span>{{ value | replace: ' + ', ' · ' | replace: ' +', ' ·' | replace: '+ ', '· ' }}</span>
+                         </label>
+                         </span>
+                         {% endfor %}
+                      </div>
+                   </fieldset>
+                </div>
+                {% endfor %}
+             </div>
+             {% endif %}
           </div>
        </div>
    </div>
@@ -697,15 +969,48 @@
             {{ product.compare_at_price | money }}
             {%- endif -%}
             </span>
-            {% assign discount = product.compare_at_price | minus: product.price %}
-            {% assign discount_percentage = discount | times: 100 | divided_by: product.compare_at_price %}
+            {% assign save_amt = product.compare_at_price | minus: product.price %}
+            <span class="pgiv-save-pill">You Save ₹{{ save_amt | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>
             {% endif %}
          </div>
       </button>
       {% endunless %}
       {%- assign product = all_products[product.handle] -%}
       {%- assign variant = product.variants.first -%}
-      {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
+      <div class="pgiv-action-row">
+        <div class="pgiv-qty" data-pgiv-qty>
+          <button type="button" class="pgiv-qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
+          <span class="pgiv-qty-num" data-qty-display>1</span>
+          <button type="button" class="pgiv-qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+        </div>
+        <div class="pgiv-atc-wrap">
+          {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
+        </div>
+      </div>
+      <script>
+      (function(){
+        var card = document.currentScript.closest('.add-to-cart-button-card');
+        if(!card || card.__pgivQtyInit) return; card.__pgivQtyInit = true;
+        var display = card.querySelector('[data-qty-display]');
+        var form = card.querySelector('form');
+        var qtyInput = form ? form.querySelector('input[name="quantity"]') : null;
+        if(!qtyInput && form){
+          qtyInput = document.createElement('input');
+          qtyInput.type='hidden'; qtyInput.name='quantity'; qtyInput.value='1'; qtyInput.setAttribute('data-qty-input','');
+          form.appendChild(qtyInput);
+        }
+        var qty = 1;
+        function update(q){
+          qty = Math.max(1, q);
+          if(display) display.textContent = qty;
+          if(qtyInput) qtyInput.value = qty;
+        }
+        var minus = card.querySelector('[data-qty-minus]');
+        var plus = card.querySelector('[data-qty-plus]');
+        if(minus) minus.addEventListener('click', function(){ update(qty-1); });
+        if(plus) plus.addEventListener('click', function(){ update(qty+1); });
+      })();
+      </script>
    </div>
 
 
@@ -716,11 +1021,21 @@
     {%- elsif inline_variant_buttons %}
     <a href="{{ product.url }}" >
     <div class="product__grid__title__wrapper">
-                              
+        {%- liquid
+          assign pgiv_display_title2 = product.title
+          assign pgiv_subtitle2 = product.metafields.theme.cutline.value | default: ''
+          if pgiv_subtitle2 == '' and product.title contains ' | '
+            assign pgiv_parts2 = product.title | split: ' | '
+            assign pgiv_display_title2 = pgiv_parts2[0]
+            assign pgiv_subtitle2 = pgiv_parts2[1]
+          endif
+        -%}
         <p id="product-{{ product.id }}-title" class="product__grid__title">
-          {{ product.title | strip_html | escape }}
+          {{ pgiv_display_title2 | strip_html | escape }}
         </p>
-    
+        {%- if pgiv_subtitle2 != blank -%}
+          <p class="pgiv-subtitle">{{ pgiv_subtitle2 | escape }}</p>
+        {%- endif -%}
       </div>
     
           </a>
@@ -757,9 +1072,44 @@
               class="variant-radio-input"
               {% if forloop.first %}checked{% endif %}
             >
-             <a href="{{ product.url }}">  {{ value }} </a>
+            {%- liquid
+              assign pgiv_v_price = matched_variant.price
+              assign pgiv_v_compare = matched_variant.compare_at_price
+              assign pgiv_v_disc = 0
+              if pgiv_v_compare and pgiv_v_compare > pgiv_v_price
+                assign pgiv_v_disc_amt = pgiv_v_compare | minus: pgiv_v_price
+                assign pgiv_v_disc = pgiv_v_disc_amt | times: 100 | divided_by: pgiv_v_compare | round
+              endif
+              assign pgiv_has_pricing = false
+              if option.values.size > 1
+                assign pgiv_has_pricing = true
+              endif
+              assign pgiv_v_display = value
+              if pgiv_v_display contains 'Buy'
+                assign pgiv_v_parts = pgiv_v_display | split: 'Buy'
+                assign pgiv_v_primary = pgiv_v_parts[0] | strip
+                assign pgiv_v_secondary = 'Buy' | append: pgiv_v_parts[1]
+              else
+                assign pgiv_v_primary = pgiv_v_display | replace: ' + ', ' · '
+                assign pgiv_v_secondary = ''
+              endif
+            -%}
+            <div class="pgiv-variant-inner">
+              {%- if pgiv_v_disc > 0 and pgiv_has_pricing -%}<div class="pgiv-variant-discount">{{ pgiv_v_disc }}% OFF</div>{%- endif -%}
+              <div class="pgiv-variant-name">{{ pgiv_v_primary }}</div>
+              {%- if pgiv_v_secondary != '' -%}<div class="pgiv-variant-secondary">{{ pgiv_v_secondary }}</div>{%- endif -%}
+              {%- if pgiv_has_pricing -%}
+                <div class="pgiv-variant-prices">
+                  <span class="pgiv-variant-current">₹{{ pgiv_v_price | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>
+                  {%- if pgiv_v_compare and pgiv_v_compare > pgiv_v_price -%}<span class="pgiv-variant-compare">₹{{ pgiv_v_compare | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>{%- endif -%}
+                </div>
+                {%- if matched_variant.unit_price -%}
+                  <div class="pgiv-variant-unit">₹{{ matched_variant.unit_price | money_without_trailing_zeros | remove: '₹' | strip }}/{{ matched_variant.unit_price_measurement.reference_unit }}</div>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
           </label>
-       
+        
 
         {% endfor %}
       </div>
@@ -891,9 +1241,8 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
         {%- endif -%}
       </span>
 
-      {% assign discount = product.compare_at_price | minus: product.price %}
-      {% assign discount_percentage = discount | times: 100 | divided_by: product.compare_at_price %}
-  
+      {% assign save_amt2 = product.compare_at_price | minus: product.price %}
+      <span class="pgiv-save-pill">You Save ₹{{ save_amt2 | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip }}</span>
     {% endif %}
     
   </div>
@@ -902,7 +1251,40 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
 {% endunless %}
       {%- assign product = all_products[product.handle] -%}
       {%- assign variant = product.variants.first -%}
-      {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
+      <div class="pgiv-action-row">
+        <div class="pgiv-qty" data-pgiv-qty>
+          <button type="button" class="pgiv-qty-btn" data-qty-minus aria-label="Decrease">−</button>
+          <span class="pgiv-qty-num" data-qty-display>1</span>
+          <button type="button" class="pgiv-qty-btn" data-qty-plus aria-label="Increase">+</button>
+        </div>
+        <div class="pgiv-atc-wrap">
+          {% render 'product-add-button-form', product: product, variant: variant, selling_plan: simple_selling_plan, button: button, class: "md:w-full aaaaaaaaaaaaa {{ product.handle }}" %}
+        </div>
+      </div>
+      <script>
+      (function(){
+        var card = document.currentScript.closest('.add-to-cart-button-card');
+        if(!card || card.__pgivQtyInit2) return; card.__pgivQtyInit2 = true;
+        var display = card.querySelector('[data-qty-display]');
+        var form = card.querySelector('form');
+        var qtyInput = form ? form.querySelector('input[name="quantity"]') : null;
+        if(!qtyInput && form){
+          qtyInput = document.createElement('input');
+          qtyInput.type='hidden'; qtyInput.name='quantity'; qtyInput.value='1'; qtyInput.setAttribute('data-qty-input','');
+          form.appendChild(qtyInput);
+        }
+        var qty = 1;
+        function update(q){
+          qty = Math.max(1, q);
+          if(display) display.textContent = qty;
+          if(qtyInput) qtyInput.value = qty;
+        }
+        var minus = card.querySelector('[data-qty-minus]');
+        var plus = card.querySelector('[data-qty-plus]');
+        if(minus) minus.addEventListener('click', function(){ update(qty-1); });
+        if(plus) plus.addEventListener('click', function(){ update(qty+1); });
+      })();
+      </script>
       </div>
 {% endif %}
 
@@ -1217,6 +1599,39 @@ product-grid-item-variant.product-grid-item__content.on-sale.tagged.time-ultra-s
     {%- endif -%}
   </div>
 </product-grid-item-variant>
+<script>
+(function(){
+  function fmt(c){ var r=c/100; return r%1===0 ? '₹'+r : '₹'+r.toFixed(2).replace(/\.00$/,''); }
+  document.addEventListener('change', function(e){
+    var input = e.target.closest('.variant-radio-input');
+    if(!input) return;
+    var card = input.closest('product-grid-item-variant');
+    if(!card) return;
+    var vid = input.dataset.variantId || input.getAttribute('data-variant-id');
+    var jsonEl = card.querySelector('script[data-product-variants]');
+    if(!jsonEl) return;
+    try{
+      var vars = JSON.parse(jsonEl.textContent);
+      var v = null;
+      for(var i=0;i<vars.length;i++){ if(String(vars[i].id)===String(vid)){ v=vars[i]; break; } }
+      if(!v) return;
+      var priceEl = card.querySelector('.add-to-cart-button-card .price');
+      var compEl = card.querySelector('.add-to-cart-button-card .compare-at');
+      var discEl = card.querySelector('.pgiv-discount-pill');
+      var saveEl = card.querySelector('.pgiv-save-pill');
+      if(priceEl) priceEl.textContent = fmt(v.price);
+      if(compEl){
+        if(v.compare_at_price && v.compare_at_price>v.price){ compEl.textContent = fmt(v.compare_at_price); compEl.style.display=''; } else if(compEl){ compEl.style.display='none'; }
+      }
+      if(discEl){
+        if(v.compare_at_price && v.compare_at_price>v.price){ var d=Math.round((v.compare_at_price - v.price)*100 / v.compare_at_price); discEl.textContent=d+'% OFF'; discEl.style.display=''; } else { discEl.style.display='none'; }
+      }
+      if(saveEl){
+        if(v.compare_at_price && v.compare_at_price>v.price){ var s=v.compare_at_price - v.price; saveEl.textContent='You Save '+fmt(s); saveEl.style.display=''; } else { saveEl.style.display='none'; }
+      }
+    }catch(err){}
+  });
+})();
+</script>
 
-                  
 {% endunless %}

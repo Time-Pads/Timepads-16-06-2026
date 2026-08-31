@@ -300,7 +300,7 @@ button.add-to-cart-button-for-product-card {
   background: #000;
   padding: 14px;
   color: #fff;
-  border-radius: 0 3rem 3rem 0;
+  border-radius: 10px;
   font-size: 14px;
   letter-spacing: 0;
   font-weight: 700;
