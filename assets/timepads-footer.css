@@ -1,19 +1,19 @@
 /* ─── TIMEPADS Footer Asset Styles ─── */
 :root {
-  --tp-bg:           #f6ead7;
-  --tp-bg-card:      #f6ead7;
-  --tp-border:       rgb(4, 4, 3);
-  --tp-orange:        #e8622a;
-  --tp-orange-light:  #f07040;
-  --tp-gold:          #c8733a;
-  --tp-text:          #000000;
-  --tp-text-muted:    #000000;
-  --tp-white:         #000000;
-  --tp-green:         #2ecc71;
-  --tp-green-dark:    #27ae60;
+  --tp-bg:           #FAF7FB;
+  --tp-bg-card:      #F2ECF5;
+  --tp-border:       #E6DCE9;
+  --tp-orange:        var(--time-primary);
+  --tp-orange-light:  var(--time-primary-light);
+  --tp-gold:          var(--time-primary);
+  --tp-text:          var(--time-text);
+  --tp-text-muted:    var(--time-text-secondary);
+  --tp-white:         var(--time-white);
+  --tp-green:         var(--time-primary);
+  --tp-green-dark:    var(--time-primary-dark);
   --tp-radius:        999px;
   --tp-radius-card:   12px;
-  --tp-font:          'DM Sans', 'Segoe UI', sans-serif;
+  --tp-font:          'Plus Jakarta Sans', 'Segoe UI', sans-serif;
 }
 
 #timepads-footer * {

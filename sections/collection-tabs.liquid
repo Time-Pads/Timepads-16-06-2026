@@ -12,7 +12,7 @@
   assign gap_mobile = section.settings.gap_mobile | default: 18
   assign pad_top = section.settings.padding_top | default: 40
   assign pad_bottom = section.settings.padding_bottom | default: 40
-  assign bg_color = section.settings.bg_color | default: '#FFFFFF'
+  assign bg_color = section.settings.bg_color | default: '#FAF7FB'
 
   assign categories = section.blocks
 -%}
@@ -39,7 +39,16 @@
     {%- if heading != blank or subheading != blank -%}
       <div class="tp-categories__header">
         {%- if heading != blank -%}
-          <h2 class="tp-categories__heading">{{ heading }}</h2>
+          {%- assign heading_words = heading | split: ' ' -%}
+          <h2 class="tp-categories__heading">
+            {%- for word in heading_words -%}
+              {%- if forloop.last -%}
+                <span style="color: #7B3F6D;">{{ word }}</span>
+              {%- else -%}
+                {{ word }} 
+              {%- endif -%}
+            {%- endfor -%}
+          </h2>
         {%- endif -%}
 
       </div>
@@ -125,127 +134,180 @@
 </section>
 
 <style>
+  .tp-categories,
   .tp-categories-{{ section.id }} {
-    background-color: var(--tp-cat-bg);
-    padding-top: var(--tp-cat-pt);
-    padding-bottom: var(--tp-cat-pb);
+    background-color: var(--tp-cat-bg, #ffffff);
+    padding-top: var(--tp-cat-pt, 30px);
+    padding-bottom: var(--tp-cat-pb, 30px);
     width: 100%;
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
   }
 
+  .tp-categories .tp-categories__container,
   .tp-categories-{{ section.id }} .tp-categories__container {
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 20px;
+    box-sizing: border-box;
   }
 
+  .tp-categories .tp-categories__header,
   .tp-categories-{{ section.id }} .tp-categories__header {
     text-align: center;
     margin-bottom: 20px;
   }
 
+  .tp-categories .tp-categories__heading,
   .tp-categories-{{ section.id }} .tp-categories__heading {
-    font-size: 18px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
     font-weight: 700;
-    color: #2D2D2D;
-    margin: 0 0 8px 0;
+    color: #241D25;
+    margin: 0 0 12px 0;
     line-height: 1.2;
+    text-align: center;
   }
   @media (min-width: 768px) {
+    .tp-categories .tp-categories__heading,
     .tp-categories-{{ section.id }} .tp-categories__heading {
-      font-size: 34px;
-    }
-  }
-  @media (min-width: 1024px) {
-    .tp-categories-{{ section.id }} .tp-categories__heading {
-      font-size: 28px;
+      font-size: 38px;
     }
   }
 
-  /* Responsive Grid with CSS Scroll Snap on Mobile */
+  /* Grid Styling */
+  .tp-categories .tp-categories__grid,
   .tp-categories-{{ section.id }} .tp-categories__grid {
     list-style: none;
     margin: 0;
-    padding: 0 0 8px 0;
+    padding: 0;
     display: flex;
-    gap: 5px;
-  }
-  @media (max-width: 767px) {
-    .tp-categories-{{ section.id }} .tp-categories__grid {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 12px;
-      scrollbar-width: none;
-    }
-    .tp-categories-{{ section.id }} .tp-categories__grid::-webkit-scrollbar {
-      display: none;
-    }
-    .tp-categories-{{ section.id }} .tp-categories__item {
-      flex: 0 0 auto;
-      width: 130px;
-      scroll-snap-align: start;
-    }
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    box-sizing: border-box;
   }
 
-  @media (min-width: 768px) {
-    .tp-categories-{{ section.id }} .tp-categories__grid {
-     justify-content: center;
-      gap: 5px;
-    }
+  .tp-categories .tp-categories__item,
+  .tp-categories-{{ section.id }} .tp-categories__item {
+    flex: 0 0 auto;
+    width: 140px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
-  @media (min-width: 1024px) {
-    .tp-categories-{{ section.id }} .tp-categories__grid {
-      gap: var(--tp-cat-gap-desktop);
-
-    }
-  }
-
-  /* Card Styling & Circular Image */
+  .tp-categories .tp-categories__card,
   .tp-categories-{{ section.id }} .tp-categories__card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: inherit;
     text-align: center;
+    width: 100%;
   }
 
+  .tp-categories .tp-categories__image-wrapper,
   .tp-categories-{{ section.id }} .tp-categories__image-wrapper {
     position: relative;
-    background-color: #FFFFFF;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    margin-bottom: 12px;
+    margin: 0 auto;
+    box-sizing: border-box;
     transition: transform 0.2s ease;
   }
 
-
-  /* Desktop Hover Effect */
-  @media (min-width: 1024px) {
-    .tp-categories-{{ section.id }} .tp-categories__card:hover .tp-categories__image-wrapper {
-      transform: scale(1.03);
-    }
-  }
-
+  .tp-categories .tp-categories__picture,
+  .tp-categories .tp-categories__img,
   .tp-categories-{{ section.id }} .tp-categories__picture,
   .tp-categories-{{ section.id }} .tp-categories__img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
-
   }
 
+  .tp-categories .tp-categories__placeholder,
   .tp-categories-{{ section.id }} .tp-categories__placeholder {
     width: 100%;
     height: 100%;
     background-color: #F3F4F6;
+    border-radius: 50%;
+  }
 
+  @media (min-width: 1024px) {
+    .tp-categories .tp-categories__card:hover .tp-categories__image-wrapper,
+    .tp-categories-{{ section.id }} .tp-categories__card:hover .tp-categories__image-wrapper {
+      transform: scale(1.04);
+    }
+  }
+
+  /* ── Mobile Rules (max-width: 767px) ── */
+  @media screen and (max-width: 767px) {
+    .tp-categories,
+    .tp-categories-{{ section.id }} {
+      padding-top: 14px !important;
+      padding-bottom: 0px !important;
+    }
+    .tp-categories .tp-categories__container,
+    .tp-categories-{{ section.id }} .tp-categories__container {
+      padding: 0 !important;
+      max-width: 100% !important;
+    }
+    .tp-categories .tp-categories__header,
+    .tp-categories-{{ section.id }} .tp-categories__header {
+      padding: 0 16px !important;
+      margin-bottom: 12px !important;
+    }
+    .tp-categories .tp-categories__heading,
+    .tp-categories-{{ section.id }} .tp-categories__heading {
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.01em !important;
+      margin: 0 !important;
+      line-height: 1.2 !important;
+    }
+    .tp-categories .tp-categories__grid,
+    .tp-categories-{{ section.id }} .tp-categories__grid {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding: 4px 16px 8px 16px !important;
+      gap: 14px !important;
+      scrollbar-width: none !important;
+      scroll-padding: 0 16px !important;
+    }
+    .tp-categories .tp-categories__grid::-webkit-scrollbar,
+    .tp-categories-{{ section.id }} .tp-categories__grid::-webkit-scrollbar {
+      display: none !important;
+      height: 0 !important;
+      width: 0 !important;
+    }
+    .tp-categories .tp-categories__item,
+    .tp-categories-{{ section.id }} .tp-categories__item {
+      flex: 0 0 100px !important;
+      width: 100px !important;
+      scroll-snap-align: start !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+    .tp-categories .tp-categories__image-wrapper,
+    .tp-categories-{{ section.id }} .tp-categories__image-wrapper {
+      width: 96px !important;
+      height: 96px !important;
+      margin: 0 auto !important;
+    }
   }
 
   /* Badge Styling */
@@ -329,7 +391,7 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
-      "default": "#FFFFFF"
+      "default": "#FAF7FB"
     },
     {
       "type": "range",

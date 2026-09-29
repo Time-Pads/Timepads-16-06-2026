@@ -23,11 +23,7 @@ div#one-click-popup-main-content .branding{
 #one-click-popup-13553372974531 .logo{
   display: none !important;
 }
-@media only screen and (min-width: 768px) {
-.product-single .product__inner {
-    max-width: 100% !important;
-}
-}
+
 
 .body-color{
 background: var(--COLOR-BODY-COLOR); 

@@ -1,0 +1,47 @@
+{% comment %}
+  TIME Store - Combo Card Placeholder Component
+{% endcomment %}
+
+<div class="tp-combo-card">
+  <div class="tp-combo-card-image-box">
+    <span class="tp-combo-badge-tag">👑 Bestseller</span>
+    <div class="tp-combo-count-badge"><span>48</span><span class="tp-combo-count-label">PADS</span></div>
+    {{ 'product-1' | placeholder_svg_tag: 'tp-combo-card-img' }}
+  </div>
+
+  <div class="tp-combo-card-details">
+    <h3 class="tp-combo-card-title">Premium Cotton Heavy Flow Netted Pads</h3>
+    <p class="tp-combo-card-desc">Premium sanitary pads for superior absorption and comfort.</p>
+
+    <div class="tp-combo-rating-row">
+      <span class="tp-combo-stars">★★★★★</span>
+      <span class="tp-combo-rating-val">4.8</span>
+      <span class="tp-combo-rating-count">(24)</span>
+    </div>
+
+    <div class="tp-combo-variant-selector-wrap">
+      <div class="tp-combo-variant-pill-select" style="cursor: default;">
+        <span>L+ 240mm / 48 Pads</span>
+        <span>›</span>
+      </div>
+    </div>
+
+    <div class="tp-combo-price-row">
+      <span class="tp-combo-price-current">₹299</span>
+      <span class="tp-combo-price-compare">₹320</span>
+      <span class="tp-combo-save-pill">Save ₹21</span>
+    </div>
+
+    <div class="tp-combo-card-footer">
+      <div class="tp-combo-qty-box">
+        <button type="button" class="tp-combo-qty-btn">−</button>
+        <span class="tp-combo-qty-num">1</span>
+        <button type="button" class="tp-combo-qty-btn">+</button>
+      </div>
+
+      <button type="button" class="tp-combo-atc-btn">
+        🛒 ADD TO CART
+      </button>
+    </div>
+  </div>
+</div>

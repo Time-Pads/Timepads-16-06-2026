@@ -155,4 +155,118 @@ class DynamicCard extends HTMLElement {
   
 }
 
-customElements.define('dynamic-card', DynamicCard);
+if (!customElements.get('dynamic-card')) {
+  customElements.define('dynamic-card', DynamicCard);
+}
+
+// ── Global Performance Card Controller (Variants, Price & Quantity) ──
+(function() {
+  if (window.tpPerfCardGlobalInit) return;
+  window.tpPerfCardGlobalInit = true;
+
+  function formatMoney(cents){
+    var rupees = cents / 100;
+    if (rupees % 1 === 0) return '₹' + rupees;
+    var s = rupees.toFixed(2).replace(/\.00$/, '');
+    return '₹' + s;
+  }
+
+  function handleVariantUpdate(target) {
+    if (target && target.classList.contains('tp-perf-card__radio-input')) {
+      var card = target.closest('dynamic-card, .tp-perf-card');
+      if (!card) return;
+      var variantId = target.getAttribute('data-variant-id');
+      var hiddenInput = card.querySelector('.tp-perf-card__hidden-id');
+      var atcBtn = card.querySelector('.tp-perf-card__atc-btn');
+      if (hiddenInput && variantId) hiddenInput.value = variantId;
+      if (atcBtn && variantId) atcBtn.setAttribute('data-selected-value-data-value', variantId);
+
+      // Update price row from variants JSON
+      try {
+        var jsonEl = card.querySelector('script[data-product-variants]');
+        if (!jsonEl) return;
+        var variants = JSON.parse(jsonEl.textContent);
+        var v = null;
+        for (var i = 0; i < variants.length; i++) {
+          if (String(variants[i].id) === String(variantId)) { v = variants[i]; break; }
+        }
+        if (!v) return;
+        var curEl = card.querySelector('[data-tp-current]');
+        var compEl = card.querySelector('[data-tp-compare]');
+        var discEl = card.querySelector('[data-tp-discount]');
+        var saveEl = card.querySelector('[data-tp-save]');
+        var unitEl = card.querySelector('[data-tp-unit]');
+        if (curEl) curEl.textContent = formatMoney(v.price);
+        if (compEl) {
+          if (v.compare_at_price && v.compare_at_price > v.price) {
+            compEl.textContent = formatMoney(v.compare_at_price);
+            compEl.style.display = '';
+          } else {
+            compEl.textContent = '';
+            compEl.style.display = 'none';
+          }
+        }
+        if (saveEl) {
+          if (v.compare_at_price && v.compare_at_price > v.price) {
+            var saveAmt = v.compare_at_price - v.price;
+            saveEl.textContent = 'Save ' + formatMoney(saveAmt);
+            saveEl.style.display = '';
+          } else {
+            saveEl.textContent = '';
+            saveEl.style.display = 'none';
+          }
+        }
+        if (discEl) {
+          if (v.compare_at_price && v.compare_at_price > v.price) {
+            var disc = Math.round((v.compare_at_price - v.price) * 100 / v.compare_at_price);
+            discEl.textContent = disc + '% off';
+            discEl.style.display = '';
+          } else {
+            discEl.style.display = 'none';
+          }
+        }
+        if (unitEl) {
+          if (v.unit_price) {
+            var unit = v.unit_price_measurement ? v.unit_price_measurement.reference_unit : 'unit';
+            unitEl.textContent = formatMoney(v.unit_price) + '/' + unit;
+            unitEl.style.display = '';
+          } else {
+            unitEl.style.display = 'none';
+          }
+        }
+      } catch(e){}
+    }
+  }
+
+  document.addEventListener('change', function(e) {
+    handleVariantUpdate(e.target);
+  });
+  document.addEventListener('input', function(e) {
+    handleVariantUpdate(e.target);
+  });
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('tp-perf-card__radio-input')) {
+      handleVariantUpdate(e.target);
+    }
+    var qBtn = e.target.closest('[data-qty-minus], [data-qty-plus]');
+    if (qBtn) {
+      var card = qBtn.closest('dynamic-card, .tp-perf-card');
+      if (!card) return;
+      var display = card.querySelector('[data-qty-display]');
+      var form = card.querySelector('form');
+      var qtyInput = form ? form.querySelector('input[name="quantity"]') : null;
+      if (!qtyInput && form) {
+        qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        form.appendChild(qtyInput);
+      }
+      var cur = parseInt(display ? display.textContent : '1', 10) || 1;
+      if (qBtn.hasAttribute('data-qty-plus')) cur++;
+      else cur = Math.max(1, cur - 1);
+      if (display) display.textContent = cur;
+      if (qtyInput) qtyInput.value = cur;
+    }
+  });
+})();

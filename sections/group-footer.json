@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "type": "footer",
   "name": "Footer",
@@ -22,77 +13,6 @@
     },
     "footer": {
       "type": "footer",
-      "blocks": {
-        "linklist-2": {
-          "type": "linklist",
-          "settings": {
-            "linklist": "explore",
-            "title": "",
-            "accordion_default": ""
-          }
-        },
-        "linklist_beAepP": {
-          "type": "linklist",
-          "settings": {
-            "linklist": "policies",
-            "title": "",
-            "accordion_default": ""
-          }
-        },
-        "linklist-1": {
-          "type": "linklist",
-          "settings": {
-            "linklist": "quick-links",
-            "title": "",
-            "accordion_default": ""
-          }
-        },
-        "text-3": {
-          "type": "text",
-          "settings": {
-            "title": "Contact Us",
-            "text": "",
-            "text_size": 4,
-            "whatsapp": "https://api.whatsapp.com/send?phone=9182945474&text=Hi, was looking to order",
-            "number": "tel:+91 79754 21029",
-            "email_id": "mailto:abalaji23091999@gmail.com",
-            "accordion_default": ""
-          }
-        },
-        "social": {
-          "type": "social",
-          "disabled": true,
-          "settings": {
-            "title": "Stay in touch.",
-            "text_size": 8,
-            "enable_follow_on_shop": true
-          }
-        },
-        "newsletter": {
-          "type": "newsletter",
-          "disabled": true,
-          "settings": {
-            "show_image": false,
-            "wh_ratio": 2,
-            "newsletter_enable": true,
-            "recaptcha_enabled": false,
-            "kicker": "",
-            "heading": "Exclusive offers straight to your inbox",
-            "richtext": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>",
-            "text_size": 4,
-            "background_color": "#4f4f4f",
-            "text_color_value": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "linklist-2",
-        "linklist_beAepP",
-        "linklist-1",
-        "text-3",
-        "social",
-        "newsletter"
-      ],
       "settings": {
         "menu_position": "left",
         "logo_max_limit": 120,
@@ -100,24 +20,10 @@
         "padding_top": 30,
         "padding_bottom": 50
       }
-    },
-    "subfooter": {
-      "type": "subfooter",
-      "settings": {
-        "footer_secondary_linklist": "",
-        "footer_payment_enable": true,
-        "footer_social_enable": false,
-        "show_locale_selector": true,
-        "show_currency_selector": true,
-        "width": "wrapper--full",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
     }
   },
   "order": [
     "mobile_navigation_bottom_AwDkUj",
-    "footer",
-    "subfooter"
+    "footer"
   ]
 }

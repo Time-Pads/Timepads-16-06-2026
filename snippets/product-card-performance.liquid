@@ -115,14 +115,14 @@
       endif
     endif
   -%}
-  {%- if pcp_benefits != '' -%}
+  {% comment %} {%- if pcp_benefits != '' -%}
     <div class="tp-perf-card__benefits">
       {%- assign pcb_list = pcp_benefits | split: '|' -%}
       {%- for b in pcb_list limit:3 -%}
-        {%- if b != '' -%}<span class="tp-perf-card__benefit-pill">{{ b }}</span>{%- endif -%}
+    {%- if b != '' -%}<span class="tp-perf-card__benefit-pill">{{ b }}</span>{%- endif -%} 
       {%- endfor -%}
     </div>
-  {%- endif -%}
+  {%- endif -%} {% endcomment %}
 
   <div class="tp-perf-card__details">
     {%- liquid
@@ -137,10 +137,10 @@
         assign subtitle_text = title_parts[1]
       endif
     -%}
-    <a href="{{ product.url }}" class="tp-perf-card__title-link">
-      <h3 class="tp-perf-card__title">{{ display_title | escape }}</h3>
+    <a href="{{ product.url }}" class="tp-perf-card__title-link" style="text-align: left !important;">
+      <h3 class="tp-perf-card__title" style="text-align: left !important;">{{ display_title | escape }}</h3>
       {%- if subtitle_text != blank -%}
-        {% comment %} <p class="tp-perf-card__subtitle">{{ subtitle_text | escape }}</p> {% endcomment %}
+        {% comment %} <p class="tp-perf-card__subtitle" style="text-align: left !important;">{{ subtitle_text | escape }}</p> {% endcomment %}
       {%- endif -%}
       {%- assign short_info = product.metafields.custom.short_info_product.value | default: product.metafields.custom.short_info_product -%}
       {%- if short_info == blank -%}
@@ -154,7 +154,7 @@
           {%- assign short_info = 'Premium sanitary pads for superior absorption and comfort.' -%}
         {%- endif -%}
       {%- endif -%}
-      <p class="tp-perf-card__short-info">{{ short_info | escape }}</p>
+      <p class="tp-perf-card__short-info" style="text-align: left !important;">{{ short_info | escape }}</p>
     </a>
 
     {%- liquid
@@ -194,6 +194,19 @@
       </div>
     {%- endif -%}
 
+    <!-- ── PROMOTIONAL BANNER IMAGE ── -->
+    {% comment %} <div class="tp-crunchies-banner" style="margin: 10px 0 12px; width: 100%;">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/a-13_3.jpg?v=1789104913"
+        alt="Special Offer - Enjoy Complimentary Gift"
+        class="tp-crunchies-banner-img"
+        width="600"
+        height="120"
+        style="width: 100%; height: auto; display: block; border-radius: 12px; object-fit: contain; aspect-ratio: 5/1;"
+        loading="lazy"
+        decoding="async"
+      >
+    </div> {% endcomment %}
 
     <div class="tp-perf-card__variants-grid{% if product.variants.size == 1 %} tp-perf-card__variants-grid--single{% elsif product.variants.size == 3 %} tp-perf-card__variants-grid--three{% endif %}">
       {%- for variant in product.variants -%}
@@ -219,6 +232,7 @@
             id="variant-{{ product.id }}-{{ variant.id }}"
             data-variant-id="{{ variant.id }}"
             class="variant-radio-input tp-perf-card__radio-input"
+            style="display: none !important; position: absolute; opacity: 0; pointer-events: none;"
             {% if is_selected %}checked="checked"{% endif %}
           >
           <label
@@ -237,7 +251,9 @@
               assign v_display_clean = v_display | replace: ' + ', ' · '
             -%}
             {%- if v_display_clean != blank -%}
-              <div class="variant-name">{{ v_display_clean }}</div>
+              <div class="variant-name" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%;">
+                <span>{{ v_display_clean }}</span>
+              </div>
             {%- endif -%}
           </label>
         </span>
@@ -277,7 +293,7 @@
     </div>
 
     <div class="tp-perf-card__footer">
-      <div style="display:flex; gap:5px; align-items:center;">
+      <div style="display:flex; gap:8px; align-items:center;">
         <div class="tp-perf-card__qty" data-pcp-qty>
           <button type="button" class="tp-qty-btn" data-qty-minus aria-label="Decrease">−</button>
           <span class="tp-qty-num" data-qty-display>1</span>
@@ -308,11 +324,11 @@
               class="add-to-cart-button-for-product-card tp-perf-card__atc-btn"
               data-selected-value-data-value="{{ current_variant.id }}"
               {% if sold_out %}disabled="disabled"{% endif %}
-              aria-label="{% if sold_out %}Sold Out{% else %}Add to Cart{% endif %}"
+              aria-label="{% if sold_out %}Sold Out{% else %}ADD TO CART{% endif %}"
             >
               <span class="btn-state-ready" style="display:flex; align-items:center; gap:6px; justify-content:center;">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-13z"/><path d="M6 6L5 2H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
-                {% if sold_out %}Sold Out{% else %}<span class="mobile-hide">Add to Cart</span><span class="desktop-hide">Add</span>{% endif %}
+                {% if sold_out %}Sold Out{% else %}<span class="mobile-hide">ADD TO CART</span><span class="desktop-hide">ADD</span>{% endif %}
               </span>
               <span class="btn-state-loading" style="display: none;">
                 Adding...

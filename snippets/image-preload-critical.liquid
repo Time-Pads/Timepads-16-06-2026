@@ -19,9 +19,9 @@
   assign sizes = sizes | default: "100vw"
   assign preload_width = width | default: 1200
   assign preload_width = preload_width | at_most: image_width
-  assign has_avif = formats | join: "," | downcase | contains: "avif"
-  assign has_webp = formats | join: "," | downcase | contains: "webp"
-  assign has_jpg = formats | join: "," | downcase | contains: "jpg"
+  assign has_avif = formats | join: "," | downcase
+  assign has_webp = formats | join: "," | downcase
+  assign has_jpg = formats | join: "," | downcase
 -%}
 
 {%- if image != blank and image_width != blank -%}
@@ -40,3 +40,19 @@
     <link rel="preload" as="image" href="{{ image | image_url: width: preload_width }}" imagesrcset="{{ image | image_url: width: preload_width }}" />
   {%- endif -%}
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "  assign has_avif = formats | join: \",\" | downcase | contains: \"avif\"\r"
+  to: '  assign has_avif = formats | join: "," | downcase'
+  position: 959..1009
+- from: "  assign has_webp = formats | join: \",\" | downcase | contains: \"webp\"\r"
+  to: '  assign has_webp = formats | join: "," | downcase'
+  position: 1010..1060
+- from: "  assign has_jpg = formats | join: \",\" | downcase | contains: \"jpg\"\r"
+  to: '  assign has_jpg = formats | join: "," | downcase'
+  position: 1061..1110
+{% endcomment %}

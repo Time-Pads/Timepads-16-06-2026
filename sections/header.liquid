@@ -1,674 +1,987 @@
 <!-- /sections/header.liquid -->
 
 {%- liquid
-  assign transparent_header = false
-  if template contains 'collection' and collection.image and section.settings.transparent_collection
-    assign transparent_header = true
-  elsif template contains 'article' and article.image and section.settings.transparent_article
-    assign transparent_header = true
-  elsif template contains 'blog' and section.settings.transparent_blog
-    assign transparent_header = true
-  elsif template contains 'page' and section.settings.transparent_page
-    assign transparent_header = true
-  elsif template == 'index' and section.settings.transparent_home
-    assign transparent_header = true
-  endif
-
-  assign width_wrapper_class = 'wrapper'
-  if section.settings.full_width
-    assign width_wrapper_class = 'wrapper--full'
-  endif
-
   if section.settings.main_menu_linklist
     assign main_menu_linklist = section.settings.main_menu_linklist
   else
     assign main_menu_linklist = 'main-menu'
   endif
-
-  assign toolbar_blocks = section.blocks | where: 'type', 'toolbar'
-  if toolbar_blocks.size > 0
-    for block in toolbar_blocks
-      if block.type == 'toolbar'
-        assign block_attributes = block.shopify_attributes
-        assign linkz = block.settings.secondary_linklist
-        if block.settings.show_menu_mobile and linkz != blank
-          assign drawer_links = linkz
-        endif
-        if block.settings.show_currency_mobile and localization.available_countries.size > 1
-          assign drawer_currency = true
-        endif
-        if block.settings.show_locale_mobile and localization.available_languages.size > 1
-          assign drawer_locale = true
-        endif
-
-        if block.settings.show_menu_desktop and linkz != blank
-          assign toolbar_links = linkz
-          assign has_toolbar = true
-        endif
-        if block.settings.show_currency_desktop and localization.available_countries.size > 1
-          assign toolbar_currency = true
-          assign has_toolbar = true
-        endif
-        if block.settings.show_locale_desktop and localization.available_languages.size > 1
-          assign toolbar_locale = true
-          assign has_toolbar = true
-        endif
-
-        assign toolbar_text = block.settings.announcement_text | strip_html | strip
-        if toolbar_text != blank
-          assign toolbar_text = block.settings.announcement_text
-          assign has_toolbar_text = true
-          assign has_toolbar = true
-        endif
-
-        break
-      endif
-    endfor
-  endif
-
-  assign logo_width = section.settings.logo_max_limit | times: 1
-
-  assign overlay_color = section.settings.transparent_text_color
-  assign color_overlay_brightness = overlay_color | color_brightness
-  if color_overlay_brightness <= 127
-    assign overlay_color = overlay_color | color_lighten: 100
-  else
-    assign overlay_color = overlay_color | color_darken: 100
-  endif
-  assign overlay_color = overlay_color | color_modify: 'alpha', 0.20
-
-  capture account_icon
-    if section.settings.icons_type == 'modern'
-      render 'icon-set-mod-user'
-    elsif section.settings.icons_type == 'classic'
-      render 'icon-set-classic-user'
-    endif
-  endcapture
-
-  capture search_icon
-    if section.settings.icons_type == 'modern'
-      render 'icon-set-mod-search'
-    elsif section.settings.icons_type == 'classic'
-      render 'icon-set-classic-search'
-    endif
-  endcapture
-
-  capture hamburger_icon
-    if section.settings.icons_type == 'modern'
-      render 'icon-set-mod-hamburger'
-    elsif section.settings.icons_type == 'classic'
-      render 'icon-set-classic-hamburger'
-    endif
-  endcapture
-
-  capture cart_icon
-    if section.settings.icons_type == 'modern'
-      case section.settings.cart_icon
-        when 'cart'
-          render 'icon-set-mod-cart'
-        when 'bag'
-          render 'icon-set-mod-bag'
-        when 'basket'
-          render 'icon-set-mod-basket'
-      endcase
-    elsif section.settings.icons_type == 'classic'
-      case section.settings.cart_icon
-        when 'cart'
-          render 'icon-set-classic-cart'
-        when 'bag'
-          render 'icon-set-classic-bag'
-        when 'basket'
-          render 'icon-set-classic-basket'
-      endcase
-    endif
-  endcapture
 -%}
 
 {% style %}
-  :root {
-    --COLOR-NAV-TEXT-TRANSPARENT: {{ section.settings.transparent_text_color }};
-    --COLOR-HEADER-TRANSPARENT-GRADIENT: {{ overlay_color }};
-    --LOGO-PADDING: {{ section.settings.logo_padding | append: 'px' }};
-    {%- if has_toolbar -%}
-      --menu-backfill-height: 112px; /* 72px header + 40px toolbar */
-    {%- else -%}
-      --menu-backfill-height: 72px;
-    {%- endif -%}
-  }
+/* Google Fonts - Caveat / Playfair / Plus Jakarta loaded async via theme.liquid (single request, non-render-blocking) */
+/* ─── TIME MASTER MULTI-ROW HEADER SYSTEM (IMAGE 1 TARGET MATCH) ─── */
+#shopify-section-header,
+.shopify-section-group-header-group,
+header.theme__header,
+.tp-header-master-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  z-index: 100;
+  font-family: 'Poppins', var(--FONT-STACK-BODY), sans-serif;
+  background-color: var(--time-background) !important;
+  box-shadow: 0 4px 20px rgba(123, 63, 109, 0.08);
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
 
-  /* ══════════════════════════════════════════════
-     ZERO CLS — Reserved header dimensions.
-     All heights set at Liquid render time so no JS
-     measurement can trigger layout shift.
-  ══════════════════════════════════════════════ */
+/* ── ROW 1: TOP ANNOUNCEMENT BAR ── */
+.tp-header-announcement-bar {
+  width: 100% !important;
+  max-width: 100% !important;
+  background-color: var(--time-text) !important; /* Deep dark plum #241D25 */
+  color: var(--time-white) !important;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box !important;
+}
 
-  /* 1. Backfill: reserve full height, override JS inline style.display='none'
-     theme.js sets backfill.style.display='none' for transparent-header pages.
-     Using display:block !important prevents that inline style from winning. */
-  .header__backfill {
-    display: none;
-    height: 0;
-  }
+.tp-announcement-container {
+  width: 100% !important;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-sizing: border-box !important;
+}
 
-  /* 2. Announcement bar (toolbar): pre-reserve 40px so it never collapses
-     before the ticker JS initialises. The ticker removes ticker--unloaded
-     after measuring widths — we must hold the height open the entire time. */
-  .header__inner--bar {
-    height: 40px !important;
-    min-height: 40px !important;
-    overflow: hidden;
-  }
-  .theme__header__toolbar {
-    height: 40px;
-    min-height: 40px;
-  }
-  /* ticker frame: force visible height before JS ticker init */
-  .theme__header__toolbar__text[data-ticker-frame] {
-    height: 40px;
-    min-height: 40px;
-    overflow: hidden;
-  }
-  /* ticker scale: keep it visible while unloaded — do NOT let it collapse */
-  .toolbar__scale.ticker--unloaded {
-    min-height: 32px;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
+.tp-announcement-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
 
-  /* 3. Main header row: 72px desktop */
-  .theme__header {
-    min-height: 72px;
-  }
-  .header__inner:not(.header__inner--bar) {
-    min-height: 72px;
-  }
+.tp-announcement-center {
+  font-weight: 600;
+  color: var(--time-primary-light);
+}
 
-  /* 4. Logo: reserve exact dimensions */
-  .header__logo {
-    min-width: {{ logo_width }}px;
-    height: 72px;
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .header__logo picture {
-    display: contents;
-  }
-  .header__logo picture img {
-    display: block;
-    height: auto;
-    aspect-ratio: {{ section.settings.logo.aspect_ratio | default: '2.5' }};
-    max-width: {{ logo_width }}px;
-    max-height: 48px;
-  }
+.tp-announcement-heart {
+  color: var(--time-primary-light);
+  font-size: 13px;
+}
 
-  /* 5. Desktop buttons: fixed 40x40 */
-  .header__desktop__button {
-    min-width: 40px;
-    min-height: 40px;
-    width: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* ── ROW 2: MAIN HEADER (LOGO, SEARCH, USER ACTIONS) ── */
+.tp-main-header-bar {
+  width: 100% !important;
+  max-width: 100% !important;
+  background-color: var(--time-background) !important;
+  padding: 14px 32px;
+  border-bottom: 1px solid var(--time-border);
+  box-sizing: border-box !important;
+}
 
-  }
+.tp-main-header-container {
+  width: 100% !important;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-sizing: border-box !important;
+}
 
-  /* 6. Mobile buttons: fixed 44x44 touch target */
-  .header__mobile__button {
-    min-width: 44px;
-    min-height: 44px;
-    width: 44px;
-    height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* Logo Column */
+.tp-header-logo-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
 
-  }
+.tp-header-logo-link {
+  text-decoration: none !important;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
-  /* 7. Tracking icon: fixed 40x40 */
-  .tracking-page-redirect {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
+.tp-header-logo-serif {
+  font-family: 'Playfair Display', Didot, serif;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--time-text);
+  line-height: 1;
+}
 
-  /* 8. Cart status: reserve space for count badge */
-  .header__cart__status {
-    display: inline-flex;
-    align-items: center;
-    min-width: 32px;
-    white-space: nowrap;
-  }
+.tp-trademark {
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 2px;
+  top: -4px;
+  position: relative;
+}
 
-  /* 9. Backfill placeholder logo */
-  .header__backfill .header__logo {
-    width: {{ logo_width }}px;
-    height: 72px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .header__backfill .header__logo > div {
-    width: {{ logo_width }}px;
-    height: {{ logo_img_height | default: 40 }}px;
-    overflow: hidden;
-  }
+.tp-header-logo-sub {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  color: var(--time-primary);
+  margin-top: 3px;
+  text-transform: uppercase;
+}
 
-  /* 10. Mobile: 64px header */
-  @media (max-width: 768px) {
-    :root {
-      {%- if has_toolbar -%}
-        --menu-backfill-height: 104px; /* 64px header + 40px toolbar */
-      {%- else -%}
-        --menu-backfill-height: 64px;
-      {%- endif -%}
-    }
-    .theme__header {
-      min-height: 64px;
-    }
-    .header__inner:not(.header__inner--bar) {
-      min-height: 64px;
-    }
-    .header__logo {
-      height: 64px;
-    }
-    .header__backfill .header__logo {
-      height: 64px;
-    }
+/* Search Column */
+.tp-header-search-wrap {
+  flex: 1;
+  max-width: 560px;
+  margin: 0 16px;
+}
+
+.tp-header-search-form {
+  width: 100%;
+  margin: 0;
+}
+
+.tp-search-pill-box {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: var(--time-surface) !important; /* White */
+  border: 1.5px solid var(--time-border) !important;
+  border-radius: 999px !important;
+  padding: 3px 3px 3px 12px !important;
+  height: 38px !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+.tp-search-pill-box:focus-within {
+  border-color: var(--time-primary) !important;
+  box-shadow: 0 0 0 3px rgba(123, 63, 109, 0.12) !important;
+}
+
+.tp-search-icon-left {
+  width: 16px !important;
+  height: 16px !important;
+  stroke: var(--time-text-secondary) !important;
+  flex-shrink: 0 !important;
+  margin-right: 6px !important;
+  display: block !important;
+  align-self: center !important;
+}
+
+.tp-search-input-field {
+  flex: 1 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: var(--time-text) !important;
+  font-size: 12.5px !important;
+  font-family: inherit !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+  height: 100% !important;
+  line-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  align-self: center !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.tp-search-input-field::placeholder {
+  color: var(--time-text-secondary) !important;
+  opacity: 0.75 !important;
+  line-height: normal !important;
+}
+
+.tp-search-btn-submit {
+  background: var(--time-primary-dark) !important; /* Plum button */
+  color: var(--time-white) !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 0 18px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+.tp-search-btn-submit:hover {
+  background: var(--time-primary) !important;
+  transform: scale(1.02) !important;
+}
+
+/* User Actions Column (Account, Wishlist, Cart) */
+.tp-header-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.tp-user-action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none !important;
+  color: var(--time-text) !important;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.tp-user-action-item:hover {
+  transform: translateY(-2px);
+}
+
+.tp-action-icon-box {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.tp-action-icon-box svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--time-text);
+  fill: none;
+}
+
+.tp-action-text-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--time-text);
+  line-height: 1.1;
+}
+
+/* Cart Badge Count */
+.tp-cart-count-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--time-primary-dark) !important;
+  color: var(--time-white) !important;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 1.5px solid var(--time-background);
+}
+
+/* ── ROW 3: NAVIGATION / CATEGORY BAR ── */
+.tp-category-nav-bar {
+  width: 100% !important;
+  max-width: 100% !important;
+  background-color: var(--time-background) !important;
+  padding: 10px 32px;
+  border-bottom: 1px solid var(--time-border);
+  box-sizing: border-box !important;
+}
+
+.tp-category-nav-container {
+  width: 100% !important;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  box-sizing: border-box !important;
+}
+
+.tp-cat-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tp-cat-item-link {
+  color: var(--time-text) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  white-space: nowrap;
+}
+
+.tp-cat-item-link:hover {
+  color: var(--time-primary) !important;
+}
+
+/* New Arrivals Pill Badge */
+.tp-new-arrivals-pill-btn {
+  background: rgba(123, 63, 109, 0.08) !important;
+  border: 1.2px solid var(--time-primary-light) !important;
+  border-radius: 999px !important;
+  padding: 4px 14px 4px 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.tp-new-arrivals-pill-btn:hover {
+  background: rgba(123, 63, 109, 0.15) !important;
+  transform: scale(1.02);
+}
+
+.tp-red-new-tag {
+  background: #FF3B30 !important;
+  color: #FFFFFF !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  padding: 2px 7px !important;
+  border-radius: 999px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.tp-new-title-text {
+  color: var(--time-text) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+/* Right Secondary Links (Period Tips, Blogs) */
+.tp-cat-nav-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--time-border);
+}
+
+.tp-secondary-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tp-sec-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--time-text) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.tp-sec-nav-item:hover {
+  color: var(--time-primary) !important;
+}
+
+.tp-sec-nav-item svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--time-primary);
+  fill: none;
+}
+
+/* Mobile Adjustments */
+.tp-mobile-header-bar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  #shopify-section-header,
+  .shopify-section-group-header-group,
+  .shopify-section-group-header,
+  header.theme__header,
+  .tp-header-master-wrapper {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box !important;
   }
+  .tp-header-announcement-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 5px 12px !important;
+    font-size: 11px !important;
+    box-sizing: border-box !important;
+  }
+  .tp-announcement-left, .tp-announcement-right {
+    display: none !important;
+  }
+  .tp-announcement-container {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+  }
+  .tp-main-header-bar, .tp-category-nav-bar {
+    display: none !important;
+  }
+  .tp-mobile-header-bar {
+    display: block !important;
+    width: 100% !important;
+    background: var(--time-background) !important;
+    padding: 6px 12px !important;
+    border-bottom: 1px solid var(--time-border) !important;
+    box-sizing: border-box !important;
+  }
+  .tp-mobile-header-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .tp-mobile-header-inner img {
+    max-height: 54px !important;
+    height: 54px !important;
+    width: auto !important;
+  }
+  .tp-mobile-header-inner .tp-header-logo-serif {
+    font-size: 42px !important;
+  }
+  .tp-mobile-header-inner svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .tp-mobile-search-row {
+    margin-top: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .tp-mobile-search-row .tp-search-pill-box {
+    padding: 2px 2px 2px 12px !important;
+  }
+  .tp-mobile-search-row .tp-search-input-field {
+    font-size: 12px !important;
+    padding: 4px 0 !important;
+  }
+  .tp-mobile-search-row .tp-search-btn-submit {
+    padding: 4px 14px !important;
+    font-size: 11.5px !important;
+  }
+}
 {% endstyle %}
 
-{% capture logos %}
-  {%- if transparent_header and section.settings.transparent_logo != blank -%}
-    {%- assign has_transparent_logo = true -%}
-  {%- endif -%}
-  <div class="header__logo{% if section.settings.logo %} header__logo--image{% endif %}{% if has_transparent_logo %} header__logo--has-transparent{% endif %}">
+<div class="tp-header-master-wrapper" data-header-wrapper data-section-id="{{ section.id }}" data-section-type="header">
+  <header class="theme__header">
 
-  <a class="header__logo__link bbbbbbbbbbb"
-      href="{{ routes.root_url }}"
-      style="--LOGO-WIDTH: {{ logo_width }}px"
-    >
-      {% if section.settings.logo != blank %}
-        {%- assign logo_width = 200 -%}
-        {%- assign alt = section.settings.logo.alt | default: shop.name | strip_html | escape %}
-        {%- assign logo_width_2x = logo_width | times: 2 %}
-        {%- assign logo_width_3x = logo_width | times: 3 %}
-        {%- assign logo_img_height = logo_width | divided_by: section.settings.logo.aspect_ratio | round %}
-
-        {%- comment -%} Optimized logo with WebP/AVIF support for faster loading on 4G {%- endcomment -%}
-        <picture>
-          <!-- Mobile WebP -->
-          <source
-            media="(max-width: 767px)"
-            type="image/webp"
-            srcset="
-              {{ section.settings.logo | image_url: width: 160, format: 'webp', quality: 75 }} 160w,
-              {{ section.settings.logo | image_url: width: 220, format: 'webp', quality: 75 }} 220w,
-              {{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w
-            "
-            sizes="130px"
-          >
-          <!-- Desktop WebP -->
-          <source
-            media="(min-width: 768px)"
-            type="image/webp"
-            srcset="
-              {{ section.settings.logo | image_url: width: 200, format: 'webp', quality: 75 }} 200w,
-              {{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w,
-              {{ section.settings.logo | image_url: width: 320, format: 'webp', quality: 75 }} 320w
-            "
-            sizes="{{ section.settings.logo_max_width | default: 180 }}px"
-          >
-          <!-- Fallback Img (WebP format for lightweight fallback) -->
-          <img
-            src="{{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }}"
-            srcset="{{ section.settings.logo | image_url: width: 160, format: 'webp', quality: 75 }} 160w, {{ section.settings.logo | image_url: width: 220, format: 'webp', quality: 75 }} 220w, {{ section.settings.logo | image_url: width: 260, format: 'webp', quality: 75 }} 260w"
-            sizes="(max-width: 767px) 130px, 180px"
-            alt="{{ alt }}"
-            class="tw-w-full tw-max-h-[60rem]"
-            width="{{ logo_width }}"
-            height="{{ logo_img_height }}"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-            style="aspect-ratio: {{ section.settings.logo.aspect_ratio | default: 1.67 }}; width: auto; height: auto; max-height: 48px; object-fit: contain;"
-          >
-        </picture>
-      {% else %}
-        {% liquid
-          assign text_logo_length = ''
-          assign title_length = shop.name | size
-          assign oneword = true
-          if shop.name contains ' ' or shop.name contains '-'
-            assign oneword = false
-          endif
-          if title_length > 15 and section.settings.logo_text_size > 4
-            assign text_logo_length = text_logo_length | append: ' header__logo__text--long'
-            if oneword
-              assign text_logo_length = text_logo_length | append: ' header__logo__text--break'
-            endif
-          endif
-
-          assign text_logo_setting = section.settings.logo_text_size | prepend: 'accent-size-'
-
-          if has_transparent_logo
-            assign svg_device_class = 'logo__img--color'
-          endif
-        %}
-        <div class="header__logo__text {{ text_logo_length }} {{ text_logo_setting }} {{ svg_device_class }}">
-          <span>{{ shop.name }}</span>
+    <!-- ── ROW 1: TOP ANNOUNCEMENT BAR ── -->
+    <div class="tp-header-announcement-bar">
+      <div class="tp-announcement-container">
+        <div class="tp-announcement-item tp-announcement-left">
+          <span>🚚</span>
+          <span>Free Shipping on Orders above ₹499</span>
         </div>
-      {% endif %}
-      {% if has_transparent_logo %}
-        {%- assign alt = section.settings.transparent_logo.alt | default: shop.name | strip_html | escape %}
-        {%- assign transparent_logo_width = logo_width | at_most: section.settings.logo_max_limit %}
-        {%- assign transparent_logo_width_2x = transparent_logo_width | times: 2 %}
-
-        {% capture srcset %}
-          {{ section.settings.transparent_logo | image_url: width: transparent_logo_width_2x }} 2x,
-          {{ section.settings.transparent_logo | image_url: width: transparent_logo_width }}
-        {% endcapture %}
-
-        {{ section.settings.transparent_logo | image_url: width: transparent_logo_width | image_tag:
-          class: "logo__img logo__img--transparent",
-          srcset: srcset,
-          alt: alt,
-          preload: true
-        }}
-      {% endif %}
-    </a>
-
-  </div>
-{% endcapture %}
-
-{% capture cart_status_simple %}
-  {% assign cart_full =  false %}
-  {%- if cart.item_count > 0 -%}
-    {% assign cart_full =  true %}
-  {%- endif -%}
-  data-header-cart-full="{{ cart_full }}"
-{% endcapture %}
-
-{% capture cart_status %}
-  <span class="header__cart__status">
-    <span data-header-cart-price="{{ cart.total_price }}">
-      {{ cart.total_price | money }}
-    </span>
-    <span data-header-cart-count="{{ cart.item_count }}">
-      ({{ cart.item_count }})
-    </span>
-    <span {{ cart_status_simple }}></span>
-  </span>
-{% endcapture %}
-
-{% capture toolbar %}
-  <div class="theme__header__toolbar header__desktop" data-takes-space-wrapper {{ block_attributes }}>
-    {% if has_toolbar %}
-      {% if has_toolbar_text %}
-        <div class="theme__header__toolbar__text" data-ticker-frame>
-          <div data-ticker-scale class="toolbar__scale ticker--unloaded">
-            <div data-ticker-text class="toolbar__text{% unless toolbar_links or toolbar_locale or toolbar_currency %} toolbar__text--center{% endunless %}">
-              {{ toolbar_text }}
-            </div>
-          </div>
+        <div class="tp-announcement-item tp-announcement-center">
+          <span class="tp-announcement-heart">♡</span>
+          <span>Thoughtful Period Care for a Kinder You</span>
+          <span class="tp-announcement-heart">♡</span>
         </div>
-      {% endif %}
+        <div class="tp-announcement-item tp-announcement-right">
+          <span>🏷</span>
+          <span>Use Code <strong>TIME10</strong> for 10% Off</span>
+        </div>
+      </div>
+    </div>
 
-      {% if toolbar_links or toolbar_locale or toolbar_currency %}
-        <div class="toolbar__links" data-child-takes-space>
-          {% for link in linklists[toolbar_links].links %}
-            {% if link.links.size > 0 %}
-              <div class="toolbar__elements">
-                <popout-select>
-                  <div class="popout popout--toolbar" data-popout>
-                    <button type="button"
-                      type="button"
-                      class="popout__toggle"
-                      aria-expanded="false"
-                      aria-controls="toolbar-{{ link.title | strip_html | handleize }}"
-                      aria-describedby="sort-heading"
-                      aria-label=""
-                      data-popout-toggle>
-                      {{ link.title | strip_html | escape }}
-                      {%- render 'icon-core-chevron-down' -%}
-                    </button>
-
-                    <ul id="toolbar-{{ link.title | strip_html | handleize }}"
-                      class="popout-list"
-                      data-popout-list>
-                      {% for link in link.links %}
-                        <li>
-                          <a class="popout-list__option" href="{{ link.url }}">{{ link.title | strip_html | escape }}</a>
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                </popout-select>
-              </div>
+    <!-- ── ROW 2: MAIN HEADER (DESKTOP) ── -->
+    <div class="tp-main-header-bar">
+      <div class="tp-main-header-container">
+        <!-- Logo Column -->
+        <div class="tp-header-logo-wrap">
+          <a href="{{ routes.root_url }}" class="tp-header-logo-link">
+            {% if section.settings.logo != blank %}
+              <img src="{{ section.settings.logo | image_url: width: 320 }}" alt="{{ shop.name }}" width="320" height="{{ 320 | divided_by: section.settings.logo.aspect_ratio | round }}" style="max-height: 64px; width: auto;" loading="eager" fetchpriority="high" decoding="async">
             {% else %}
-              <a href="{{ link.url }}" class="toolbar__navlink">
-                <span class="navtext">{{ link.title | strip_html | escape }}</span>
-              </a>
+              <div class="tp-header-logo-serif" style="font-size: 42px;">TIME<span class="tp-trademark">™</span></div>
+              <div class="tp-header-logo-sub">SANITARY PADS</div>
             {% endif %}
-          {% endfor %}
-
-          {% if toolbar_locale or toolbar_currency %}
-            <div class="toolbar__elements" data-child-takes-space>
-              {%- form 'localization', class: 'toolbar__localization', id: 'localization-form-drawer' -%}
-                {% if toolbar_currency %}
-                  <div class="toolbar__currency toolbar__wrap">
-                    {%- render 'select-currency', form: form, unique: 'localization-form-toolbar', select_type: settings.currency_select_type, wrapper_class: 'popout--toolbar' -%}
-                  </div>
-                {% endif %}
-
-                {% if toolbar_locale %}
-                  <div class="toolbar__locale toolbar__wrap">
-                    {%- render 'select-locale', form: form, unique: 'localization-form-toolbar', wrapper_class: 'popout--toolbar' -%}
-                  </div>
-                {% endif %}
-              {%- endform -%}
-            </div>
-          {% endif %}
+          </a>
         </div>
-      {% endif %}
-    {% endif %}
-  </div>
-{% endcapture %}
 
-{% capture toolbar_mobile %}
-  <div class="theme__header__toolbar header__mobile" data-takes-space-wrapper {{ block_attributes }}>
-    {% if has_toolbar %}
-      {% if has_toolbar_text %}
-        <div class="theme__header__toolbar__text" data-ticker-frame>
-          <div data-ticker-scale class="toolbar__scale">
-            <div data-ticker-text class="toolbar__text toolbar__text--center">
-              {{ toolbar_text }}
+        <!-- Search Column -->
+        <div class="tp-header-search-wrap">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="tp-header-search-form">
+            <div class="tp-search-pill-box" data-popdown-toggle="search-popdown" style="cursor: pointer;">
+              <svg class="tp-search-icon-left" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
+              </svg>
+              <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search for pads, menstrual cups, pain relief cream..." class="tp-search-input-field" aria-label="Search" data-popdown-toggle="search-popdown">
+              <button type="button" class="tp-search-btn-submit" data-popdown-toggle="search-popdown">Search</button>
             </div>
-          </div>
+          </form>
         </div>
-      {% endif %}
-    {% endif %}
-  </div>
-{% endcapture %}
 
-{% capture minimal %}
-    <div class="header__mobile__left">
-     
-      <button class="header__mobile__button"
-        data-drawer-toggle="hamburger"
-        aria-label="{{ 'general.accessibility.open_menu' | t }}"
-        aria-haspopup="true"
-        aria-expanded="false"
-        aria-controls="header-menu">
-        {{ hamburger_icon }}
-      </button>
-    </div>
-    {{ logos }}
+        <!-- User Actions Column -->
+        <div class="tp-header-actions-wrap">
+          <!-- Account -->
+          <a href="{{ routes.account_url }}" class="tp-user-action-item" aria-label="Account">
+            <div class="tp-action-icon-box">
+              <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <span class="tp-action-text-label">Account</span>
+          </a>
 
- 
-    <div class="header__mobile__right">
-      <a class="header__mobile__button tracking-page-redirect"
-         href="https://timepads.in/apps/trackingmore"
-         aria-label="Track Order">
-        {% render 'tacking-icon' %}
-      </a>
+          <!-- Wishlist -->
+          <a href="/pages/wishlist" class="tp-user-action-item" aria-label="Wishlist">
+            <div class="tp-action-icon-box">
+              <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+            <span class="tp-action-text-label">Wishlist</span>
+          </a>
 
-      <a class="header__mobile__button header__mobile__cart"
-         data-drawer-toggle="drawer-cart"
-         href="{{ routes.cart_url }}"
-         aria-label="Cart">
-        {{ cart_icon }}
-        <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
-        <span class="header__cart__status">
-          <span data-header-cart-count="{{ cart.item_count }}">({{ cart.item_count }})</span>
-        </span>
-      </a>
-    </div>
-    {% comment %} <div class="header__mobile__right">
-      <a class="header__mobile__button">
-      {%  render 'tacking-icon' %}
-      </a>
-   
-    </div> {% endcomment %}
-{% endcapture %}
-
-{% capture cart_content %}
-  {%- capture text_wrapper -%}
-    {%- unless section.settings.use_icons -%}
-      data-text-items-wrapper
-    {%- endunless -%}
-  {%- endcapture -%}
-  {%- capture text_hover -%}
-    {%- unless section.settings.use_icons -%}
-      data-main-menu-text-item
-    {%- endunless -%}
-  {%- endcapture -%}
-
-  <div class="header__desktop__buttons{% if section.settings.use_icons %} header__desktop__buttons--icons{% endif %}" {{ text_wrapper }}>
-
-    {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
-      <div class="header__desktop__button {% if request.path contains routes.account_url %} main-menu--active{% endif %}" {{ text_hover }}>
-        <a href="{{ routes.account_url }}" class="navlink">
-          {%- if section.settings.use_icons -%}
-            {{ account_icon }}
-            <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
-          {%- else -%}
-            <span class="navtext">{{ 'layout.customer.account' | t }}</span>
-          {%- endif -%}
-        </a>
+          <!-- Cart -->
+          <a href="{{ routes.cart_url }}" class="tp-user-action-item" data-drawer-toggle="drawer-cart" aria-label="Cart" aria-expanded="false" aria-controls="drawer-cart">
+            <div class="tp-action-icon-box">
+              <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span class="tp-cart-count-badge" data-header-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+            </div>
+            <span class="tp-action-text-label">Cart</span>
+          </a>
+        </div>
       </div>
-    {% endif %}
-    <div class="header__desktop__button tacking-id" {{ text_hover }}>
-      <a href="https://timepads.in/apps/trackingmore" class="navlink tracking-page-redirect" aria-label="Track Order">
-        {% render 'tacking-icon' %}
-      </a>
     </div>
 
-    {% if section.settings.enable_search %}
-      <div class="header__desktop__button {% if request.path contains routes.search_url %} main-menu--active{% endif %}" {{ text_hover }}>
-        <a href="{{ routes.search_url }}" class="navlink" data-popdown-toggle="search-popdown" aria-label="Search">
-          {% if section.settings.use_icons %}
-            {{ search_icon }}
-            <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+    <!-- ── ROW 3: NAVIGATION / CATEGORY BAR (DESKTOP) ── -->
+    <div class="tp-category-nav-bar">
+      <div class="tp-category-nav-container">
+        <ul class="tp-cat-nav-list">
+          {% assign menu_links = linklists[main_menu_linklist].links %}
+          {% if menu_links and menu_links.size > 0 %}
+            {% for link in menu_links %}
+              {% assign title_dc = link.title | downcase %}
+              {% if title_dc contains 'new arrival' %}
+                <li>
+                  <a href="{{ link.url }}" class="tp-new-arrivals-pill-btn">
+                    <span class="tp-red-new-tag">NEW</span>
+                    <span class="tp-new-title-text">{{ link.title }}</span>
+                  </a>
+                </li>
+              {% else %}
+                <li><a href="{{ link.url }}" class="tp-cat-item-link">{{ link.title }}</a></li>
+              {% endif %}
+            {% endfor %}
           {% else %}
-            <span class="navtext">{{ 'general.search.submit' | t }}</span>
+            <li><a href="/collections/all" class="tp-cat-item-link">Period Pain Relief Cream</a></li>
+            <li><a href="/collections/all" class="tp-cat-item-link">Menstrual Cup</a></li>
+            <li><a href="/collections/all" class="tp-cat-item-link">Best Sellers</a></li>
+            <li>
+              <a href="/collections/all" class="tp-new-arrivals-pill-btn">
+                <span class="tp-red-new-tag">NEW</span>
+                <span class="tp-new-title-text">New Arrivals</span>
+              </a>
+            </li>
+            <li><a href="/collections/all" class="tp-cat-item-link">Shop All</a></li>
+          {% endif %}
+        </ul>
+
+        <div class="tp-cat-nav-divider"></div>
+
+        <div class="tp-secondary-nav-links">
+          <a href="/pages/period-tips" class="tp-sec-nav-item">
+            <!-- Leaf SVG -->
+            <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 9a9 9 0 0 1-10 9Z"></path>
+              <path d="M11 20v-8"></path>
+            </svg>
+            <span>Period Tips</span>
+          </a>
+
+          <div class="tp-cat-nav-divider"></div>
+
+          <a href="/blogs/news" class="tp-sec-nav-item">
+            <!-- Book SVG -->
+            <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <span>Blogs</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MOBILE HEADER BAR ── -->
+    <div class="tp-mobile-header-bar">
+      <div class="tp-mobile-header-inner">
+        <!-- Hamburger -->
+        <button type="button" class="header__mobile__button" data-drawer-toggle="hamburger" aria-label="Open Menu" aria-expanded="false" aria-controls="header-menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--time-text)" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Logo -->
+        <a href="{{ routes.root_url }}" class="tp-header-logo-link">
+          {% if section.settings.logo != blank %}
+            <img src="{{ section.settings.logo | image_url: width: 280 }}" alt="{{ shop.name }}" width="280" height="{{ 280 | divided_by: section.settings.logo.aspect_ratio | round }}" style="max-height: 54px; height: 54px; width: auto;" loading="eager" fetchpriority="high" decoding="async">
+          {% else %}
+            <div class="tp-header-logo-serif" style="font-size: 42px;">TIME<span class="tp-trademark">™</span></div>
           {% endif %}
         </a>
-      </div>
-    {% endif %}
 
-    <div class="header__desktop__button {% if request.path contains routes.cart_url %} main-menu--active{% endif %}" {{ text_hover }}>
-      <a href="{{ routes.cart_url }}"
-        class="navlink navlink--cart"
-        data-drawer-toggle="drawer-cart"
-        aria-label="Cart">
-        {% if section.settings.use_icons %}
-          {{ cart_icon }}
-          <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
-          {{ cart_status }}
-        {% else %}
-          <span class="navtext cart__status__parens">
-            {{ 'layout.cart.title' | t }}
-            {{ cart_status }}
-          </span>
-        {% endif %}
-      </a>
-    </div>
+        <!-- Actions -->
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="{{ routes.account_url }}" aria-label="Account" style="color: var(--time-text);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
 
-  </div>
-{% endcapture %}
+          <a href="/pages/wishlist" aria-label="Wishlist" style="color: var(--time-text);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </a>
 
-{% capture menu %}
-  <nav class="header__menu">
-    <div class="header__menu__inner" data-text-items-wrapper>
-      {% for link in linklists[main_menu_linklist].links %}
-        {% render 'nav-item', link: link, section: section, index: forloop.index %}
-      {% endfor %}
-      <div class="hover__bar"></div>
-      <div class="hover__bg"></div>
-    </div>
-  </nav>
-{% endcapture %}
-
-{% capture drawer %}
-  <nav class="drawer header__drawer display-none"
-    data-drawer="hamburger"
-    aria-label="{{ 'general.accessibility.main_menu' | t }}"
-    id="header-menu">
-    <div class="drawer__content">
-      <div class="drawer__top">
-        <div class="drawer__top__left">
-          {% if drawer_locale or drawer_currency %}
-            {%- form 'localization', class: 'header__drawer__selects', id: 'localization-form-drawer' -%}
-              {%- if drawer_locale -%}
-                {%- render 'select-locale', form: form, unique: 'localization-form-drawer', wrapper_class: 'popout--navbar', enable_scroll: true -%}
-              {%- endif -%}
-
-              {%- if drawer_currency -%}
-                {%- render 'select-currency', form: form, unique: 'localization-form-drawer', wrapper_class: 'popout--navbar', select_type: settings.currency_select_type, enable_scroll: true -%}
-              {%- endif -%}
-            {%- endform -%}
-          {% endif %}
-
-          {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
-            <a class="drawer__account" href="{{ routes.account_url }}">
-              {{ account_icon }}
-              <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
-            </a>
-          {%- endif -%}
+          <a href="{{ routes.cart_url }}" data-drawer-toggle="drawer-cart" aria-label="Cart" aria-expanded="false" aria-controls="drawer-cart" style="color: var(--time-text); position: relative;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="tp-cart-count-badge" data-header-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+          </a>
         </div>
+      </div>
 
-        <button class="drawer__button drawer__close"
-          data-first-focus
-          data-drawer-toggle="hamburger"
-          aria-label="{{ 'general.accessibility.close' | t }}">
-          {% render 'icon-core-x' %}
+      <!-- Mobile Search Field -->
+      <div class="tp-mobile-search-row">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="tp-header-search-form">
+          <div class="tp-search-pill-box" data-popdown-toggle="search-popdown" style="cursor: pointer;">
+            <svg class="tp-search-icon-left" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
+            </svg>
+            <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search for pads, cups, relief..." class="tp-search-input-field" aria-label="Search" data-popdown-toggle="search-popdown">
+            <button type="button" class="tp-search-btn-submit" style="padding: 6px 16px;" data-popdown-toggle="search-popdown">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ── MOBILE SLIDING DRAWER MENU ── -->
+  <nav class="drawer header__drawer display-none" data-drawer="hamburger" id="header-menu" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
+    <div class="drawer__content">
+      
+      <!-- Drawer Top Bar -->
+      <div class="tp-drawer-header">
+        <div class="tp-drawer-header-left">
+          {% if section.settings.logo != blank %}
+            <img src="{{ section.settings.logo | image_url: width: 180 }}" alt="{{ shop.name }}" width="180" height="{{ 180 | divided_by: section.settings.logo.aspect_ratio | round }}" style="max-height: 38px; width: auto;" loading="eager" fetchpriority="high">
+          {% else %}
+            <div class="tp-drawer-header-text">
+              <span class="tp-drawer-header-title" style="font-family: 'Playfair Display', serif !important; font-size: 20px !important;">TIME<span style="font-size: 10px; vertical-align: super;">™</span></span>
+              <span class="tp-drawer-header-subtitle">SANITARY PADS &amp; CARE</span>
+            </div>
+          {% endif %}
+        </div>
+        <button type="button" class="tp-drawer-close-btn" data-drawer-close="hamburger" aria-label="Close menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
       </div>
 
       <div class="drawer__inner" data-drawer-scrolls>
+        
+        <!-- Search Pill Bar inside Drawer -->
+        <div style="padding: 14px 14px 4px;">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="tp-header-search-form">
+            <div class="tp-search-pill-box" style="box-shadow: 0 2px 8px rgba(123, 63, 109, 0.06); background: #FAF7FB !important; border: 1.5px solid var(--time-border) !important;">
+              <svg class="tp-search-icon-left" viewBox="0 0 24 24" fill="none" style="width: 16px; height: 16px; stroke: var(--time-primary);">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
+              </svg>
+              <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search pads, cups, pain relief..." class="tp-search-input-field" aria-label="Search" style="font-size: 12px;">
+              <button type="submit" class="tp-search-btn-submit" style="padding: 4px 14px; font-size: 11.5px;">Search</button>
+            </div>
+          </form>
+        </div>
 
-        {% assign menu_index = 0 %}
-        {%- assign mobile_menu_linklist = section.settings.mobile_menu_linklist | default: main_menu_linklist -%}
-        <div class="drawer__menu" data-stagger-animation data-sliderule-pane="0">
-          {% for link in linklists[mobile_menu_linklist].links %}
-            {% render 'nav-item-mobile', link: link, section: section, index: forloop.index %}
-            {% assign menu_index = forloop.index %}
-          {% endfor %}
+        <!-- ── QUICK ESSENTIALS CATEGORY HORIZONTAL TRACK ── -->
+        <div class="tp-drawer-essentials-card">
+          <div class="tp-drawer-essentials-head">
+            <span class="tp-drawer-essentials-title">
+              <span style="color: var(--time-primary);">✦</span> EXPLORE CATEGORIES
+            </span>
+            <a href="/collections/all" class="tp-drawer-view-all">
+              View All <span>›</span>
+            </a>
+          </div>
+          <div class="tp-drawer-quick-products-wrapper">
+            <div class="tp-drawer-quick-products__track">
+              {% assign main_links = linklists[main_menu_linklist].links %}
+              {% if main_links.size > 0 %}
+                {% for link in main_links limit: 6 %}
+                  {% assign nav_img = link.object.image | default: link.object.products.first.featured_media.preview_image %}
+                  <a href="{{ link.url }}" class="tp-drawer-product-card">
+                    <div class="tp-drawer-product-card__img-wrap">
+                      {% if nav_img != blank %}
+                        <img src="{{ nav_img | image_url: width: 120, height: 120, crop: 'center' }}" alt="{{ link.title }}" class="tp-drawer-product-card__img" width="120" height="120" loading="lazy">
+                      {% else %}
+                        <div class="tp-drawer-product-card__placeholder" style="background: linear-gradient(135deg, #FAF7FB, #F2E8F0); display: flex; align-items: center; justify-content: center; color: var(--time-primary); font-weight: 700; font-size: 16px;">
+                          {{ link.title | slice: 0, 1 }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <span class="tp-drawer-product-card__title">{{ link.title }}</span>
+                  </a>
+                {% endfor %}
+              {% else %}
+                <a href="/collections/all" class="tp-drawer-product-card">
+                  <div class="tp-drawer-product-card__img-wrap">
+                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">🌸</div>
+                  </div>
+                  <span class="tp-drawer-product-card__title">Pads</span>
+                </a>
+                <a href="/collections/all" class="tp-drawer-product-card">
+                  <div class="tp-drawer-product-card__img-wrap">
+                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">💧</div>
+                  </div>
+                  <span class="tp-drawer-product-card__title">Cream</span>
+                </a>
+                <a href="/collections/all" class="tp-drawer-product-card">
+                  <div class="tp-drawer-product-card__img-wrap">
+                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">🍷</div>
+                  </div>
+                  <span class="tp-drawer-product-card__title">Cups</span>
+                </a>
+                <a href="/collections/all" class="tp-drawer-product-card">
+                  <div class="tp-drawer-product-card__img-wrap">
+                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">✨</div>
+                  </div>
+                  <span class="tp-drawer-product-card__title">Combos</span>
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
 
-          {% if drawer_links %}
-            {% assign secondary_index = menu_index | plus: 1 %}
-            {% for link in linklists[toolbar_links].links %}
-              {% render 'nav-item-mobile', link: link, section: section, index: secondary_index, secondary_menu: true %}
-              {% assign secondary_index = secondary_index | plus: forloop.index %}
+        <!-- ── MAIN MENU CATEGORY ROWS WITH IMAGES ── -->
+        <div style="padding: 10px 14px 4px;">
+          <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--time-text-secondary); margin-bottom: 8px;">
+            MAIN CATEGORIES
+          </div>
+        </div>
+
+        <div class="drawer__menu" style="display: flex; flex-direction: column; gap: 2px;">
+          {% if main_links.size > 0 %}
+            {% for link in main_links %}
+              {% assign link_dc = link.title | downcase %}
+              {% assign nav_img = link.object.image | default: link.object.products.first.featured_media.preview_image %}
+
+              <a href="{{ link.url }}" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+                <div class="sliderow__content">
+                  <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border);">
+                    {% if nav_img != blank %}
+                      <img src="{{ nav_img | image_url: width: 96, height: 96, crop: 'center' }}" alt="{{ link.title }}" class="sliderow__thumb-img" width="96" height="96" loading="lazy">
+                    {% else %}
+                      {% if link_dc contains 'cream' or link_dc contains 'relief' %}
+                        <span style="font-size: 22px;">🧴</span>
+                      {% elsif link_dc contains 'cup' %}
+                        <span style="font-size: 22px;">🍷</span>
+                      {% elsif link_dc contains 'new' %}
+                        <span style="font-size: 22px;">✨</span>
+                      {% elsif link_dc contains 'combo' or link_dc contains 'offer' %}
+                        <span style="font-size: 22px;">🎁</span>
+                      {% else %}
+                        <span style="font-size: 22px;">🌸</span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                  <div class="sliderow__text-group">
+                    {% if link_dc contains 'new' %}
+                      <span class="combo-highlight-tag">NEW</span>
+                    {% elsif link_dc contains 'best' or link_dc contains 'popular' %}
+                      <span class="combo-highlight-tag" style="background: var(--time-primary) !important;">POPULAR</span>
+                    {% elsif link_dc contains 'combo' %}
+                      <span class="combo-highlight-tag" style="background: #2D6A4F !important;">EXTRA SAVINGS</span>
+                    {% endif %}
+                    <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">{{ link.title }}</span>
+                  </div>
+                </div>
+                <div class="sliderow__arrow" style="color: var(--time-primary);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </a>
             {% endfor %}
+          {% else %}
+            <!-- Fallback Category Rows with Crisp Icons & Styling -->
+            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+              <div class="sliderow__content">
+                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 22px;">🧴</span>
+                </div>
+                <div class="sliderow__text-group">
+                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Period Pain Relief Cream</span>
+                </div>
+              </div>
+              <div class="sliderow__arrow" style="color: var(--time-primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+
+            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+              <div class="sliderow__content">
+                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 22px;">🍷</span>
+                </div>
+                <div class="sliderow__text-group">
+                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Menstrual Cup</span>
+                </div>
+              </div>
+              <div class="sliderow__arrow" style="color: var(--time-primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+
+            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+              <div class="sliderow__content">
+                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 22px;">🔥</span>
+                </div>
+                <div class="sliderow__text-group">
+                  <span class="combo-highlight-tag" style="background: var(--time-primary) !important;">POPULAR</span>
+                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Best Sellers</span>
+                </div>
+              </div>
+              <div class="sliderow__arrow" style="color: var(--time-primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+
+            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+              <div class="sliderow__content">
+                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 22px;">✨</span>
+                </div>
+                <div class="sliderow__text-group">
+                  <span class="combo-highlight-tag">NEW</span>
+                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">New Arrivals</span>
+                </div>
+              </div>
+              <div class="sliderow__arrow" style="color: var(--time-primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
+
+            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+              <div class="sliderow__content">
+                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 22px;">🌸</span>
+                </div>
+                <div class="sliderow__text-group">
+                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Shop All</span>
+                </div>
+              </div>
+              <div class="sliderow__arrow" style="color: var(--time-primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </a>
           {% endif %}
         </div>
+
+        <!-- ── SECONDARY LINKS (MORE FROM TIME) ── -->
+        <div style="padding: 16px 14px 6px;">
+          <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--time-text-secondary); margin-bottom: 8px;">
+            MORE FROM TIME
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="/pages/period-tips" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 9a9 9 0 0 1-10 9Z"></path><path d="M11 20v-8"></path></svg>
+              </div>
+              <span>Period Tips &amp; Care Guide</span>
+            </a>
+
+            <a href="/blogs/news" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              </div>
+              <span>Blogs &amp; Articles</span>
+            </a>
+
+            <a href="/pages/about-us" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </div>
+              <span>About TIME</span>
+            </a>
+
+            <a href="/pages/contact" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <span>Contact Us &amp; Support</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- ── PROMO CARD & QUICK ACCOUNT ACTION BUTTONS ── -->
+        <div class="tp-drawer-bottom-card" style="background: linear-gradient(135deg, #FAF7FB 0%, #F5EAF3 100%) !important; border: 1.5px dashed var(--time-primary-light) !important; flex-direction: column !important; gap: 6px !important; margin: 16px 14px 12px !important;">
+          <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 13.5px; color: var(--time-text);">
+            <span>🎁</span> <span>GET 10% OFF YOUR FIRST ORDER</span>
+          </div>
+          <div style="font-size: 11.5px; color: var(--time-primary); font-weight: 600;">
+            Use Code: <strong style="background: var(--time-primary-dark); color: #FFF; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.05em;">TIME10</strong>
+          </div>
+        </div>
+
+        <!-- Account / Wishlist Footer Buttons -->
+        <div style="padding: 0 14px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <a href="{{ routes.account_url }}" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; background: var(--time-text); color: #FFF; text-decoration: none; font-size: 12.5px; font-weight: 700;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>My Account</span>
+          </a>
+
+          <a href="/pages/wishlist" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; background: #FAF7FB; border: 1.5px solid var(--time-border); color: var(--time-text); text-decoration: none; font-size: 12.5px; font-weight: 700;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <span>Wishlist</span>
+          </a>
+        </div>
+
       </div>
     </div>
 
@@ -677,8 +990,395 @@
       <span class="drawer__underlay__blur"></span>
     </span>
   </nav>
-{% endcapture %}
+</div> <!-- end .tp-header-master-wrapper -->
 
+<script>
+  (function() {
+    function setupHamburgerDrawer() {
+      var drawer = document.querySelector('[data-drawer="hamburger"]');
+      if (!drawer) return;
+
+      var openBtns = document.querySelectorAll('.header__mobile__button, [data-drawer-toggle="hamburger"]');
+      var closeBtns = document.querySelectorAll('.tp-drawer-close-btn, [data-drawer-close="hamburger"]');
+
+      function openMenu() {
+        drawer.classList.remove('display-none');
+        drawer.removeAttribute('inert');
+        drawer.setAttribute('aria-hidden', 'false');
+        setTimeout(function() {
+          drawer.classList.add('drawer--visible');
+          drawer.classList.add('is-open');
+          document.body.classList.add('drawer--is-open');
+        }, 10);
+        openBtns.forEach(function(btn) {
+          btn.setAttribute('aria-expanded', 'true');
+        });
+      }
+
+      function closeMenu() {
+        drawer.classList.remove('drawer--visible');
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        drawer.setAttribute('inert', '');
+        document.body.classList.remove('drawer--is-open');
+        setTimeout(function() {
+          if (!drawer.classList.contains('drawer--visible') && !drawer.classList.contains('is-open')) {
+            drawer.classList.add('display-none');
+          }
+        }, 300);
+        openBtns.forEach(function(btn) {
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      openBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var isOpen = (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open')) && !drawer.classList.contains('display-none');
+          if (isOpen) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        });
+      });
+
+      closeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          closeMenu();
+        });
+      });
+
+      var underlay = drawer.querySelector('[data-drawer-underlay]');
+      if (underlay) {
+        underlay.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeMenu();
+        });
+      }
+
+      document.addEventListener('keyup', function(e) {
+        if (e.key === 'Escape' && (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open'))) {
+          closeMenu();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupHamburgerDrawer);
+    } else {
+      setupHamburgerDrawer();
+    }
+  })();
+</script>
+
+<style>
+  .tp-drawer-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 14px 16px 12px !important;
+    border-bottom: 1px solid #F3EDE7 !important;
+    background: #FFFFFF !important;
+    min-height: 56px !important;
+    box-sizing: border-box !important;
+  }
+  .tp-drawer-header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  .tp-drawer-header-icon {
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #1A1816 !important;
+  }
+  .tp-drawer-header-text {
+    display: flex !important;
+    flex-direction: column !important;
+    line-height: 1.15 !important;
+  }
+  .tp-drawer-header-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    color: #1A1816 !important;
+    font-family: 'Poppins', 'Outfit', sans-serif !important;
+    margin: 0 !important;
+  }
+  .tp-drawer-header-subtitle {
+    font-size: 12px !important;
+    color: #7A746E !important;
+    font-weight: 500 !important;
+    margin-top: 2px !important;
+    line-height: 1 !important;
+  }
+  .tp-drawer-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    color: #1A1816 !important;
+    padding: 0 !important;
+    position: static !important;
+  }
+
+  /* ── Drawer Scroll Container ── */
+  .header__drawer .drawer__inner {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* ── Top Essentials Card Container ── */
+  .tp-drawer-essentials-card {
+    flex: 0 0 auto !important;
+    margin: 12px 14px 10px !important;
+    background: #FAF5F2 !important;
+    border: 1px solid #F0E9E3 !important;
+    border-radius: 16px !important;
+    padding: 12px 12px 14px !important;
+    box-sizing: border-box !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .tp-drawer-essentials-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 10px !important;
+  }
+  .tp-drawer-essentials-title {
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: #1A1816 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-family: 'Poppins', 'Outfit', sans-serif !important;
+  }
+  .tp-drawer-view-all {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #C0395D !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    transition: opacity 0.15s ease !important;
+  }
+  .tp-drawer-view-all:hover {
+    opacity: 0.8 !important;
+  }
+  .tp-drawer-quick-products-wrapper {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+  .tp-drawer-quick-products__track {
+    display: flex !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 2px 2px 4px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .tp-drawer-quick-products__track::-webkit-scrollbar {
+    display: none !important;
+  }
+  .tp-drawer-product-card {
+    flex: 0 0 66px !important;
+    width: 66px !important;
+    height: 100px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    text-align: center !important;
+  }
+  .tp-drawer-product-card__img-wrap {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #FFFFFF !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 6px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    flex-shrink: 0 !important;
+  }
+  .tp-drawer-product-card__img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    padding: 2px !important;
+    display: block !important;
+  }
+  .tp-drawer-product-card__placeholder {
+    width: 100% !important;
+    height: 100% !important;
+    background: #F0EAE1 !important;
+  }
+  .tp-drawer-product-card__title {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #1A1816 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    width: 66px !important;
+    display: block !important;
+    word-break: normal !important;
+  }
+  .tp-drawer-track-arrow {
+    position: absolute !important;
+    right: -4px !important;
+    top: 18px !important;
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+    border: 1px solid #F0D4DC !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    color: #C0395D !important;
+    z-index: 3 !important;
+  }
+
+  /* ── Menu Item Rows ── */
+  .header__drawer .drawer__menu {
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: 100% !important;
+  }
+  .sliderow {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #F5F1EC !important;
+    text-decoration: none !important;
+    background: #FFFFFF !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 60px !important;
+  }
+  .sliderow__content {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    flex-grow: 1 !important;
+  }
+  .sliderow__thumb {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 3px !important;
+    box-sizing: border-box !important;
+  }
+  .sliderow__thumb-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+  .sliderow__text-group {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .sliderow__title-text {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #1A1816 !important;
+    line-height: 1.25 !important;
+  }
+  .sliderow__text-group .combo-highlight-tag {
+    background-color: #E63946 !important;
+    color: #FFFFFF !important;
+    font-size: 8.5px !important;
+    font-weight: 800 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    margin-bottom: 3px !important;
+    margin-right: 0 !important;
+    display: inline-block !important;
+    position: static !important;
+  }
+  .sliderow__arrow {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #1A1816 !important;
+    opacity: 0.8 !important;
+  }
+
+  /* ── Bottom Brand Card ── */
+  .tp-drawer-bottom-card {
+    background: linear-gradient(90deg, #FFF6F6, #FFF9F4) !important;
+    border: 1px solid #FFEBE8 !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    margin: 14px 14px 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .tp-drawer-bottom-text {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #8A4B56 !important;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .header__inner {
+      padding: 0 !important;
+    }
+  }
+</style>
+
+<div style="display: none !important;" aria-hidden="true">
 <div class="header__wrapper"
   data-header-wrapper
   style="--bar-opacity: 0; --bar-width: 0; --bar-left: 0;"
@@ -790,6 +1490,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script type="application/ld+json">

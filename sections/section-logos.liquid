@@ -8,47 +8,116 @@
 
 {% style %}
   #shopify-section-{{ sid }} {
-    padding-top: {{ section.settings.padding_top }}px !important;
-    padding-bottom: {{ section.settings.padding_bottom }}px !important;
-    contain-intrinsic-size: 1px 120px;
+    background-color: #FAF7FB !important;
+    padding-top: {{ section.settings.padding_top | default: 24 }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom | default: 24 }}px !important;
+    width: 100%;
+    box-sizing: border-box;
   }
   @media (max-width: 768px) {
     #shopify-section-{{ sid }} {
-      padding-top: {{ section.settings.padding_top_mobile }}px !important;
-      padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+      padding-top: {{ section.settings.padding_top_mobile | default: 18 }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 18 }}px !important;
     }
   }
 
-  /* Scoped section styles */
+  .tp-logos-container-{{ sid }} {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .tp-logos-heading-{{ sid }} {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #241D25 !important;
+    text-align: center !important;
+    margin: 0 0 24px 0 !important;
+    line-height: 1.2 !important;
+  }
+  @media (min-width: 768px) {
+    .tp-logos-heading-{{ sid }} {
+      font-size: 38px !important;
+    }
+  }
+
+  .tp-logos-grid-{{ sid }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    padding: 4px 0;
+    list-style: none;
+    box-sizing: border-box;
+  }
+
+  .tp-logo-item-{{ sid }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .tp-logo-item-{{ sid }}:hover {
+    transform: translateY(-2px);
+  }
+
+  .tp-logo-link-{{ sid }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .tp-logo-img-{{ sid }} {
+    max-height: 46px;
+    max-width: 150px;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.04));
+  }
+
   @media (max-width: 767px) {
-    #shopify-section-{{ sid }} .buy-from-us.logo-bar.ticker--unloaded {
-      overflow-x: auto;
-      overflow-y: hidden;
-      display: flex;
-      gap: 5px;
-      justify-content: flex-start;
-      margin-bottom: 0rem;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+    .tp-logos-container-{{ sid }} {
+      padding: 0 16px;
     }
-    #shopify-section-{{ sid }} .buy-from-us.logo-bar.ticker--unloaded::-webkit-scrollbar {
-      display: none;
+    .tp-logos-heading-{{ sid }} {
+      font-size: 19px !important;
+      margin-bottom: 16px !important;
     }
-    #shopify-section-{{ sid }} .buy-from-us.logo-bar.ticker--unloaded .logo-bar__item {
-      flex: 0 0 30%;
-      margin: 0;
-      padding: 0rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
+    .tp-logos-grid-{{ sid }} {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 16px 24px !important;
+      padding: 0 !important;
     }
-    #shopify-section-{{ sid }} .kicker-flourished {
-      margin-bottom: 1.4rem;
+    .tp-logo-item-{{ sid }} {
+      flex: 0 0 calc(33.333% - 16px) !important;
+      min-width: 75px !important;
+      max-width: 105px !important;
+      height: 38px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .tp-logo-img-{{ sid }} {
+      max-height: 32px !important;
+      max-width: 95px !important;
     }
   }
 {% endstyle %}
 
-{%- if lazy_load_section != blank -%}<lazy-section style="display: block; min-height: 120px;">{%- endif -%}
+{%- if lazy_load_section != blank -%}<lazy-section style="display: block; min-height: 100px;">{%- endif -%}
 
 {%- if lazy_load_section == blank -%}
 
@@ -67,79 +136,89 @@
 
   {%- unless hide_section -%}
 
-    {%- capture logo_markup -%}
+    {%- capture logo_items_markup -%}
       {%- for block in section.blocks -%}
         {%- assign img = block.settings.image -%}
         {%- assign show_item = true -%}
         {%- if is_product_or_collection and img == blank -%}{%- assign show_item = false -%}{%- endif -%}
 
-        <div
-          class="logo-bar__item{%- unless show_item %} hide{%- endunless -%}"
-          style="--gutter:{{ block.settings.spacing }}px;--width:{{ block.settings.width }}px;"
-          data-slide="{{ block.id }}"
-          data-slide-index="{{ forloop.index0 }}"
-          {{ block.shopify_attributes }}
-        >
-          {%- if block.settings.link != blank -%}
-            <a
-              href="{{ block.settings.link }}"
-              class="logo-bar__link"
-              {%- if block.settings.new_tab %} target="_blank" rel="noopener noreferrer"{%- endif %}
-              aria-label="{{ block.settings.alt_text | default: block.settings.link | escape }}"
-            >
-          {%- endif -%}
-
-          {%- if img != blank -%}
-            {%- assign img_w   = img.width | at_most: block.settings.width -%}
-            {%- assign img_w2x = img_w | times: 2 | at_most: img.width -%}
-            {%- assign img_alt = block.settings.alt_text | default: section.settings.title | escape -%}
-            {%- assign img_1x  = img | image_url: width: img_w, format: 'webp' -%}
-            {%- assign img_2x  = img | image_url: width: img_w2x, format: 'webp' -%}
-            {%- assign srcset_val = img_1x | append: ' 1x, ' | append: img_2x | append: ' 2x' -%}
-            <div class="logo-bar__image">
-              <img
-                src="{{ img_1x }}"
-                srcset="{{ srcset_val }}"
-                sizes="(max-width: 767px) 40vw, {{ img_w }}px"
-                width="{{ img_w }}"
-                height="{{ img_w }}"
-                style="width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain;"
-                alt="{{ img_alt }}"
-                loading="lazy"
-                fetchpriority="low"
-                decoding="async"
+        {%- if show_item -%}
+          <div
+            class="tp-logo-item-{{ sid }} logo-bar__item"
+            data-slide="{{ block.id }}"
+            data-slide-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.link != blank -%}
+              <a
+                href="{{ block.settings.link }}"
+                class="tp-logo-link-{{ sid }} logo-bar__link"
+                {%- if block.settings.new_tab %} target="_blank" rel="noopener noreferrer"{%- endif %}
+                aria-label="{{ block.settings.alt_text | default: section.settings.title | escape }}"
               >
-            </div>
-          {%- else -%}
-            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
-          {%- endif -%}
+            {%- endif -%}
 
-          {%- if block.settings.link != blank -%}</a>{%- endif -%}
-        </div>
+            {%- if img != blank -%}
+              {%- assign img_w = block.settings.width | default: 140 -%}
+              {%- assign img_w2x = img_w | times: 2 -%}
+              {%- assign img_alt = block.settings.alt_text | default: section.settings.title | escape -%}
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="{{ img | image_url: width: img_w, format: 'webp' }} 1x, {{ img | image_url: width: img_w2x, format: 'webp' }} 2x"
+                >
+                <img
+                  src="{{ img | image_url: width: img_w }}"
+                  srcset="{{ img | image_url: width: img_w }} 1x, {{ img | image_url: width: img_w2x }} 2x"
+                  alt="{{ img_alt }}"
+                  class="tp-logo-img-{{ sid }} logo-bar__image"
+                  width="{{ img_w }}"
+                  height="46"
+                  loading="lazy"
+                  fetchpriority="low"
+                  decoding="async"
+                >
+              </picture>
+            {%- else -%}
+              {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+
+            {%- if block.settings.link != blank -%}</a>{%- endif -%}
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     {%- endcapture -%}
 
     <div
-      class="section-logos section-logos-{{ sid }} {{ section.settings.bg }}{%- if section.settings.title != blank %} section-logos--tall{%- endif -%}"
+      class="section-logos section-logos-{{ sid }} {{ section.settings.bg }}"
       data-section-id="{{ sid }}"
       data-section-type="logos"
     >
-      <div class="{{ section.settings.width }} section-padding">
+      <div class="tp-logos-container-{{ sid }}">
 
         {%- if section.settings.title != blank -%}
-          <h2 class="kicker-flourished mb-r11">{{ section.settings.title | escape }}</h2>
+          {%- assign logo_words = section.settings.title | split: ' ' -%}
+          <h2 class="tp-logos-heading-{{ sid }}">
+            {%- for word in logo_words -%}
+              {%- if forloop.last -%}
+                <span style="color: #7B3F6D;">{{ word }}</span>
+              {%- else -%}
+                {{ word }} 
+              {%- endif -%}
+            {%- endfor -%}
+          </h2>
         {%- endif -%}
 
         {%- if section.blocks.size > 0 -%}
           {%- if section.settings.enable_marquee -%}
             <div class="logo-bar__wrapper">
-              <div class="logo-bar__outer" style="--bg:var(--COLOR-ANNOUNCEMENT-BG);--text:var(--COLOR-ANNOUNCEMENT-TEXT);">
+              <div class="logo-bar__outer">
                 <div class="logo-bar__holder">
                   <div class="logo-bar logo-bar--marquee">
                     <div data-ticker-frame class="logo-bar__message">
                       <div data-ticker-scale class="ticker--unloaded logo-bar__scale" style="--animation-duration:{{ section.settings.marquee_speed }}s;">
-                        <div data-ticker-text class="logo-bar__text">
-                          {{ logo_markup }}
+                        <div data-ticker-text class="logo-bar__text tp-logos-grid-{{ sid }}">
+                          {{ logo_items_markup }}
                         </div>
                       </div>
                     </div>
@@ -148,8 +227,8 @@
               </div>
             </div>
           {%- else -%}
-            <div class="{{ section.settings.extra_class }} logo-bar ticker--unloaded">
-              {{ logo_markup }}
+            <div class="tp-logos-grid-{{ sid }} {{ section.settings.extra_class }}">
+              {{ logo_items_markup }}
             </div>
           {%- endif -%}
         {%- else -%}
@@ -178,11 +257,11 @@
   "name": "Logo list",
   "settings": [
     { "type": "header", "content": "Padding settings" },
-    { "type": "range", "id": "padding_top",          "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top" },
-    { "type": "range", "id": "padding_bottom",        "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom" },
-    { "type": "range", "id": "padding_top_mobile",    "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top Mobile" },
-    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom Mobile" },
-    { "type": "text",   "id": "title",       "label": "Title",           "default": "Logo list" },
+    { "type": "range", "id": "padding_top",          "min": 0, "max": 100, "default": 24, "step": 2, "unit": "px", "label": "Padding Top" },
+    { "type": "range", "id": "padding_bottom",        "min": 0, "max": 100, "default": 24, "step": 2, "unit": "px", "label": "Padding Bottom" },
+    { "type": "range", "id": "padding_top_mobile",    "min": 0, "max": 100, "default": 18, "step": 2, "unit": "px", "label": "Padding Top Mobile" },
+    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "default": 18, "step": 2, "unit": "px", "label": "Padding Bottom Mobile" },
+    { "type": "text",   "id": "title",       "label": "Title",           "default": "Available Across India's Leading Platforms" },
     { "type": "text",   "id": "extra_class", "label": "Add Extra class" },
     {
       "type": "select", "id": "bg", "label": "Background color", "default": "palette--light bg--neutral",
@@ -196,7 +275,7 @@
       ]
     },
     { "type": "header",   "content": "Marquee" },
-    { "type": "checkbox", "id": "enable_marquee",   "label": "Enable animated marquee", "default": true },
+    { "type": "checkbox", "id": "enable_marquee",   "label": "Enable animated marquee", "default": false },
     { "type": "range",    "id": "marquee_speed",    "label": "Marquee animation speed", "unit": "s", "min": 2, "max": 60, "step": 1, "default": 30 },
     { "type": "header",   "content": "Section spacing" },
     {

@@ -27,7 +27,12 @@
       <div class="drawer cart__drawer {{ pop_style }} {{ hide_quantity }} {{ section.settings.cart_color_bg }}"
         data-cart-message-container
         data-drawer="drawer-cart"
-        id="drawer-cart">
+        id="drawer-cart"
+        aria-hidden="true"
+        inert
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ 'layout.cart.title' | t | default: 'Cart' }}">
         <div class="drawer__content" aria-label="{{ 'layout.cart.title' | t }}">
           <div class="drawer__top">
 

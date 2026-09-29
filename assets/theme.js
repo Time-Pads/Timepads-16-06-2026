@@ -3105,10 +3105,12 @@
       }
       showDrawer() {
           this.drawer.classList.remove(classes$A.displayNone);
+          this.drawer.removeAttribute('inert');
           // animates after display none is removed
           setTimeout(()=>{
-              this.buttons.forEach((el)=>el.setAttribute('aria-expanded', true)
+              this.buttons.forEach((el)=>el.setAttribute('aria-expanded', 'true')
               );
+              this.drawer.setAttribute('aria-hidden', 'false');
               this.drawer.classList.add(classes$A.isVisible);
               document.dispatchEvent(new CustomEvent('theme:scroll:lock', {
                   bubbles: true,
@@ -3124,21 +3126,30 @@
       }
       hideDrawer() {
           window.theme.state.cartOpen = false;
-          this.buttons.forEach((el)=>el.setAttribute('aria-expanded', true)
+          this.buttons.forEach((el)=>el.setAttribute('aria-expanded', 'false')
           );
+          this.drawer.setAttribute('aria-hidden', 'true');
+          // prevent background scroll restoration error when drawerScrolls missing
           this.drawer.classList.remove(classes$A.isVisible);
-          this.drawerScrolls.dispatchEvent(new CustomEvent('theme:scroll:unlock', {
-              bubbles: true
-          }));
+          if (this.drawerScrolls) {
+              this.drawerScrolls.dispatchEvent(new CustomEvent('theme:scroll:unlock', {
+                  bubbles: true
+              }));
+          } else {
+              document.dispatchEvent(new CustomEvent('theme:scroll:unlock', {
+                  bubbles: true
+              }));
+          }
           document.dispatchEvent(new CustomEvent('theme:sliderule:close', {
               bubbles: false
           }));
           removeTrapFocus();
-          this.buttons[0].focus();
+          if (this.buttons[0]) this.buttons[0].focus();
           // adds display none after animations
           setTimeout(()=>{
               if (!this.drawer.classList.contains(classes$A.isVisible)) {
                   this.drawer.classList.add(classes$A.displayNone);
+                  this.drawer.setAttribute('inert', '');
               }
           }, 800);
       }
@@ -3154,6 +3165,16 @@
           this.connectDrawer();
           this.closers();
           this.staggerChildAnimations();
+          // Ensure initial closed state for accessibility (FOUC fix) - runs after DOM ready but before first open
+          if (!this.drawer.classList.contains(classes$A.isVisible)) {
+              this.drawer.setAttribute('aria-hidden', 'true');
+              // keep inert until opened - prevents keyboard access while closed
+              if (!this.drawer.hasAttribute('inert')) this.drawer.setAttribute('inert', '');
+              this.buttons.forEach((btn)=> {
+                  if (btn.getAttribute('aria-expanded') !== 'true') btn.setAttribute('aria-expanded', 'false');
+                  if (!btn.hasAttribute('aria-controls')) btn.setAttribute('aria-controls', this.drawer.id || this.key);
+              });
+          }
       }
   };
   const drawer = {

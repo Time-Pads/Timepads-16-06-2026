@@ -177,77 +177,61 @@
 --COLOR-VIDEO-BG: {{ background_color_poster }};
 
 
-/* ================ Color Variables ================ */
+/* ================ Color Variables (Mapped to Centralized TIME Brand System) ================ */
 
 /* === Backgrounds ===*/
---COLOR-BG: {{ settings.color_body_bg }};
---COLOR-BG-ACCENT: {{ settings.color_bg_light }};
+--COLOR-BG: var(--time-background);
+--COLOR-BG-ACCENT: var(--time-background-secondary);
 
 /* === Text colors ===*/
---COLOR-TEXT-DARK: {{ settings.color_body_text | color_saturate: 10 | color_darken: 15 }};
---COLOR-TEXT: {{ settings.color_body_text }};
---COLOR-TEXT-LIGHT: {{ settings.color_body_text | color_mix: settings.color_body_bg, 70 }};
+--COLOR-TEXT-DARK: var(--time-text);
+--COLOR-TEXT: var(--time-text);
+--COLOR-TEXT-LIGHT: var(--time-text-secondary);
 
 /* === Bright color ===*/
---COLOR-PRIMARY: {{ settings.color_primary }};
---COLOR-PRIMARY-HOVER: {{ settings.color_primary | color_saturate: 15 | color_darken: 15 }};
---COLOR-PRIMARY-FADE: {{ settings.color_primary | color_modify: 'alpha', 0.05 }};
---COLOR-PRIMARY-FADE-HOVER: {{ settings.color_primary | color_modify: 'alpha', 0.1 }};
-{%- assign primary_opposite = settings.color_primary | color_lighten: 100 -%}
-{%- assign contrast = settings.color_primary | color_contrast: primary_opposite -%}
-{%- if contrast < 2 -%}
-  {%- assign primary_opposite = settings.color_primary | color_darken: 95 -%}
-{%- endif -%}
---COLOR-PRIMARY-OPPOSITE: {{ primary_opposite }};
+--COLOR-PRIMARY: var(--time-primary);
+--COLOR-PRIMARY-HOVER: var(--time-primary-dark);
+--COLOR-PRIMARY-FADE: var(--time-primary-light);
+--COLOR-PRIMARY-FADE-HOVER: var(--time-primary-light);
+--COLOR-PRIMARY-OPPOSITE: var(--time-white);
 
 /* === Secondary/link Color ===*/
---COLOR-SECONDARY: {{ settings.color_secondary }};
---COLOR-SECONDARY-HOVER: {{ settings.color_secondary | color_saturate: 15 | color_darken: 15 }};
---COLOR-SECONDARY-FADE: {{ settings.color_secondary | color_modify: 'alpha', 0.05 }};
---COLOR-SECONDARY-FADE-HOVER: {{ settings.color_secondary | color_modify: 'alpha', 0.1 }};
-{%- assign secondary_opposite = settings.color_secondary | color_lighten: 100 -%}
-{%- assign contrast = settings.color_secondary | color_contrast: secondary_opposite -%}
-{%- if contrast < 3.5 -%}
-  {%- assign secondary_opposite = settings.color_secondary | color_darken: 95 -%}
-{%- endif -%}
---COLOR-SECONDARY-OPPOSITE: {{ secondary_opposite }};
+--COLOR-SECONDARY: var(--time-primary-dark);
+--COLOR-SECONDARY-HOVER: var(--time-primary-dark);
+--COLOR-SECONDARY-FADE: var(--time-primary-light);
+--COLOR-SECONDARY-FADE-HOVER: var(--time-primary-light);
+--COLOR-SECONDARY-OPPOSITE: var(--time-white);
 
 /* === Shades of grey ===*/
---COLOR-A5:  {{ settings.color_body_text | color_modify: 'alpha', 0.05 }};
---COLOR-A10: {{ settings.color_body_text | color_modify: 'alpha', 0.10 }};
---COLOR-A20: {{ settings.color_body_text | color_modify: 'alpha', 0.20 }};
---COLOR-A35: {{ settings.color_body_text | color_modify: 'alpha', 0.35 }};
---COLOR-A50: {{ settings.color_body_text | color_modify: 'alpha', 0.50 }};
---COLOR-A80: {{ settings.color_body_text | color_modify: 'alpha', 0.80 }};
---COLOR-A90: {{ settings.color_body_text | color_modify: 'alpha', 0.90 }};
---COLOR-A95: {{ settings.color_body_text | color_modify: 'alpha', 0.95 }};
+--COLOR-A5:  rgba(36, 29, 37, 0.05);
+--COLOR-A10: rgba(36, 29, 37, 0.10);
+--COLOR-A20: rgba(36, 29, 37, 0.20);
+--COLOR-A35: rgba(36, 29, 37, 0.35);
+--COLOR-A50: rgba(36, 29, 37, 0.50);
+--COLOR-A80: rgba(36, 29, 37, 0.80);
+--COLOR-A90: rgba(36, 29, 37, 0.90);
+--COLOR-A95: rgba(36, 29, 37, 0.95);
 
 
 /* ================ Inverted Color Variables ================ */
 
---INVERSE-BG: {{ settings.color_bg_inverse }};
---INVERSE-BG-ACCENT: {{ settings.color_bg_accent_inverse }};
+--INVERSE-BG: var(--time-text);
+--INVERSE-BG-ACCENT: var(--time-text);
 
 /* === Text colors ===*/
---INVERSE-TEXT-DARK: {{ settings.color_text_inverse | color_lighten: 25 }};
---INVERSE-TEXT: {{ settings.color_text_inverse }};
---INVERSE-TEXT-LIGHT: {{ settings.color_text_inverse | color_mix: settings.color_bg_inverse, 70 }};
+--INVERSE-TEXT-DARK: var(--time-white);
+--INVERSE-TEXT: var(--time-white);
+--INVERSE-TEXT-LIGHT: var(--time-primary-light);
 
 /* === Bright color ===*/
---INVERSE-PRIMARY: {{ settings.color_primary_inverse }};
---INVERSE-PRIMARY-HOVER: {{ settings.color_primary_inverse | color_saturate: 15 | color_darken: 15 }};
---INVERSE-PRIMARY-FADE: {{ settings.color_primary_inverse | color_modify: 'alpha', 0.05 }};
---INVERSE-PRIMARY-FADE-HOVER: {{ settings.color_primary_inverse | color_modify: 'alpha', 0.1 }};
-{%- assign primary_dark_opposite = settings.color_primary_inverse | color_lighten: 100 -%}
-{%- assign contrast = settings.color_primary_inverse | color_contrast: primary_dark_opposite -%}
-{%- if contrast < 3.5 -%}
-  {%- assign primary_dark_opposite = settings.color_primary_inverse | color_darken: 95 -%}
-{%- endif -%}
---INVERSE-PRIMARY-OPPOSITE: {{ primary_dark_opposite }};
-
+--INVERSE-PRIMARY: var(--time-primary-light);
+--INVERSE-PRIMARY-HOVER: var(--time-primary-light);
+--INVERSE-PRIMARY-FADE: var(--time-primary-light);
+--INVERSE-PRIMARY-FADE-HOVER: var(--time-primary-light);
+--INVERSE-PRIMARY-OPPOSITE: var(--time-text);
 
 /* === Second Color ===*/
---INVERSE-SECONDARY: {{ settings.color_secondary_inverse }};
+--INVERSE-SECONDARY: var(--time-primary-dark);
 --INVERSE-SECONDARY-HOVER: {{ settings.color_secondary_inverse | color_saturate: 15 | color_darken: 15 }};
 --INVERSE-SECONDARY-FADE: {{ settings.color_secondary_inverse | color_modify: 'alpha', 0.05 }};
 --INVERSE-SECONDARY-FADE-HOVER: {{ settings.color_secondary_inverse | color_modify: 'alpha', 0.1 }};

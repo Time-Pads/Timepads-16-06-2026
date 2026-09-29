@@ -11,6 +11,12 @@
 
   assign desktop_aspect = desktop_image.aspect_ratio | default: 2.35
   assign mobile_aspect = mobile_image.aspect_ratio | default: desktop_aspect | default: 1.2
+  assign is_lcp_banner = false
+  if section.index == 1
+    assign is_lcp_banner = true
+  elsif template.name == 'index' and section.index == 2
+    assign is_lcp_banner = true
+  endif
 -%}
 
 {% style %}
@@ -54,6 +60,14 @@
     }
   }
 {% endstyle %}
+{% if is_lcp_banner %}
+  {% if mobile_image != blank %}
+    <link rel="preload" as="image" media="(max-width: 767px)" href="{{ mobile_image | image_url: width: 412, format: 'webp', quality: 60 }}" imagesrcset="{{ mobile_image | image_url: width: 375, format: 'webp', quality: 60 }} 375w, {{ mobile_image | image_url: width: 412, format: 'webp', quality: 60 }} 412w, {{ mobile_image | image_url: width: 550, format: 'webp', quality: 60 }} 550w, {{ mobile_image | image_url: width: 750, format: 'webp', quality: 60 }} 750w" imagesizes="100vw" fetchpriority="high" type="image/webp">
+  {% endif %}
+  {% if desktop_image != blank %}
+    <link rel="preload" as="image" media="(min-width: 768px)" href="{{ desktop_image | image_url: width: 1440, format: 'webp', quality: 60 }}" imagesrcset="{{ desktop_image | image_url: width: 750, format: 'webp', quality: 60 }} 750w, {{ desktop_image | image_url: width: 1100, format: 'webp', quality: 60 }} 1100w, {{ desktop_image | image_url: width: 1440, format: 'webp', quality: 60 }} 1440w, {{ desktop_image | image_url: width: 1920, format: 'webp', quality: 60 }} 1920w" imagesizes="100vw" fetchpriority="high" type="image/webp">
+  {% endif %}
+{% endif %}
 
 <div class="static-hero-banner-{{ section.id }}">
   <div class="static-hero-banner__container-{{ section.id }}">
@@ -64,27 +78,15 @@
     {%- if desktop_image != blank or mobile_image != blank -%}
       <picture class="static-hero-banner__picture-{{ section.id }}">
         {%- if desktop_image != blank -%}
-          <!-- Desktop AVIF Source (min-width: 768px) - Shopify CDN transcodes safely -->
-          <source
-            media="(min-width: 768px)"
-            type="image/avif"
-            srcset="
-              {{ desktop_image | image_url: width: 750, format: 'avif' }} 750w,
-              {{ desktop_image | image_url: width: 1100, format: 'avif' }} 1100w,
-              {{ desktop_image | image_url: width: 1440, format: 'avif' }} 1440w,
-              {{ desktop_image | image_url: width: 1920, format: 'avif' }} 1920w
-            "
-            sizes="100vw"
-          >
           <!-- Desktop WebP Source (min-width: 768px) -->
           <source
             media="(min-width: 768px)"
             type="image/webp"
             srcset="
-              {{ desktop_image | image_url: width: 750, format: 'webp', quality: 50 }} 750w,
-              {{ desktop_image | image_url: width: 1100, format: 'webp', quality: 50 }} 1100w,
-              {{ desktop_image | image_url: width: 1440, format: 'webp', quality: 50 }} 1440w,
-              {{ desktop_image | image_url: width: 1920, format: 'webp', quality: 50 }} 1920w
+              {{ desktop_image | image_url: width: 750, format: 'webp' }} 750w,
+              {{ desktop_image | image_url: width: 1100, format: 'webp' }} 1100w,
+              {{ desktop_image | image_url: width: 1440, format: 'webp' }} 1440w,
+              {{ desktop_image | image_url: width: 1920, format: 'webp' }} 1920w
             "
             sizes="100vw"
             width="{{ desktop_image.width }}"
@@ -97,18 +99,17 @@
           assign main_image = mobile_image | default: desktop_image
           assign image_alt = main_image.alt | default: shop.name | escape
           assign image_class = 'static-hero-banner__image static-hero-banner__image-' | append: section.id
+          assign is_lcp = is_lcp_banner
         -%}
         <img
-          src="{{ main_image | image_url: width: 550, format: 'webp', quality: 40 }}"
-          srcset="{{ main_image | image_url: width: 375, format: 'webp', quality: 40 }} 375w, {{ main_image | image_url: width: 550, format: 'webp', quality: 40 }} 550w, {{ main_image | image_url: width: 750, format: 'webp', quality: 40 }} 750w"
+          src="{{ main_image | image_url: width: 412, format: 'webp', quality: 60 }}"
+          srcset="{{ main_image | image_url: width: 375, format: 'webp', quality: 60 }} 375w, {{ main_image | image_url: width: 412, format: 'webp', quality: 60 }} 412w, {{ main_image | image_url: width: 550, format: 'webp', quality: 60 }} 550w, {{ main_image | image_url: width: 750, format: 'webp', quality: 60 }} 750w"
           sizes="100vw"
           width="{{ main_image.width }}"
           height="{{ main_image.height }}"
           class="{{ image_class }}"
           alt="{{ image_alt }}"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
+          {% if is_lcp %}loading="eager" fetchpriority="high" decoding="sync"{% else %}loading="lazy" fetchpriority="low" decoding="async"{% endif %}
         >
       </picture>
     {%- else -%}

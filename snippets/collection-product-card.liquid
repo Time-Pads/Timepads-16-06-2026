@@ -371,12 +371,7 @@
       %}
 
       <div class="free-shipping-text-products bbbbbbcccc">
-        {% render 'responsive-picture' 
-        forloop: forloop,
-        desktopImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/No-Free-Shipping.png?v=1738057789, 
-        mobileImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/No-Free-Shipping.png?v=1738057789,
-        img-class: 'tw-w-full tw-max-h-[60rem]'
-      %}
+        {% render 'responsive-picture', forloop: forloop, desktopImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.No-Free-Shipping.png?.v['1738057789'], mobileImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.No-Free-Shipping.png?.v['1738057789'], img-class: 'tw-w-full tw-max-h-[60rem]' %}
   {% comment %} <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/No-Free-Shipping.png?v=1738057789"/> {% endcomment %}
 </div>
 
@@ -741,12 +736,7 @@
                   {% endfor %}
                 </div>
                 <div class="free-shipping-text-product aaaaa">
-                  {% render 'responsive-picture' 
-                  forloop: forloop,
-                  desktopImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?v=1738056496, 
-                  mobileImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?v=1738056496,
-                  img-class: 'tw-w-full tw-max-h-[60rem]'
-                %}
+                  {% render 'responsive-picture', forloop: forloop, desktopImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?.v['1738056496'], mobileImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?.v['1738056496'], img-class: 'tw-w-full tw-max-h-[60rem]' %}
                   {% comment %} <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?v=1738056496"/> {% endcomment %}
                 </div> 
          
@@ -958,3 +948,26 @@
                   
 
 {% endunless %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-picture' \r\n        forloop: forloop,\r\n        desktopImage:
+    https://cdn.shopify.com/s/files/1/0845/7886/1371/files/No-Free-Shipping.png?v=1738057789,
+    \r\n        mobileImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/No-Free-Shipping.png?v=1738057789,\r\n
+    \       img-class: 'tw-w-full tw-max-h-[60rem]'\r\n      %}"
+  to: "{% render 'responsive-picture', forloop: forloop, desktopImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.No-Free-Shipping.png?.v['1738057789'],
+    mobileImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.No-Free-Shipping.png?.v['1738057789'],
+    img-class: 'tw-w-full tw-max-h-[60rem]' %}"
+  position: 15163..15490
+- from: "{% render 'responsive-picture' \r\n                  forloop: forloop,\r\n
+    \                 desktopImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?v=1738056496,
+    \r\n                  mobileImage: https://cdn.shopify.com/s/files/1/0845/7886/1371/files/free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?v=1738056496,\r\n
+    \                 img-class: 'tw-w-full tw-max-h-[60rem]'\r\n                %}"
+  to: "{% render 'responsive-picture', forloop: forloop, desktopImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?.v['1738056496'],
+    mobileImage: https.cdn.shopify.com.s.files['1']['0845']['7886']['1371'].files.free-delivery-and-free-shipping-icon-modern-design-template-free-vector.jpg?.v['1738056496'],
+    img-class: 'tw-w-full tw-max-h-[60rem]' %}"
+  position: 32695..33132
+{% endcomment %}

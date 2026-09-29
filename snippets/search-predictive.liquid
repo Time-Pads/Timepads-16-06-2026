@@ -2,12 +2,347 @@
 
 {% comment %}
   * Returns a popdown object, requires version key
-
-  -  version {string} - Sets the popdown ID and wrapper class
+  - version {string} - Sets the popdown ID and wrapper class
 {% endcomment %}
 
 <div data-search-popdown-wrap>
-  <div id="{{ version }}" class="{{ version }} search__predictive" data-popdown-outer>
+  <style>
+    /* ── SEARCH MODAL REDESIGN (MATCHING IMAGE 2) ── */
+    .tp-search-popdown-root {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 999999 !important;
+      background: rgba(0, 0, 0, 0.45) !important;
+      backdrop-filter: blur(4px) !important;
+      -webkit-backdrop-filter: blur(4px) !important;
+      display: flex !important;
+      align-items: flex-start !important;
+      justify-content: center !important;
+      padding: 16px !important;
+      box-sizing: border-box !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: opacity 0.25s ease, visibility 0.25s ease !important;
+    }
+
+    .search-popdown.is-visible,
+    #search-popdown.is-visible,
+    .tp-search-popdown-root.is-visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    .tp-search-popdown-form {
+      width: 100% !important;
+      max-width: 580px !important;
+      margin: 0 auto !important;
+    }
+
+    /* Modal Card Container */
+    .tp-search-modal-card {
+      width: 100% !important;
+      background: #ffffff !important;
+      border-radius: 24px !important;
+      padding: 20px 24px 28px 24px !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25) !important;
+      box-sizing: border-box !important;
+      max-height: 88vh !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      margin-top: 10px !important;
+      position: relative !important;
+    }
+
+    /* Top Row: Back Arrow + Purple Pill Search Bar */
+    .tp-search-modal-bar-row {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      margin-bottom: 24px !important;
+      width: 100% !important;
+    }
+
+    .tp-search-modal-back-btn {
+      background: none !important;
+      border: none !important;
+      padding: 6px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 50% !important;
+      color: #111111 !important;
+      flex-shrink: 0 !important;
+      transition: background 0.15s ease !important;
+    }
+
+    .tp-search-modal-back-btn:hover {
+      background: #f2f2f4 !important;
+    }
+
+    /* Rounded Purple Search Pill Input */
+    .tp-search-modal-pill-field {
+      flex: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      border: 2px solid #522546 !important;
+      border-radius: 50px !important;
+      padding: 6px 16px !important;
+      background: #ffffff !important;
+      gap: 10px !important;
+      height: 48px !important;
+      box-sizing: border-box !important;
+      box-shadow: 0 2px 6px rgba(82, 37, 70, 0.05) !important;
+    }
+
+    .tp-search-modal-icon-left {
+      flex-shrink: 0 !important;
+      color: #522546 !important;
+    }
+
+    .tp-search-modal-input-element {
+      flex: 1 !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      font-size: 14.5px !important;
+      font-weight: 500 !important;
+      color: #111111 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      height: 100% !important;
+      font-family: inherit !important;
+    }
+
+    .tp-search-modal-input-element::placeholder {
+      color: #777777 !important;
+      font-weight: 400 !important;
+    }
+
+    .tp-search-modal-clear-link {
+      background: none !important;
+      border: none !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+      color: #522546 !important;
+      cursor: pointer !important;
+      padding: 0 4px !important;
+      white-space: nowrap !important;
+    }
+
+    .tp-search-modal-clear-link.is-hidden {
+      display: none !important;
+    }
+
+    /* Section Headers */
+    .tp-search-modal-section-block {
+      margin-bottom: 24px !important;
+      width: 100% !important;
+    }
+
+    .tp-search-modal-section-heading {
+      font-size: 13.5px !important;
+      font-weight: 800 !important;
+      color: #111111 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      margin: 0 0 14px 0 !important;
+      padding: 0 !important;
+      font-family: inherit !important;
+    }
+
+    /* Section 1: Most Searched Tag Pills (2 Columns) */
+    .tp-search-modal-pills-row {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 10px 12px !important;
+      width: 100% !important;
+    }
+
+    .tp-search-pill-button {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      background: #f4f4f6 !important;
+      color: #222222 !important;
+      padding: 10px 16px !important;
+      border-radius: 50px !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+      text-decoration: none !important;
+      border: 1px solid #e7e7eb !important;
+      transition: all 0.2s ease !important;
+      cursor: pointer !important;
+      box-sizing: border-box !important;
+    }
+
+    .tp-search-pill-button:hover {
+      background: #e9e9ee !important;
+      border-color: #d8d8de !important;
+      color: #000000 !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .tp-pill-text {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      color: #222222 !important;
+    }
+
+    .tp-pill-arrow-icon {
+      font-size: 13px !important;
+      color: #555555 !important;
+      font-weight: 700 !important;
+      margin-left: 6px !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Section 2: Explore Categories (4 Columns Grid) */
+    .tp-search-modal-cats-flex {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 16px 12px !important;
+      width: 100% !important;
+    }
+
+    .tp-search-cat-card-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-decoration: none !important;
+      text-align: center !important;
+      cursor: pointer !important;
+      width: 100% !important;
+    }
+
+    .tp-search-cat-img-box {
+      width: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 18px !important;
+      overflow: hidden !important;
+      background: #f8f8fa !important;
+      border: 1px solid #eaeaea !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      box-sizing: border-box !important;
+    }
+
+    .tp-search-cat-card-item:hover .tp-search-cat-img-box {
+      transform: scale(1.04) !important;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .tp-search-cat-img-box img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    .tp-search-cat-fallback-text {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: #777777 !important;
+      text-transform: uppercase !important;
+    }
+
+    .tp-search-cat-card-label {
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: #222222 !important;
+      margin-top: 8px !important;
+      line-height: 1.25 !important;
+      text-align: center !important;
+      display: block !important;
+      word-break: break-word !important;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      .tp-search-popdown-root {
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+      .tp-search-popdown-form {
+        max-width: 100% !important;
+        height: 100% !important;
+      }
+      .tp-search-modal-card {
+        border-radius: 0 !important;
+        padding: 16px 16px 36px 16px !important;
+        max-height: 100vh !important;
+        height: 100vh !important;
+        margin-top: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        overflow-y: auto !important;
+        box-sizing: border-box !important;
+      }
+      .tp-search-modal-bar-row {
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+        padding: 0 !important;
+      }
+      .tp-search-modal-back-btn {
+        padding: 4px !important;
+        margin-left: -4px !important;
+      }
+      .tp-search-modal-pill-field {
+        height: 44px !important;
+        padding: 4px 14px !important;
+        border-width: 1.8px !important;
+      }
+      .tp-search-modal-input-element {
+        font-size: 13.5px !important;
+      }
+      .tp-search-modal-section-heading {
+        font-size: 12.5px !important;
+        margin-bottom: 12px !important;
+      }
+      .tp-search-modal-pills-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px 8px !important;
+        width: 100% !important;
+      }
+      .tp-search-pill-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 8px 14px !important;
+        font-size: 12.5px !important;
+        border-radius: 50px !important;
+        flex: 0 1 auto !important;
+        max-width: 100% !important;
+      }
+      .tp-search-modal-cats-flex {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 12px 8px !important;
+      }
+      .tp-search-cat-img-box {
+        border-radius: 16px !important;
+      }
+      .tp-search-cat-card-label {
+        font-size: 11px !important;
+        margin-top: 6px !important;
+        line-height: 1.2 !important;
+      }
+    }
+  </style>
+
+  <div id="{{ version }}" class="{{ version }} search__predictive tp-search-popdown-root" data-popdown-outer>
     {%- if settings.predictive_search_enabled -%}
       <predictive-search>
     {%- else -%}
@@ -16,53 +351,147 @@
       <form
         action="{{ routes.search_url }}"
         method="get"
-        role="search">
+        role="search"
+        class="tp-search-popdown-form">
 
         <div class="item--loadbar" data-loading-indicator style="display: none;"></div>
-        <div class="search__predictive__outer">
-          <div class="wrapper">
-            <div class="search__predictive__main">
-              <div class="search__predictive__actions">
-                <button class="search__predictive__button" type="submit">
-                  <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
-                  {%- if section.settings.icons_type == 'modern' -%}
-                    {% render 'icon-set-mod-search' %}
-                  {%- elsif section.settings.icons_type == 'classic' -%}
-                    {% render 'icon-set-classic-search' %}
-                  {%- endif -%}
-                </button>
+        
+        <div class="tp-search-modal-card">
+          <!-- TOP SEARCH BAR ROW INSIDE MODAL -->
+          <div class="tp-search-modal-bar-row">
+            <!-- Back Arrow Button -->
+            <button type="button" class="tp-search-modal-back-btn" data-close-popdown aria-label="{{ 'general.accessibility.close' | t }}">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
 
-                <input type="search"
-                  data-predictive-search-input="search-popdown-results"
-                  name="q"
-                  value="{{ search.terms | escape }}"
-                  placeholder="{{ 'general.search.placeholder_short' | t }}"
-                  aria-label="{{ 'general.search.placeholder' | t }}"
-                  aria-controls="predictive-search-results"
-                >
+            <!-- Rounded Purple Pill Search Box -->
+            <div class="tp-search-modal-pill-field">
+              <svg class="tp-search-modal-icon-left" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
 
-                <div class="search__predictive__clear">
-                  <button type="reset" class="search__predictive__close__inner search-reset{% if search.terms == blank %} is-hidden{% endif %}" aria-label="{{ 'general.search.reset' | t }}">
-                    {% render 'icon-core-x' %}
-                    {{- 'general.search.clear' | t -}}
-                  </button>
-                </div>
-              </div>
+              <input type="search"
+                data-predictive-search-input="search-popdown-results"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="Search products, categories..."
+                aria-label="{{ 'general.search.placeholder' | t }}"
+                aria-controls="predictive-search-results"
+                class="tp-search-modal-input-element"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+              >
 
-              <div class="search__predictive__close">
-                <button type="button" class="search__predictive__close__inner" data-close-popdown aria-label="{{ 'general.accessibility.close' | t }}">
-                  {% render 'icon-core-x' %}
-                </button>
-              </div>
+              <button type="reset" class="tp-search-modal-clear-link search-reset{% if search.terms == blank %} is-hidden{% endif %}" aria-label="Clear">
+                Clear
+              </button>
             </div>
           </div>
+
+          <!-- INITIAL RECOMMENDATIONS SECTION (MOST SEARCHED + EXPLORE CATEGORIES) -->
+          <div class="tp-search-modal-recommendations-wrapper" data-search-recommendations>
+            
+            <!-- SECTION 1: MOST SEARCHED -->
+            <div class="tp-search-modal-section-block">
+              <h3 class="tp-search-modal-section-heading">MOST SEARCHED</h3>
+              <div class="tp-search-modal-pills-row">
+                <a href="/collections/sanitary-pads" class="tp-search-pill-button" data-search-query="Sanitary Pads">
+                  <span class="tp-pill-text">Sanitary pads</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/cotton-sanitary-pads" class="tp-search-pill-button" data-search-query="Cotton Sanitary Pads">
+                  <span class="tp-pill-text">Cotton Sanitary Pads</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/all" class="tp-search-pill-button" data-search-query="Period Pain Relief Cream">
+                  <span class="tp-pill-text">Pain Relief Cream</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/all" class="tp-search-pill-button" data-search-query="Menstrual Cup">
+                  <span class="tp-pill-text">Menstrual Cup</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/high-flow-pads" class="tp-search-pill-button" data-search-query="Heavy Flow Pads">
+                  <span class="tp-pill-text">Heavy Flow Pads</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/combo-offers" class="tp-search-pill-button" data-search-query="Combo Offers">
+                  <span class="tp-pill-text">Combo Offers</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/comfortable-pads-for-periods" class="tp-search-pill-button" data-search-query="Night Pads">
+                  <span class="tp-pill-text">Night Pads</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+                <a href="/collections/teen-pads" class="tp-search-pill-button" data-search-query="Teen Pads">
+                  <span class="tp-pill-text">Teen Pads</span>
+                  <span class="tp-pill-arrow-icon">↗</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- SECTION 2: EXPLORE CATEGORIES -->
+            <div class="tp-search-modal-section-block">
+              <h3 class="tp-search-modal-section-heading">EXPLORE CATEGORIES</h3>
+              <div class="tp-search-modal-cats-flex">
+                {% assign rec_col_handles = "sanitary-pads,cotton-sanitary-pads,comfortable-pads-for-periods,high-flow-pads,teen-pads,combo-offers" | split: "," %}
+                
+                {% for c_handle in rec_col_handles %}
+                  {% assign c_obj = collections[c_handle] %}
+                  {% if c_obj != blank %}
+                    {% assign c_img = c_obj.image | default: c_obj.products.first.featured_image %}
+                    <a href="{{ c_obj.url }}" class="tp-search-cat-card-item">
+                      <div class="tp-search-cat-img-box">
+                        {% if c_img != blank %}
+                          <img src="{{ c_img | image_url: width: 180 }}" alt="{{ c_obj.title | escape }}" width="80" height="80" loading="lazy">
+                        {% else %}
+                          <div class="tp-search-cat-fallback-text">{{ c_obj.title | slice: 0, 2 }}</div>
+                        {% endif %}
+                      </div>
+                      <span class="tp-search-cat-card-label">{{ c_obj.title }}</span>
+                    </a>
+                  {% endif %}
+                {% endfor %}
+
+                <!-- Pain Relief Cream -->
+                {% assign pain_prod = all_products['period-pain-relief-cream-oil'] | default: all_products['period-pain-relief-cream'] %}
+                {% if pain_prod != blank %}
+                  <a href="{{ pain_prod.url }}" class="tp-search-cat-card-item">
+                    <div class="tp-search-cat-img-box">
+                      <img src="{{ pain_prod.featured_image | image_url: width: 180 }}" alt="Pain Relief Cream" width="80" height="80" loading="lazy">
+                    </div>
+                    <span class="tp-search-cat-card-label">Pain Relief</span>
+                  </a>
+                {% endif %}
+
+                <!-- Menstrual Cup -->
+                {% assign cup_prod = all_products['menstrual-cup'] %}
+                {% if cup_prod != blank %}
+                  <a href="{{ cup_prod.url }}" class="tp-search-cat-card-item">
+                    <div class="tp-search-cat-img-box">
+                      <img src="{{ cup_prod.featured_image | image_url: width: 180 }}" alt="Menstrual Cup" width="80" height="80" loading="lazy">
+                    </div>
+                    <span class="tp-search-cat-card-label">Menstrual Cup</span>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+
+          <!-- LIVE PREDICTIVE SEARCH RESULTS -->
+          {%- if settings.predictive_search_enabled -%}
+            <div class="header__search__results" tabindex="-1" data-predictive-search-results></div>
+            <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true" data-predictive-search-status></span>
+          {%- endif -%}
+
         </div>
-
-        {%- if settings.predictive_search_enabled -%}
-          <div class="header__search__results" tabindex="-1" data-predictive-search-results></div>
-
-          <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true" data-predictive-search-status></span>
-        {%- endif -%}
       </form>
 
     {%- if settings.predictive_search_enabled -%}
@@ -75,6 +504,73 @@
   {% if version == 'search-popdown' %}
     <span class="drawer__underlay" data-search-underlay></span>
   {% endif %}
+
+  <script>
+    (function() {
+      function initSearchRecommendations() {
+        const searchInputs = document.querySelectorAll('input[data-predictive-search-input="search-popdown-results"]');
+        
+        searchInputs.forEach(input => {
+          const popdownForm = input.closest('form');
+          if (!popdownForm) return;
+          
+          const recBlock = popdownForm.querySelector('[data-search-recommendations]');
+          const resultsBlock = popdownForm.querySelector('[data-predictive-search-results]');
+          const resetBtn = popdownForm.querySelector('.tp-search-modal-clear-link');
+          
+          function toggleView() {
+            const val = input.value.trim();
+            if (val.length > 0) {
+              if (recBlock) recBlock.style.display = 'none';
+              if (resultsBlock) resultsBlock.style.display = 'block';
+              if (resetBtn) resetBtn.classList.remove('is-hidden');
+            } else {
+              if (recBlock) recBlock.style.display = 'block';
+              if (resultsBlock) {
+                resultsBlock.style.display = 'none';
+                resultsBlock.innerHTML = '';
+              }
+              if (resetBtn) resetBtn.classList.add('is-hidden');
+            }
+          }
+
+          input.addEventListener('input', toggleView);
+          input.addEventListener('keyup', toggleView);
+          input.addEventListener('change', toggleView);
+          
+          if (resetBtn) {
+            resetBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              input.value = '';
+              toggleView();
+              input.focus();
+            });
+          }
+
+          const pillItems = popdownForm.querySelectorAll('.tp-search-pill-button');
+          pillItems.forEach(pill => {
+            pill.addEventListener('click', function(e) {
+              const query = pill.getAttribute('data-search-query');
+              if (query) {
+                e.preventDefault();
+                input.value = query;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.focus();
+              }
+            });
+          });
+          
+          toggleView();
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSearchRecommendations);
+      } else {
+        initSearchRecommendations();
+      }
+    })();
+  </script>
 
   <script data-predictive-search-aria-template type="text/x-template">
     <div aria-live="polite">

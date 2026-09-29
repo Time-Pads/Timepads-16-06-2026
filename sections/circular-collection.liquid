@@ -4,128 +4,97 @@
 
 {%- assign sid = section.id -%}
 
-{%- comment -%} Styles first — before HTML {%- endcomment -%}
 {% style %}
-  .section-padding-{{ sid }} {
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  .tp-circular-section-{{ sid }} {
+    padding-top: {{ section.settings.padding_top | default: 24 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 16 }}px;
+    {%- if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' -%}
+      background-color: {{ section.settings.bg_color }};
+    {%- else -%}
+      background-color: transparent;
+    {%- endif -%}
   }
   @media (max-width: 767px) {
-    .section-padding-{{ sid }} {
-      padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+    .tp-circular-section-{{ sid }} {
+      padding-top: {{ section.settings.padding_top_mobile | default: 14 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 10 }}px;
     }
   }
-  {%- if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' -%}
-    .bg-{{ sid }} { background-color: {{ section.settings.bg_color }}; }
-  {%- endif -%}
-  {%- if section.settings.text_color != blank and section.settings.text_color != 'rgba(0,0,0,0)' -%}
-    .circular-collection-heading-{{ sid }} { color: {{ section.settings.text_color }}; }
-  {%- endif -%}
-  {%- if section.settings.font_size > 0 -%}
-    .circular-collection-heading-{{ sid }} { font-size: {{ section.settings.font_size }}px; }
-    @media (max-width: 767px) {
-      .circular-collection-heading-{{ sid }} { font-size: {{ section.settings.font_size | times: 0.75 | round }}px; }
-    }
-  {%- endif -%}
-  {%- if section.settings.font_weight > 0 -%}
-    .circular-collection-heading-{{ sid }} { font-weight: {{ section.settings.font_weight }}; }
-  {%- endif -%}
-
-  {%- comment -%}
-    Per-block title font weight — scoped by section+block id.
-    Replaces hardcoded block IDs in the original which break on block recreation.
-  {%- endcomment -%}
-  {%- for block in section.blocks -%}
-    .sub-heading--{{ block.id }} {
-      font-size: 15px;
-      font-weight: {{ block.settings.font_weight_title }};
-      letter-spacing: 0;
-    }
-  {%- endfor -%}
 {% endstyle %}
 
 {%- if lazy_load_section != blank -%}<lazy-section>{%- endif -%}
 
 {%- if lazy_load_section == blank -%}
+  <div class="tp-circular-section tp-circular-section-{{ sid }}">
+    <div class="wrapper">
 
-  <div class="section-padding-{{ sid }} page-width bg-{{ sid }}">
+      {%- if section.settings.heading_text != blank -%}
+        <div class="tp-circular-header">
+          <h2 class="tp-circular-heading">
+            <a href="{{ routes.collections_url }}/all">
+              {{ section.settings.heading_text | escape }}
+            </a>
+          </h2>
+        </div>
+      {%- endif -%}
 
-    {%- if section.settings.heading_text != blank -%}
-      {%- comment -%}
-        Use <h2> not <h1> — collection pages already have an <h1> for the
-        collection title. Multiple <h1> tags hurt SEO.
-        Heading and link are now separate — wrapping <h> in <a> is invalid HTML.
-      {%- endcomment -%}
-      <h2 class="circular-collection-heading circular-collection-heading-{{ sid }}">
-        <a href="{{ routes.collections_url }}/all" class="circular-collection_tag">
-          {{ section.settings.heading_text | escape }}
-        </a>
-      </h2>
-    {%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="tp-circular-nav" role="navigation" aria-label="Collections">
+          <div class="tp-circular-track">
+            {%- for block in section.blocks -%}
+              {%- assign img = block.settings.collection_image -%}
+              {%- assign img_alt = block.settings.image_alt_text | default: block.settings.collection_title | escape -%}
+              {%- assign title = block.settings.collection_title | escape -%}
+              {%- assign size_text = block.settings.collection_size | escape -%}
+              {%- assign link_url = block.settings.collection_url | default: '#' -%}
 
-    {%- if section.blocks.size > 0 -%}
-      <div class="circular-container product-categories">
-        {%- for block in section.blocks -%}
-          {%- assign img      = block.settings.collection_image -%}
-          {%- assign img_alt  = block.settings.image_alt_text | default: block.settings.collection_title | escape -%}
-          {%- liquid
-            assign img_load = 'lazy'
-            assign img_fetch = 'low'
-            assign img_w = img.width | at_most: 300
-            if forloop.first
-              assign img_load = 'eager'
-              assign img_fetch = 'high'
-              assign img_w = 400
-            endif
-            assign img_w2x = img_w | times: 2 | at_most: img.width
-          -%}
+              <a
+                href="{{ link_url }}"
+                class="tp-circular-item"
+                aria-label="{{ title }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="tp-circular-circle">
+                  {%- if img != blank -%}
+                    <picture>
+                      <source
+                        type="image/webp"
+                        srcset="{{ img | image_url: width: 140, format: 'webp' }} 1x, {{ img | image_url: width: 280, format: 'webp' }} 2x"
+                      >
+                      <img
+                        src="{{ img | image_url: width: 140 }}"
+                        srcset="{{ img | image_url: width: 140 }} 1x, {{ img | image_url: width: 280 }} 2x"
+                        width="140"
+                        height="140"
+                        alt="{{ img_alt }}"
+                        class="tp-circular-img"
+                        loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                        fetchpriority="{% if forloop.index <= 2 %}high{% else %}low{% endif %}"
+                        decoding="async"
+                      >
+                    </picture>
+                  {%- else -%}
+                    <div class="tp-circular-placeholder"></div>
+                  {%- endif -%}
+                </div>
 
-          <a
-            href="{{ block.settings.collection_url }}"
-            {{ block.shopify_attributes }}
-          >
-            <div class="category-card">
-              <div class="circle-background{%- if block.settings.collection_title == 'Uniline' %} uniline-image{%- endif -%}">
-                {%- if img != blank -%}
-                  {%- comment -%} Use picture element for WebP/AVIF support on 4G networks {%- endcomment -%}
-                  <picture>
-                    {%- comment -%} WebP - good compression, broad browser support {%- endcomment -%}
-                    <source
-                      type="image/webp"
-                      srcset="{{ img | image_url: width: img_w, format: 'webp' }} 1x, {{ img | image_url: width: img_w2x, format: 'webp' }} 2x"
-                    >
-                    {%- comment -%} Fallback to original format {%- endcomment -%}
-                    <img
-                      src="{{ img | image_url: width: img_w }}"
-                      srcset="{{ img | image_url: width: img_w }} 1x, {{ img | image_url: width: img_w2x }} 2x"
-                      width="{{ img_w }}"
-                      height="{{ img_w }}"
-                      alt="{{ img_alt }}"
-                      class="product-image"
-                      loading="{{ img_load }}"
-                      fetchpriority="{{ img_fetch }}"
-                      decoding="async"
-                    >
-                  </picture>
+                {%- if title != blank -%}
+                  <span class="tp-circular-title" style="font-weight: {{ block.settings.font_weight_title | default: 600 }};">
+                    {{ title }}
+                  </span>
                 {%- endif -%}
-              </div>
 
-              {%- if block.settings.collection_title != blank -%}
-                <p class="category-title sub-heading--{{ block.id }}">
-                  {{ block.settings.collection_title | escape }}
-                </p>
-              {%- endif -%}
+                {%- if size_text != blank -%}
+                  <span class="tp-circular-size">{{ size_text }}</span>
+                {%- endif -%}
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
 
-              {%- if block.settings.collection_size != blank -%}
-                <p class="category-size">{{ block.settings.collection_size | escape }}</p>
-              {%- endif -%}
-            </div>
-          </a>
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
-
+    </div>
   </div>
-
 {%- else -%}
   <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" width="66" height="66">
     <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
@@ -135,64 +104,198 @@
 {%- if lazy_load_section != blank -%}</lazy-section>{%- endif -%}
 
 <style>
-/* ── Circular Collection — static styles ── */
-.circular-collection-heading {
-  font-size: 16px;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: #2c2525;
-  line-height: 1.875;
-  text-align: center;
-}
-.circular-collection-heading a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.product-categories {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-}
-
-.product-categories a {
-  text-align: center;
-  flex: 0 0 12%;
-}
-
-.product-image {
-  object-fit: contain;
-  transition: transform 0.3s ease;
-  z-index: 2;
-  height: 100%;
-  width: 70%;
-}
-
-.category-title { color: #333; }
-
-@media (min-width: 768px) {
-  .circular-collection-heading {
-    font-size: 24px;
-    letter-spacing: 2.16px;
+  /* ── Circular Collection Modern Design ── */
+  .tp-circular-section {
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
   }
-  .circle-background:hover .product-image {
-    transform: translateY(-20%);
-  }
-}
 
-@media (max-width: 767px) {
-  .product-categories {
-    row-gap: 2rem;
-    column-gap: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
+  .tp-circular-header {
+    text-align: center;
+    margin-bottom: 16px;
   }
-  .product-categories a { flex: 0 0 25%; }
-  .product-image { height: 115px; width: 100%; }
-  .category-size:empty { display: none; }
-}
+
+  .tp-circular-heading {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1715;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .tp-circular-heading a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tp-circular-nav {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tp-circular-track {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 4px 0 8px;
+    box-sizing: border-box;
+  }
+
+  .tp-circular-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #1a1715;
+    width: 110px;
+    flex: 0 0 110px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.22s ease;
+  }
+
+  .tp-circular-circle {
+    position: relative;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: #FAF7F2;
+    border: 1.5px solid #EBE5DC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+  }
+
+  .tp-circular-item:hover .tp-circular-circle {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    border-color: #D6C8B8;
+    background: #FFFFFF;
+  }
+
+  .tp-circular-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .tp-circular-item:hover .tp-circular-img {
+    transform: scale(1.08);
+  }
+
+  .tp-circular-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #ECE7E1;
+  }
+
+  .tp-circular-title {
+    font-size: 13px;
+    line-height: 1.3;
+    color: #221F20;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 34px;
+    word-break: break-word;
+    letter-spacing: -0.01em;
+    transition: color 0.2s ease;
+  }
+
+  .tp-circular-item:hover .tp-circular-title {
+    color: #000000;
+  }
+
+  .tp-circular-size {
+    font-size: 10.5px;
+    color: #7A7570;
+    margin-top: 2px;
+    line-height: 1;
+    text-align: center;
+  }
+
+  /* ── Mobile Layout (Horizontal Swipeable Stream) ── */
+  @media (max-width: 767px) {
+    .tp-circular-heading {
+      font-size: 18px;
+    }
+
+    .tp-circular-section .wrapper {
+      padding: 0 12px !important;
+    }
+
+    .tp-circular-nav {
+      justify-content: flex-start;
+      width: 100%;
+      overflow: visible;
+    }
+
+    .tp-circular-track {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 12px;
+      padding: 4px 12px 10px;
+      margin: 0 -12px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+    }
+
+    .tp-circular-track::-webkit-scrollbar {
+      display: none; 
+      height: 0;
+      width: 0;
+    }
+
+    .tp-circular-item {
+      width: 76px;
+      flex: 0 0 91px;
+      min-width: 76px;
+      scroll-snap-align: start;
+    }
+
+    .tp-circular-circle {
+      width: 68px;
+      height: 68px;
+      padding: 6px;
+      margin-bottom: 6px;
+      border-width: 1px;
+    }
+
+    .tp-circular-title {
+      font-size: 10.5px;
+      line-height: 1.25;
+      height: 28px;
+      -webkit-line-clamp: 2;
+    }
+
+    .tp-circular-size {
+      font-size: 9px;
+    }
+  }
 </style>
 
 {% schema %}
@@ -203,14 +306,14 @@
   "settings": [
     { "type": "color",  "id": "bg_color",   "label": "Background Color" },
     { "type": "header", "content": "Padding settings" },
-    { "type": "range",  "id": "padding_top",          "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top" },
-    { "type": "range",  "id": "padding_bottom",        "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom" },
-    { "type": "range",  "id": "padding_top_mobile",    "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Top Mobile" },
-    { "type": "range",  "id": "padding_bottom_mobile", "min": 0, "max": 100, "default": 20, "step": 2, "unit": "px", "label": "Padding Bottom Mobile" },
+    { "type": "range",  "id": "padding_top",          "min": 0, "max": 100, "default": 24, "step": 2, "unit": "px", "label": "Padding Top" },
+    { "type": "range",  "id": "padding_bottom",        "min": 0, "max": 100, "default": 16, "step": 2, "unit": "px", "label": "Padding Bottom" },
+    { "type": "range",  "id": "padding_top_mobile",    "min": 0, "max": 100, "default": 14, "step": 2, "unit": "px", "label": "Padding Top Mobile" },
+    { "type": "range",  "id": "padding_bottom_mobile", "min": 0, "max": 100, "default": 10, "step": 2, "unit": "px", "label": "Padding Bottom Mobile" },
     { "type": "header", "content": "Heading Settings" },
     { "type": "text",   "id": "heading_text",  "label": "Heading" },
-    { "type": "range",  "id": "font_size",     "min": 12, "max": 50, "default": 24, "step": 2, "unit": "px", "label": "Heading Font Size" },
-    { "type": "range",  "id": "font_weight",   "min": 400, "max": 900, "default": 600, "step": 100, "label": "Font Weight" },
+    { "type": "range",  "id": "font_size",     "min": 12, "max": 50, "default": 22, "step": 2, "unit": "px", "label": "Heading Font Size" },
+    { "type": "range",  "id": "font_weight",   "min": 400, "max": 900, "default": 700, "step": 100, "label": "Font Weight" },
     { "type": "color",  "id": "text_color",    "label": "Text Color" }
   ],
   "blocks": [
@@ -225,7 +328,7 @@
         {
           "type": "range",
           "id": "font_weight_title",
-          "min": 400, "max": 900, "default": 400, "step": 100,
+          "min": 400, "max": 900, "default": 600, "step": 100,
           "label": "Title Font Weight"
         },
         { "type": "url", "id": "collection_url", "label": "Collection URL" }

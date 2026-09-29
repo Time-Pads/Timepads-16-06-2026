@@ -12,7 +12,6 @@
     assign show_block_content = false
   endif
 
-
   if section and show_block_content
     assign index = index | append: ""
     for block in section.blocks
@@ -31,7 +30,6 @@
     endfor
   endif
 
-
   if link.levels > 0 or block_count > 0
     assign expands = true
     assign key = link.url | append: link.title | append: link.levels | append: index | md5
@@ -42,15 +40,81 @@
   assign collections_string = '/collections/'
 -%}
 
-{%- capture link_markup -%}
-  {%- if link.url == "#" -%}
-    <span class="sliderow__title {% if link.title == "Subscription" %} navtext animated-text  {% endif %} {% if secondary_menu %} sliderow__title--secondary{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}" >{{ link.title | strip_html | escape }}</span>
+{%- capture link_thumbnail -%}
+  {%- assign link_title_dc = link.title | downcase -%}
+  {%- assign item_bg = '#FAF5F0' -%}
+  {%- assign is_shop_all = false -%}
+
+  {%- if link_title_dc contains 'cream' or link_title_dc contains 'cramp' or link_title_dc contains 'pain' -%}
+    {%- assign item_bg = '#EDF7F2' -%}
+    {%- assign item_image = all_products['period-pain-relief-cream-oil'].featured_image | default: collections['all'].products.first.featured_image -%}
+  {%- elsif link_title_dc contains 'cup' -%}
+    {%- assign item_bg = '#FAF2EA' -%}
+    {%- assign item_image = all_products['menstrual-cup'].featured_image | default: collections['all'].products.first.featured_image -%}
+  {%- elsif link_title_dc contains 'best' or link_title_dc contains 'seller' -%}
+    {%- assign item_bg = '#FFF1EB' -%}
+    {%- assign item_image = collections['cotton-sanitary-pads'].image | default: collections['cotton-sanitary-pads'].products.first.featured_image | default: collections['all'].products.first.featured_image -%}
+  {%- elsif link_title_dc contains 'arrival' or link_title_dc contains 'new' or link_title_dc contains 'deal' -%}
+    {%- assign item_bg = '#FAF2EA' -%}
+    {%- assign item_image = all_products['menstrual-cup'].featured_image | default: collections['all'].products[1].featured_image -%}
+  {%- elsif link_title_dc contains 'shop all' or link_title_dc == 'shop all' or link_title_dc contains 'all' -%}
+    {%- assign item_bg = '#F2ECFA' -%}
+    {%- assign is_shop_all = true -%}
   {%- else -%}
-          {% if link.title == 'Upcoming' %} 
-<span class="stay-tuned">Stay Tuned</span>
-    {% endif %}
-    <a class="sliderow__title {% if link.title == "Subscription" %} navtext animated-text  {% endif %}{% if secondary_menu %} sliderow__title--secondary{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}" href="{{ link.url }}">{{ link.title | strip_html | escape }}</a>
+    {%- if link.type == 'product_link' and link.object.featured_image != blank -%}
+      {%- assign item_image = link.object.featured_image -%}
+    {%- elsif link.type == 'collection_link' -%}
+      {%- assign item_image = link.object.image | default: link.object.products.first.featured_image -%}
+    {%- elsif link.url contains '/products/' -%}
+      {%- assign p_handle = link.url | split: '/products/' | last | split: '?' | split: '#' | first -%}
+      {%- assign p_obj = all_products[p_handle] -%}
+      {%- if p_obj != blank and p_obj.featured_image != blank -%}
+        {%- assign item_image = p_obj.featured_image -%}
+      {%- endif -%}
+    {%- elsif link.url contains '/collections/' -%}
+      {%- assign c_handle = link.url | split: '/collections/' | last | split: '?' | split: '#' | first -%}
+      {%- assign c_obj = collections[c_handle] -%}
+      {%- if c_obj != blank -%}
+        {%- assign item_image = c_obj.image | default: c_obj.products.first.featured_image -%}
+      {%- endif -%}
+    {%- endif -%}
   {%- endif -%}
+
+  {%- if is_shop_all -%}
+    <span class="sliderow__thumb" style="background-color: {{ item_bg }};">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M12 11.5c-.8-.8-2 0-2 .8 0 1.2 2 2.7 2 2.7s2-1.5 2-2.7c0-.8-1.2-1.6-2-.8z" fill="#EC4899" stroke="#EC4899"></path>
+      </svg>
+    </span>
+  {%- elsif item_image != blank -%}
+    <span class="sliderow__thumb" style="background-color: {{ item_bg }};">
+      <img src="{{ item_image | image_url: width: 100, height: 100, crop: 'center' }}"
+           alt="{{ link.title | escape }}"
+           class="sliderow__thumb-img"
+           loading="lazy"
+           width="48"
+           height="48">
+    </span>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture link_content_inner -%}
+  <div class="sliderow__content">
+    {{ link_thumbnail }}
+    <div class="sliderow__text-group">
+      {%- if link.title == 'New Arrivals' or link.title contains 'Arrival' -%}
+        <span class="combo-highlight-tag">BEST DEALS</span>
+      {%- endif -%}
+      <span class="sliderow__title-text">{{ link.title | strip_html | escape }}</span>
+    </div>
+  </div>
+  <span class="sliderow__arrow" aria-hidden="true">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </span>
 {%- endcapture -%}
 
 <div class="sliderule__wrapper {% if link.title == "Subscription" %} Subscription-menu {% endif %}{% if secondary_menu %} sliderule__wrapper--secondary{% endif %}">
@@ -58,11 +122,7 @@
     <button class="sliderow{% if secondary_menu %} sliderow--secondary{% endif %}"
       data-animates="{{ link_level }}"
       data-sliderule-open="sliderule-{{ key }}">
-      <span class="sliderow__title {% if highlight_links contains link_title_handle %} highlight--link{% endif %}">{{ link.title | strip_html | escape }}</span>
-      <span class="sliderule__chevron--right">
-        {% render 'icon-core-chevron-right' %}
-        <span class="visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
-      </span>
+      {{ link_content_inner }}
     </button>
 
     <div class="mobile__menu__dropdown sliderule__panel"
@@ -97,7 +157,7 @@
             <span class="visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
           </span>
         </button>
-        {{ link_markup }}
+        <span class="sliderow__title-text">{{ link.title | strip_html | escape }}</span>
       </div>
 
       {%- if image_html != '' -%}
@@ -106,10 +166,6 @@
 
       <div class="sliderow__links" data-links>
         {% for link in link.links %}
-          {% comment %}
-            Handle case where multiple child menus
-            have an item called 'sale' in position 1
-          {% endcomment %}
           {% assign index_recursive = index | append: 'x' | append: forloop.index %}
           {% render 'nav-item-mobile', link: link, index: index_recursive, link_level: link_level_next %}
         {% endfor %}
@@ -118,7 +174,6 @@
       {%- if section and show_block_content -%}
         <div class="sliderule-grid blocks-{{ block_count }}">
           {% for block in section.blocks %}
-            {% comment %} Render block content {% endcomment %}
             {%- if block.settings.position == index -%}
               {% render 'header-block', block: block, mobile: true %}
             {%- endif -%}
@@ -129,26 +184,8 @@
     </div>
   {%- else -%}
     {% comment %} Single menu item, no nesting {% endcomment %}
-    <div class="sliderow {% if link.title == "Subscription" %} Subscription {% endif %}" data-animates="{{ link_level }}" >
-    {% if link.title == 'New Arrivals' %} 
-      <div class="combo-highlight-tag">
-         Best Deals
-      </div>
-    {% endif %}
-  
-      {% if link.title == "Subscription" %}
-      <p class="menu-bar-svg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="37" viewBox="0 0 80 37" fill="none">
-      <g clip-path="url(#clip0_3031_9918)">
-      <path d="M46.6702 32.4981C50.8705 30.0382 54.8936 26.8642 58.6706 23.0306C59.4441 21.7714 60.052 20.2769 60.4584 18.6353C60.8648 16.9938 61.0615 15.2386 61.0367 13.4734C61.0119 11.7083 60.7663 9.96895 60.3142 8.35827C59.8622 6.74758 59.2129 5.2982 58.4049 4.09578C56.8459 1.61629 54.7371 0.224563 52.5389 0.224563C50.3408 0.224563 48.2319 1.61629 46.673 4.09578C44.5387 7.53806 41.6071 19.5883 39.7385 27.3323C37.8699 19.5883 34.9383 7.53806 32.804 4.09578C31.2449 1.6149 29.1355 0.22229 26.9366 0.22229C24.7378 0.22229 22.6283 1.6149 21.0693 4.09578C19.5301 6.63207 18.6692 10.0281 18.6692 13.5632C18.6692 17.0983 19.5301 20.4943 21.0693 23.0306C24.754 27.1206 28.7984 30.3113 33.0697 32.4981H0V36.3701H80.0027V32.4981H46.6702ZM23.4694 19.5883C22.4444 17.9254 21.8698 15.6838 21.8698 13.3483C21.8698 11.0129 22.4444 8.77126 23.4694 7.10835C23.9745 6.28803 24.5765 5.63659 25.2404 5.19195C25.9044 4.7473 26.6169 4.51832 27.3366 4.51832C28.0564 4.51832 28.7689 4.7473 29.4329 5.19195C30.0968 5.63659 30.6988 6.28803 31.2039 7.10835C33.9925 14.2033 36.1468 21.8877 37.6041 29.9381C32.0011 26.9026 24.8037 22.1666 23.4694 19.5883ZM48.8045 7.10835C49.3096 6.28803 49.9117 5.63659 50.5756 5.19195C51.2395 4.7473 51.9521 4.51832 52.6718 4.51832C53.3915 4.51832 54.1041 4.7473 54.768 5.19195C55.4319 5.63659 56.034 6.28803 56.5391 7.10835C57.564 8.77126 58.1387 11.0129 58.1387 13.3483C58.1387 15.6838 57.564 17.9254 56.5391 19.5883C52.156 24.087 47.3973 27.5714 42.4043 29.9381C44.1512 22.073 46.2916 14.446 48.8045 7.13121" fill="#C97449"></path>
-      </g>
-      <defs>
-      <clipPath id="clip0_3031_9918">
-      <rect width="80" height="36.1478" fill="white" transform="translate(0 0.22229)"></rect>
-      </clipPath>
-      </defs>
-      </svg></p>
-    {% endif %}
-      {{ link_markup }}
-    </div>
+    <a href="{{ link.url }}" class="sliderow {% if link.title == "Subscription" %} Subscription {% endif %}" data-animates="{{ link_level }}" >
+      {{ link_content_inner }}
+    </a>
   {%- endif -%}
 </div>

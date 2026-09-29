@@ -1,0 +1,898 @@
+{% comment %}
+  Master Reference Implementation: "Why Choose TIME?" Section
+  Shopify Section for Timepads theme with Falling Product Cascade & Customizer Options
+{% endcomment %}
+
+<style>
+  /* Google Fonts loaded async via theme.liquid */
+
+  #WhyChooseTime-{{ section.id }} {
+    --color-primary: var(--time-primary);
+    --color-primary-dark: var(--time-primary-dark);
+    --color-primary-light: var(--time-primary-light);
+    --color-background: var(--time-background);
+    --color-background-secondary: var(--time-background-secondary);
+    --color-surface: var(--time-surface);
+    --color-text: var(--time-text);
+    --color-text-secondary: var(--time-text-secondary);
+    --color-border: var(--time-border);
+  }
+
+  .why-choose-time-section {
+    position: relative;
+    background-color: var(--color-background);
+    padding-top: {{ section.settings.padding_top | default: 60 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--color-text);
+    width: 100%;
+  }
+
+  /* Soft Background Accent Circles */
+  .why-time-bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--color-background-secondary);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.85;
+  }
+
+  .why-time-bg-blob-left {
+    width: 340px;
+    height: 340px;
+    left: -80px;
+    bottom: -80px;
+  }
+
+  .why-time-bg-blob-right {
+    width: 380px;
+    height: 380px;
+    right: -60px;
+    bottom: -100px;
+  }
+
+  .why-time-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 16px;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* Outer Wrapper for absolute positioning of decorations */
+  .why-time-outer-wrapper {
+    position: relative;
+    max-width: 1380px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Header Section */
+  .why-time-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 40px auto;
+    position: relative;
+    z-index: 5;
+  }
+
+  .why-time-eyebrow {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+  }
+
+  .why-time-headline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text);
+    margin: 0 0 12px 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .why-time-accent {
+    color: var(--color-primary);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .why-time-headline-heart-img {
+    width: 44px;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    transform: rotate(3deg) translateY(-2px);
+  }
+
+  .why-time-subtitle {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Top Right Circular Badge */
+  .why-time-badge {
+    position: absolute;
+    top: 15px;
+    right: 320px;
+    width: 130px;
+    height: 130px;
+    border: 1.5px solid var(--color-primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 6;
+    background: rgba(250, 247, 251, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 3px;
+  }
+
+  .why-time-badge-border-inner {
+    position: absolute;
+    inset: 4px;
+    border: 1.5px solid var(--color-primary-light);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .why-time-badge-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .why-time-badge-inner svg {
+    margin-top: 4px;
+  }
+
+  /* Far Left Handwritten Script */
+  .why-time-left-script {
+    position: absolute;
+    left: 30px;
+    top: 90px;
+    z-index: 5;
+    text-align: left;
+    transform: rotate(-6deg);
+  }
+
+  .why-time-handwritten {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1.15;
+    margin: 0 0 4px 0;
+  }
+
+  /* Bottom Left Cotton Flower Visual */
+  .why-time-cotton-visual {
+    position: absolute;
+    left: 10px;
+    bottom: -30px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .why-time-cotton-visual img {
+    width: 175px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    background: transparent;
+  }
+
+  /* ── Right-Side Falling Products Cascade ── */
+  .why-time-falling-cascade {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .why-time-falling-prod {
+    position: absolute;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(123, 63, 109, 0.12));
+    transition: transform 0.3s ease;
+    will-change: transform;
+    animation: whyTimeFloat 6s ease-in-out infinite alternate;
+  }
+
+  .why-time-prod-1 {
+    top: 10px;
+    right: 175px;
+    width: 105px;
+    height: auto;
+    --rot: -15deg;
+    transform: rotate(-15deg);
+    animation-delay: 0s;
+    animation-duration: 5.8s;
+  }
+
+  .why-time-prod-2 {
+    top: 5px;
+    right: 15px;
+    width: 135px;
+    height: auto;
+    --rot: 8deg;
+    transform: rotate(8deg);
+    animation-delay: 0.9s;
+    animation-duration: 6.4s;
+  }
+
+  .why-time-prod-3 {
+    top: 195px;
+    right: 35px;
+    width: 145px;
+    height: auto;
+    --rot: -12deg;
+    transform: rotate(-12deg);
+    animation-delay: 1.8s;
+    animation-duration: 5.4s;
+  }
+
+  .why-time-prod-4 {
+    top: 385px;
+    right: 15px;
+    width: 135px;
+    height: auto;
+    --rot: 16deg;
+    transform: rotate(16deg);
+    animation-delay: 2.7s;
+    animation-duration: 6.2s;
+  }
+
+  .why-time-prod-5 {
+    bottom: -35px;
+    right: -15px;
+    width: 225px;
+    height: auto;
+    --rot: -6deg;
+    transform: rotate(-6deg);
+    animation-delay: 3.5s;
+    animation-duration: 5.6s;
+  }
+
+  @keyframes whyTimeFloat {
+    0% {
+      transform: translateY(0px) rotate(var(--rot, 0deg));
+    }
+    50% {
+      transform: translateY(-8px) rotate(calc(var(--rot, 0deg) + 1.5deg));
+    }
+    100% {
+      transform: translateY(0px) rotate(var(--rot, 0deg));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .why-time-falling-prod {
+      animation: none !important;
+    }
+  }
+
+  /* 4 Benefit Cards Grid */
+  .why-time-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .why-time-card {
+    background: var(--color-surface);
+    border-radius: 16px;
+    padding: 32px 18px 28px 18px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(123, 63, 109, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid var(--color-border);
+  }
+
+  .why-time-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(123, 63, 109, 0.1);
+  }
+
+  .why-time-icon-wrapper {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--color-background-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .why-time-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+  }
+
+  .why-time-card-desc {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* CTA Button */
+  .why-time-cta-wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .why-time-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 13px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 18px rgba(123, 63, 109, 0.25);
+  }
+
+  .why-time-cta-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(123, 63, 109, 0.35);
+    color: #FFFFFF;
+  }
+
+  /* Bottom Brand Line */
+  .why-time-footer-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .why-time-divider-line {
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+
+  .why-time-footer-text {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .why-time-pipe {
+    color: var(--color-primary-light);
+    font-weight: 400;
+  }
+
+  /* Responsive Design Adjustments */
+  @media (max-width: 1320px) {
+    .why-time-badge {
+      right: 280px;
+      width: 110px;
+      height: 110px;
+    }
+    .why-time-prod-1 { width: 90px; right: 140px; }
+    .why-time-prod-2 { width: 115px; right: 10px; }
+    .why-time-prod-3 { width: 120px; right: 20px; top: 180px; }
+    .why-time-prod-4 { width: 110px; right: 10px; top: 350px; }
+    .why-time-prod-5 { width: 180px; right: -10px; }
+  }
+
+  @media (max-width: 1180px) {
+    .why-time-left-script, .why-time-badge {
+      display: none;
+    }
+    .why-time-falling-cascade {
+      width: 240px;
+    }
+    .why-time-prod-1 { display: none; }
+  }
+
+  @media (max-width: 991px) {
+    .why-time-container {
+      max-width: 680px;
+    }
+    .why-time-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .why-time-falling-cascade, .why-time-cotton-visual {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .why-choose-time-section {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+    .why-time-container {
+      padding: 0;
+    }
+    .why-time-header,
+    .why-time-cta-wrapper,
+    .why-time-footer-line {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .why-time-headline {
+      font-size: 28px;
+    }
+    .why-time-subtitle {
+      font-size: 14.5px;
+    }
+    .why-time-cards-grid {
+      display: flex !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      touch-action: pan-x pan-y !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      gap: 14px !important;
+      padding: 8px 16px 20px 16px !important;
+      margin-bottom: 28px !important;
+      align-items: stretch !important;
+    }
+    .why-time-cards-grid::-webkit-scrollbar {
+      display: none !important;
+    }
+    .why-time-card {
+      flex: 0 0 78% !important;
+      max-width: 290px !important;
+      scroll-snap-align: start !important;
+      box-sizing: border-box !important;
+      height: auto !important;
+    }
+    .why-time-divider-line {
+      max-width: 40px;
+    }
+    .why-time-footer-text {
+      font-size: 9px;
+      gap: 6px;
+    }
+  }
+</style>
+
+<div class="why-choose-time-section" id="WhyChooseTime-{{ section.id }}">
+  <!-- Background Accents -->
+  <div class="why-time-bg-blob why-time-bg-blob-left"></div>
+
+  <div class="why-time-outer-wrapper">
+    
+    <!-- Top-Right Circular Badge (Double Circle Outline) -->
+    {% comment %} <div class="why-time-badge">
+      <div class="why-time-badge-border-inner"></div>
+      <div class="why-time-badge-inner">
+        <span>CONFIDENCE</span>
+        <span>IN EVERY</span>
+        <span>PERIOD</span>
+        <svg width="13" height="12" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 11.875S1.16667 8.08333 1.16667 4.29167C1.16667 2.5 2.625 1.04167 4.41667 1.04167C5.5 1.04167 6.45833 1.58333 7 2.45833C7.54167 1.58333 8.5 1.04167 9.58333 1.04167C11.375 1.04167 12.8333 2.5 12.8333 4.29167C12.8333 8.08333 7 11.875 7 11.875Z" fill="var(--color-primary)"/>
+        </svg>
+      </div>
+    </div> {% endcomment %}
+
+    <!-- Far Left Handwritten Script -->
+    <div class="why-time-left-script">
+      <p class="why-time-handwritten">
+        Comfort<br>
+        Through<br>
+        Every Cycle
+      </p>
+      <svg class="why-time-script-heart" width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 18S2 12 2 6C2 3.2 4.2 1 7 1 C8.8 1 10.3 1.9 11 3.3 C11.7 1.9 13.2 1 15 1 C17.8 1 20 3.2 20 6 C20 12 11 18 11 18Z" stroke="var(--color-primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- Bottom Left Cotton Flower Visual -->
+    <div class="why-time-cotton-visual">
+      {% if section.settings.cotton_image != blank %}
+        <img src="{{ section.settings.cotton_image | image_url: width: 300 }}" alt="Cotton Flower" loading="lazy" width="175" height="160">
+      {% else %}
+        <img src="{{ 'why-choose-time-cotton.png' | asset_url }}" alt="Cotton Flower" loading="lazy" width="175" height="160">
+      {% endif %}
+    </div>
+
+    <!-- ── Right-Side Falling Products Cascade (5 Customizer Configurable Products) ── -->
+    <div class="why-time-falling-cascade" aria-hidden="true">
+      {% if section.settings.falling_prod_1 != blank %}
+        <img src="{{ section.settings.falling_prod_1 | image_url: width: 300 }}" class="why-time-falling-prod why-time-prod-1" alt="Falling Product 1" loading="lazy" width="105" height="160">
+      {% else %}
+        <img src="{{ 'why-choose-time-prod-1.png' | asset_url }}" class="why-time-falling-prod why-time-prod-1" alt="TIME Cramp Relief Cream" loading="lazy" width="105" height="160">
+      {% endif %}
+
+      {% if section.settings.falling_prod_2 != blank %}
+        <img src="{{ section.settings.falling_prod_2 | image_url: width: 350 }}" class="why-time-falling-prod why-time-prod-2" alt="Falling Product 2" loading="lazy" width="135" height="150">
+      {% else %}
+        <img src="{{ 'why-choose-time-prod-2.png' | asset_url }}" class="why-time-falling-prod why-time-prod-2" alt="TIME Ultra Velvet Pads" loading="lazy" width="135" height="150">
+      {% endif %}
+
+      {% if section.settings.falling_prod_3 != blank %}
+        <img src="{{ section.settings.falling_prod_3 | image_url: width: 350 }}" class="why-time-falling-prod why-time-prod-3" alt="Falling Product 3" loading="lazy" width="145" height="160">
+      {% else %}
+        <img src="{{ 'why-choose-time-prod-3.png' | asset_url }}" class="why-time-falling-prod why-time-prod-3" alt="TIME Ultra Cuddle Pads" loading="lazy" width="145" height="160">
+      {% endif %}
+
+      {% if section.settings.falling_prod_4 != blank %}
+        <img src="{{ section.settings.falling_prod_4 | image_url: width: 350 }}" class="why-time-falling-prod why-time-prod-4" alt="Falling Product 4" loading="lazy" width="135" height="160">
+      {% else %}
+        <img src="{{ 'why-choose-time-prod-4.png' | asset_url }}" class="why-time-falling-prod why-time-prod-4" alt="TIME Menstrual Cup" loading="lazy" width="135" height="160">
+      {% endif %}
+
+      {% if section.settings.falling_prod_5 != blank %}
+        <img src="{{ section.settings.falling_prod_5 | image_url: width: 450 }}" class="why-time-falling-prod why-time-prod-5" alt="Falling Product 5" loading="lazy" width="225" height="200">
+      {% else %}
+        <img src="{{ 'why-choose-time-prod-5.png' | asset_url }}" class="why-time-falling-prod why-time-prod-5" alt="TIME Ultra Feather Pads" loading="lazy" width="225" height="200">
+      {% endif %}
+    </div>
+
+    <div class="why-time-container">
+      
+      <!-- Header Section -->
+      <div class="why-time-header">
+        <span class="why-time-eyebrow">{{ section.settings.eyebrow_text | default: "MORE THAN A PAD, A BETTER PERIOD" }}</span>
+        <h2 class="why-time-headline">
+          {{ section.settings.headline_prefix | default: "Why Choose " }}<span class="why-time-accent">{{ section.settings.headline_accent | default: "TIME?" }}
+    
+           <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"       class="why-time-headline-heart-img" viewBox="0 0 1080 1080" width="1080" height="1080">
+<path d="M556.61 468.5C559.65 467.21 561.9 463.35 564.08 460.62C567.93 455.81 572.03 451.22 576.05 446.56C590.39 429.95 605.84 414.35 621.27 398.77C659.89 359.76 705.32 321.82 752.95 294.44C778.22 279.92 805.62 267.15 834.5 262.04C846.77 259.86 859.06 258.75 871.5 260.19C909.74 264.61 946.91 290.14 956.52 328.95C964.04 359.32 957.48 390.19 946.26 418.72C928.26 464.49 897.99 505.03 868.14 543.68C792.23 641.99 695.53 721.62 592.62 790.07C559.73 811.94 525.93 832.75 491.33 851.83C451.48 873.81 410.52 893.31 369.28 912.5C370.24 919.48 378.45 933.66 381.91 940.6C389.32 955.47 396.08 970.97 401.87 986.55C407.36 1001.32 409.39 1015.29 393.15 1023.62C378.76 1031.01 360.63 1026.05 350.26 1014.25C331.65 993.06 318.46 962.62 304.5 938.02C298.92 938.86 293.63 941.76 288.34 943.8C277.79 947.86 267.37 952.2 256.88 956.41C227.02 968.41 197.3 980.53 167.76 993.29C157.67 997.65 146.74 1005.39 135.5 1005.77C129.51 1005.98 122.88 1004.25 120.08 998.4C117.2 992.37 119.8 985.2 124.06 980.57C131.71 972.27 142.96 967.53 152.73 962.25C181.02 946.98 212.09 934.2 242.03 922.52C252.27 918.52 262.41 914.29 272.59 910.12C277.29 908.19 283.28 906.83 287.05 903.5C224.42 783.23 204.22 645.84 213.65 511.48C217.98 449.85 227.07 388.66 244.73 329.33C269.55 245.97 310.07 156.44 388.62 111.1C402.95 102.82 418.39 95.82 434.62 92.25C444.83 90 455.08 89.4 465.5 89.79C514.94 91.65 545.71 130.27 560.55 173.9C574.31 214.36 576.99 258.06 577.13 300.5C577.32 357.38 572.24 413.68 556.61 468.5ZM351.5 876.86C357.26 875.54 362.6 872.07 367.89 869.42C377 864.87 386.09 860.32 395.11 855.6C425.69 839.59 455.38 822.18 485 804.5C548.23 766.77 608.6 722.82 664.66 675.13C722.95 625.55 778.05 572 824.11 510.66C853.65 471.31 880.63 427.82 893.46 379.9C898.64 360.56 903.54 332.81 887.2 317.31C876.61 307.25 859.68 308.05 846.33 310.65C815.76 316.59 787.02 331.64 761.34 348.87C680.66 403 610.44 474.55 553.59 553.11C541.77 569.46 530.66 586.4 520.01 603.53C509.62 620.24 498.23 636.17 475.79 633.55C462.42 631.99 453.04 623.71 455.09 609.51C456.64 598.73 462.73 588.27 466.73 578.26C473.24 561.96 479.35 545.56 484.31 528.72C499.94 475.72 504.81 419.35 509.06 364.5C512.56 319.43 517.88 270.24 511.35 225.4C508.01 202.44 502.12 178.67 489.69 158.77C480.16 143.52 472.06 134.02 452.5 135.97C430.3 138.18 407.23 155.05 391.55 170.05C352.24 207.64 329.67 256.84 311.78 307.33C287.8 375.05 281.06 448.15 279.36 519.5C278.43 558.44 278.52 597.65 282.38 636.44C286.21 675.02 293.34 713.79 303.36 751.25C308.39 770.05 315.2 788.38 321.76 806.68C330.27 830.37 339.59 854.63 351.5 876.86Z" fill="var(--time-primary)" fill-rule="evenodd" stroke="var(--time-primary)" stroke-width="0.25" stroke-linejoin="round"/>
+</svg>
+          </span>
+        </h2>
+        <p class="why-time-subtitle">{{ section.settings.subtitle | default: "Period care designed around what women actually need." }}</p>
+      </div>
+
+      <!-- 4 Benefit Cards Grid -->
+      <div class="why-time-cards-grid">
+        {% for block in section.blocks %}
+          <div class="why-time-card" {{ block.shopify_attributes }}>
+            <div class="why-time-icon-wrapper">
+              {% if block.settings.custom_icon_svg != blank %}
+                {{ block.settings.custom_icon_svg }}
+              {% else %}
+                {% case forloop.index %}
+                  {% when 1 %}
+                    <!-- Feather Icon -->
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L3 13.5V21h7.5z"></path>
+                      <line x1="16" y1="8" x2="2" y2="22"></line>
+                      <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                    </svg>
+                  {% when 2 %}
+                    <!-- Droplet with Shield Icon -->
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                      <path d="M12 9v4"></path>
+                      <path d="M10 11.5l2 2 3.5-3.5"></path>
+                    </svg>
+                  {% when 3 %}
+                    <!-- Moon & Stars Icon -->
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                      <path d="M19 4h.01M17 2h.01"></path>
+                    </svg>
+                  {% when 4 %}
+                    <!-- Heart Icon -->
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                {% endcase %}
+              {% endif %}
+            </div>
+            <h3 class="why-time-card-title">{{ block.settings.title }}</h3>
+            <p class="why-time-card-desc">{{ block.settings.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- CTA Button -->
+      <div class="why-time-cta-wrapper">
+        <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="why-time-cta-btn">
+          {{ section.settings.cta_text | default: "Find Your TIME →" }}
+        </a>
+      </div>
+
+      <!-- Bottom Brand Line -->
+      <div class="why-time-footer-line">
+        <div class="why-time-divider-line"></div>
+        <div class="why-time-footer-text">
+          <span>REAL CARE</span>
+          <span class="why-time-pipe">|</span>
+          <span>REAL COMFORT</span>
+          <span class="why-time-pipe">|</span>
+          <span>A BRIGHTER YOU</span>
+        </div>
+        <div class="why-time-divider-line"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Why Choose TIME",
+  "tag": "section",
+  "class": "why-choose-time-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Color Settings"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#7B3F6D"
+    },
+    {
+      "type": "color",
+      "id": "primary_dark_color",
+      "label": "Primary Dark Color",
+      "default": "#5F2E54"
+    },
+    {
+      "type": "color",
+      "id": "primary_light_color",
+      "label": "Primary Light Color",
+      "default": "#D9A7C2"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF7FB"
+    },
+    {
+      "type": "color",
+      "id": "bg_secondary_color",
+      "label": "Background Secondary Color",
+      "default": "#F2ECF5"
+    },
+    {
+      "type": "color",
+      "id": "surface_color",
+      "label": "Surface (Card) Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Primary Text Color",
+      "default": "#241D25"
+    },
+    {
+      "type": "color",
+      "id": "text_secondary_color",
+      "label": "Secondary Text Color",
+      "default": "#625A63"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#E6DCE9"
+    },
+    {
+      "type": "header",
+      "content": "Text & Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text",
+      "default": "MORE THAN A PAD, A BETTER PERIOD"
+    },
+    {
+      "type": "text",
+      "id": "headline_prefix",
+      "label": "Headline Prefix",
+      "default": "Why Choose "
+    },
+    {
+      "type": "text",
+      "id": "headline_accent",
+      "label": "Headline Accent Text",
+      "default": "TIME?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Period care designed around what women actually need."
+    },
+    {
+      "type": "header",
+      "content": "Left Decorative Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "cotton_image",
+      "label": "Left Cotton Flower Image"
+    },
+    {
+      "type": "header",
+      "content": "Right-Side Falling Products (5 Customizer Options)"
+    },
+    {
+      "type": "image_picker",
+      "id": "falling_prod_1",
+      "label": "Falling Product 1 (Top Left Tube / Box)"
+    },
+    {
+      "type": "image_picker",
+      "id": "falling_prod_2",
+      "label": "Falling Product 2 (Top Right Box)"
+    },
+    {
+      "type": "image_picker",
+      "id": "falling_prod_3",
+      "label": "Falling Product 3 (Middle Right Box)"
+    },
+    {
+      "type": "image_picker",
+      "id": "falling_prod_4",
+      "label": "Falling Product 4 (Lower Middle Box)"
+    },
+    {
+      "type": "image_picker",
+      "id": "falling_prod_5",
+      "label": "Falling Product 5 (Bottom Right Box)"
+    },
+    {
+      "type": "header",
+      "content": "CTA & Spacing"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Find Your TIME →"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_card",
+      "name": "Benefit Card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Heading",
+          "default": "Comfort First"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Card Description",
+          "default": "Soft, skin-friendly materials designed to keep you comfortable throughout your period."
+        },
+        {
+          "type": "html",
+          "id": "custom_icon_svg",
+          "label": "Custom SVG Icon (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Choose TIME",
+      "blocks": [
+        {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Comfort First",
+            "description": "Soft, skin-friendly materials designed to keep you comfortable throughout your period."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Reliable Protection",
+            "description": "Designed for high absorbency and leak protection, so you can move through your day with confidence."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Protection for Every Flow",
+            "description": "From everyday use to heavy-flow and overnight protection, choose the right TIME for your needs."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "title": "Made for Real Periods",
+            "description": "We understand that every cycle is different. TIME offers practical period-care solutions for different flows, routines and comfort needs."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

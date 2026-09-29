@@ -57,12 +57,12 @@
         endif
       -%}
 
-      <span class="tp-price-per-pad" style="margin-left: 8px; font-size: 16px; color: #555; font-weight: 600;">
+      {% comment %} <span class="tp-price-per-pad" style="margin-left: 8px; font-size: 16px; color: #555; font-weight: 600;">
         {%- if pad_qty > 0 -%}
           {%- assign p_per_pad = current_variant.price | times: 1.0 | divided_by: pad_qty | round -%}
           ({{ p_per_pad | money }} / pad)
         {%- endif -%}
-      </span>
+      </span> {% endcomment %}
 
       <script>
         (function() {
@@ -136,24 +136,10 @@
             const cleanPrice = parseFloat(priceText.replace(/[^0-9.]/g, ''));
             
             let perPadContainer = priceWrapper.querySelector('.tp-price-per-pad');
-            if (qty && qty > 0 && cleanPrice && cleanPrice > 0) {
-              const perPadValue = (cleanPrice / qty).toFixed(2);
-              if (!perPadContainer) {
-                perPadContainer = document.createElement('span');
-                perPadContainer.className = 'tp-price-per-pad';
-                perPadContainer.style.marginLeft = '8px';
-                perPadContainer.style.fontSize = '16px';
-                perPadContainer.style.color = '#555';
-                perPadContainer.style.fontWeight = '600';
-                priceSpan.parentNode.appendChild(perPadContainer);
-              }
-              perPadContainer.textContent = ` (₹${perPadValue} / pad)`;
-              perPadContainer.style.display = 'inline';
-            } else {
-              if (perPadContainer) {
-                perPadContainer.style.display = 'none';
-              }
+            if (perPadContainer) {
+              perPadContainer.style.display = 'none';
             }
+            return;
           };
 
           setTimeout(updatePricePerPad, 500);

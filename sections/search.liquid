@@ -89,10 +89,11 @@ endif
          {%- endif -%}
       </div>
       {%- endif -%}
+
    </div>
    <div class="collection__content">
       {%- if has_filters -%}
-      <div class="collection__filters__wrapper filters--default-visible" data-collection-sidebar data-filters="filters" data-default-hide="false">
+      <aside class="collection__filters__wrapper filters--default-visible" data-collection-sidebar data-filters="filters" data-default-hide="false">
          <div class="collection__filters__outer">
             <div class="drawer__top">
                <div class="drawer__top__left">
@@ -118,51 +119,37 @@ endif
                </form>
             </div>
          </div>
-         <span class="drawer__underlay" data-filters-underlay>
-         <span class="drawer__underlay__fill"></span>
-         <span class="drawer__underlay__blur"></span>
-         </span>
-      </div>
+          <span class="drawer__underlay" data-filters-underlay></span>
+          <span class="drawer__underlay__fill"></span>
+          <span class="drawer__underlay__blur"></span>
+        </aside>
       {%- endif -%}
-     
-    <div class="collection__products" data-products-grid>
-  {% paginate search.results by section.settings.pagination_count %}
-    {% for item in search.results %}
-      
-      {% if item.url contains 'pages' %}
-    
 
-      {% elsif item.url contains 'blogs' %}
-   
+      <div class="collection__products" data-products-grid>
+        {% paginate search.results by section.settings.pagination_count %}
+          <div class="js-grid" data-grid-large="4" data-grid-small="2">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {% assign product_title = item.title | downcase %}
+                {% unless product_title contains 'gift' %}
+                  {% render 'product-card-performance',
+                    product: item,
+                    placeholder: placeholder
+                  %}
+                {% endunless %}
+              {% endif %}
+            {% endfor %}
+          </div>
 
-      {% else %}
-        {% assign product_title = item.title | downcase %}
-
-        {% unless product_title contains 'gift' %}
-          {% render 'product-card-home-page',
-            product: item,
-            placeholder: placeholder
-          %}
-        {% endunless %}
-
-      {% endif %}
-
-      {% unless forloop.last %}
-        <hr>
-      {% endunless %}
-    {% endfor %}
-
-    {% if paginate.pages > 1 %}
-      <div class="text-center pt-r11">
-        {% render 'pagination-custom', paginate: paginate %}
+          {% if paginate.pages > 1 %}
+            <div class="text-center pt-r11">
+              {% render 'pagination-custom', paginate: paginate %}
+            </div>
+          {% endif %}
+        {% endpaginate %}
       </div>
-    {% endif %}
-  {% endpaginate %}
-</div>
-
-     
-   </div>
-   {% endif %}
+    </div>
+  {% endif %}
 </section>
 
 

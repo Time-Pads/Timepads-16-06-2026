@@ -63,7 +63,7 @@ h1.standard__heading.heading-size-8.collection__heading__text{
     {% unless title_below == false and description_below and section.settings.show_description and collection.description == blank %}
       <div style="--PT: {{ section.settings.padding_top_text }}px; --PB: {{ section.settings.padding_bottom_text }}px;">
         <div class="collection__text-content {{ section.settings.width_text }} section-padding">
-          <div class="collection__heading {{ section.settings.text_align }}">
+          {% comment %} <div class="collection__heading {{ section.settings.text_align }}">
             {%- if title_below and section.settings.show_title -%}
               <h1 class="standard__heading heading-size-8 collection__heading__text">
                 {{ collection.title }}
@@ -74,7 +74,7 @@ h1.standard__heading.heading-size-8.collection__heading__text{
                 {{ collection.description }}
               </div>
             {%- endif -%}
-          </div>
+          </div> {% endcomment %}
           {% render 'bread-crumb' %} 
         </div>
       </div>

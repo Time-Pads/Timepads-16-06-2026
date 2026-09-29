@@ -1,0 +1,1200 @@
+{% comment %}
+  TIME Store - Combo Offers Homepage Section
+  Redesigned to match reference design exactly (image_16.png)
+  Zero external dependencies, fast loading, AJAX cart & mobile carousel compatible
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign eyebrow = section.settings.eyebrow_text | default: 'BETTER TOGETHER'
+  assign headline_prefix = section.settings.headline_prefix | default: 'Combo'
+  assign headline_accent = section.settings.headline_accent | default: 'Offers'
+  assign subtitle = section.settings.subtitle_text | default: 'More care. More savings. A happier you.'
+  assign view_all_text = section.settings.view_all_text | default: 'View All Combos →'
+  assign view_all_url = section.settings.view_all_url | default: '/collections/all'
+  assign products_limit = section.settings.products_limit | default: 4 | plus: 0
+  assign section_bg_color = section.settings.section_bg_color | default: '#FAF7FB'
+-%}
+
+<div class="tp-combo-offers-section" id="ComboOffers-{{ section_id }}">
+  <style>
+    #ComboOffers-{{ section_id }} {
+      --tp-primary: var(--time-primary, #7B3F6D);
+      --tp-primary-dark: var(--time-primary-dark, #5F2E54);
+      --tp-primary-light: var(--time-primary-light, #D9A7C2);
+      --tp-bg: {{ section_bg_color }};
+      --tp-bg-sec: var(--time-background-secondary, #F2ECF5);
+      --tp-surface: var(--time-surface, #FFFFFF);
+      --tp-text: var(--time-text, #241D25);
+      --tp-text-sec: var(--time-text-secondary, #625A63);
+      --tp-border: var(--time-border, #E6DCE9);
+      
+      background-color: {{ section_bg_color }};
+      padding-top: {{ section.settings.padding_top | default: 52 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 52 }}px;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+    }
+
+    .tp-combo-container {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    /* ── HEADER ROW ── */
+    .tp-combo-header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .tp-combo-header-left {
+      flex: 1 1 320px;
+    }
+
+    .tp-combo-eyebrow {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--tp-primary);
+      margin-bottom: 8px;
+    }
+
+    .tp-combo-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--tp-text);
+      line-height: 1.15;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.01em;
+    }
+
+    .tp-combo-heading .tp-combo-accent {
+      color: var(--tp-primary);
+    }
+
+    .tp-combo-subtitle {
+      font-size: 15px;
+      color: var(--tp-text-sec);
+      margin: 0;
+      font-weight: 400;
+    }
+
+    /* ── BENEFIT STRIP (RIGHT SIDE OF HEADER) ── */
+    .tp-combo-benefits-strip {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tp-combo-benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tp-combo-benefit-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--tp-bg-sec);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--tp-primary);
+      flex-shrink: 0;
+    }
+
+    .tp-combo-benefit-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--tp-primary);
+    }
+
+    .tp-combo-benefit-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tp-combo-benefit-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--tp-text);
+      line-height: 1.2;
+    }
+
+    .tp-combo-benefit-desc {
+      font-size: 11px;
+      color: var(--tp-text-sec);
+      line-height: 1.2;
+    }
+
+    /* Top Right Handwritten Graphic */
+    .tp-combo-script-graphic {
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--tp-primary);
+      transform: rotate(-6deg);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 10px;
+    }
+
+    /* ── TABS AND VIEW ALL ROW ── */
+    .tp-combo-nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(230, 220, 233, 0.4);
+      padding-bottom: 14px;
+    }
+
+    .tp-combo-tabs-list {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tp-combo-tabs-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tp-combo-tab-btn {
+      background: var(--tp-surface);
+      border: 1.5px solid var(--tp-border);
+      color: var(--tp-text);
+      padding: 9px 22px;
+      border-radius: 50px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .tp-combo-tab-btn:hover {
+      border-color: var(--tp-primary);
+      color: var(--tp-primary);
+    }
+
+    .tp-combo-tab-btn.is-active {
+      background: var(--tp-primary-dark);
+      border-color: var(--tp-primary-dark);
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 12px rgba(95, 46, 84, 0.25);
+    }
+
+    .tp-combo-view-all-link {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--tp-primary-dark);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tp-combo-view-all-link:hover {
+      color: var(--tp-primary);
+      transform: translateX(3px);
+    }
+    @media only screen and (max-width: 749px){
+      .tp-combo-view-all-link{
+        font-size: 9px;
+      }
+    }
+
+    /* ── TAB PANELS & CAROUSEL WRAPPER ── */
+    .tp-combo-tab-panel {
+      display: none;
+      position: relative;
+    }
+
+    .tp-combo-tab-panel.is-active {
+      display: block;
+    }
+
+    .tp-combo-carousel-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .tp-combo-arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--tp-border);
+      color: var(--tp-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .tp-combo-arrow-btn:hover {
+      background: var(--tp-primary-dark);
+      border-color: var(--tp-primary-dark);
+      color: #FFFFFF;
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .tp-combo-arrow-prev {
+      left: -20px;
+    }
+
+    .tp-combo-arrow-next {
+      right: -20px;
+    }
+
+    .tp-combo-grid-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* ── PRODUCT CARD STYLING (MATCHING REFERENCE IMAGE 16) ── */
+    .tp-combo-card {
+      background: var(--tp-surface);
+      border: 1.5px solid var(--tp-border);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-sizing: border-box;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+    }
+
+    .tp-combo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(123, 63, 109, 0.12);
+      border-color: var(--tp-primary-light);
+    }
+
+    /* Top Image Box */
+    .tp-combo-card-image-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #FAF7FB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .tp-combo-card-image-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+    }
+
+    .tp-combo-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .tp-combo-card:hover .tp-combo-card-img {
+      transform: scale(1.04);
+    }
+
+    /* Badges */
+    .tp-combo-badge-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--tp-primary-dark);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: capitalize;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(95, 46, 84, 0.2);
+    }
+
+    .tp-combo-count-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--tp-primary-dark);
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--tp-primary-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      z-index: 2;
+    }
+
+    .tp-combo-count-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    /* Card Details Body */
+    .tp-combo-card-details {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 10px;
+    }
+
+    .tp-combo-card-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--tp-text);
+      line-height: 1.3;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 38px;
+      text-decoration: none;
+    }
+
+    .tp-combo-card-title:hover {
+      color: var(--tp-primary);
+    }
+
+    .tp-combo-card-desc {
+      font-size: 12px;
+      color: var(--tp-text-sec);
+      line-height: 1.35;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Rating Row */
+    .tp-combo-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .tp-combo-stars {
+      color: #F5A623;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .tp-combo-rating-val {
+      font-weight: 700;
+      color: var(--tp-text);
+    }
+
+    .tp-combo-rating-count {
+      color: var(--tp-text-sec);
+      font-weight: 400;
+    }
+
+    /* Variant Selector Pill */
+    .tp-combo-variant-selector-wrap {
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    .tp-combo-variant-pill-select {
+      width: 100%;
+      background: #FAF7FB;
+      border: 1px solid var(--tp-border);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tp-text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    /* Price Row */
+    .tp-combo-price-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .tp-combo-price-current {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--tp-primary-dark);
+    }
+
+    .tp-combo-price-compare {
+      font-size: 13.5px;
+      color: #999999;
+      text-decoration: line-through;
+    }
+
+    .tp-combo-save-pill {
+      background: #F2ECF5;
+      color: var(--tp-primary-dark);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-left: auto;
+    }
+
+    /* Card Footer: Quantity + Add to Cart */
+    .tp-combo-card-footer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    .tp-combo-qty-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--tp-border);
+      border-radius: 50px;
+      padding: 3px 8px;
+      background: #FAF7FB;
+      gap: 8px;
+    }
+
+    .tp-combo-qty-btn {
+      background: none;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--tp-text);
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+    }
+
+    .tp-combo-qty-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--tp-text);
+      min-width: 14px;
+      text-align: center;
+    }
+
+    .tp-combo-atc-btn {
+      flex: 1;
+      background: var(--tp-primary-dark);
+      color: #FFFFFF !important;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .tp-combo-atc-btn:hover {
+      background: var(--tp-primary);
+      transform: scale(1.02);
+    }
+
+    /* ── BOTTOM SAVINGS BANNER ── */
+    .tp-combo-bottom-banner {
+      margin-top: 40px;
+      background: var(--tp-bg-sec);
+      border-radius: 20px;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border: 1px solid var(--tp-border);
+    }
+
+    .tp-combo-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .tp-combo-banner-gift-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(123, 63, 109, 0.08);
+      flex-shrink: 0;
+    }
+
+    .tp-combo-banner-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--tp-primary-dark);
+      margin: 0 0 2px 0;
+    }
+
+    .tp-combo-banner-sub {
+      font-size: 13px;
+      color: var(--tp-text-sec);
+      margin: 0;
+    }
+
+    .tp-combo-banner-cta-btn {
+      background: var(--tp-primary-dark);
+      color: #FFFFFF !important;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tp-combo-banner-cta-btn:hover {
+      background: var(--tp-primary);
+      transform: translateY(-1px);
+    }
+
+    .tp-combo-banner-brand-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--tp-primary);
+      line-height: 1.4;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* ── MOBILE RESPONSIVENESS ── */
+    @media (max-width: 991px) {
+      .tp-combo-benefits-strip {
+        display: none;
+      }
+      .tp-combo-arrow-btn {
+        display: none !important;
+      }
+      .tp-combo-grid-track {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        touch-action: pan-x pan-y !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        gap: 14px !important;
+        padding-bottom: 12px !important;
+      }
+      .tp-combo-grid-track::-webkit-scrollbar {
+        display: none !important;
+      }
+      .tp-combo-grid-track > * {
+        flex: 0 0 72% !important;
+        width: 72% !important;
+        min-width: 250px !important;
+        max-width: 300px !important;
+        scroll-snap-align: start !important;
+        box-sizing: border-box !important;
+      }
+      .tp-combo-bottom-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+      }
+      .tp-combo-banner-brand-text {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tp-combo-heading {
+        font-size: 28px;
+      }
+      .tp-combo-grid-track > * {
+        flex: 0 0 72% !important;
+        width: 72% !important;
+        min-width: 250px !important;
+        max-width: 290px !important;
+      }
+      .tp-combo-tab-btn {
+        padding: 8px 16px;
+        font-size: 12.5px;
+      }
+    }
+  </style>
+
+  <div class="tp-combo-container">
+
+    <!-- ── 1. SECTION HEADER ROW ── -->
+    <div class="tp-combo-header-row">
+      <div class="tp-combo-header-left">
+        <span class="tp-combo-eyebrow">{{ eyebrow }}</span>
+        <h2 class="tp-combo-heading">
+          {{ headline_prefix }} <span class="tp-combo-accent">{{ headline_accent }}</span>
+        </h2>
+        <p class="tp-combo-subtitle">{{ subtitle }}</p>
+      </div>
+
+      <!-- Desktop Benefit Strip -->
+      <div class="tp-combo-benefits-strip">
+        <!-- Benefit 1 -->
+        <div class="tp-combo-benefit-item">
+          <div class="tp-combo-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 5c-1.5 0-2.8 1.2-3 2.7-.2 1.8 1 3.3 2.8 3.3 1.8 0 3.2-1.5 3.2-3.3 0-1.5-1.3-2.7-3-2.7z"></path>
+              <path d="M12 12c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"></path>
+              <path d="M16 8l-4 4"></path>
+            </svg>
+          </div>
+          <div class="tp-combo-benefit-text">
+            <span class="tp-combo-benefit-title">Great Value</span>
+            <span class="tp-combo-benefit-desc">Save more</span>
+          </div>
+        </div>
+
+        <!-- Benefit 2 -->
+        <div class="tp-combo-benefit-item">
+          <div class="tp-combo-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7a9 9 0 0 1-10 11z"></path>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+            </svg>
+          </div>
+          <div class="tp-combo-benefit-text">
+            <span class="tp-combo-benefit-title">All-in-One Care</span>
+            <span class="tp-combo-benefit-desc">Period essentials</span>
+          </div>
+        </div>
+
+        <!-- Benefit 3 -->
+        <div class="tp-combo-benefit-item">
+          <div class="tp-combo-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </div>
+          <div class="tp-combo-benefit-text">
+            <span class="tp-combo-benefit-title">Hassle-Free Delivery</span>
+            <span class="tp-combo-benefit-desc">Straight to your door</span>
+          </div>
+        </div>
+
+        <!-- Benefit 4 -->
+        <div class="tp-combo-benefit-item">
+          <div class="tp-combo-benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </div>
+          <div class="tp-combo-benefit-text">
+            <span class="tp-combo-benefit-title">Loved by 1 Lakh+</span>
+            <span class="tp-combo-benefit-desc">Women like you</span>
+          </div>
+        </div>
+
+        <!-- Script Graphic -->
+        <div class="tp-combo-script-graphic">
+          <span>Period care made simpler</span> ♡
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. CATEGORY TABS & VIEW ALL ROW ── -->
+    <div class="tp-combo-nav-row">
+      <div class="tp-combo-tabs-list" role="tablist">
+        <button type="button" class="tp-combo-tab-btn is-active" data-tab-target="tab-1-{{ section_id }}" role="tab" aria-selected="true">
+          {{ section.settings.tab_1_name | default: 'Best Sellers' }}
+        </button>
+        <button type="button" class="tp-combo-tab-btn" data-tab-target="tab-2-{{ section_id }}" role="tab" aria-selected="false">
+          {{ section.settings.tab_2_name | default: 'Heavy Flow' }}
+        </button>
+        <button type="button" class="tp-combo-tab-btn" data-tab-target="tab-3-{{ section_id }}" role="tab" aria-selected="false">
+          {{ section.settings.tab_3_name | default: 'Everyday Care' }}
+        </button>
+      </div>
+
+      <a href="{{ view_all_url }}" class="tp-combo-view-all-link">
+        {{ view_all_text }}
+      </a>
+    </div>
+
+    <!-- ── 3. PRODUCT CAROUSELS (TAB PANELS) ── -->
+
+    {%- comment -%} TAB 1 PANEL {%- endcomment -%}
+    {% assign col_1 = collections[section.settings.tab_1_collection] | default: collections['combo-offers'] | default: collections['all'] %}
+    <div class="tp-combo-tab-panel is-active" id="tab-1-{{ section_id }}" role="tabpanel">
+      <div class="tp-combo-carousel-wrapper">
+        <button type="button" class="tp-combo-arrow-btn tp-combo-arrow-prev" data-carousel-prev aria-label="Previous Products">‹</button>
+        
+        <div class="tp-combo-grid-track" data-carousel-track>
+          {% for product in col_1.products limit: products_limit %}
+            {% render 'product-card-performance', product: product, columns_desktop: 4, columns_mobile: 2, eagerload: forloop.first %}
+          {% else %}
+            {% for i in (1..4) %}
+              {% render 'product-card-performance', product: nil, placeholder: 'product', columns_desktop: 4, columns_mobile: 2 %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        <button type="button" class="tp-combo-arrow-btn tp-combo-arrow-next" data-carousel-next aria-label="Next Products">›</button>
+      </div>
+    </div>
+
+    {%- comment -%} TAB 2 PANEL {%- endcomment -%}
+    {% assign col_2 = collections[section.settings.tab_2_collection] | default: collections['high-flow-pads'] | default: collections['all'] %}
+    <div class="tp-combo-tab-panel" id="tab-2-{{ section_id }}" role="tabpanel">
+      <div class="tp-combo-carousel-wrapper">
+        <button type="button" class="tp-combo-arrow-btn tp-combo-arrow-prev" data-carousel-prev aria-label="Previous Products">‹</button>
+        
+        <div class="tp-combo-grid-track" data-carousel-track>
+          {% for product in col_2.products limit: products_limit %}
+            {% render 'product-card-performance', product: product, columns_desktop: 4, columns_mobile: 2, eagerload: false %}
+          {% else %}
+            {% for i in (1..4) %}
+              {% render 'product-card-performance', product: nil, placeholder: 'product', columns_desktop: 4, columns_mobile: 2 %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        <button type="button" class="tp-combo-arrow-btn tp-combo-arrow-next" data-carousel-next aria-label="Next Products">›</button>
+      </div>
+    </div>
+
+    {%- comment -%} TAB 3 PANEL {%- endcomment -%}
+    {% assign col_3 = collections[section.settings.tab_3_collection] | default: collections['sanitary-pads'] | default: collections['all'] %}
+    <div class="tp-combo-tab-panel" id="tab-3-{{ section_id }}" role="tabpanel">
+      <div class="tp-combo-carousel-wrapper">
+        <button type="button" class="tp-combo-arrow-btn tp-combo-arrow-prev" data-carousel-prev aria-label="Previous Products">‹</button>
+        
+        <div class="tp-combo-grid-track" data-carousel-track>
+          {% for product in col_3.products limit: products_limit %}
+            {% render 'product-card-performance', product: product, columns_desktop: 4, columns_mobile: 2, eagerload: false %}
+          {% else %}
+            {% for i in (1..4) %}
+              {% render 'product-card-performance', product: nil, placeholder: 'product', columns_desktop: 4, columns_mobile: 2 %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        <button type="button" class="tp-combo-arrow-btn tp-combo-arrow-next" data-carousel-next aria-label="Next Products">›</button>
+      </div>
+    </div>
+
+    <!-- ── 4. BOTTOM SAVINGS BANNER ── -->
+    {% if section.settings.enable_bottom_banner != false %}
+      <div class="tp-combo-bottom-banner">
+        <div class="tp-combo-banner-left">
+          <div class="tp-combo-banner-gift-box">🎁</div>
+          <div>
+            <h3 class="tp-combo-banner-title">{{ section.settings.banner_heading | default: 'Save more with combos' }}</h3>
+            <p class="tp-combo-banner-sub">{{ section.settings.banner_sub | default: 'Everything you need for a comfortable, confident period.' }}</p>
+          </div>
+        </div>
+
+        <a href="{{ section.settings.banner_cta_url | default: view_all_url }}" class="tp-combo-banner-cta-btn">
+          {{ section.settings.banner_cta_text | default: 'View All Combo Offers →' }}
+        </a>
+
+        <div class="tp-combo-banner-brand-text">
+          <span>CARE</span>
+          <span>COMFORT</span>
+          <span>CONFIDENCE</span>
+          <span>EVERYDAY</span>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initComboOffersSection() {
+      const root = document.getElementById('ComboOffers-{{ section_id }}');
+      if (!root) return;
+
+      // ── Tab Switching Logic ──
+      const tabs = root.querySelectorAll('.tp-combo-tab-btn');
+      const panels = root.querySelectorAll('.tp-combo-tab-panel');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-tab-target');
+          
+          tabs.forEach(t => {
+            t.classList.remove('is-active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          panels.forEach(p => p.classList.remove('is-active'));
+
+          this.classList.add('is-active');
+          this.setAttribute('aria-selected', 'true');
+
+          const activePanel = document.getElementById(targetId);
+          if (activePanel) activePanel.classList.add('is-active');
+        });
+      });
+
+      // ── Carousel Navigation Arrows ──
+      const prevBtns = root.querySelectorAll('[data-carousel-prev]');
+      const nextBtns = root.querySelectorAll('[data-carousel-next]');
+
+      prevBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const wrapper = this.closest('.tp-combo-carousel-wrapper');
+          const track = wrapper.querySelector('[data-carousel-track]');
+          if (track) track.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+      });
+
+      nextBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const wrapper = this.closest('.tp-combo-carousel-wrapper');
+          const track = wrapper.querySelector('[data-carousel-track]');
+          if (track) track.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+      });
+
+      // ── Card Interaction (Quantity & Variant Selector & Add to Cart) ──
+      root.addEventListener('click', function(e) {
+        // Quantity Plus / Minus
+        const qtyMinus = e.target.closest('[data-qty-minus]');
+        const qtyPlus = e.target.closest('[data-qty-plus]');
+
+        if (qtyMinus) {
+          const qtyBox = qtyMinus.closest('[data-combo-qty]');
+          const qtyNum = qtyBox.querySelector('[data-qty-display]');
+          let val = parseInt(qtyNum.textContent) || 1;
+          if (val > 1) {
+            val--;
+            qtyNum.textContent = val;
+          }
+        }
+
+        if (qtyPlus) {
+          const qtyBox = qtyPlus.closest('[data-combo-qty]');
+          const qtyNum = qtyBox.querySelector('[data-qty-display]');
+          let val = parseInt(qtyNum.textContent) || 1;
+          val++;
+          qtyNum.textContent = val;
+        }
+
+        // Add to Cart AJAX
+        const atcBtn = e.target.closest('[data-combo-atc]');
+        if (atcBtn) {
+          e.preventDefault();
+          const card = atcBtn.closest('.tp-combo-card');
+          const select = card.querySelector('[data-combo-variant-select]');
+          const variantId = select ? select.value : atcBtn.getAttribute('data-variant-id');
+          const qtyBox = card.querySelector('[data-qty-display]');
+          const qty = qtyBox ? parseInt(qtyBox.textContent) || 1 : 1;
+
+          if (!variantId) return;
+
+          const originalText = atcBtn.innerHTML;
+          atcBtn.innerHTML = '<span>Adding...</span>';
+          atcBtn.disabled = true;
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ items: [{ id: variantId, quantity: qty }] })
+          })
+          .then(res => res.json())
+          .then(data => {
+            atcBtn.innerHTML = '<span>✓ Added</span>';
+            setTimeout(() => {
+              atcBtn.innerHTML = originalText;
+              atcBtn.disabled = false;
+            }, 1800);
+
+            // Open theme cart drawer if available
+            document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: data }));
+            document.dispatchEvent(new CustomEvent('theme:cart:reload', { bubbles: true }));
+          })
+          .catch(err => {
+            console.error('Error adding to cart:', err);
+            atcBtn.innerHTML = originalText;
+            atcBtn.disabled = false;
+          });
+        }
+      });
+
+      // ── Variant Select Change (Price & Badge Updates) ──
+      root.addEventListener('change', function(e) {
+        const select = e.target.closest('[data-combo-variant-select]');
+        if (!select) return;
+
+        const card = select.closest('.tp-combo-card');
+        const selectedOption = select.options[select.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        const compare = selectedOption.getAttribute('data-compare');
+        
+        const priceElem = card.querySelector('[data-price-current]');
+        const compareElem = card.querySelector('[data-price-compare]');
+        const saveElem = card.querySelector('[data-price-save]');
+
+        if (priceElem && price) priceElem.textContent = '₹' + price;
+        if (compareElem) {
+          if (compare && parseInt(compare) > parseInt(price)) {
+            compareElem.style.display = 'inline';
+            compareElem.textContent = '₹' + compare;
+            if (saveElem) {
+              const diff = parseInt(compare) - parseInt(price);
+              saveElem.style.display = 'inline';
+              saveElem.textContent = 'Save ₹' + diff;
+            }
+          } else {
+            compareElem.style.display = 'none';
+            if (saveElem) saveElem.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initComboOffersSection);
+    } else {
+      initComboOffersSection();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Combo Offers Section",
+  "tag": "section",
+  "class": "tp-combo-offers-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#FAF7FB"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text",
+      "default": "BETTER TOGETHER"
+    },
+    {
+      "type": "text",
+      "id": "headline_prefix",
+      "label": "Headline Prefix",
+      "default": "Combo"
+    },
+    {
+      "type": "text",
+      "id": "headline_accent",
+      "label": "Headline Accent (Colored)",
+      "default": "Offers"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_text",
+      "label": "Subtitle",
+      "default": "More care. More savings. A happier you."
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Link Text",
+      "default": "View All Combos →"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View All Link URL"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "label": "Products per Tab",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Tab Collections"
+    },
+    {
+      "type": "text",
+      "id": "tab_1_name",
+      "label": "Tab 1 Name",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "tab_1_collection",
+      "label": "Tab 1 Collection"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_name",
+      "label": "Tab 2 Name",
+      "default": "Heavy Flow"
+    },
+    {
+      "type": "collection",
+      "id": "tab_2_collection",
+      "label": "Tab 2 Collection"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_name",
+      "label": "Tab 3 Name",
+      "default": "Everyday Care"
+    },
+    {
+      "type": "collection",
+      "id": "tab_3_collection",
+      "label": "Tab 3 Collection"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Savings Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bottom_banner",
+      "label": "Enable Bottom Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "banner_heading",
+      "label": "Banner Heading",
+      "default": "Save more with combos"
+    },
+    {
+      "type": "text",
+      "id": "banner_sub",
+      "label": "Banner Subtitle",
+      "default": "Everything you need for a comfortable, confident period."
+    },
+    {
+      "type": "text",
+      "id": "banner_cta_text",
+      "label": "Banner CTA Text",
+      "default": "View All Combo Offers →"
+    },
+    {
+      "type": "url",
+      "id": "banner_cta_url",
+      "label": "Banner CTA Link"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "Combo Offers Section"
+    }
+  ]
+}
+{% endschema %}

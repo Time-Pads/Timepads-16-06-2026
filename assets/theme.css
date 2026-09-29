@@ -20113,9 +20113,7 @@ a.product__form__link:after {
   margin: 0 auto;
 }
 @media only screen and (min-width: 768px) {
-  .product-single .product__inner {
-    max-width: 450px;
-  }
+
   .push-product-title .product-single .product__inner {
     padding-top: 60px;
     padding-bottom: 60px;

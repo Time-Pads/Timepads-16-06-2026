@@ -1,0 +1,613 @@
+{% comment %}
+  TIMEPADS - Combo Offer Banner (Buy More, Save More)
+  File: sections/combo-offer-banner.liquid
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.heading | default: 'Buy More, Save More!'
+  assign subheading = section.settings.subheading | default: 'Best combos for your every need.'
+  assign button_text = section.settings.button_text | default: 'SHOP COMBOS'
+  assign button_link = section.settings.button_link | default: '/collections/all'
+  assign banner_image = section.settings.image
+  assign image_url_fallback = section.settings.image_url_fallback | default: 'https://cdn.shopify.com/s/files/1/0845/7886/1371/files/ChatGPT_Image_Sep_1_2026_12_08_05_PM.png?v=1788244718'
+
+  assign bg_color = section.settings.bg_color | default: '#FDE8ED'
+  assign heading_color = section.settings.heading_color | default: '#1B1212'
+  assign subheading_color = section.settings.subheading_color | default: '#4A353A'
+  assign btn_bg = section.settings.btn_bg_color | default: '#5E1219'
+  assign btn_text = section.settings.btn_text_color | default: '#FFFFFF'
+
+  assign pad_top = section.settings.padding_top | default: 16
+  assign pad_bottom = section.settings.padding_bottom | default: 16
+  assign pad_top_m = section.settings.padding_top_mobile | default: 12
+  assign pad_bottom_m = section.settings.padding_bottom_mobile | default: 12
+-%}
+
+{%- style -%}
+  .tp-combo-banner-{{ section.id }} {
+    padding-top: {{ pad_top_m }}px;
+    padding-bottom: {{ pad_bottom_m }}px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 768px) {
+    .tp-combo-banner-{{ section.id }} {
+      padding-top: {{ pad_top }}px;
+      padding-bottom: {{ pad_bottom }}px;
+    }
+  }
+
+  .tp-combo-banner__container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .tp-combo-banner__card {
+    background-color: {{ bg_color }};
+    background-image: radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+    border-radius: 16px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(180, 80, 100, 0.05);
+  }
+
+  /* Left Column: Text & CTA */
+  .tp-combo-banner__content {
+    flex: 1 1 260px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+  }
+
+  .tp-combo-banner__heading {
+    font-size: 26px;
+    font-weight: 800;
+    color: {{ heading_color }};
+    line-height: 1.15;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.01em;
+    font-family: 'Poppins', 'Outfit', sans-serif;
+  }
+
+  .tp-combo-banner__subheading {
+    font-size: 13px;
+    font-weight: 500;
+    color: {{ subheading_color }};
+    line-height: 1.35;
+    margin: 0 0 16px 0;
+  }
+
+  .tp-combo-banner__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ btn_bg }};
+    color: {{ btn_text }} !important;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 3px 8px rgba(94, 18, 25, 0.25);
+  }
+
+  .tp-combo-banner__btn:hover {
+    background-color: #43090F;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(94, 18, 25, 0.35);
+  }
+
+  /* Middle Column: Product Image */
+  .tp-combo-banner__media {
+    flex: 0 1 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .tp-combo-banner__img {
+    max-height: 140px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.06));
+    transition: transform 0.3s ease;
+  }
+
+  .tp-combo-banner__card:hover .tp-combo-banner__img {
+    transform: scale(1.03);
+  }
+
+  /* Right Column: 3 Offer Cards */
+  .tp-combo-banner__offers {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2;
+  }
+
+  .tp-combo-offer-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(240, 200, 210, 0.7);
+    border-radius: 12px;
+    padding: 14px 12px;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .tp-combo-offer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(180, 80, 100, 0.12);
+  }
+
+  .tp-combo-offer-card__label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .tp-combo-offer-card__main {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 2px;
+    font-family: 'Poppins', 'Outfit', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  .tp-combo-offer-card__bottom {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .tp-combo-offer-card__bottom--bold {
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Poppins', 'Outfit', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  /* Responsive Mobile Layout */
+  @media (max-width: 991px) and (min-width: 768px) {
+    .tp-combo-banner__card {
+      padding: 16px 20px;
+      gap: 14px;
+    }
+    .tp-combo-banner__heading {
+      font-size: 22px;
+    }
+    .tp-combo-offer-card {
+      min-width: 85px;
+      padding: 10px 8px;
+    }
+    .tp-combo-offer-card__main {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tp-combo-banner__card {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 18px 14px;
+      gap: 14px;
+      border-radius: 14px;
+    }
+
+    .tp-combo-banner__top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .tp-combo-banner__content {
+      flex: 1 1 auto;
+      max-width: none;
+    }
+
+    .tp-combo-banner__heading {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .tp-combo-banner__subheading {
+      font-size: 11.5px;
+      margin-bottom: 12px;
+    }
+
+    .tp-combo-banner__btn {
+      font-size: 10.5px;
+      padding: 7px 14px;
+    }
+
+    .tp-combo-banner__media {
+      flex: 0 0 115px;
+      max-width: 120px;
+    }
+
+    .tp-combo-banner__img {
+      max-height: 95px;
+    }
+
+    .tp-combo-banner__offers {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .tp-combo-offer-card {
+      min-width: 0;
+      padding: 8px 4px;
+      border-radius: 8px;
+    }
+
+    .tp-combo-offer-card__label {
+      font-size: 9px;
+    }
+
+    .tp-combo-offer-card__main {
+      font-size: 13.5px;
+    }
+
+    .tp-combo-offer-card__bottom {
+      font-size: 9.5px;
+    }
+
+    .tp-combo-offer-card__bottom--bold {
+      font-size: 13.5px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="tp-combo-banner-{{ section.id }}"
+  class="tp-combo-banner tp-combo-banner-{{ section.id }}"
+  aria-label="{{ heading | escape }}"
+>
+  <div class="tp-combo-banner__container">
+    <div class="tp-combo-banner__card">
+      
+      <!-- Mobile Top Row Wrapper / Desktop Direct Flow -->
+      <div class="tp-combo-banner__top-row">
+        <!-- Left: Text & Button -->
+        <div class="tp-combo-banner__content">
+          {%- if heading != blank -%}
+            <h2 class="tp-combo-banner__heading">{{ heading | newline_to_br }}</h2>
+          {%- endif -%}
+          {%- if subheading != blank -%}
+            <p class="tp-combo-banner__subheading">{{ subheading | newline_to_br }}</p>
+          {%- endif -%}
+          {%- if button_text != blank -%}
+            <a href="{{ button_link }}" class="tp-combo-banner__btn">
+              {{ button_text }}
+            </a>
+          {%- endif -%}
+        </div>
+
+        <!-- Middle: Product Image -->
+        <div class="tp-combo-banner__media">
+          {%- if banner_image != blank -%}
+            {{
+              banner_image
+              | image_url: width: 500
+              | image_tag:
+                loading: 'lazy',
+                class: 'tp-combo-banner__img',
+                widths: '180, 240, 360, 500',
+                alt: heading
+            }}
+          {%- elsif image_url_fallback != blank -%}
+            <img
+              src="{{ image_url_fallback }}"
+              alt="{{ heading | escape }}"
+              class="tp-combo-banner__img"
+              loading="lazy"
+              width="240"
+              height="140"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Right: 3 Offer Cards -->
+      <div class="tp-combo-banner__offers">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign lbl = block.settings.label
+              assign main = block.settings.main_text
+              assign btm = block.settings.bottom_text
+              assign txt_col = block.settings.text_color | default: '#8E0E22'
+              assign sub_col = block.settings.sub_text_color | default: '#333333'
+              assign is_bottom_bold = block.settings.bottom_text_bold
+            -%}
+            <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %}
+              class="tp-combo-offer-card"
+              {{ block.shopify_attributes }}
+            >
+              {%- if lbl != blank -%}
+                <span class="tp-combo-offer-card__label" style="color: {{ txt_col }};">{{ lbl }}</span>
+              {%- endif -%}
+              {%- if main != blank -%}
+                <span class="tp-combo-offer-card__main" style="color: {{ txt_col }};">{{ main }}</span>
+              {%- endif -%}
+              {%- if btm != blank -%}
+                <span class="tp-combo-offer-card__bottom{% if is_bottom_bold %} tp-combo-offer-card__bottom--bold{% endif %}" style="color: {% if is_bottom_bold %}{{ txt_col }}{% else %}{{ sub_col }}{% endif %};">{{ btm }}</span>
+              {%- endif -%}
+            </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default 3 Cards from Reference Design -->
+          <div class="tp-combo-offer-card">
+            <span class="tp-combo-offer-card__label" style="color: #8E0E22;">BUY 2</span>
+            <span class="tp-combo-offer-card__main" style="color: #8E0E22;">GET 1</span>
+            <span class="tp-combo-offer-card__bottom tp-combo-offer-card__bottom--bold" style="color: #8E0E22;">FREE</span>
+          </div>
+          <div class="tp-combo-offer-card">
+            <span class="tp-combo-offer-card__label" style="color: #8E0E22;">EXTRA</span>
+            <span class="tp-combo-offer-card__main" style="color: #8E0E22;">10% OFF</span>
+            <span class="tp-combo-offer-card__bottom" style="color: #333333;">on Prepaid</span>
+          </div>
+          <div class="tp-combo-offer-card">
+            <span class="tp-combo-offer-card__label" style="color: #8E0E22;">FREE</span>
+            <span class="tp-combo-offer-card__main" style="color: #8E0E22;">SHIPPING</span>
+            <span class="tp-combo-offer-card__bottom" style="color: #333333;">on ₹499+</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Combo Offer Banner",
+  "tag": "section",
+  "class": "combo-offer-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Buy More, Save More!"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Best combos for your every need."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SHOP COMBOS"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Product Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Bundle Image"
+    },
+    {
+      "type": "text",
+      "id": "image_url_fallback",
+      "label": "Image URL Fallback",
+      "default": "https://cdn.shopify.com/s/files/1/0845/7886/1371/files/ChatGPT_Image_Sep_1_2026_12_08_05_PM.png?v=1788244718"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Banner Background Color",
+      "default": "#FDE8ED"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1B1212"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#4A353A"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Button Background Color",
+      "default": "#5E1219"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "offer_card",
+      "name": "Offer Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Top Label",
+          "default": "BUY 2"
+        },
+        {
+          "type": "text",
+          "id": "main_text",
+          "label": "Main Text",
+          "default": "GET 1"
+        },
+        {
+          "type": "text",
+          "id": "bottom_text",
+          "label": "Bottom Text",
+          "default": "FREE"
+        },
+        {
+          "type": "checkbox",
+          "id": "bottom_text_bold",
+          "label": "Make Bottom Text Big & Bold (like FREE)",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Highlight Text Color",
+          "default": "#8E0E22"
+        },
+        {
+          "type": "color",
+          "id": "sub_text_color",
+          "label": "Sub Text Color",
+          "default": "#333333"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Combo Offer Banner",
+      "blocks": [
+        {
+          "type": "offer_card",
+          "settings": {
+            "label": "BUY 2",
+            "main_text": "GET 1",
+            "bottom_text": "FREE",
+            "bottom_text_bold": true,
+            "text_color": "#8E0E22",
+            "sub_text_color": "#8E0E22"
+          }
+        },
+        {
+          "type": "offer_card",
+          "settings": {
+            "label": "EXTRA",
+            "main_text": "10% OFF",
+            "bottom_text": "on Prepaid",
+            "bottom_text_bold": false,
+            "text_color": "#8E0E22",
+            "sub_text_color": "#333333"
+          }
+        },
+        {
+          "type": "offer_card",
+          "settings": {
+            "label": "FREE",
+            "main_text": "SHIPPING",
+            "bottom_text": "on ₹499+",
+            "bottom_text_bold": false,
+            "text_color": "#8E0E22",
+            "sub_text_color": "#333333"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

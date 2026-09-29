@@ -140,14 +140,12 @@
             {%- assign product = block.settings.product -%}
             {%- if product != blank -%}
               <div class="deal-product-item" {{ block.shopify_attributes }}>
-                {%- render 'product-card-home-page',
+                {%- render 'product-card-performance',
                   product: product,
                   placeholder: false,
                   columns_desktop: section.settings.columns_desktop,
                   columns_mobile: section.settings.columns_mobile,
-                  show_discount_badge: true,
-                  show_limited_badge: section.settings.show_limited_badge,
-                  loading: 'lazy'
+                  eagerload: false
                 -%}
               </div>
             {%- endif -%}

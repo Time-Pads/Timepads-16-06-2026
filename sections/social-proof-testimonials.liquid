@@ -1,0 +1,922 @@
+{% comment %}
+  TIMEPADS - Social Proof & Customer Stories Section
+  File: sections/social-proof-testimonials.liquid
+{% endcomment %}
+
+{%- liquid
+  assign trust_heading = section.settings.trust_heading | default: 'Trusted by Millions of Women'
+  assign stories_heading = section.settings.stories_heading | default: 'Real Stories, Real Confidence'
+
+  assign bg_color = section.settings.bg_color | default: '#FAF7FB'
+  assign text_color = section.settings.text_color | default: '#1A1A1A'
+  assign pad_top = section.settings.padding_top | default: 36
+  assign pad_bottom = section.settings.padding_bottom | default: 40
+  assign pad_top_m = section.settings.padding_top_mobile | default: 24
+  assign pad_bottom_m = section.settings.padding_bottom_mobile | default: 28
+-%}
+
+{%- style -%}
+  .tp-social-proof-{{ section.id }} {
+    background-color: {{ bg_color }};
+    padding-top: {{ pad_top_m }}px;
+    padding-bottom: {{ pad_bottom_m }}px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .tp-social-proof-{{ section.id }} {
+      padding-top: {{ pad_top }}px;
+      padding-bottom: {{ pad_bottom }}px;
+    }
+  }
+
+  .tp-social-proof__container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  /* ── 1. Top Trust Badges Section ── */
+  .tp-trust-bar {
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .tp-trust-bar__heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #241D25;
+    margin: 0 0 24px 0;
+    text-align: center;
+    line-height: 1.2;
+  }
+  @media (min-width: 768px) {
+    .tp-trust-bar__heading {
+      font-size: 38px;
+    }
+  }
+
+  .tp-trust-bar__grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 6px;
+  }
+
+  .tp-trust-bar__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tp-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 0;
+    min-width: 150px;
+    justify-content: center;
+    text-align: left;
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+
+  .tp-trust-badge__icon-wrap {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #FBF6F7;
+    border: 1px solid #F2E3E6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #4A151C;
+  }
+
+  .tp-trust-badge__icon-wrap svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tp-trust-badge__info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .tp-trust-badge__value {
+    font-size: 15px;
+    font-weight: 800;
+    color: #111111;
+    font-family: 'Poppins', 'Outfit', sans-serif;
+  }
+
+  .tp-trust-badge__label {
+    font-size: 11.5px;
+    color: #666666;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── 2. Bottom Testimonial Stories Section ── */
+  .tp-stories {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .tp-stories__heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #241D25;
+    text-align: center;
+    margin: 0 0 24px 0;
+    line-height: 1.2;
+  }
+  @media (min-width: 768px) {
+    .tp-stories__heading {
+      font-size: 38px;
+    }
+  }
+
+  .tp-stories__main-layout {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    width: 100%;
+  }
+
+  /* Left Featured Customer & Quote */
+  .tp-stories__featured-card {
+    flex: 0 0 460px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .tp-stories__featured-img-wrap {
+    width: 180px;
+    height: 210px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: #F8F4F5;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .tp-stories__featured-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .tp-stories__quote-block {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .tp-stories__quote-mark {
+    font-size: 38px;
+    color: #DAB4BC;
+    line-height: 0.8;
+    margin-bottom: 6px;
+    font-family: Georgia, serif;
+  }
+
+  .tp-stories__quote-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #222222;
+    line-height: 1.45;
+    margin: 0 0 10px 0;
+    min-height: 58px;
+    transition: opacity 0.2s ease;
+  }
+
+  .tp-stories__author {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #4A151C;
+    margin: 0 0 6px 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .tp-stories__stars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: #4A151C;
+    font-size: 12px;
+  }
+
+  /* Right Thumbnails Strip */
+  .tp-stories__thumbs-wrap {
+    flex: 1 1 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tp-stories__thumbs-track {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    padding: 6px 2px;
+    width: 100%;
+  }
+
+  .tp-stories__thumbs-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tp-stories__thumb-item {
+    flex: 0 0 110px;
+    height: 140px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #F8F4F5;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .tp-stories__thumb-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  .tp-stories__thumb-item.is-active {
+    border-color: #5C1D24;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(92, 29, 36, 0.2);
+  }
+
+  .tp-stories__thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .tp-stories__arrow-btn {
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 1px solid #EAEAEA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    z-index: 5;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .tp-stories__arrow-btn:hover {
+    background-color: #FBF6F7;
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  /* Responsive Mobile Layout */
+  @media (max-width: 991px) {
+    .tp-stories__main-layout {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .tp-stories__featured-card {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+    .tp-stories__thumbs-wrap {
+      width: 100%;
+    }
+    .tp-stories__arrow-btn {
+      right: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tp-trust-bar__heading,
+    .tp-stories__heading {
+      font-size: 19px;
+      margin-bottom: 18px;
+    }
+
+    .tp-trust-badge {
+      min-width: 130px;
+      gap: 8px;
+    }
+    .tp-trust-badge__icon-wrap {
+      width: 32px;
+      height: 32px;
+    }
+    .tp-trust-badge__icon-wrap svg {
+      width: 16px;
+      height: 16px;
+    }
+    .tp-trust-badge__value {
+      font-size: 13px;
+    }
+    .tp-trust-badge__label {
+      font-size: 10px;
+    }
+
+    .tp-stories__featured-card {
+      flex-direction: row;
+      gap: 12px;
+      padding: 6px;
+    }
+    .tp-stories__featured-img-wrap {
+      width: 120px;
+      height: 150px;
+    }
+    .tp-stories__quote-text {
+      font-size: 12px;
+      min-height: auto;
+      line-height: 1.4;
+    }
+    .tp-stories__author {
+      font-size: 11.5px;
+    }
+    .tp-stories__thumb-item {
+      flex: 0 0 80px;
+      height: 105px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="tp-social-proof-{{ section.id }}"
+  class="tp-social-proof tp-social-proof-{{ section.id }}"
+  aria-label="Social Proof & Customer Testimonials"
+>
+  <div class="tp-social-proof__container">
+    
+    <!-- ── 1. Top Trust Badges Bar ── -->
+    <div class="tp-trust-bar">
+      {%- if trust_heading != blank -%}
+        {%- assign trust_words = trust_heading | split: ' ' -%}
+        <h2 class="tp-trust-bar__heading">
+          {%- for word in trust_words -%}
+            {%- if forloop.last -%}
+              <span style="color: #7B3F6D;">{{ word }}</span>
+            {%- else -%}
+              {{ word }} 
+            {%- endif -%}
+          {%- endfor -%}
+        </h2>
+      {%- endif -%}
+
+      <div class="tp-trust-bar__grid">
+        <!-- Badge 1: Happy Customers -->
+        <div class="tp-trust-badge">
+          <div class="tp-trust-badge__icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="tp-trust-badge__info">
+            <span class="tp-trust-badge__value">{{ section.settings.badge_1_val | default: '5L+' }}</span>
+            <span class="tp-trust-badge__label">{{ section.settings.badge_1_lbl | default: 'Happy Customers' }}</span>
+          </div>
+        </div>
+
+        <!-- Badge 2: Average Rating -->
+        <div class="tp-trust-badge">
+          <div class="tp-trust-badge__icon-wrap">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <div class="tp-trust-badge__info">
+            <span class="tp-trust-badge__value">{{ section.settings.badge_2_val | default: '4.8/5' }}</span>
+            <span class="tp-trust-badge__label">{{ section.settings.badge_2_lbl | default: 'Average Rating' }}</span>
+          </div>
+        </div>
+
+        <!-- Badge 3: 100% Safe -->
+        <div class="tp-trust-badge">
+          <div class="tp-trust-badge__icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+          </div>
+          <div class="tp-trust-badge__info">
+            <span class="tp-trust-badge__value">{{ section.settings.badge_3_val | default: '100% Safe' }}</span>
+            <span class="tp-trust-badge__label">{{ section.settings.badge_3_lbl | default: '& Dermat Tested' }}</span>
+          </div>
+        </div>
+
+        <!-- Badge 4: Made in India -->
+        <div class="tp-trust-badge">
+          <div class="tp-trust-badge__icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </div>
+          <div class="tp-trust-badge__info">
+            <span class="tp-trust-badge__value">{{ section.settings.badge_4_val | default: 'Made in India' }}</span>
+            <span class="tp-trust-badge__label">{{ section.settings.badge_4_lbl | default: 'with ❤️' }}</span>
+          </div>
+        </div>
+
+        <!-- Badge 5: Pads Delivered -->
+        <div class="tp-trust-badge">
+          <div class="tp-trust-badge__icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+          </div>
+          <div class="tp-trust-badge__info">
+            <span class="tp-trust-badge__value">{{ section.settings.badge_5_val | default: '10L+' }}</span>
+            <span class="tp-trust-badge__label">{{ section.settings.badge_5_lbl | default: 'Pads Delivered' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. Real Stories, Real Confidence ── -->
+    <div class="tp-stories" data-tp-stories>
+      {%- if stories_heading != blank -%}
+        {%- assign stories_words = stories_heading | split: ' ' -%}
+        <h2 class="tp-stories__heading">
+          {%- for word in stories_words -%}
+            {%- if forloop.last -%}
+              <span style="color: #7B3F6D;">{{ word }}</span>
+            {%- else -%}
+              {{ word }} 
+            {%- endif -%}
+          {%- endfor -%}
+        </h2>
+      {%- endif -%}
+
+      <div class="tp-stories__main-layout">
+        
+        {%- liquid
+          assign first_block = section.blocks.first
+          if first_block != blank
+            if first_block.settings.image != blank
+              assign first_img = first_block.settings.image | image_url: width: 300
+            else
+              assign first_img = 'customer_review_1.webp' | asset_url
+            endif
+            assign first_quote = first_block.settings.quote | default: 'TIME pads are incredibly soft and give me confidence all day long. No rashes, no worries!'
+            assign first_author = first_block.settings.name | default: '— Priya, Bengaluru'
+          else
+            assign first_img = 'customer_review_1.webp' | asset_url
+            assign first_quote = 'TIME pads are incredibly soft and give me confidence all day long. No rashes, no worries!'
+            assign first_author = '— Priya, Bengaluru'
+          endif
+        -%}
+
+        <!-- Left: Active / Featured Review -->
+        <div class="tp-stories__featured-card">
+          <div class="tp-stories__featured-img-wrap">
+            <img
+              src="{{ first_img }}"
+              alt="{{ first_author | escape }}"
+              class="tp-stories__featured-img"
+              data-tp-featured-img
+              loading="lazy"
+              width="240"
+              height="280"
+            >
+          </div>
+          <div class="tp-stories__quote-block">
+            <div class="tp-stories__quote-mark">“</div>
+            <p class="tp-stories__quote-text" data-tp-quote-text>
+              {{ first_quote }}
+            </p>
+            <div class="tp-stories__author" data-tp-author>{{ first_author }}</div>
+            <div class="tp-stories__stars">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Thumbnails Strip & Next Arrow -->
+        <div class="tp-stories__thumbs-wrap">
+          <div class="tp-stories__thumbs-track" data-tp-thumbs-track>
+            
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  if block.settings.image != blank
+                    assign story_img = block.settings.image | image_url: width: 300
+                    assign thumb_img = block.settings.image | image_url: width: 140
+                  else
+                    assign default_idx = forloop.index | at_most: 5
+                    assign default_file = 'customer_review_' | append: default_idx | append: '.webp'
+                    assign story_img = default_file | asset_url
+                    assign thumb_img = default_file | asset_url
+                  endif
+                  assign story_name = block.settings.name | default: 'Customer'
+                  assign story_quote = block.settings.quote | default: 'TIME pads are incredibly soft and comfortable.'
+                -%}
+                <div
+                  class="tp-stories__thumb-item{% if forloop.first %} is-active{% endif %}"
+                  data-tp-story-idx="{{ forloop.index0 }}"
+                  data-img-src="{{ story_img }}"
+                  data-quote="{{ story_quote | escape }}"
+                  data-author="{{ story_name | escape }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <img src="{{ thumb_img }}" alt="{{ story_name | escape }}" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <!-- Fallback Default 5 Stories -->
+              <div
+                class="tp-stories__thumb-item is-active"
+                data-tp-story-idx="0"
+                data-img-src="{{ 'customer_review_1.webp' | asset_url }}"
+                data-quote="TIME pads are incredibly soft and give me confidence all day long. No rashes, no worries!"
+                data-author="— Priya, Bengaluru"
+              >
+                <img src="{{ 'customer_review_1.webp' | asset_url }}" alt="Priya" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+              </div>
+
+              <div
+                class="tp-stories__thumb-item"
+                data-tp-story-idx="1"
+                data-img-src="{{ 'customer_review_2.webp' | asset_url }}"
+                data-quote="Switching to TIME pads made my periods so comfortable. Absolutely no irritation or itching!"
+                data-author="— Ananya, Mumbai"
+              >
+                <img src="{{ 'customer_review_2.webp' | asset_url }}" alt="Ananya" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+              </div>
+
+              <div
+                class="tp-stories__thumb-item"
+                data-tp-story-idx="2"
+                data-img-src="{{ 'customer_review_3.webp' | asset_url }}"
+                data-quote="Heavy flow days used to be a nightmare until I found TIME overnight pads. Maximum leakage protection!"
+                data-author="— Sneha, Delhi"
+              >
+                <img src="{{ 'customer_review_3.webp' | asset_url }}" alt="Sneha" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+              </div>
+
+              <div
+                class="tp-stories__thumb-item"
+                data-tp-story-idx="3"
+                data-img-src="{{ 'customer_review_4.webp' | asset_url }}"
+                data-quote="The pure cotton top sheet feels so natural. I can wear them through long office hours with zero worry."
+                data-author="— Divya, Hyderabad"
+              >
+                <img src="{{ 'customer_review_4.webp' | asset_url }}" alt="Divya" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+              </div>
+
+              <div
+                class="tp-stories__thumb-item"
+                data-tp-story-idx="4"
+                data-img-src="{{ 'customer_review_5.webp' | asset_url }}"
+                data-quote="Organic, comfortable, and gentle on sensitive skin. Best period care purchase ever!"
+                data-author="— Pooja, Pune"
+              >
+                <img src="{{ 'customer_review_5.webp' | asset_url }}" alt="Pooja" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+              </div>
+            {%- endif -%}
+
+          </div>
+
+          <!-- Carousel Next Arrow -->
+          <button type="button" class="tp-stories__arrow-btn" aria-label="Next story" data-tp-arrow-next>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initSocialProofStories() {
+      var section = document.getElementById('tp-social-proof-{{ section.id }}');
+      if (!section) return;
+
+      var thumbs = section.querySelectorAll('[data-tp-story-idx]');
+      var featImg = section.querySelector('[data-tp-featured-img]');
+      var quoteText = section.querySelector('[data-tp-quote-text]');
+      var authorText = section.querySelector('[data-tp-author]');
+      var nextBtn = section.querySelector('[data-tp-arrow-next]');
+      var track = section.querySelector('[data-tp-thumbs-track]');
+
+      var currentIndex = 0;
+
+      function setActiveStory(index) {
+        if (index < 0 || index >= thumbs.length) return;
+        currentIndex = index;
+
+        thumbs.forEach(function (t, i) {
+          if (i === index) {
+            t.classList.add('is-active');
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          } else {
+            t.classList.remove('is-active');
+          }
+        });
+
+        var activeThumb = thumbs[index];
+        if (!activeThumb) return;
+
+        var newImg = activeThumb.getAttribute('data-img-src');
+        var newQuote = activeThumb.getAttribute('data-quote');
+        var newAuthor = activeThumb.getAttribute('data-author');
+
+        if (featImg && newImg) {
+          featImg.style.opacity = '0.4';
+          featImg.src = newImg;
+          setTimeout(function () { featImg.style.opacity = '1'; }, 150);
+        }
+
+        if (quoteText && newQuote) {
+          quoteText.style.opacity = '0.4';
+          quoteText.textContent = newQuote;
+          setTimeout(function () { quoteText.style.opacity = '1'; }, 150);
+        }
+
+        if (authorText && newAuthor) {
+          authorText.style.opacity = '0.4';
+          authorText.textContent = newAuthor;
+          setTimeout(function () { authorText.style.opacity = '1'; }, 150);
+        }
+      }
+
+      thumbs.forEach(function (thumb, idx) {
+        thumb.addEventListener('click', function () {
+          setActiveStory(idx);
+        });
+      });
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+          var nextIndex = (currentIndex + 1) % thumbs.length;
+          setActiveStory(nextIndex);
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSocialProofStories);
+    } else {
+      initSocialProofStories();
+    }
+
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target.id === 'shopify-section-{{ section.id }}' || e.target.querySelector('#tp-social-proof-{{ section.id }}')) {
+        initSocialProofStories();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Social Proof & Stories",
+  "tag": "section",
+  "class": "tp-social-proof-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Trust Badges Bar"
+    },
+    {
+      "type": "text",
+      "id": "trust_heading",
+      "label": "Trust Bar Heading",
+      "default": "Trusted by Millions of Women"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_val",
+      "label": "Badge 1 Value",
+      "default": "5L+"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_lbl",
+      "label": "Badge 1 Label",
+      "default": "Happy Customers"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_val",
+      "label": "Badge 2 Value",
+      "default": "4.8/5"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_lbl",
+      "label": "Badge 2 Label",
+      "default": "Average Rating"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_val",
+      "label": "Badge 3 Value",
+      "default": "100% Safe"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_lbl",
+      "label": "Badge 3 Label",
+      "default": "& Dermat Tested"
+    },
+    {
+      "type": "text",
+      "id": "badge_4_val",
+      "label": "Badge 4 Value",
+      "default": "Made in India"
+    },
+    {
+      "type": "text",
+      "id": "badge_4_lbl",
+      "label": "Badge 4 Label",
+      "default": "with ❤️"
+    },
+    {
+      "type": "text",
+      "id": "badge_5_val",
+      "label": "Badge 5 Value",
+      "default": "10L+"
+    },
+    {
+      "type": "text",
+      "id": "badge_5_lbl",
+      "label": "Badge 5 Label",
+      "default": "Pads Delivered"
+    },
+    {
+      "type": "header",
+      "content": "Stories & Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "stories_heading",
+      "label": "Stories Heading",
+      "default": "Real Stories, Real Confidence"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF7FB"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 28
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Customer Story",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name & City",
+          "default": "Priya, Bengaluru"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review Quote",
+          "default": "TIME pads are incredibly soft and give me confidence all day long. No rashes, no worries!"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Proof & Stories",
+      "blocks": [
+        {
+          "type": "story",
+          "settings": {
+            "name": "— Priya, Bengaluru",
+            "quote": "TIME pads are incredibly soft and give me confidence all day long. No rashes, no worries!"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "name": "— Ananya, Mumbai",
+            "quote": "Switching to TIME pads made my periods so comfortable. Absolutely no irritation or itching!"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "name": "— Sneha, Delhi",
+            "quote": "Heavy flow days used to be a nightmare until I found TIME overnight pads. Maximum leakage protection!"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "name": "— Divya, Hyderabad",
+            "quote": "The pure cotton top sheet feels so natural. I can wear them through long office hours with zero worry."
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "name": "— Pooja, Pune",
+            "quote": "Organic, comfortable, and gentle on sensitive skin. Best period care purchase ever!"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

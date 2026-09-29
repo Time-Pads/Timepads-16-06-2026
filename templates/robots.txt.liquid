@@ -24,15 +24,171 @@
     Disallow: /account/*
     Disallow: /checkouts/*
     Disallow: /checkout/*
-    Disallow: /search
-    Disallow: /search/*
     Disallow: /challenge
     Disallow: /challenge/*
-    Disallow: /*?*sort_by=
-    Disallow: /*?*filter.*
   {%- endunless -%}
 
   {%- if group.sitemap != blank -%}
     {{ group.sitemap }}
   {%- endif -%}
 {%- endfor -%}
+
+# --------------------------------------------------
+# Explicitly Allow AI Search Bots & Web Crawlers
+# --------------------------------------------------
+
+User-agent: ChatGPT-User
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: OAI-SearchBot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: GPTBot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Googlebot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: PerplexityBot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: ClaudeBot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Claude-Web
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Applebot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Applebot-Extended
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Amazonbot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: FacebookBot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: cohere-ai
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Diffbot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: Bytespider
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /
+
+User-agent: CCBot
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /account
+Allow: /

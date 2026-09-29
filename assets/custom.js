@@ -886,3 +886,71 @@ window.addEventListener('load', function() {
 
   });
 });
+
+/* ── SEARCH RECOMMENDATIONS & POPDOWN TRIGGER HANDLER ── */
+document.addEventListener("DOMContentLoaded", function() {
+  function openSearchPopdown(e) {
+    const popdown = document.getElementById("search-popdown") || document.querySelector(".search-popdown");
+    const underlay = document.querySelector("[data-search-underlay]") || document.querySelector(".drawer__underlay");
+    if (popdown) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      popdown.classList.add("is-visible");
+      if (underlay) underlay.classList.add("underlay--visible");
+
+      const popdownInput = popdown.querySelector('input[data-predictive-search-input="search-popdown-results"]');
+      if (popdownInput) {
+        setTimeout(function() {
+          popdownInput.focus();
+        }, 80);
+      }
+    }
+  }
+
+  function closeSearchPopdown(e) {
+    const popdown = document.getElementById("search-popdown") || document.querySelector(".search-popdown");
+    const underlay = document.querySelector("[data-search-underlay]") || document.querySelector(".drawer__underlay");
+    if (popdown) {
+      if (e) e.preventDefault();
+      popdown.classList.remove("is-visible");
+      if (underlay) underlay.classList.remove("underlay--visible");
+    }
+  }
+
+  // Intercept click on header search inputs & search buttons
+  document.addEventListener("click", function(e) {
+    if (!e.target || typeof e.target.closest !== "function") return;
+
+    // Close trigger
+    const closeBtn = e.target.closest("[data-close-popdown], [data-search-underlay], .tp-search-modal-close-btn");
+    if (closeBtn) {
+      closeSearchPopdown(e);
+      return;
+    }
+
+    // Open trigger: any click on search bar in header (desktop or mobile)
+    const headerSearchTrigger = e.target.closest(".tp-header-search-wrap, .tp-mobile-search-row, .tp-search-pill-box, .tp-search-input-field, .tp-search-btn-submit, [data-popdown-toggle='search-popdown']");
+    if (headerSearchTrigger && !headerSearchTrigger.closest(".search-popdown, #search-popdown")) {
+      openSearchPopdown(e);
+    }
+  });
+
+  // Intercept focus on header search input
+  document.addEventListener("focusin", function(e) {
+    if (!e.target || typeof e.target.closest !== "function") return;
+    const headerInput = e.target.closest(".tp-search-input-field");
+    if (headerInput && !headerInput.closest(".search-popdown, #search-popdown")) {
+      openSearchPopdown(e);
+    }
+  });
+
+  // ESC key to close search popdown
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+      closeSearchPopdown(e);
+    }
+  });
+});
+

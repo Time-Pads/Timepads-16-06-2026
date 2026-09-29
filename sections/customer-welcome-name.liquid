@@ -47,7 +47,7 @@
     assign is_logged_in = true
   endif
 -%}
-
+{% comment %} 
 <div
   id="CustomerWelcome-{{ section.id }}"
   class="customer-welcome-section customer-welcome-{{ section.id }} wrapper"
@@ -64,7 +64,7 @@
     </h2>
   </div>
 </div>
-
+ {% endcomment %}
 <style>
   .customer-welcome-{{ section.id }} {
     padding-top: {{ section.settings.padding_top }}px;

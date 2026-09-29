@@ -1,0 +1,403 @@
+{%- comment -%}
+  Product Media Highlights Card
+  Displays a 4-feature benefit bar directly below the product images/thumbnails.
+  Dynamically adapts to:
+  - Sanitary Pads
+  - Menstrual Cup
+  - Period Pain Relief Cream
+{%- endcomment -%}
+
+{%- liquid
+  assign show_highlights = section.settings.show_media_highlights
+  if show_highlights == nil
+    assign show_highlights = true
+  endif
+-%}
+
+{%- if show_highlights -%}
+  {%- liquid
+    assign handle_lower = product.handle | downcase
+    assign title_lower = product.title | downcase
+    assign type_lower = product.type | downcase
+    assign template_lower = template.suffix | default: template.name | downcase
+
+    assign is_cup = false
+    if handle_lower contains 'cup' or title_lower contains 'cup' or type_lower contains 'cup' or template_lower contains 'cup' or template_lower contains 'menstrual'
+      assign is_cup = true
+    endif
+
+    assign is_cream = false
+    if handle_lower contains 'cream' or handle_lower contains 'cramp' or title_lower contains 'cream' or title_lower contains 'cramp' or type_lower contains 'cream' or template_lower contains 'cream' or template_lower contains 'pain'
+      assign is_cream = true
+    endif
+
+    if is_cup
+      assign default_1_title = 'Medical-Grade Silicone'
+      assign default_1_sub = '100% safe & toxin-free'
+      assign default_2_title = '10–12 Hours Comfort'
+      assign default_2_sub = 'Day & night protection'
+      assign default_3_title = 'Reusable & Eco-Safe'
+      assign default_3_sub = 'Lasts for up to 5+ years'
+      assign default_4_title = 'Soft & Flexible Fit'
+      assign default_4_sub = 'Easy to insert & leak-proof'
+    elsif is_cream
+      assign default_1_title = 'Fast Pain Relief'
+      assign default_1_sub = 'Soothes cramps in minutes'
+      assign default_2_title = '100% Herbal & Natural'
+      assign default_2_sub = 'Safe with no side effects'
+      assign default_3_title = 'Quick Absorption'
+      assign default_3_sub = 'Non-greasy & lightweight'
+      assign default_4_title = 'Gentle On Skin'
+      assign default_4_sub = 'Dermatologically tested'
+    else
+      assign default_1_title = 'High Absorption'
+      assign default_1_sub = 'Stays dry all night'
+      assign default_2_title = 'Wider Back Coverage'
+      assign default_2_sub = 'Extra protection where you need it'
+      assign default_3_title = 'Overnight Comfort'
+      assign default_3_sub = 'For heavy flow days'
+      assign default_4_title = 'Soft & Skin-Friendly'
+      assign default_4_sub = 'Gentle on skin for all-night use'
+    endif
+
+    # Handle custom overrides from theme editor (ignoring default pad values when viewing cup/cream)
+    assign h1_title = section.settings.highlight_1_title
+    assign h1_sub = section.settings.highlight_1_subtitle
+    if is_cup or is_cream
+      if h1_title == blank or h1_title == 'High Absorption'
+        assign h1_title = default_1_title
+        assign h1_sub = default_1_sub
+      endif
+    else
+      if h1_title == blank
+        assign h1_title = default_1_title
+        assign h1_sub = default_1_sub
+      endif
+    endif
+
+    assign h2_title = section.settings.highlight_2_title
+    assign h2_sub = section.settings.highlight_2_subtitle
+    if is_cup or is_cream
+      if h2_title == blank or h2_title == 'Wider Back Coverage'
+        assign h2_title = default_2_title
+        assign h2_sub = default_2_sub
+      endif
+    else
+      if h2_title == blank
+        assign h2_title = default_2_title
+        assign h2_sub = default_2_sub
+      endif
+    endif
+
+    assign h3_title = section.settings.highlight_3_title
+    assign h3_sub = section.settings.highlight_3_subtitle
+    if is_cup or is_cream
+      if h3_title == blank or h3_title == 'Overnight Comfort'
+        assign h3_title = default_3_title
+        assign h3_sub = default_3_sub
+      endif
+    else
+      if h3_title == blank
+        assign h3_title = default_3_title
+        assign h3_sub = default_3_sub
+      endif
+    endif
+
+    assign h4_title = section.settings.highlight_4_title
+    assign h4_sub = section.settings.highlight_4_subtitle
+    if is_cup or is_cream
+      if h4_title == blank or h4_title == 'Soft & Skin-Friendly'
+        assign h4_title = default_4_title
+        assign h4_sub = default_4_sub
+      endif
+    else
+      if h4_title == blank
+        assign h4_title = default_4_title
+        assign h4_sub = default_4_sub
+      endif
+    endif
+
+    assign h1_icon = section.settings.highlight_1_icon
+    assign h2_icon = section.settings.highlight_2_icon
+    assign h3_icon = section.settings.highlight_3_icon
+    assign h4_icon = section.settings.highlight_4_icon
+  -%}
+
+  <div class="product-media-highlights" data-product-media-highlights>
+    <div class="product-media-highlights__grid">
+      
+      <!-- Feature 1 -->
+      <div class="product-media-highlights__item">
+        <div class="product-media-highlights__icon-wrap" aria-hidden="true">
+          {%- if h1_icon != blank -%}
+            {{ h1_icon | image_url: width: 64 | image_tag: loading: 'lazy', alt: h1_title }}
+          {%- elsif is_cup -%}
+            <!-- Medical Grade Shield with Checkmark -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          {%- elsif is_cream -%}
+            <!-- Fast Pain Relief Flash -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          {%- else -%}
+            <!-- High Absorption Teardrop -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#C2294E" aria-hidden="true" focusable="false">
+              <path d="M12 2.5C12 2.5 5 11.5 5 16.5C5 20.366 8.134 23.5 12 23.5C15.866 23.5 19 20.366 19 16.5C19 11.5 12 2.5 12 2.5Z"/>
+            </svg>
+          {%- endif -%}
+        </div>
+        <h4 class="product-media-highlights__title">{{ h1_title | escape }}</h4>
+        <p class="product-media-highlights__subtitle">{{ h1_sub | escape }}</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="product-media-highlights__item">
+        <div class="product-media-highlights__icon-wrap" aria-hidden="true">
+          {%- if h2_icon != blank -%}
+            {{ h2_icon | image_url: width: 64 | image_tag: loading: 'lazy', alt: h2_title }}
+          {%- elsif is_cup -%}
+            <!-- 10-12 Hours Clock / Timer -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          {%- elsif is_cream -%}
+            <!-- 100% Herbal & Natural Sprout Leaf -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+          {%- else -%}
+            <!-- Wider Back Coverage Arrow -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <polyline points="9 7 4 12 9 17"></polyline>
+              <polyline points="15 7 20 12 15 17"></polyline>
+            </svg>
+          {%- endif -%}
+        </div>
+        <h4 class="product-media-highlights__title">{{ h2_title | escape }}</h4>
+        <p class="product-media-highlights__subtitle">{{ h2_sub | escape }}</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="product-media-highlights__item">
+        <div class="product-media-highlights__icon-wrap" aria-hidden="true">
+          {%- if h3_icon != blank -%}
+            {{ h3_icon | image_url: width: 64 | image_tag: loading: 'lazy', alt: h3_title }}
+          {%- elsif is_cup -%}
+            <!-- Reusable & Eco Circular Repeat ♻️ -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+              <polyline points="21 3 21 8 16 8"/>
+              <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+              <polyline points="3 21 3 16 8 16"/>
+            </svg>
+          {%- elsif is_cream -%}
+            <!-- Quick Absorption Droplet Waves -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+              <path d="M8 17h8"/>
+              <path d="M9 14h6"/>
+            </svg>
+          {%- else -%}
+            <!-- Overnight Comfort Crescent Moon -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#C2294E" aria-hidden="true" focusable="false">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          {%- endif -%}
+        </div>
+        <h4 class="product-media-highlights__title">{{ h3_title | escape }}</h4>
+        <p class="product-media-highlights__subtitle">{{ h3_sub | escape }}</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="product-media-highlights__item">
+        <div class="product-media-highlights__icon-wrap" aria-hidden="true">
+          {%- if h4_icon != blank -%}
+            {{ h4_icon | image_url: width: 64 | image_tag: loading: 'lazy', alt: h4_title }}
+          {%- elsif is_cup -%}
+            <!-- Soft & Flexible Fit Feather -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+              <line x1="16" y1="8" x2="2" y2="22"/>
+              <line x1="17.5" y1="15" x2="9" y2="15"/>
+            </svg>
+          {%- elsif is_cream -%}
+            <!-- Gentle On Skin Shield with Heart -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M12 8c-1.5-1.5-3.5-1-4 0-.5 1-.2 2.5 1.5 4l2.5 2.5 2.5-2.5c1.7-1.5 2-3 1.5-4-.5-1-2.5-1.5-4 0z"/>
+            </svg>
+          {%- else -%}
+            <!-- Soft & Skin-Friendly Leaf with Veins -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C2294E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M20.5 3.5C14.5 4.5 6 9 5.5 18.5C9 18.5 17 17 20.5 3.5Z"/>
+              <path d="M5.5 18.5L3 21"/>
+              <path d="M5.5 18.5C10 14 15 9.5 20.5 3.5"/>
+              <path d="M10 14L13.5 15"/>
+              <path d="M13 11L16.5 12"/>
+              <path d="M16 8L19 8.8"/>
+              <path d="M10 14L8.5 11"/>
+              <path d="M13 11L11.5 8"/>
+            </svg>
+          {%- endif -%}
+        </div>
+        <h4 class="product-media-highlights__title">{{ h4_title | escape }}</h4>
+        <p class="product-media-highlights__subtitle">{{ h4_sub | escape }}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    /* Ensure multi-line flex wrapping for media wrapper on desktop */
+    [data-thumbnails-left] .product__media__wrapper {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: flex-end !important;
+    }
+    @media only screen and (min-width: 768px) {
+      [data-thumbnails-left] .product__media__wrapper .product__grid--slides {
+        max-width: calc(100% - 60px - var(--IMAGE-SPACING, 10px)) !important;
+        width: calc(100% - 60px - var(--IMAGE-SPACING, 10px)) !important;
+      }
+    }
+    .product-media-highlights {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 100% !important;
+      order: 10 !important;
+      margin-top: 18px;
+      background: #FAF5F2;
+      border-radius: 14px;
+      padding: 18px 12px;
+      box-sizing: border-box;
+      clear: both;
+    }
+    .product-media-highlights__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: flex-start;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .product-media-highlights__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 6px;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .product-media-highlights__item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 12%;
+      height: 76%;
+      width: 1px;
+      background-color: #E8DBD4;
+    }
+    .product-media-highlights__icon-wrap {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      background-color: #FCEEEF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: #C2294E;
+    }
+    .product-media-highlights__icon-wrap svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+    .product-media-highlights__icon-wrap img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+    .product-media-highlights__title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.25;
+      margin: 0 0 5px 0;
+      padding: 0;
+      font-family: inherit;
+    }
+    .product-media-highlights__subtitle {
+      font-size: 11px;
+      font-weight: 400;
+      color: #555555;
+      line-height: 1.35;
+      margin: 0;
+      padding: 0;
+      max-width: 125px;
+      font-family: inherit;
+    }
+    @media only screen and (max-width: 680px) {
+      .product-media-highlights {
+        margin-top: 14px;
+        padding: 16px 8px;
+        border-radius: 12px;
+      }
+      .product-media-highlights__grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 16px;
+      }
+      .product-media-highlights__item:not(:last-child)::after {
+        display: none;
+      }
+      .product-media-highlights__item:nth-child(odd)::after {
+        display: block;
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 10%;
+        height: 80%;
+        width: 1px;
+        background-color: #E8DBD4;
+      }
+      .product-media-highlights__item:nth-child(1)::before,
+      .product-media-highlights__item:nth-child(2)::before {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 10%;
+        width: 80%;
+        height: 1px;
+        background-color: #E8DBD4;
+      }
+      .product-media-highlights__icon-wrap {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        margin-bottom: 8px;
+      }
+      .product-media-highlights__icon-wrap svg {
+        width: 20px;
+        height: 20px;
+      }
+      .product-media-highlights__title {
+        font-size: 12px;
+      }
+      .product-media-highlights__subtitle {
+        font-size: 10.5px;
+        max-width: 140px;
+      }
+    }
+  </style>
+{%- endif -%}

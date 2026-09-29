@@ -228,7 +228,8 @@
         ],
         "width": "wrapper",
         "padding_top": 24,
-        "padding_bottom": 0
+        "padding_bottom": 0,
+        "show_media_highlights": true
       }
     },
     "gif_images_gb6mrC": {

@@ -284,287 +284,284 @@ document.addEventListener("DOMContentLoaded", function() {
 
 {% style %}
 
-/* bundle variant layout */
-
-.radio__inputs{
-display:flex;
-gap:14px;
-flex-wrap:wrap;
-}
-
-.bundle-card{
-position:relative;
-border:2px solid #e5e5e5;
-border-radius:14px;
-padding:18px 16px;
-text-align:center;
-width:160px;
-background:#fff;
-cursor:pointer;
-transition:all .25s ease;
-box-shadow:0 6px 12px rgba(0,0,0,0.05);
-}
-
-/* hover effect */
-.bundle-card:hover{
-transform:translateY(-4px);
-box-shadow:0 10px 25px rgba(0,0,0,0.12);
-border-color:#c6a67a;
-}
-
-/* selected variant */
-.radio__button input:checked + label .bundle-card{
-border-color:#b89b73;
-background:#ddd9d3;
-color:#fff;
-box-shadow:0 12px 28px rgba(0,0,0,0.18);
-}
-
-/* title */
-.bundle-title{
-font-size:18px;
-font-weight:700;
-color: black;
-margin-bottom:8px;
-}
-
-/* save badge */
-.bundle-save{
-display:inline-block;
-background:#008E40;
-color:#fff;
-font-size:12px;
-font-weight:600;
-padding:4px 10px;
-border-radius:6px;
-margin-bottom:10px;
-letter-spacing:.5px;
-}
-
-/* price */
-.bundle-price{
-font-size:24px;
-font-weight:700;
-margin-bottom:3px;
-color: black;
-}
-
-/* compare price */
-.bundle-compare{
-font-size:14px;
-color:#000000;
-text-decoration:line-through;
-}
-
-/* highlight middle option */
-.radio__button:nth-child(2) .bundle-card{
-border:2px solid #b89b73;
-}
-
-/* most popular badge */
-.radio__button:nth-child(2) .bundle-card::before{
-content:"MOST POPULAR";
-position:absolute;
-top:-10px;
-left:50%;
-transform:translateX(-50%);
-background:#ff6a3d;
-color:#fff;
-font-size:10px;
-font-weight:700;
-padding:4px 10px;
-width: 100%;
-border-radius:20px;
-letter-spacing:.5px;
-}
-
-@media only screen and (min-width: 768px){
-     .bundle-variants-container .radio__button label{
-    border: none;
-  }
-  body .bundle-variants-container .radio__fieldset .radio__button input:checked ~ label{
-   border: none;
-    padding:0; 
-  }
-    .bundle-variants-container .radio__button label{
-    padding:0; 
-  }
- .bundle-variants-container .radio__fieldset .radio__button label:hover{
-    border: none;
-  }
-  .bundle-product-heading span.radio__legend__label{
-  width: 77% !important;
+/* Bundle Section Header */
+.bundle-offer-header {
   text-align: center;
-} 
-}
-
-
-@media only screen and (max-width: 767px){
-  .bundle-variants-container .radio__inputs{
-    flex-wrap: nowrap;
-    gap: 0px;
-  }
-  .bundle-product-heading span.radio__legend__label{
-  width: 100% !important;
-  text-align: center;
-} 
-  .bundle-variants-container .radio__button label:hover{
-    border: none;
-    background-color: transparent;
-  }
-.bundle-save{
-border-radius: 5px !important;
-    font-size: 10px;
-    font-weight: 800;
-}
-.radio__button:nth-child(2) .bundle-card::before{
-  font-size: 8px;
-  top: -1.5rem;
-}
-  body .bundle-variants-container .radio__fieldset .radio__button input:checked ~ label{
-      background: transparent !important;  
-  }
-  .bundle-card{
-        padding: 5px 1px;
-  }
-  .bundle-variants-container .radio__button label{
-   padding: 3px 3px !important;
-  }
-.bundle-title{
-     font-size: 20px;
-    font-weight: 600;
-    line-height: 24px;
-    text-align: center;
-}
-   .bundle-variants-container .radio__button label{
-    border: none;
-  }
-  .bundle-variants-container .radio__button{
-   flex: 0 0 34%;
-  }
-  .bundle-card{
-
+  margin-bottom: 18px;
   width: 100%;
-  }
-   /* .bundle-variants-container .bundle-card{
-    width: 97px;
-  } */
-}
-.bundle-size{
-  letter-spacing: -1px;
-  font-size: 10px;
-  color: black;
 }
 
-.bundle-heading-wrapper{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:12px;
-width:100%;
-margin-bottom:10px;
+.bundle-offer-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
 }
 
-.bundle-heading-text{
-font-size:22px;
-font-weight:700;
-color:#1bb3a9;
-text-transform:capitalize;
+.bundle-offer-line {
+  flex: 1;
+  height: 1px;
+  background: #DCDCDC;
+  max-width: 110px;
 }
 
-.bundle-heading-wrapper .line{
-flex:1;
-height:1px;
-background:#dcdcdc;
+.bundle-offer-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111111;
+  margin: 0;
+  padding: 0;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
 }
 
-.bundle-product-heading{
-    width: 100%;
-    margin: auto;
-
-}
-.bundle-product-heading .bundle-heading-text{
-  font-size: 20px !important;
-  margin-bottom: 1rem !important;
-  font-weight:700;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-      border-left: aqua !important;
+.bundle-offer-subtitle {
+  font-size: 13.5px;
+  color: #666666;
+  margin: 5px 0 0 0;
+  font-weight: 400;
 }
 
+/* Bundle Cards Layout */
+.bundle-variants-container .radio__inputs {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding-top: 18px !important;
+}
 
-span.bundle-heading-wrapper{
+.bundle-variants-container .radio__button {
+  flex: 1 1 32% !important;
+  max-width: 33.33% !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+
+.bundle-variants-container .radio__button label {
+  padding: 0 !important;
   border: none !important;
-      margin-left: 0 !important;
-    padding-left: 0 !important;
-}
-.bundle-product-heading .radio__legend span:not(.radio__legend__label){
-    border-left: none !important;
-}
-.line{
-flex:1;
-height:1px;
-background:linear-gradient(to right, transparent, #dcdcdc, transparent);
+  background: transparent !important;
+  width: 100% !important;
+  cursor: pointer;
+  display: block !important;
 }
 
-
-
-.bundle-heading-wrapper{
-display:flex;
-justify-content:center;
-align-items:center;
-margin-bottom:12px;
-overflow:hidden;
+.bundle-card {
+  position: relative;
+  border: 1px solid #E4E4E4;
+  border-radius: 12px;
+  padding: 14px 4px 10px 4px;
+  text-align: center;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.bundle-heading-text{
-font-size:22px;
-font-weight:700;
-color:#1bb3a9;
-position:relative;
-animation:slideFade 1s ease forwards;
+.bundle-card:hover {
+  border-color: #E62E5C;
+  box-shadow: 0 3px 10px rgba(230,46,92,0.08);
 }
 
-/* underline animation */
-.bundle-heading-text::after{
-content:"";
-position:absolute;
-left:50%;
-bottom:-4px;
-height:3px;
-width:0;
-background:#1bb3a9;
-transform:translateX(-50%);
-border-radius:20px;
-animation:underlineGrow 1.2s ease forwards;
+/* Selected Card */
+.radio__button input:checked + label .bundle-card {
+  border: 2px solid #E62E5C !important;
+  background: #FFF5F7 !important;
+  box-shadow: 0 4px 14px rgba(230,46,92,0.12) !important;
 }
 
-/* text slide animation */
-@keyframes slideFade{
-0%{
-opacity:0;
-transform:translateY(10px);
+/* Checkmark badge on selected card */
+.bundle-card-checkmark {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #E62E5C;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 }
-100%{
-opacity:1;
-transform:translateY(0);
+
+.radio__button input:checked + label .bundle-card-checkmark {
+  display: flex !important;
 }
+
+/* Top Badges (MOST POPULAR & BEST VALUE) */
+.bundle-badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #E62E5C;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  max-width: 95%;
 }
-span.bundle-heading-text{
-  border-bottom: 1px solid ;
+
+.bundle-badge.badge-popular {
+  background: #DE1D4E;
 }
-/* underline grow animation */
-@keyframes underlineGrow{
-0%{
-width:0;
+
+.bundle-badge.badge-value {
+  background: #0B8B5C;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
-100%{
-width:120%;
+
+/* Image */
+.bundle-image-wrapper {
+  width: 100%;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
+
+.bundle-variant-img {
+  max-width: 100%;
+  max-height: 80px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.bundle-card:hover .bundle-variant-img {
+  transform: scale(1.03);
+}
+
+/* Title & Subtitle */
+.bundle-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.bundle-pack-subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666666;
+  margin-bottom: 6px;
+}
+
+/* Price & MRP */
+.bundle-price-row {
+  line-height: 1.2;
+}
+
+.bundle-price {
+  font-size: 21px;
+  font-weight: 800;
+  color: #111111;
+}
+
+.bundle-compare-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12.5px;
+  color: #888888;
+  margin-top: 2px;
+}
+
+.bundle-mrp-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #888888;
+}
+
+.bundle-compare {
+  text-decoration: line-through;
+  font-weight: 500;
+  color: #888888;
+}
+
+/* SAVE Pill */
+.bundle-save {
+  display: inline-block;
+  background: #FFE6EB;
+  color: #E62E5C;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.bundle-product-heading {
+  width: 100%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 767px) {
+  .bundle-offer-title {
+    font-size: 18px;
+  }
+  .bundle-offer-subtitle {
+    font-size: 12px;
+  }
+  .bundle-variants-container .radio__inputs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-top: 14px !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .bundle-variants-container .radio__inputs::-webkit-scrollbar {
+    display: none;
+  }
+  .bundle-variants-container .radio__button {
+    flex: 0 0 32% !important;
+    min-width: 100px !important;
+  }
+  .bundle-card {
+    padding: 12px 6px 10px 6px !important;
+  }
+  .bundle-image-wrapper {
+    height: 70px;
+  }
+  .bundle-variant-img {
+    max-height: 65px;
+  }
+  .bundle-title {
+    font-size: 15px;
+  }
+  .bundle-pack-subtitle {
+    font-size: 11px;
+  }
+  .bundle-price {
+    font-size: 18px;
+  }
 }
 {% endstyle %}
-
-
 
 
 <!-- /snippets/product-variant-options.liquid -->
@@ -620,28 +617,22 @@ width:120%;
           {%- assign current_value = current_variant.options[forloop.index0] -%}
 
           <fieldset class="radio__fieldset">
-            <legend class="radio__legend  {% if product.handle == 'period-pain-relief-cream' %}  bundle-product-heading {% endif %}" aria-label="{{ option.name | escape_once }}">
+            <legend class="radio__legend {% if product.handle == 'period-pain-relief-cream' %} bundle-product-heading {% endif %}" aria-label="{{ option.name | escape_once }}">
 
-
-
-
-              {% comment %} <span class="radio__legend__label">{{ option.name | escape_once }}</span>
- {% endcomment %}
-
- <span class="radio__legend__label">
-  {% if product.handle == 'period-pain-relief-cream' %}
-    <span class="bundle-heading-wrapper">
-      
-      <span class="bundle-heading-text">🔥 Buy more save more</span>
-    
-    </span>
-  {% else %}
-    {{ option.name | escape_once }}
-  {% endif %}
-</span>
-
-
-
+              <span class="radio__legend__label">
+                {% if product.handle == 'period-pain-relief-cream' %}
+                  <div class="bundle-offer-header">
+                    <div class="bundle-offer-title-wrapper">
+                      <span class="bundle-offer-line"></span>
+                      <h3 class="bundle-offer-title">Choose your offer</h3>
+                      <span class="bundle-offer-line"></span>
+                    </div>
+                    <p class="bundle-offer-subtitle">Buy more, save more on Period Cramp Relief Cream</p>
+                  </div>
+                {% else %}
+                  {{ option.name | escape_once }}
+                {% endif %}
+              </span>
 
             </legend>
 
@@ -653,10 +644,11 @@ width:120%;
                 {{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once | handleize }}
                 {%- endcapture -%}
 
-                {%- assign matched_variant = nil -%}
+                {%- assign matched_variant = product.variants[forloop.index0] -%}
                 {%- for v in product.variants -%}
-                  {%- if v.title contains value -%}
+                  {%- if v.title contains value or v.option1 == value or v.options contains value -%}
                     {%- assign matched_variant = v -%}
+                    {%- break -%}
                   {%- endif -%}
                 {%- endfor -%}
 
@@ -669,11 +661,11 @@ width:120%;
                     id="{{ input_id }}-{{ forloop.index }}"
                     form="{{ uniq_id }}"
 
-                     {% if product.handle == 'period-pain-relief-cream' %}
-    {% if forloop.index == 1 %}checked{% endif %}
-  {% else %}
-    {% if value == current_value %}checked{% endif %}
-  {% endif %}
+                    {% if product.handle == 'period-pain-relief-cream' %}
+                      {% if forloop.index == 1 %}checked{% endif %}
+                    {% else %}
+                      {% if value == current_value %}checked{% endif %}
+                    {% endif %}
                     data-variant-id-value="{{ matched_variant.id }}"
                     variant-number-id="{{ matched_variant.id }}"
                   >
@@ -688,38 +680,78 @@ width:120%;
 
 {% assign compare_price = matched_variant.compare_at_price %}
 {% assign sale_price = matched_variant.price %}
+{% assign discount = 0 %}
 
 {% if compare_price > sale_price %}
-{% assign discount = compare_price | minus: sale_price | times: 100 | divided_by: compare_price %}
+  {% assign discount = compare_price | minus: sale_price | times: 100.0 | divided_by: compare_price | round %}
 {% endif %}
 
 <div class="bundle-card">
+  <div class="bundle-card-checkmark">
+    <svg width="10" height="8" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 4.5L4.5 8L11 1.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  {% if forloop.index == 2 %}
+    <span class="bundle-badge badge-popular">
+      <svg width="12" height="10" viewBox="0 0 24 20" fill="white" style="margin-right:4px;"><path d="M5 16L3 5l5.5 5L12 3l3.5 7L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+      MOST POPULAR
+    </span>
+  {% elsif forloop.index == 3 %}
+    <span class="bundle-badge badge-value">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="white" style="margin-right:4px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      BEST VALUE
+    </span>
+  {% endif %}
+
+  {% assign var_img = matched_variant.featured_image | default: matched_variant.image | default: product.featured_image %}
+  {% if var_img != blank %}
+    <div class="bundle-image-wrapper">
+      <img
+        src="{{ var_img | image_url: width: 240 }}"
+        alt="{{ matched_variant.title | escape }}"
+        width="100"
+        height="100"
+        loading="lazy"
+        decoding="async"
+        class="bundle-variant-img"
+      >
+    </div>
+  {% endif %}
 
   <div class="bundle-title">
     Buy {{ forloop.index }}
   </div>
 
-  <!-- NEW LINE -->
-  {% comment %} <div class="bundle-size">
-   ({{ value }})
-  </div> {% endcomment %}
-
-  {% if discount %}
-  <div class="bundle-save">
-    SAVE {{ discount | round }}%
+  <div class="bundle-pack-subtitle">
+    {% if forloop.index == 1 %}
+      1 × 50g
+    {% elsif forloop.index == 2 %}
+      2 × 50g
+    {% elsif forloop.index == 3 %}
+      3 × 50g
+    {% else %}
+      {{ value }}
+    {% endif %}
   </div>
-  {% endif %}
 
-  <div class="bundle-price">
-    {{ sale_price | money }}
+  <div class="bundle-price-row">
+    <span class="bundle-price">{{ sale_price | money }}</span>
   </div>
 
   {% if compare_price > sale_price %}
-  <div class="bundle-compare">
-    {{ compare_price | money }}
-  </div>
+    <div class="bundle-compare-row">
+      <span class="bundle-mrp-label">MRP</span>
+      <span class="bundle-compare">{{ compare_price | money }}</span>
+    </div>
   {% endif %}
 
+  {% if discount > 0 %}
+    <div class="bundle-save">
+      SAVE {{ discount }}%
+    </div>
+  {% endif %}
 </div>
 
 {% else %}

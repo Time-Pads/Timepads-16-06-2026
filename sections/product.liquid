@@ -497,6 +497,9 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
               </button>
             </div>
           {%- endif -%}
+
+          {%- comment -%} Product media highlights card directly below the gallery {%- endcomment -%}
+          {%- render 'product-media-highlights', section: section, product: product -%}
         </div>
 
         <div class="product__main__content grid__item {{ product_description_width }}">
@@ -595,36 +598,6 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
                       <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/3__2821_29.jpg?v=1771907953" alt="Mastercard" width="50" height="50" loading="lazy" decoding="async">
                     </div>
                   </div>
-
-                  {%- comment -%} Rebuilt PDP additions: Spec table, Who This Is For, FAQ, Siblings {%- endcomment -%}
-                  {%- render 'pdp-additions', product: product -%}
-
-                  {%- assign recommended_product = product.metafields.custom.product_recommendation.value -%}
-                  {%- if recommended_product != blank -%}
-                    <div class="product-recommendation-offer">
-                      <div class="recommendation-grid">
-                        <div class="recommended-item">
-                          <a href="{{ recommended_product.url }}">
-                            {%- if recommended_product.featured_image != blank -%}
-                              <img
-                                src="{{ recommended_product.featured_image | image_url: width: 300 }}"
-                                alt="{{ recommended_product.title | escape }}"
-                                width="150"
-                                height="150"
-                                loading="lazy"
-                                decoding="async"
-                              >
-                            {%- endif -%}
-                            <div>
-                              <h3>🔥 Buy 2 Get 1 Free (Exclusive Offer)</h3>
-                              <p>{{ recommended_product.title | escape }}</p>
-                              <button type="button">ADD</button>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  {%- endif -%}
 
                 {%- when 'Product-Features' -%}
                   <div class="product-benefits" {{ block.shopify_attributes }}>
@@ -920,6 +893,38 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
         </div>
 
       </div>
+
+      {%- comment -%} PDP Additions & Recommendations rendered below 2-column buy box section {%- endcomment -%}
+      <div class="pdp-additions-full-width">
+        {%- render 'pdp-additions', product: product -%}
+
+        {%- assign recommended_product = product.metafields.custom.product_recommendation.value -%}
+        {%- if recommended_product != blank -%}
+          <div class="product-recommendation-offer" style="margin-top: 25px;">
+            <div class="recommendation-grid">
+              <div class="recommended-item">
+                <a href="{{ recommended_product.url }}">
+                  {%- if recommended_product.featured_image != blank -%}
+                    <img
+                      src="{{ recommended_product.featured_image | image_url: width: 300 }}"
+                      alt="{{ recommended_product.title | escape }}"
+                      width="150"
+                      height="150"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  {%- endif -%}
+                  <div>
+                    <h3>🔥 Buy 2 Get 1 Free (Exclusive Offer)</h3>
+                    <p>{{ recommended_product.title | escape }}</p>
+                    <button type="button">ADD</button>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </div>
@@ -1091,6 +1096,20 @@ product-form.product__block__buttons { padding-bottom: 0; margin-bottom: 0; }
     { "type": "checkbox", "id": "enable_video_looping", "label": "Enable video looping", "default": true },
     { "type": "checkbox", "id": "zoom_enable",          "label": "Enable image zoom",    "default": true },
     { "type": "checkbox", "id": "alt_text_enable",      "label": "Enable alt-text toggle","default": true },
+    { "type": "header", "content": "Media Highlights (Below Image)" },
+    { "type": "checkbox", "id": "show_media_highlights", "label": "Show features below product image", "default": true },
+    { "type": "text", "id": "highlight_1_title", "label": "Feature 1 Title (Leave blank for auto)" },
+    { "type": "text", "id": "highlight_1_subtitle", "label": "Feature 1 Subtitle (Leave blank for auto)" },
+    { "type": "image_picker", "id": "highlight_1_icon", "label": "Feature 1 Custom Icon (optional)" },
+    { "type": "text", "id": "highlight_2_title", "label": "Feature 2 Title (Leave blank for auto)" },
+    { "type": "text", "id": "highlight_2_subtitle", "label": "Feature 2 Subtitle (Leave blank for auto)" },
+    { "type": "image_picker", "id": "highlight_2_icon", "label": "Feature 2 Custom Icon (optional)" },
+    { "type": "text", "id": "highlight_3_title", "label": "Feature 3 Title (Leave blank for auto)" },
+    { "type": "text", "id": "highlight_3_subtitle", "label": "Feature 3 Subtitle (Leave blank for auto)" },
+    { "type": "image_picker", "id": "highlight_3_icon", "label": "Feature 3 Custom Icon (optional)" },
+    { "type": "text", "id": "highlight_4_title", "label": "Feature 4 Title (Leave blank for auto)" },
+    { "type": "text", "id": "highlight_4_subtitle", "label": "Feature 4 Subtitle (Leave blank for auto)" },
+    { "type": "image_picker", "id": "highlight_4_icon", "label": "Feature 4 Custom Icon (optional)" },
     { "type": "header",   "content": "Breadcrumbs" },
     { "type": "checkbox", "id": "product_breadcrumbs_enable", "label": "Show breadcrumbs", "default": false },
     { "type": "collection_list", "id": "product_breadcrumbs_list", "label": "Breadcrumb collections" },

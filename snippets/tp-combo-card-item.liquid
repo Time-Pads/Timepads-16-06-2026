@@ -1,0 +1,175 @@
+{% comment %}
+  TIME Store - Combo Card Item Component
+  Matches Reference Design Image 16
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_img = current_variant.featured_media.preview_image | default: product.featured_media.preview_image | default: product.featured_image
+  
+  assign on_sale = false
+  if current_variant.compare_at_price > current_variant.price
+    assign on_sale = true
+  elsif product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign curr_price = current_variant.price | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip
+  assign comp_price = current_variant.compare_at_price | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip
+  
+  assign save_amount = 0
+  if on_sale
+    assign raw_curr = current_variant.price
+    assign raw_comp = current_variant.compare_at_price | default: product.compare_at_price
+    if raw_comp > raw_curr
+      assign raw_save = raw_comp | minus: raw_curr
+      assign save_amount = raw_save | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip
+    endif
+  endif
+
+  assign count_badge = ''
+  assign title_dc = product.title | downcase
+  if title_dc contains '48' or current_variant.title contains '48'
+    assign count_badge = '48'
+  elsif title_dc contains '18' or current_variant.title contains '18'
+    assign count_badge = '18'
+  elsif title_dc contains '6' or current_variant.title contains '6'
+    assign count_badge = '6'
+  elsif title_dc contains 'cup'
+    assign count_badge = 'CUP'
+  endif
+
+  assign badge_icon = '👑'
+  if badge contains 'Loved' or badge contains 'Loved'
+    assign badge_icon = '♥'
+  elsif badge contains 'Value' or badge contains 'Deal'
+    assign badge_icon = '🏷'
+  elsif badge contains 'Complete' or badge contains 'Care'
+    assign badge_icon = '⚙'
+  endif
+-%}
+
+<div class="tp-combo-card" data-product-id="{{ product.id }}">
+  <!-- Top Image Container -->
+  <div class="tp-combo-card-image-box">
+    {% if badge != blank %}
+      <span class="tp-combo-badge-tag">
+        <span>{{ badge_icon }}</span> {{ badge }}
+      </span>
+    {% endif %}
+
+    {% if count_badge != blank %}
+      <div class="tp-combo-count-badge">
+        <span>{{ count_badge }}</span>
+        <span class="tp-combo-count-label">PADS</span>
+      </div>
+    {% endif %}
+
+    <a href="{{ product.url }}" class="tp-combo-card-image-link" aria-label="{{ product.title | escape }}">
+      {% if featured_img != blank %}
+        <img
+          src="{{ featured_img | image_url: width: 300, format: 'webp', quality: 80 }}"
+          srcset="
+            {{ featured_img | image_url: width: 220, format: 'webp', quality: 80 }} 220w,
+            {{ featured_img | image_url: width: 300, format: 'webp', quality: 80 }} 300w,
+            {{ featured_img | image_url: width: 450, format: 'webp', quality: 80 }} 450w
+          "
+          sizes="(min-width: 992px) 280px, (min-width: 600px) 240px, 80vw"
+          width="300"
+          height="300"
+          alt="{{ featured_img.alt | default: product.title | escape }}"
+          class="tp-combo-card-img"
+          decoding="async"
+          {% if eager %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+        >
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'tp-combo-card-img' }}
+      {% endif %}
+    </a>
+  </div>
+
+  <!-- Card Body Details -->
+  <div class="tp-combo-card-details">
+    <a href="{{ product.url }}" class="tp-combo-card-title">
+      {{ product.title | escape }}
+    </a>
+
+    {% assign short_desc = product.metafields.custom.short_info_product.value | default: product.metafields.custom.short_info_product %}
+    {% if short_desc == blank %}
+      {% if title_dc contains 'cream' %}
+        {% assign short_desc = 'Fast-acting cramp relief cream made with natural Ayurvedic ingredients.' %}
+      {% elsif title_dc contains 'cup' %}
+        {% assign short_desc = '100% medical-grade silicone menstrual cup for eco-friendly comfort.' %}
+      {% else %}
+        {% assign short_desc = 'Premium sanitary pads for superior absorption and comfort.' %}
+      {% endif %}
+    {% endif %}
+    <p class="tp-combo-card-desc">{{ short_desc | escape }}</p>
+
+    <!-- Rating Row -->
+    {% assign rating_val = product.metafields.reviews.rating.value.rating | default: product.metafields.reviews.rating.value | default: '4.8' %}
+    {% assign rating_cnt = product.metafields.reviews.rating_count | default: 21 %}
+    <div class="tp-combo-rating-row" role="img" aria-label="Rated {{ rating_val }} out of 5">
+      <span class="tp-combo-stars">★★★★★</span>
+      <span class="tp-combo-rating-val">{{ rating_val | round: 1 }}</span>
+      <span class="tp-combo-rating-count">({{ rating_cnt }})</span>
+    </div>
+
+    <!-- Variant Selector Pill -->
+    <div class="tp-combo-variant-selector-wrap">
+      {% if product.variants.size > 1 %}
+        <select class="tp-combo-variant-pill-select" data-combo-variant-select aria-label="Select Variant">
+          {% for variant in product.variants %}
+            {% assign v_raw_price = variant.price | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip %}
+            {% assign v_raw_comp = variant.compare_at_price | money_without_trailing_zeros | remove: '₹' | remove: 'Rs.' | strip %}
+            <option
+              value="{{ variant.id }}"
+              data-price="{{ v_raw_price }}"
+              data-compare="{{ v_raw_comp }}"
+              {% if variant.id == current_variant.id %}selected="selected"{% endif %}
+            >
+              {{ variant.title | escape }} ›
+            </option>
+          {% endfor %}
+        </select>
+      {% else %}
+        <div class="tp-combo-variant-pill-select" style="cursor: default;">
+          <span>{{ current_variant.title | replace: 'Default Title', 'Standard Pack' }}</span>
+          <span>›</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Price Row -->
+    <div class="tp-combo-price-row">
+      <span class="tp-combo-price-current" data-price-current>₹{{ curr_price }}</span>
+      {% if on_sale and comp_price != blank %}
+        <span class="tp-combo-price-compare" data-price-compare>₹{{ comp_price }}</span>
+        <span class="tp-combo-save-pill" data-price-save>Save ₹{{ save_amount }}</span>
+      {% else %}
+        <span class="tp-combo-price-compare" data-price-compare style="display:none"></span>
+        <span class="tp-combo-save-pill" data-price-save style="display:none"></span>
+      {% endif %}
+    </div>
+
+    <!-- Footer: Quantity Stepper + Add to Cart -->
+    <div class="tp-combo-card-footer">
+      <div class="tp-combo-qty-box" data-combo-qty>
+        <button type="button" class="tp-combo-qty-btn" data-qty-minus aria-label="Decrease Quantity">−</button>
+        <span class="tp-combo-qty-num" data-qty-display>1</span>
+        <button type="button" class="tp-combo-qty-btn" data-qty-plus aria-label="Increase Quantity">+</button>
+      </div>
+
+      <button
+        type="button"
+        class="tp-combo-atc-btn"
+        data-combo-atc
+        data-variant-id="{{ current_variant.id }}"
+        {% if product.available == false %}disabled="disabled"{% endif %}
+      >
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-13z"/><path d="M6 6L5 2H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+        {% if product.available %}>ADD TO CART{% else %}Sold Out{% endif %}
+      </button>
+    </div>
+  </div>
+</div>
