@@ -160,9 +160,12 @@
           "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
           "settings": {}
         },
+        "last_houre_sale": {
+          "type": "last-houre-sale",
+          "settings": {}
+        },
         "description_product_PrHYrn": {
           "type": "description-product",
-          "disabled": true,
           "settings": {}
         },
         "icon_d8teE9": {
@@ -200,15 +203,16 @@
         "variants",
         "quantity",
         "sizing_guide_FqnmVX",
-        "selling_fast_Nm64Pm",
         "buttons",
-        "sharing",
-        "product_view_i8nFPx",
-        "icon_FwCCTX",
-        "upsell",
-        "complimentary_MHiNjU",
-        "variant_descriptions_description_zFaPiT",
+        "last_houre_sale",
+        "selling_fast_Nm64Pm",
         "description_product_PrHYrn",
+        "icon_FwCCTX",
+        "product_view_i8nFPx",
+        "sharing",
+        "complimentary_MHiNjU",
+        "upsell",
+        "variant_descriptions_description_zFaPiT",
         "icon_d8teE9",
         "icon_7TtzEd"
       ],

@@ -254,13 +254,13 @@
   </div>
 
   <style>
-    /* Ensure multi-line flex wrapping for media wrapper on desktop */
-    [data-thumbnails-left] .product__media__wrapper {
-      display: flex !important;
-      flex-wrap: wrap !important;
-      justify-content: flex-end !important;
-    }
+    /* Ensure multi-line flex wrapping for media wrapper ONLY on desktop */
     @media only screen and (min-width: 768px) {
+      [data-thumbnails-left] .product__media__wrapper {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-end !important;
+      }
       [data-thumbnails-left] .product__media__wrapper .product__grid--slides {
         max-width: calc(100% - 60px - var(--IMAGE-SPACING, 10px)) !important;
         width: calc(100% - 60px - var(--IMAGE-SPACING, 10px)) !important;
@@ -347,56 +347,9 @@
       max-width: 125px;
       font-family: inherit;
     }
-    @media only screen and (max-width: 680px) {
+    @media only screen and (max-width: 767px) {
       .product-media-highlights {
-        margin-top: 14px;
-        padding: 16px 8px;
-        border-radius: 12px;
-      }
-      .product-media-highlights__grid {
-        grid-template-columns: repeat(2, 1fr);
-        row-gap: 16px;
-      }
-      .product-media-highlights__item:not(:last-child)::after {
-        display: none;
-      }
-      .product-media-highlights__item:nth-child(odd)::after {
-        display: block;
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 10%;
-        height: 80%;
-        width: 1px;
-        background-color: #E8DBD4;
-      }
-      .product-media-highlights__item:nth-child(1)::before,
-      .product-media-highlights__item:nth-child(2)::before {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 10%;
-        width: 80%;
-        height: 1px;
-        background-color: #E8DBD4;
-      }
-      .product-media-highlights__icon-wrap {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        min-height: 40px;
-        margin-bottom: 8px;
-      }
-      .product-media-highlights__icon-wrap svg {
-        width: 20px;
-        height: 20px;
-      }
-      .product-media-highlights__title {
-        font-size: 12px;
-      }
-      .product-media-highlights__subtitle {
-        font-size: 10.5px;
-        max-width: 140px;
+        display: none !important;
       }
     }
   </style>

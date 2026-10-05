@@ -160,9 +160,12 @@
           "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
           "settings": {}
         },
+        "last_houre_sale": {
+          "type": "last-houre-sale",
+          "settings": {}
+        },
         "description_product_PrHYrn": {
           "type": "description-product",
-          "disabled": true,
           "settings": {}
         },
         "icon_d8teE9": {
@@ -200,15 +203,16 @@
         "shipping_text_GRcYBH",
         "variants",
         "quantity",
-        "selling_fast_PFkH86",
         "buttons",
-        "sharing",
-        "product_view_i8nFPx",
-        "icon_FwCCTX",
-        "upsell",
-        "complimentary_qpi4yC",
-        "variant_descriptions_description_zFaPiT",
+        "last_houre_sale",
+        "selling_fast_PFkH86",
         "description_product_PrHYrn",
+        "icon_FwCCTX",
+        "product_view_i8nFPx",
+        "sharing",
+        "complimentary_qpi4yC",
+        "upsell",
+        "variant_descriptions_description_zFaPiT",
         "icon_d8teE9",
         "icon_7TtzEd"
       ],
@@ -222,14 +226,22 @@
         "enable_video_looping": true,
         "zoom_enable": true,
         "alt_text_enable": true,
+        "show_media_highlights": true,
+        "highlight_1_title": "",
+        "highlight_1_subtitle": "",
+        "highlight_2_title": "",
+        "highlight_2_subtitle": "",
+        "highlight_3_title": "",
+        "highlight_3_subtitle": "",
+        "highlight_4_title": "",
+        "highlight_4_subtitle": "",
         "product_breadcrumbs_enable": true,
         "product_breadcrumbs_list": [
           "regular-sanitary-pads"
         ],
         "width": "wrapper",
         "padding_top": 24,
-        "padding_bottom": 0,
-        "show_media_highlights": true
+        "padding_bottom": 0
       }
     },
     "gif_images_gb6mrC": {
@@ -244,6 +256,10 @@
         "font_weight": 400,
         "text_color": ""
       }
+    },
+    "product_comparison_table": {
+      "type": "product-comparison",
+      "settings": {}
     },
     "counting_number_arqh6C": {
       "type": "counting-number",
@@ -354,10 +370,6 @@
       "settings": {
         "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
       }
-    },
-    "product_comparison_table": {
-      "type": "product-comparison",
-      "settings": {}
     }
   },
   "order": [

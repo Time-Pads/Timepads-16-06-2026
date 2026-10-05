@@ -96,33 +96,57 @@
         <h2 class="kicker-flourished mb-r11">{{ section.settings.heading_text | escape }}</h2>
       {%- endif -%}
 
-      {%- if section.blocks.size > 0 -%}
-        <div class="gif-section--image-wrapper">
-          {%- for block in section.blocks -%}
-            {%- assign img = block.settings.collection_image -%}
-            {%- if img != blank -%}
-              {%- assign img_alt = block.settings.alt_text | default: section.settings.heading_text | default: shop.name | escape -%}
-              {%- assign img_1x = img | image_url: width: 210, format: 'webp' -%}
-              {%- assign img_2x = img | image_url: width: 420, format: 'webp' -%}
-              {%- assign srcset_val = img_1x | append: ' 1x, ' | append: img_2x | append: ' 2x' -%}
-              
-              {%- render 'responsive-picture',
-                forloop:      forloop,
-                desktopImage: img,
-                mobileImage:  img,
-                img-class:    'tw-w-full tw-max-h-[60rem]',
-                alt:          img_alt,
-                loading:      'lazy',
-                fetchpriority:'low',
-                decoding:     'async',
-                width:        210,
-                sizes:        '(max-width: 770px) 30vw, 210px',
-                srcset:       srcset_val
-              -%}
-            {%- endif -%}
-          {%- endfor -%}
+      <div class="tp-benefits-strip-card">
+        <div class="tp-benefits-strip-card__col">
+          <div class="tp-benefits-strip-card__icon-wrap">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 11c0 4.5 3.5 8 8 8s8-3.5 8-8H4z"></path>
+              <line x1="3" y1="11" x2="21" y2="11"></line>
+              <line x1="12" y1="11" x2="12" y2="5"></line>
+              <path d="M12 8c-2-2-3.5-1-4.5 1 2 1 3.5 0 4.5-1z"></path>
+              <path d="M12 7c2-2 3.5-1 4.5 1-2 1-3.5 0-4.5-1z"></path>
+            </svg>
+          </div>
+          <span class="tp-benefits-strip-card__label">Ayurvedic<br>Care</span>
         </div>
-      {%- endif -%}
+        <div class="tp-benefits-strip-card__col">
+          <div class="tp-benefits-strip-card__icon-wrap">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3c-1.5 2-3 3.8-3 5.5a3 3 0 0 0 6 0c0-1.7-1.5-3.5-3-5.5z"></path>
+              <path d="M4 14c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
+              <path d="M4 17c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
+              <circle cx="7" cy="20" r="1" fill="#164A36"></circle>
+              <circle cx="12" cy="20" r="1" fill="#164A36"></circle>
+              <circle cx="17" cy="20" r="1" fill="#164A36"></circle>
+            </svg>
+          </div>
+          <span class="tp-benefits-strip-card__label">Skin<br>Friendly</span>
+        </div>
+        <div class="tp-benefits-strip-card__col">
+          <div class="tp-benefits-strip-card__icon-wrap">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="14" cy="13" r="7"></circle>
+              <polyline points="14 10 14 13 16.5 14.5"></polyline>
+              <line x1="14" y1="4" x2="14" y2="6"></line>
+              <line x1="12" y1="4" x2="16" y2="4"></line>
+              <line x1="2" y1="9" x2="6" y2="9"></line>
+              <line x1="1" y1="13" x2="5" y2="13"></line>
+              <line x1="3" y1="17" x2="6" y2="17"></line>
+            </svg>
+          </div>
+          <span class="tp-benefits-strip-card__label">Instant<br>Relief</span>
+        </div>
+        <div class="tp-benefits-strip-card__col">
+          <div class="tp-benefits-strip-card__icon-wrap">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
+              <path d="M15 9c-3 0-5 2-6 5 2.5 0 5-1.5 6-5z"></path>
+              <path d="M9 14l3-3"></path>
+            </svg>
+          </div>
+          <span class="tp-benefits-strip-card__label">Moody<br>Free Days</span>
+        </div>
+      </div>
 
     </div>
   </div>

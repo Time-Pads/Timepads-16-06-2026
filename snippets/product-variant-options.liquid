@@ -287,15 +287,18 @@ document.addEventListener("DOMContentLoaded", function() {
 /* Bundle Section Header */
 .bundle-offer-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 5px;
 }
 
 .bundle-offer-title-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
 }
 
@@ -303,24 +306,30 @@ document.addEventListener("DOMContentLoaded", function() {
   flex: 1;
   height: 1px;
   background: #DCDCDC;
-  max-width: 110px;
+  max-width: 80px;
 }
 
 .bundle-offer-title {
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 800;
   color: #111111;
   margin: 0;
   padding: 0;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
   line-height: 1.2;
 }
 
 .bundle-offer-subtitle {
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: #666666;
-  margin: 5px 0 0 0;
+  margin: 3px 0 0 0;
   font-weight: 400;
+  line-height: 1.3;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  max-width: 100% !important;
+  display: block !important;
 }
 
 /* Bundle Cards Layout */
@@ -330,7 +339,8 @@ document.addEventListener("DOMContentLoaded", function() {
   flex-wrap: nowrap !important;
   justify-content: space-between !important;
   width: 100% !important;
-  padding-top: 18px !important;
+  padding-top: 16px !important;
+  box-sizing: border-box !important;
 }
 
 .bundle-variants-container .radio__button {
@@ -353,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function() {
   position: relative;
   border: 1px solid #E4E4E4;
   border-radius: 12px;
-  padding: 14px 4px 10px 4px;
+  padding: 12px 4px 10px 4px;
   text-align: center;
   background: #ffffff;
   cursor: pointer;
@@ -382,10 +392,10 @@ document.addEventListener("DOMContentLoaded", function() {
 /* Checkmark badge on selected card */
 .bundle-card-checkmark {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 18px;
-  height: 18px;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: #E62E5C;
   display: none;
@@ -401,48 +411,53 @@ document.addEventListener("DOMContentLoaded", function() {
 /* Top Badges (MOST POPULAR & BEST VALUE) */
 .bundle-badge {
   position: absolute;
-  top: -11px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
   background: #E62E5C;
   color: #ffffff;
-  font-size: 8px;
+  font-size: 7.5px;
   font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 12px;
-  letter-spacing: 0.3px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  letter-spacing: 0.2px;
   text-transform: uppercase;
   white-space: nowrap;
   z-index: 2;
   display: flex;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-  max-width: 95%;
+  max-width: 88%;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .bundle-badge.badge-popular {
   background: #DE1D4E;
+  color: white;
 }
 
 .bundle-badge.badge-value {
   background: #0B8B5C;
+  color: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
 /* Image */
 .bundle-image-wrapper {
   width: 100%;
-  height: 85px;
+  height: 75px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
-  margin-bottom: 8px;
+  margin-top: 2px;
+  margin-bottom: 6px;
 }
 
 .bundle-variant-img {
   max-width: 100%;
-  max-height: 80px;
+  max-height: 70px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
@@ -453,7 +468,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 /* Title & Subtitle */
 .bundle-title {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 700;
   color: #111111;
   line-height: 1.2;
@@ -461,10 +476,10 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 .bundle-pack-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: #666666;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 /* Price & MRP */
@@ -473,7 +488,7 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 .bundle-price {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 800;
   color: #111111;
 }
@@ -482,14 +497,14 @@ document.addEventListener("DOMContentLoaded", function() {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 12.5px;
+  gap: 3px;
+  font-size: 11px;
   color: #888888;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .bundle-mrp-label {
-  font-size: 12px;
+  font-size: 10.5px;
   font-weight: 500;
   color: #888888;
 }
@@ -505,12 +520,12 @@ document.addEventListener("DOMContentLoaded", function() {
   display: inline-block;
   background: #FFE6EB;
   color: #E62E5C;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  padding: 4px 14px;
-  border-radius: 20px;
-  margin-top: 8px;
-  letter-spacing: 0.3px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-top: 6px;
+  letter-spacing: 0.2px;
   text-transform: uppercase;
 }
 
@@ -521,44 +536,86 @@ document.addEventListener("DOMContentLoaded", function() {
 
 @media only screen and (max-width: 767px) {
   .bundle-offer-title {
-    font-size: 18px;
+    font-size: 16px;
   }
   .bundle-offer-subtitle {
-    font-size: 12px;
+    font-size: 11px;
+    margin-top: 2px;
   }
   .bundle-variants-container .radio__inputs {
+    display: flex !important;
+    gap: 5px !important;
     flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    gap: 8px !important;
+    justify-content: space-between !important;
     padding-top: 14px !important;
-    padding-bottom: 4px !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .bundle-variants-container .radio__inputs::-webkit-scrollbar {
-    display: none;
+    padding-bottom: 2px !important;
+    width: 100% !important;
   }
   .bundle-variants-container .radio__button {
-    flex: 0 0 32% !important;
-    min-width: 100px !important;
+    flex: 1 1 32% !important;
+    max-width: 33.33% !important;
+    min-width: 0 !important;
   }
   .bundle-card {
-    padding: 12px 6px 10px 6px !important;
+    padding: 10px 2px 8px 2px !important;
+    border-radius: 10px !important;
+  }
+  .bundle-card-checkmark {
+    top: 3px !important;
+    right: 3px !important;
+    width: 14px !important;
+    height: 14px !important;
+  }
+  .bundle-card-checkmark svg {
+    width: 8px !important;
+    height: 6px !important;
+  }
+  .bundle-badge {
+    font-size: 7px !important;
+    padding: 2px 4px !important;
+    top: -9px !important;
+    border-radius: 8px !important;
+    max-width: 86% !important;
+    letter-spacing: 0 !important;
+  }
+  .bundle-badge svg {
+    width: 9px !important;
+    height: 8px !important;
+    margin-right: 2px !important;
   }
   .bundle-image-wrapper {
-    height: 70px;
+    height: 60px !important;
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
   }
   .bundle-variant-img {
-    max-height: 65px;
+    max-height: 55px !important;
   }
   .bundle-title {
-    font-size: 15px;
+    font-size: 13px !important;
   }
   .bundle-pack-subtitle {
-    font-size: 11px;
+    font-size: 10px !important;
+    margin-bottom: 3px !important;
   }
   .bundle-price {
-    font-size: 18px;
+    font-size: 16px !important;
+  }
+  .bundle-compare-row,
+  span.bundle-compare,
+  span.bundle-mrp-label {
+    font-size: 10px !important;
+    gap: 2px !important;
+    color: gray !important;
+  }
+  .bundle-mrp-label {
+    font-size: 9.5px !important;
+  }
+  .bundle-save {
+    font-size: 8.5px !important;
+    padding: 2px 6px !important;
+    margin-top: 4px !important;
+    border-radius: 10px !important;
   }
 }
 {% endstyle %}
@@ -621,14 +678,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
               <span class="radio__legend__label">
                 {% if product.handle == 'period-pain-relief-cream' %}
-                  <div class="bundle-offer-header">
+                  {% comment %} <div class="bundle-offer-header">
                     <div class="bundle-offer-title-wrapper">
-                      <span class="bundle-offer-line"></span>
-                      <h3 class="bundle-offer-title">Choose your offer</h3>
-                      <span class="bundle-offer-line"></span>
+
                     </div>
-                    <p class="bundle-offer-subtitle">Buy more, save more on Period Cramp Relief Cream</p>
-                  </div>
+                  </div> {% endcomment %}
                 {% else %}
                   {{ option.name | escape_once }}
                 {% endif %}

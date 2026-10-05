@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer",
@@ -13,13 +22,7 @@
     },
     "footer": {
       "type": "footer",
-      "settings": {
-        "menu_position": "left",
-        "logo_max_limit": 120,
-        "width": "wrapper",
-        "padding_top": 30,
-        "padding_bottom": 50
-      }
+      "settings": {}
     }
   },
   "order": [

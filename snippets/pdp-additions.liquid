@@ -20,27 +20,114 @@
 -%}
 
 <style>
-  /* Dynamic Accordion Styles for pdp-additions */
+  /* Dynamic Accordion & Benefits Styles for pdp-additions */
   .pdp-accordion-item {
-    margin-bottom: 1rem;
+    position: relative !important;
+    border: 1px solid #ECECEC !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    margin-bottom: 8px !important;
+    background: #FFFFFF !important;
+    transition: border-color 0.2s ease !important;
   }
+  .pdp-accordion-item[open] { border-color: #D5EBDC !important; }
+  .product-summary {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    padding: 13px 16px !important;
+    background-color: #FFFFFF !important;
+    color: #1A202C !important;
+    cursor: pointer !important;
+    border: none !important;
+    list-style: none !important;
+    user-select: none !important;
+  }
+  .product-summary::-webkit-details-marker { display: none !important; }
+  .tp-acc-title-wrap { display: flex !important; align-items: center !important; gap: 10px !important; }
+  .tp-acc-icon { display: inline-flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; }
+  .tp-acc-chevron {
+    transition: transform 0.25s ease !important;
+    flex-shrink: 0 !important;
+  }
+  details[open] .tp-acc-chevron { transform: rotate(180deg) !important; }
   .pdp-accordion-content {
-    padding: 15px;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #333;
-    background: #fff;
-    border-top: 1px solid #ddd;
+    padding: 14px 16px !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    color: #444444 !important;
+    background: #FFFFFF !important;
+    border-top: 1px solid #ECECEC !important;
+  }
+  .tp-benefits-strip-card {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    background: #EDF7F2 !important;
+    border: 1px solid #D9ECE1 !important;
+    border-radius: 14px !important;
+    padding: 14px 6px !important;
+    margin-top: 14px !important;
+    margin-bottom: 20px !important;
+    box-sizing: border-box !important;
+  }
+  .tp-benefits-strip-card__col {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    position: relative !important;
+    padding: 0 4px !important;
+  }
+  .tp-benefits-strip-card__col:not(:last-child)::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 12% !important;
+    height: 76% !important;
+    width: 1px !important;
+    background: #D4E8DC !important;
+  }
+  .tp-benefits-strip-card__icon-wrap {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 8px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  }
+  .tp-benefits-strip-card__label {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #164A36 !important;
+    line-height: 1.25 !important;
   }
 </style>
 
-<div class="pdp-additions-wrapper" style="margin-top: 20px;">
+<div class="pdp-additions-wrapper" style="margin-top: 10px;">
   
   <!-- 1. Specification Table -->
   <details class="product-details pdp-accordion-item">
     <summary class="product-summary">
-      <span>Product Specifications</span>
-      <span class="arrow-icon" aria-hidden="true"></span>
+      <span class="tp-acc-title-wrap">
+        <span class="tp-acc-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            <line x1="9" y1="11" x2="15" y2="11"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+        </span>
+        Product Specifications
+      </span>
+      <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
     </summary>
     <div class="pdp-accordion-content">
       <table class="spec-table" style="width: 100%; border-collapse: collapse;">
@@ -127,8 +214,18 @@
   <!-- 2. "Who This Is For" Section -->
   <details class="product-details pdp-accordion-item">
     <summary class="product-summary">
-      <span>Who This Is For</span>
-      <span class="arrow-icon" aria-hidden="true"></span>
+      <span class="tp-acc-title-wrap">
+        <span class="tp-acc-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#164A36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"></path>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+          </svg>
+        </span>
+        Who This Is For
+      </span>
+      <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
     </summary>
     <div class="pdp-accordion-content">
       <ul class="who-list" style="list-style: none; padding: 0; margin: 0;">
@@ -189,8 +286,19 @@
 
   <details class="product-details pdp-accordion-item">
     <summary class="product-summary">
-      <span>Frequently Asked Questions</span>
-      <span class="arrow-icon" aria-hidden="true"></span>
+      <span class="tp-acc-title-wrap">
+        <span class="tp-acc-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </span>
+        Frequently Asked Questions
+      </span>
+      <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
     </summary>
     <div class="pdp-accordion-content" style="padding: 10px 15px;">
       <div class="faq-accordion-group">
@@ -226,8 +334,19 @@
   {%- if related_col.products.size > 1 -%}
     <details class="product-details pdp-accordion-item">
       <summary class="product-summary">
-        <span>Explore Sibling Products</span>
-        <span class="arrow-icon" aria-hidden="true"></span>
+        <span class="tp-acc-title-wrap">
+          <span class="tp-acc-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </span>
+          Explore Sibling Products
+        </span>
+        <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
       </summary>
       <div class="pdp-accordion-content">
         <div class="siblings-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
@@ -247,6 +366,59 @@
       </div>
     </details>
   {%- endif -%}
+
+  <!-- 5. Product Benefits Strip Card (Item 11) -->
+  {% comment %} <div class="tp-benefits-strip-card">
+    <div class="tp-benefits-strip-card__col">
+      <div class="tp-benefits-strip-card__icon-wrap">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11c0 4.5 3.5 8 8 8s8-3.5 8-8H4z"></path>
+          <line x1="3" y1="11" x2="21" y2="11"></line>
+          <line x1="12" y1="11" x2="12" y2="5"></line>
+          <path d="M12 8c-2-2-3.5-1-4.5 1 2 1 3.5 0 4.5-1z"></path>
+          <path d="M12 7c2-2 3.5-1 4.5 1-2 1-3.5 0-4.5-1z"></path>
+        </svg>
+      </div>
+      <span class="tp-benefits-strip-card__label">Ayurvedic<br>Care</span>
+    </div>
+    <div class="tp-benefits-strip-card__col">
+      <div class="tp-benefits-strip-card__icon-wrap">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3c-1.5 2-3 3.8-3 5.5a3 3 0 0 0 6 0c0-1.7-1.5-3.5-3-5.5z"></path>
+          <path d="M4 14c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
+          <path d="M4 17c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
+          <circle cx="7" cy="20" r="1" fill="#164A36"></circle>
+          <circle cx="12" cy="20" r="1" fill="#164A36"></circle>
+          <circle cx="17" cy="20" r="1" fill="#164A36"></circle>
+        </svg>
+      </div>
+      <span class="tp-benefits-strip-card__label">Skin<br>Friendly</span>
+    </div>
+    <div class="tp-benefits-strip-card__col">
+      <div class="tp-benefits-strip-card__icon-wrap">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="14" cy="13" r="7"></circle>
+          <polyline points="14 10 14 13 16.5 14.5"></polyline>
+          <line x1="14" y1="4" x2="14" y2="6"></line>
+          <line x1="12" y1="4" x2="16" y2="4"></line>
+          <line x1="2" y1="9" x2="6" y2="9"></line>
+          <line x1="1" y1="13" x2="5" y2="13"></line>
+          <line x1="3" y1="17" x2="6" y2="17"></line>
+        </svg>
+      </div>
+      <span class="tp-benefits-strip-card__label">Instant<br>Relief</span>
+    </div>
+    <div class="tp-benefits-strip-card__col">
+      <div class="tp-benefits-strip-card__icon-wrap">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
+          <path d="M15 9c-3 0-5 2-6 5 2.5 0 5-1.5 6-5z"></path>
+          <path d="M9 14l3-3"></path>
+        </svg>
+      </div>
+      <span class="tp-benefits-strip-card__label">Moody<br>Free Days</span>
+    </div>
+  </div> {% endcomment %}
 
 </div>
 

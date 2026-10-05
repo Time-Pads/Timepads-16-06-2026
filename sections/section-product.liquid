@@ -346,19 +346,28 @@
 
                     <div class="upsell__holder">
                       <div class="upsell__holder__title">
-                        <h2 class="upsell__holder__title__text">
-                          {{ block.settings.title }}
-                        </h2>
+                        <div class="upsell__header-main upsell__header-centered">
+                          <h2 class="upsell__holder__title__text-centered">
+                            To make your care
+                            <span class="upsell__title-script">feel complete</span>
+                          </h2>
+                        </div>
                       </div>
 
-                      {% case block.settings.upsell_type %}
-                        {% when 'product_single' %}
-                          {% render 'product-clip', card_product: upsell_product_first %}
-                        {% when 'product_grouping' %}
-                          {%- for upsell_product in block.settings.upsell_product_list limit: block.settings.upsell_list_limit -%}
-                            {% render 'product-clip', card_product: upsell_product %}
-                          {%- endfor -%}
-                      {% endcase %}
+                      <div class="upsell__cards-scroll-track">
+                        {% case block.settings.upsell_type %}
+                          {% when 'product_single' %}
+                            {% render 'product-clip', card_product: upsell_product_first %}
+                          {% when 'product_grouping' %}
+                            {%- for upsell_product in block.settings.upsell_product_list limit: block.settings.upsell_list_limit -%}
+                              {% render 'product-clip', card_product: upsell_product %}
+                            {%- endfor -%}
+                        {% endcase %}
+                      </div>
+                      <div class="upsell__dots-indicator">
+                        <span class="upsell__dot active"></span>
+                        <span class="upsell__dot"></span>
+                      </div>
                     </div>
 
                   {%- elsif request.design_mode -%}
@@ -368,7 +377,7 @@
                           {{ block.settings.title }}
                         </h2>
                       </div>
-                        {% render 'onboarding-product-clip' %}
+                      {% render 'onboarding-product-clip' %}
                     </div>
                   {%- endif -%}
                 </div>
@@ -377,9 +386,12 @@
                 <div style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
                   <div class="upsell__holder js-unloaded" data-product-complimentary-loaded>
                     <div class="upsell__holder__title">
-                      <h2 class="upsell__holder__title__text">
-                        {{ block.settings.title }}
-                      </h2>
+                      <div class="upsell__header-main upsell__header-centered">
+                        <h2 class="upsell__holder__title__text-centered">
+                          To make your care
+                          <span class="upsell__title-script">feel complete</span>
+                        </h2>
+                      </div>
                     </div>
 
                     <product-complimentary data-url="{{ routes.product_recommendations_url }}?section_id=api-product-upsell-item&product_id={{ product.id }}&limit={{ block.settings.complimentary_list_limit }}&intent=complementary">

@@ -98,7 +98,7 @@
   {% capture breadcrumbs_markup %}
     {% for collection in section.settings.product_breadcrumbs_list %}
       <a href="{{ collection.url }}" title="{{ collection.title }}">{{ collection.title }}</a>
-    -
+      <span class="breadcrumb__divider">-</span>
     {% endfor %}
     <span>{{ product.title }}</span>
   {% endcapture %}
@@ -593,7 +593,7 @@ details[open] .arrow-icon {
                   {% when 'Product-view' %}
                     <div class="product-view-count">
                       <div class="live_view flex gap-10 align-center mb-20">
-                        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Eye-Icon.png?v=1738910627"  alt="Buy sanitary pads online in India with soft and skin-friendly protection"/>
+                        <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/Eye-Icon.png?v=1738910627" width="18" height="18" style="width: 18px; height: 18px; object-fit: contain; flex-shrink: 0;" alt="Buy sanitary pads online in India with soft and skin-friendly protection"/>
                         <live-view 
                           data-min="10" 
                           data-max="40" 
@@ -698,19 +698,28 @@ details[open] .arrow-icon {
 
                     <div class="upsell__holder">
                       <div class="upsell__holder__title">
-                        <h2 class="upsell__holder__title__text">
-                          {{ block.settings.title }}
-                        </h2>
+                        <div class="upsell__header-main upsell__header-centered">
+                          <h2 class="upsell__holder__title__text-centered">
+                            To make your care
+                            <span class="upsell__title-script">feel complete</span>
+                          </h2>
+                        </div>
                       </div>
 
-                      {% case block.settings.upsell_type %}
-                        {% when 'product_single' %}
-                          {% render 'product-clip', card_product: upsell_product_first %}
-                        {% when 'product_grouping' %}
-                          {%- for upsell_product in block.settings.upsell_product_list limit: block.settings.upsell_list_limit -%}
-                            {% render 'product-clip', card_product: upsell_product %}
-                          {%- endfor -%}
-                      {% endcase %}
+                      <div class="upsell__cards-scroll-track">
+                        {% case block.settings.upsell_type %}
+                          {% when 'product_single' %}
+                            {% render 'product-clip', card_product: upsell_product_first %}
+                          {% when 'product_grouping' %}
+                            {%- for upsell_product in block.settings.upsell_product_list limit: block.settings.upsell_list_limit -%}
+                              {% render 'product-clip', card_product: upsell_product %}
+                            {%- endfor -%}
+                        {% endcase %}
+                      </div>
+                      <div class="upsell__dots-indicator">
+                        <span class="upsell__dot active"></span>
+                        <span class="upsell__dot"></span>
+                      </div>
                     </div>
 
                   {%- elsif request.design_mode -%}
@@ -729,9 +738,12 @@ details[open] .arrow-icon {
                 <div style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
                   <div class="upsell__holder js-unloaded" data-product-complimentary-loaded>
                     <div class="upsell__holder__title">
-                      <h2 class="upsell__holder__title__text">
-                        {{ block.settings.title }}
-                      </h2>
+                      <div class="upsell__header-main upsell__header-centered">
+                        <h2 class="upsell__holder__title__text-centered">
+                          To make your care
+                          <span class="upsell__title-script">feel complete</span>
+                        </h2>
+                      </div>
                     </div>
 
                     <product-complimentary data-url="{{ routes.product_recommendations_url }}?section_id=api-product-upsell-item&product_id={{ product.id }}&limit={{ block.settings.complimentary_list_limit }}&intent=complementary">
