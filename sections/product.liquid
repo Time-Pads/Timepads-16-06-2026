@@ -812,6 +812,21 @@ scrollbar-width: none !important;
 }
 .jdgm-widget.jdgm-preview-badge::-webkit-scrollbar { display: none; }
 .product__block__title { padding-bottom: 0 !important; }
+
+.product__main__content--period-care-bundle .jdgm-widget.jdgm-preview-badge {
+  min-height: 0 !important;
+  margin: 6px 0 !important;
+}
+.product__main__content--period-care-bundle .jdgm-widget.jdgm-preview-badge:not(:has(.jdgm-prev-badge)),
+.product__main__content--period-care-bundle .jdgm-widget.jdgm-preview-badge[data-number-of-reviews="0"],
+.product__main__content--period-care-bundle .jdgm-widget.jdgm-preview-badge:has(.jdgm-prev-badge[data-number-of-reviews="0"]) {
+  display: none !important;
+}
+.product__main__content--period-care-bundle .product__block__variants .form__selectors {
+  min-height: 0 !important;
+  margin-bottom: 0;
+}
+
 span.jdgm-rev__timestamp { display: none; }
 .jdgm-prev-badge {
 display: inline-flex !important;
@@ -1414,7 +1429,7 @@ class="loading-shimmer"
 {%- endif -%}
 {%- render 'product-media-highlights', section: section, product: product, is_sanitary_pad: is_sanitary_pad, pad_info: pad_info, bundle_pad_count: bundle_pad_count, bundle_pad_length: bundle_pad_length, bundle_pad_flow: bundle_pad_flow, bundle_cup_size: bundle_cup_size -%}
 </div>
-<div class="product__main__content grid__item {{ product_description_width }}">
+<div class="product__main__content grid__item {{ product_description_width }}{% if bundle_title != blank %} product__main__content--period-care-bundle{% endif %}">
 <div class="product__inner is-sticky" data-product-form-wrapper>
 {% comment %} {%- if product_has_breadcrumbs -%}
 <nav class="breadcrumb small-down--hide{% unless wrapper_class == 'wrapper--none' %} medium-up--hide{% endunless %}" aria-label="breadcrumbs">
