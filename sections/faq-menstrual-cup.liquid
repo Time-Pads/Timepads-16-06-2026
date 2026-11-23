@@ -55,27 +55,32 @@
   {%- endif -%}
 
   <div class="faq-wrapper">
-    {%- comment -%} FAQ structured data — helps Google show rich results {%- endcomment -%}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {%- for block in section.blocks -%}
-          {%- if block.settings.question != blank and block.settings.answer != blank -%}
-            {
-              "@type": "Question",
-              "name": {{ block.settings.question | json }},
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": {{ block.settings.answer | json }}
-              }
-            }{%- unless forloop.last -%},{%- endunless -%}
-          {%- endif -%}
-        {%- endfor -%}
-      ]
-    }
-    </script>
+    {%- assign faq_separator = '' -%}
+    {%- capture faq_entities -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.question != blank and block.settings.answer != blank -%}
+          {{ faq_separator }}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | json }}
+            }
+          }
+          {%- assign faq_separator = ',' -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if faq_entities != blank -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [{{ faq_entities }}]
+        }
+      </script>
+    {%- endif -%}
 
     {%- for block in section.blocks -%}
       {%- if block.settings.question != blank -%}

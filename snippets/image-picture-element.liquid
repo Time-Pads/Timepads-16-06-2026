@@ -1,5 +1,5 @@
 {% comment %}
-  Generate picture element with WebP and AVIF support for maximum format compatibility
+  Generate picture element with WebP support for maximum format compatibility
   
   Usage:
   {% render 'image-picture-element', 
@@ -36,19 +36,9 @@
 {%- if image != blank and image_width != blank -%}
   {%- liquid
     assign webp_srcset = ""
-    assign avif_srcset = ""
     assign fallback_srcset = ""
     assign fallback_src = image | image_url: width: 1200
   -%}
-  
-  {%- comment -%} Generate AVIF srcset {%- endcomment -%}
-  {%- for string_width in widths -%}
-    {% assign width = string_width | times: 1 %}
-    {% if image_width >= width %}
-      {% capture src %}{{ image | image_url: width: width, format: "avif" }} {{ width }}w{% endcapture %}
-      {% assign avif_srcset = avif_srcset | append: src | append: ", " %}
-    {% endif %}
-  {%- endfor -%}
   
   {%- comment -%} Generate WebP srcset {%- endcomment -%}
   {%- for string_width in widths -%}
@@ -69,11 +59,6 @@
   {%- endfor -%}
   
   <picture class="{{ wrapper_class }}">
-    {%- comment -%} AVIF format (highest priority - best compression) {%- endcomment -%}
-    {%- if avif_srcset != blank -%}
-      <source type="image/avif" sizes="{{ sizes }}" srcset="{{ avif_srcset | strip_html }}">
-    {%- endif -%}
-    
     {%- comment -%} WebP format (good browser support and compression) {%- endcomment -%}
     {%- if webp_srcset != blank -%}
       <source type="image/webp" sizes="{{ sizes }}" srcset="{{ webp_srcset | strip_html }}">

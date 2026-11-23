@@ -1017,6 +1017,81 @@
         "id": "cart_continue_browsing",
         "label": "Empty cart link",
         "info": "Continue browsing link for the empty cart"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_title",
+        "label": "Drawer title",
+        "default": "My Comfort Cart"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_free_threshold",
+        "label": "Free shipping threshold",
+        "default": "499",
+        "info": "Amount in store currency. Do not include currency symbols."
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_discount_threshold",
+        "label": "First discount threshold",
+        "default": "599",
+        "info": "Amount in store currency. Do not include currency symbols."
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_max_threshold",
+        "label": "Maximum reward threshold",
+        "default": "999",
+        "info": "Amount in store currency. Do not include currency symbols."
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_free_label",
+        "label": "Free shipping milestone label",
+        "default": "FREE SHIPPING"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_discount_label",
+        "label": "First discount milestone label",
+        "default": "5% OFF"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_max_label",
+        "label": "Maximum reward milestone label",
+        "default": "10% OFF"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_show_upsell",
+        "label": "Show cart upsells",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_upsell_heading",
+        "label": "Upsell heading",
+        "default": "Complete your comfort"
+      },
+      {
+        "type": "collection",
+        "id": "cart_drawer_upsell_collection",
+        "label": "Upsell collection"
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_upsell_limit",
+        "label": "Upsell products to show",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 6
       }
     ]
   },

@@ -203,14 +203,14 @@
 --COLOR-SECONDARY-OPPOSITE: var(--time-white);
 
 /* === Shades of grey ===*/
---COLOR-A5:  rgba(36, 29, 37, 0.05);
---COLOR-A10: rgba(36, 29, 37, 0.10);
---COLOR-A20: rgba(36, 29, 37, 0.20);
---COLOR-A35: rgba(36, 29, 37, 0.35);
---COLOR-A50: rgba(36, 29, 37, 0.50);
---COLOR-A80: rgba(36, 29, 37, 0.80);
---COLOR-A90: rgba(36, 29, 37, 0.90);
---COLOR-A95: rgba(36, 29, 37, 0.95);
+--COLOR-A5:  rgba(61, 51, 41, 0.05);
+--COLOR-A10: rgba(61, 51, 41, 0.10);
+--COLOR-A20: rgba(61, 51, 41, 0.20);
+--COLOR-A35: rgba(61, 51, 41, 0.35);
+--COLOR-A50: rgba(61, 51, 41, 0.50);
+--COLOR-A80: rgba(61, 51, 41, 0.80);
+--COLOR-A90: rgba(61, 51, 41, 0.90);
+--COLOR-A95: rgba(61, 51, 41, 0.95);
 
 
 /* ================ Inverted Color Variables ================ */
@@ -404,80 +404,55 @@
 
 /* ================ Typography ================ */
 
---FONT-STACK-BODY: 'Poppins', sans-serif;
---FONT-STYLE-BODY: {{ body_font.style }};
---FONT-WEIGHT-BODY: {{ body_font.weight | default: 400 }};
---FONT-WEIGHT-BODY-BOLD: {{ body_font_bold.weight | default: 700 }};
+/* Global font stacks — single source of truth.
+   Spectral = headings, Inter = body/UI. Loaded once in theme.liquid. */
+--font-heading: 'Spectral', Georgia, 'Times New Roman', serif;
+--font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+--FONT-STACK-BODY: var(--font-body);
+--FONT-STYLE-BODY: normal;
+--FONT-WEIGHT-BODY: 400;
+--FONT-WEIGHT-BODY-BOLD: 700;
 --FONT-ADJUST-BODY: {{ settings.font_body_size | divided_by: 100.0 }};
-{% if settings.font_body_uppercase %}
-  /* --FONT-BODY-TRANSFORM: uppercase; */
-  --FONT-BODY-LETTER-SPACING: {{ settings.font_uppercase_spacing | divided_by: 1000.0 | append: 'em' }};
-{%- else %}
-  --FONT-BODY-TRANSFORM: none;
-  --FONT-BODY-LETTER-SPACING: normal;
-{% endif %}
+--FONT-BODY-TRANSFORM: none;
+--FONT-BODY-LETTER-SPACING: normal;
 
---FONT-STACK-HEADING: 'Poppins', sans-serif;
---FONT-STYLE-HEADING: {{ heading_font.style }};
---FONT-WEIGHT-HEADING: {{ heading_font.weight | default: 400 }};
---FONT-WEIGHT-HEADING-BOLD: {{ heading_font_bold.weight | default: 700 }};
+--FONT-STACK-HEADING: var(--font-heading);
+--FONT-STYLE-HEADING: normal;
+--FONT-WEIGHT-HEADING: 400;
+--FONT-WEIGHT-HEADING-BOLD: 600;
 --FONT-ADJUST-HEADING: {{ settings.font_heading_size | divided_by: 100.0 }};
-{% if settings.font_heading_uppercase %}
-  /* --FONT-HEADING-TRANSFORM: uppercase; */
-  --FONT-HEADING-LETTER-SPACING: {{ settings.font_uppercase_spacing | divided_by: 1000.0 | append: 'em' }};
-{%- else %}
-  --FONT-HEADING-TRANSFORM: none;
-  --FONT-HEADING-LETTER-SPACING: normal;
-{% endif %}
+--FONT-HEADING-TRANSFORM: none;
+--FONT-HEADING-LETTER-SPACING: normal;
 
---FONT-STACK-ACCENT: 'Poppins', sans-serif;
---FONT-STYLE-ACCENT: {{ accent_font.style }};
---FONT-WEIGHT-ACCENT: {{ accent_font.weight | default: 400 }};
---FONT-WEIGHT-ACCENT-BOLD: {{ accent_font_bold.weight | default: 700 }};
+--FONT-STACK-ACCENT: var(--font-body);
+--FONT-STYLE-ACCENT: normal;
+--FONT-WEIGHT-ACCENT: 500;
+--FONT-WEIGHT-ACCENT-BOLD: 700;
 --FONT-ADJUST-ACCENT: {{ settings.font_accent_size | divided_by: 100.0 }};
-{% if settings.font_accent_uppercase %}
-  /* --FONT-ACCENT-TRANSFORM: uppercase; */
-  --FONT-ACCENT-LETTER-SPACING: {{ settings.font_uppercase_spacing | divided_by: 1000.0 | append: 'em' }};
-{%- else %}
-  --FONT-ACCENT-TRANSFORM: none;
-  --FONT-ACCENT-LETTER-SPACING: normal;
-{% endif %}
+--FONT-ACCENT-TRANSFORM: none;
+--FONT-ACCENT-LETTER-SPACING: normal;
 
---TYPE-STACK-NAV: 'Poppins', sans-serif;
---TYPE-STYLE-NAV: {{ nav_font_drop.style }};
+--TYPE-STACK-NAV: var(--font-body);
+--TYPE-STYLE-NAV: normal;
 --TYPE-ADJUST-NAV: {{ type_nav_size | divided_by: 100.0 }};
---TYPE-WEIGHT-NAV: {{ nav_font_drop.weight | default: 400 }};
-{% if settings.type_nav_uppercase %}
-  /* --FONT-NAV-TRANSFORM: uppercase; */
-  --FONT-NAV-LETTER-SPACING: {{ settings.font_uppercase_spacing | divided_by: 1000.0 | append: 'em' }};
-{%- else %}
-  --FONT-NAV-TRANSFORM: none;
-  --FONT-NAV-LETTER-SPACING: normal;
-{% endif %}
+--TYPE-WEIGHT-NAV: 500;
+--FONT-NAV-TRANSFORM: none;
+--FONT-NAV-LETTER-SPACING: normal;
 
---TYPE-STACK-BUTTON: {{ button_font_drop.family }}, {{ button_font_drop.fallback_families }};
---TYPE-STYLE-BUTTON: {{ button_font_drop.style }};
+--TYPE-STACK-BUTTON: var(--font-body);
+--TYPE-STYLE-BUTTON: normal;
 --TYPE-ADJUST-BUTTON: {{ type_button_size | divided_by: 100.0 }};
---TYPE-WEIGHT-BUTTON: {{ button_font_drop.weight | default: 400 }};
-{% if settings.type_button_uppercase %}
-  /* --FONT-BUTTON-TRANSFORM: uppercase; */
-  --FONT-BUTTON-LETTER-SPACING: {{ settings.font_uppercase_spacing | divided_by: 1000.0 | append: 'em' }};
-{%- else %}
-  --FONT-BUTTON-TRANSFORM: none;
-  --FONT-BUTTON-LETTER-SPACING: normal;
-{% endif %}
+--TYPE-WEIGHT-BUTTON: 400;
+--FONT-BUTTON-TRANSFORM: none;
+--FONT-BUTTON-LETTER-SPACING: normal;
 
---TYPE-STACK-KICKER: {{ kicker_font_drop.family }}, {{ kicker_font_drop.fallback_families }};
---TYPE-STYLE-KICKER: {{ kicker_font_drop.style }};
+--TYPE-STACK-KICKER: var(--font-body);
+--TYPE-STYLE-KICKER: normal;
 --TYPE-ADJUST-KICKER: {{ type_kicker_size | divided_by: 100.0 }};
---TYPE-WEIGHT-KICKER: {{ kicker_font_drop.weight | default: 400 }};
-{% if settings.type_kicker_uppercase %}
-  /* --FONT-KICKER-TRANSFORM: uppercase; */
-  --FONT-KICKER-LETTER-SPACING: {{ settings.font_uppercase_spacing | divided_by: 1000.0 | append: 'em' }};
-{%- else %}
-  --FONT-KICKER-TRANSFORM: none;
-  --FONT-KICKER-LETTER-SPACING: normal;
-{% endif %}
+--TYPE-WEIGHT-KICKER: 500;
+--FONT-KICKER-TRANSFORM: none;
+--FONT-KICKER-LETTER-SPACING: normal;
 
 
 --ICO-SELECT: url('{{ "ico-select.svg" | asset_url }}');

@@ -106,6 +106,7 @@
     const preloadedUrls = new Set();
 
     images.forEach((img) => {
+      if (img.closest('[data-preloads-featured-image]')) return;
       if (img.src && !preloadedUrls.has(img.src)) {
         const link = document.createElement('link');
         link.rel = 'preload';
@@ -192,7 +193,7 @@
   }
 
   // Expose globals for debugging
-  if (process.env.NODE_ENV !== 'production') {
+  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV !== 'production') {
     window.imageOptimization = {
       checkImageDimensions,
       init

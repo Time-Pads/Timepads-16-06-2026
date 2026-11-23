@@ -8,7 +8,7 @@
 
 {% style %}
   #shopify-section-{{ sid }} {
-    background-color: #FAF7FB !important;
+    background-color: var(--time-background, #FFFFFF) !important;
     padding-top: {{ section.settings.padding_top | default: 24 }}px !important;
     padding-bottom: {{ section.settings.padding_bottom | default: 24 }}px !important;
     width: 100%;
@@ -34,7 +34,7 @@
     font-family: 'Playfair Display', Georgia, serif !important;
     font-size: 28px !important;
     font-weight: 700 !important;
-    color: #241D25 !important;
+    color: var(--time-text, #3D3329) !important;
     text-align: center !important;
     margin: 0 0 24px 0 !important;
     line-height: 1.2 !important;
@@ -87,32 +87,64 @@
 
   @media (max-width: 767px) {
     .tp-logos-container-{{ sid }} {
-      padding: 0 16px;
+      padding: 0 10px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
     .tp-logos-heading-{{ sid }} {
-      font-size: 19px !important;
-      margin-bottom: 16px !important;
+      font-size: 18px !important;
+      margin-bottom: 14px !important;
+      text-align: center !important;
     }
     .tp-logos-grid-{{ sid }} {
       display: flex !important;
-      flex-wrap: wrap !important;
-      justify-content: center !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      justify-content: space-between !important;
       align-items: center !important;
-      gap: 16px 24px !important;
+      gap: 6px !important;
       padding: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: auto !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    .tp-logos-grid-{{ sid }}::-webkit-scrollbar {
+      display: none !important;
     }
     .tp-logo-item-{{ sid }} {
-      flex: 0 0 calc(33.333% - 16px) !important;
-      min-width: 75px !important;
-      max-width: 105px !important;
-      height: 38px !important;
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      height: 32px !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .tp-logo-item-{{ sid }} picture {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      width: 100% !important;
+    }
+    .tp-logo-link-{{ sid }} {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: 100% !important;
     }
     .tp-logo-img-{{ sid }} {
-      max-height: 32px !important;
-      max-width: 95px !important;
+      max-height: 25px !important;
+      max-width: 100% !important;
+      width: auto !important;
+      height: auto !important;
+      object-fit: contain !important;
     }
   }
 {% endstyle %}
@@ -201,7 +233,7 @@
           <h2 class="tp-logos-heading-{{ sid }}">
             {%- for word in logo_words -%}
               {%- if forloop.last -%}
-                <span style="color: #7B3F6D;">{{ word }}</span>
+                <span style="color: var(--time-primary, #B7A487);">{{ word }}</span>
               {%- else -%}
                 {{ word }} 
               {%- endif -%}

@@ -1,0 +1,24 @@
+{%- liquid
+  assign faq_title = page_title | default: page.title | replace: 'TIMEPADS', 'TIME' | replace: 'Timepads', 'TIME' | replace: 'Time Pads', 'TIME' | strip
+  assign title_suffix = faq_title | slice: -4, 4
+  unless title_suffix == 'TIME'
+    assign faq_title = faq_title | append: ' – TIME'
+  endunless
+  assign faq_description = page_description | default: 'Get answers to your queries about the best pads for women, extra-long pads for heavy periods, and feminine hygiene pads. Find the right protection.' | replace: 'TIMEPADS', 'TIME' | replace: 'Timepads', 'TIME' | replace: 'Time Pads', 'TIME'
+  assign faq_image = 'https://timepads.in/cdn/shop/files/Untitled-11200.png?v=1741172243'
+  if page_image
+    assign faq_image = page_image | image_url: width: 1200
+  endif
+-%}
+<title>{{ faq_title | escape_once }}</title>
+<meta name="description" content="{{ faq_description | escape_once }}">
+<meta property="og:site_name" content="TIME">
+<meta property="og:url" content="{{ canonical_url | escape }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ faq_title | escape_once }}">
+<meta property="og:description" content="{{ faq_description | escape_once }}">
+<meta property="og:image" content="{{ faq_image | escape }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ faq_title | escape_once }}">
+<meta name="twitter:description" content="{{ faq_description | escape_once }}">
+<meta name="twitter:image" content="{{ faq_image | escape }}">

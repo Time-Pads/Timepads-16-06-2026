@@ -1,45 +1,4 @@
-{%- if request.page_type == 'product' -%}
-  {%- comment -%}
-    LCP preload for product pages.
-    The first image is rendered at width: 800 (desktop) / width: 400 (mobile)
-    by media.liquid + image.liquid. The preload MUST match these exact URLs.
-  {%- endcomment -%}
-  {%- assign lcp_img = product.selected_or_first_available_variant.featured_image
-                       | default: product.featured_media.preview_image
-                       | default: product.media[0].preview_image
-                       | default: product.images[0] -%}
-
-  {%- if lcp_img != blank -%}
-    {%- comment -%} Desktop: WebP preload {%- endcomment -%}
-    <link
-      rel="preload"
-      as="image"
-      type="image/webp"
-      fetchpriority="high"
-      media="(min-width: 768px)"
-      href="{{ lcp_img | image_url: width: 800, format: 'webp' }}"
-      imagesrcset="{{ lcp_img | image_url: width: 400, format: 'webp' }} 400w,
-                   {{ lcp_img | image_url: width: 640, format: 'webp' }} 640w,
-                   {{ lcp_img | image_url: width: 800, format: 'webp' }} 800w"
-      imagesizes="(max-width: 768px) 100vw, 50vw"
-    >
-    {%- comment -%} Mobile: WebP preload {%- endcomment -%}
-    <link
-      rel="preload"
-      as="image"
-      type="image/webp"
-      fetchpriority="high"
-      media="(max-width: 767px)"
-      href="{{ lcp_img | image_url: width: 400, format: 'webp' }}"
-      imagesrcset="{{ lcp_img | image_url: width: 300, format: 'webp' }} 300w,
-                   {{ lcp_img | image_url: width: 400, format: 'webp' }} 400w,
-                   {{ lcp_img | image_url: width: 640, format: 'webp' }} 640w"
-      imagesizes="100vw"
-    >
-  {%- endif -%}
-{%- elsif request.page_type == 'collection' -%}
-  {%- comment -%} Collection LCP preload is handled directly in theme.liquid {%- endcomment -%}
-{%- elsif request.page_type == 'index' -%}
+{%- if request.page_type == 'index' -%}
   {%- assign lcp_desktop = settings.preload_image_desktop -%}
   {%- assign lcp_mobile = settings.preload_image_mobile -%}
  

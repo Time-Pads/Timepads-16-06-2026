@@ -1,0 +1,20 @@
+{%- liquid
+  assign labels = 'Brand|Category|SKU|Material|Pad Length|Flow|Recommended Usage' | split: '|'
+-%}
+{%- for label in labels -%}
+  {%- case label -%}
+    {%- when 'Pad Length' -%}{%- assign value = pad_info[0] -%}
+    {%- when 'Flow' -%}{%- assign value = pad_info[2] -%}
+    {%- when 'Recommended Usage' -%}{%- assign value = pad_info[8] -%}
+    {%- when 'Material' -%}{%- assign value = pad_info[5] -%}
+    {%- when 'Brand' -%}{%- assign value = 'TIMEPADS' -%}
+    {%- when 'Category' -%}{%- assign value = 'Sanitary Pads' -%}
+    {%- when 'SKU' -%}{%- assign value = variant.sku -%}
+  {%- endcase -%}
+  {%- if value != blank -%}
+    <tr{% unless forloop.last %} style="border-bottom: 1px solid #f4f4f4;"{% endunless %}>
+      <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555;{% if forloop.first %} width: 45%;{% endif %}">{{ label | escape }}</td>
+      <td class="spec-val" style="padding: 8px 0; color: #222;">{{ value | escape }}</td>
+    </tr>
+  {%- endif -%}
+{%- endfor -%}

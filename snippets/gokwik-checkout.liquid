@@ -1,17 +1,15 @@
 {% if settings.goEnable %}
 <div class="gokwik-checkout"{% if settings.hideFlow %} style="display:none !important;" {% endif %}>
   <button type='button' class="btn disabled" disabled onclick="onCheckoutClick(this)">
-            <span class="btn-text" >
-                <span>{{ settings.main-titile }}</span>
-                <span>{{ settings.sub-titile }}</span>
-            </span>
-          <span class="pay-opt-icon">
-             <!-- <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg"> -->
-             <img src="https://cdn.gokwik.co/v4/images/right-arrow.svg" alt="overnight sanitary pads">
-         
- </span>
+    <span class="btn-text">
+      <span>{{ settings.main-titile | default: 'CHECKOUT' | upcase }}</span>
+      {% if settings.sub-titile != blank %}<span>{{ settings.sub-titile }}</span>{% endif %}
+    </span>
+    <span class="pay-opt-icon">
+      <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg" alt="Paytm PhonePe GPay" class="tp-upi-icons-img">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="tp-chevron-icon"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </span>
     <div style="display:none" class="addloadr" id="btn-loader"><div class="cir-loader">Loading..</div></div>
   </button>
 </div>
 {% endif %}
-

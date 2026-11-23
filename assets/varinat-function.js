@@ -43,6 +43,23 @@ class DynamicCard extends HTMLElement {
     this.updateSelectedStyles();  // Update the label background color
     this.toggleAddTocart();
     this.updatePrice();  // Update the price when the variant changes
+    this.updateImage();  // Update the variant image
+  }
+
+  updateImage() {
+    var mainImg = this.querySelector('.tp-perf-card__image:not(.tp-perf-card__image--hover)');
+    if (!mainImg) return;
+    if (this.currentVariant && this.currentVariant.image) {
+      mainImg.src = this.currentVariant.image;
+      mainImg.srcset = '';
+    } else {
+      var defaultSrc = mainImg.getAttribute('data-default-src');
+      var defaultSrcset = mainImg.getAttribute('data-default-srcset');
+      if (defaultSrc) {
+        mainImg.src = defaultSrc;
+        if (defaultSrcset) mainImg.srcset = defaultSrcset;
+      }
+    }
   }
 
   toggleAddTocart() {
@@ -82,11 +99,8 @@ class DynamicCard extends HTMLElement {
   updateSelectedStyles() {
     const variantGroups = this.querySelectorAll('input');
     variantGroups.forEach((input) => {
-      if (input.checked) {
-        input.nextElementSibling.style.background = "";  // Corrected here
-      } else {
-        input.nextElementSibling.style.background = "";
-      }
+      const optionLabel = input.nextElementSibling;
+      if (optionLabel) optionLabel.style.background = '';
     });
   }
   
@@ -119,6 +133,13 @@ class DynamicCard extends HTMLElement {
           throw new Error(response.statusText);
         }
         return response.json();
+      })
+      .then(() => {
+        if (typeof window.tpRefreshCartDrawer === 'function') {
+          window.tpRefreshCartDrawer({ open: true });
+        } else {
+          document.dispatchEvent(new CustomEvent('theme:cart:reload', { bubbles: true }));
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -180,6 +201,25 @@ if (!customElements.get('dynamic-card')) {
       var atcBtn = card.querySelector('.tp-perf-card__atc-btn');
       if (hiddenInput && variantId) hiddenInput.value = variantId;
       if (atcBtn && variantId) atcBtn.setAttribute('data-selected-value-data-value', variantId);
+
+      // Update variant image in product card
+      var mainImg = card.querySelector('.tp-perf-card__image:not(.tp-perf-card__image--hover)');
+      if (mainImg) {
+        var vImg = target.getAttribute('data-variant-image');
+        var vSrcset = target.getAttribute('data-variant-image-srcset');
+        if (vImg) {
+          mainImg.src = vImg;
+          if (vSrcset) mainImg.srcset = vSrcset;
+          else mainImg.srcset = '';
+        } else {
+          var defaultSrc = mainImg.getAttribute('data-default-src');
+          var defaultSrcset = mainImg.getAttribute('data-default-srcset');
+          if (defaultSrc) {
+            mainImg.src = defaultSrc;
+            if (defaultSrcset) mainImg.srcset = defaultSrcset;
+          }
+        }
+      }
 
       // Update price row from variants JSON
       try {
@@ -244,6 +284,21 @@ if (!customElements.get('dynamic-card')) {
   document.addEventListener('input', function(e) {
     handleVariantUpdate(e.target);
   });
+  document.addEventListener('mouseover', function(e) {
+    var pill = e.target.closest('.tp-perf-card__variants-grid');
+    if (pill) {
+      var card = pill.closest('.tp-perf-card, dynamic-card');
+      if (card) card.classList.add('tp-variant-hovered');
+    }
+  });
+  document.addEventListener('mouseout', function(e) {
+    var pill = e.target.closest('.tp-perf-card__variants-grid');
+    if (pill) {
+      var card = pill.closest('.tp-perf-card, dynamic-card');
+      if (card && !pill.contains(e.relatedTarget)) card.classList.remove('tp-variant-hovered');
+    }
+  });
+
   document.addEventListener('click', function(e) {
     if (e.target && e.target.classList.contains('tp-perf-card__radio-input')) {
       handleVariantUpdate(e.target);

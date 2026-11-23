@@ -73,7 +73,7 @@
   .why-time-header {
     text-align: center;
     max-width: 680px;
-    margin: 0 auto 40px auto;
+    margin: 0 auto 20px auto;
     position: relative;
     z-index: 5;
   }
@@ -368,7 +368,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-primary);
+    background-color: black;
     color: #FFFFFF;
     font-size: 15px;
     font-weight: 600;
@@ -457,6 +457,9 @@
   }
 
   @media (max-width: 767px) {
+    .wrapper.product__align-left{
+      padding: 0 !important;
+    }
     .why-choose-time-section {
       padding-top: 40px;
       padding-bottom: 40px;
@@ -479,6 +482,8 @@
     .why-time-cards-grid {
       display: flex !important;
       flex-direction: row !important;
+      width: 95% !important;
+      margin: auto !important;
       overflow-x: auto !important;
       overflow-y: hidden !important;
       touch-action: pan-x pan-y !important;
@@ -486,10 +491,10 @@
       -webkit-overflow-scrolling: touch !important;
       scrollbar-width: none !important;
       gap: 14px !important;
-      padding: 8px 16px 20px 16px !important;
+      padding: 8px 16px 0px 16px !important;
       margin-bottom: 28px !important;
       align-items: stretch !important;
-    }
+}
     .why-time-cards-grid::-webkit-scrollbar {
       display: none !important;
     }
@@ -681,31 +686,31 @@
       "type": "color",
       "id": "primary_color",
       "label": "Primary Color",
-      "default": "#7B3F6D"
+      "default": "#B7A487"
     },
     {
       "type": "color",
       "id": "primary_dark_color",
       "label": "Primary Dark Color",
-      "default": "#5F2E54"
+      "default": "#75614C"
     },
     {
       "type": "color",
       "id": "primary_light_color",
       "label": "Primary Light Color",
-      "default": "#D9A7C2"
+      "default": "#E8D9C3"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
-      "default": "#FAF7FB"
+      "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "bg_secondary_color",
       "label": "Background Secondary Color",
-      "default": "#F2ECF5"
+      "default": "#FAF7F2"
     },
     {
       "type": "color",
@@ -717,19 +722,19 @@
       "type": "color",
       "id": "text_color",
       "label": "Primary Text Color",
-      "default": "#241D25"
+      "default": "#3D3329"
     },
     {
       "type": "color",
       "id": "text_secondary_color",
       "label": "Secondary Text Color",
-      "default": "#625A63"
+      "default": "#74695D"
     },
     {
       "type": "color",
       "id": "border_color",
       "label": "Border Color",
-      "default": "#E6DCE9"
+      "default": "#E8D9C3"
     },
     {
       "type": "header",

@@ -1,0 +1,46 @@
+{%- unless part == 'guide' -%}
+  {%- capture intro -%}
+    {%- if pad_info[1] != blank and pad_info[2] != blank -%}
+      TIMEPADS {{ pad_info[0] | escape }} sanitary pads are designed for {{ pad_info[2] | downcase | escape }} days.
+    {%- elsif pad_info[1] != blank -%}
+      These TIMEPADS sanitary pads measure {{ pad_info[1] | escape }} in length.
+    {%- else -%}
+      See the flow guide to choose the TIMEPADS sanitary pad length that suits your needs.
+    {%- endif -%}
+  {%- endcapture -%}
+{%- endunless -%}
+{%- case part -%}
+  {%- when 'intro' -%}
+    {{- intro -}}
+  {%- when 'details' -%}
+    <p>{{ intro }}</p>
+    {%- if pad_info[1] != blank or pad_info[5] != blank or pad_info[6] != blank or pad_info[7] != blank or pad_info[4] != blank or pad_info[3] != blank -%}
+      <ul>
+        {%- if pad_info[1] != blank -%}<li><strong>Pad length</strong> {{ pad_info[0] | escape }}</li>{%- endif -%}
+        {%- if pad_info[5] != blank -%}<li><strong>Material</strong> {{ pad_info[5] | escape }}</li>{%- endif -%}
+        {%- if pad_info[6] != blank -%}<li>{{ pad_info[6] | escape }}</li>{%- endif -%}
+        {%- if pad_info[7] != blank -%}<li>{{ pad_info[7] | escape }}</li>{%- endif -%}
+        {%- if pad_info[4] != blank -%}<li><strong>Recommended for</strong> {{ pad_info[4] | escape }}</li>{%- endif -%}
+        {%- if pad_info[3] != blank -%}<li><strong>Pack size</strong> {{ pad_info[3] | escape }}</li>{%- endif -%}
+      </ul>
+    {%- endif -%}
+  {%- when 'guide' -%}
+    <section class="tp-pad-guide">
+      <h2>Find the Right Pad for Your Flow</h2>
+      <ul class="tp-pad-guide__grid" role="list">
+        {%- for entry in flow_guide -%}
+          {%- assign option = entry | split: '|' -%}
+          <li class="tp-pad-guide__option" data-pad-length="{{ option[0] }}"{% if option[0] == pad_length %} aria-current="true"{% endif %}>
+            <div class="tp-pad-guide__option-top">
+              <strong>{{ option[0] }}</strong>
+              <span class="tp-pad-guide__current">This pad</span>
+            </div>
+            <span class="tp-pad-guide__flow">{{ option[1] }}</span>
+            <span class="tp-pad-guide__hint">{{ option[2] }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <h3>Which Pad Should I Choose?</h3>
+      <p>Choose the pad length based on your flow and the level of coverage you prefer. Longer pads can provide additional coverage for heavier-flow days and overnight use.</p>
+    </section>
+{%- endcase -%}

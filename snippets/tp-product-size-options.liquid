@@ -1,0 +1,786 @@
+{%- comment -%}
+  Custom Image-based Size Selector for TIME Products
+  Replaces standard text variant buttons with rounded image cards.
+  - Automatically displays current product first and highlighted
+  - Dynamically retrieves additional size products from product.metafields.custom.size_options_products
+  - Desktop: If > 4 products, horizontal scroll with scroll arrows (4 cards visible per view).
+  - Mobile: If > 2 products, horizontal scroll with scroll arrows (2 cards visible per view).
+  - Preserves standard Shopify variant form inputs to ensure Add to Cart, quantity selector,
+    and other variant selectors (e.g., Available In / pack quantity) work without disruption.
+{%- endcomment -%}
+
+{%- style -%}
+  .tp-size-options {
+    width: 100% !important;
+    margin: 0 0 18px 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .tp-size-options__legend {
+    margin-bottom: 10px !important;
+    display: block !important;
+    padding: 0 !important;
+    border: none !important;
+    width: 100% !important;
+  }
+
+  .tp-size-options__title {
+    font-family: inherit !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #17120e !important;
+    letter-spacing: -0.1px;
+    text-transform: none !important;
+    display: inline-block !important;
+  }
+
+  /* Carousel Container */
+  .tp-size-carousel-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Horizontal Track */
+  .tp-size-track {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 4px 2px !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE/Edge */
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .tp-size-track::-webkit-scrollbar {
+    display: none !important; /* Chrome / Safari */
+  }
+
+  /* Desktop sizing (min-width: 768px) */
+  @media only screen and (min-width: 768px) {
+    /* 1 to 5 cards: fit row without scrolling */
+    .tp-size-carousel-wrapper:not(.has-desktop-scroll) .tp-size-track {
+      overflow: visible !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='1'] .tp-size-card {
+      flex: 0 0 140px !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='2'] .tp-size-card {
+      flex: 0 0 calc((100% - 10px) / 2) !important;
+      max-width: 180px !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='3'] .tp-size-card {
+      flex: 1 1 0 !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='4'] .tp-size-card {
+      flex: 1 1 0 !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='5'] .tp-size-card {
+      flex: 1 1 0 !important;
+    }
+    .tp-size-carousel-wrapper:not(.has-desktop-scroll) .tp-size-card {
+      flex: 1 1 0 !important;
+    }
+
+    /* More than 5 cards: horizontal scroll with arrows, 5 cards visible per view */
+    .tp-size-carousel-wrapper.has-desktop-scroll .tp-size-track {
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
+    }
+    .tp-size-carousel-wrapper.has-desktop-scroll .tp-size-card {
+      flex: 0 0 calc((100% - 40px) / 5) !important;
+      scroll-snap-align: start !important;
+      min-width: 0 !important;
+    }
+  }
+
+  /* Mobile sizing (max-width: 767px) */
+  @media only screen and (max-width: 767px) {
+    .tp-size-track {
+      gap: 8px !important;
+    }
+
+    /* 1 to 2 cards on mobile: fit row */
+    .tp-size-carousel-wrapper:not(.has-mobile-scroll) .tp-size-track {
+      overflow: visible !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='1'] .tp-size-card {
+      flex: 0 0 140px !important;
+    }
+    .tp-size-carousel-wrapper[data-total-cards='2'] .tp-size-card {
+      flex: 1 1 0 !important;
+    }
+
+    /* More than 2 cards on mobile: horizontal scroll with arrows, 2 cards visible per view */
+    .tp-size-carousel-wrapper.has-mobile-scroll .tp-size-track {
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
+    }
+    .tp-size-carousel-wrapper.has-mobile-scroll .tp-size-card {
+      flex: 0 0 calc((68% - 8px) / 2) !important;
+      scroll-snap-align: start !important;
+      min-width: 0 !important;
+    }
+  }
+                                        
+  /* Card Styling */
+  .tp-size-card {
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    text-decoration: none !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease !important;
+    position: relative !important;
+    outline: none !important;
+  }
+
+  /* Inactive Card */
+  .tp-size-card:not(.is-selected) {
+    border: 1.5px solid #eae0d5 !important;
+    cursor: pointer !important;
+  }
+
+  .tp-size-card:not(.is-selected):hover {
+    border-color: #006d44 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 14px rgba(0, 109, 68, 0.1) !important;
+  }
+
+  /* Selected Card */
+  .tp-size-card.is-selected {
+    border: 2px solid #006d44 !important;
+    box-shadow: 0 2px 10px rgba(0, 109, 68, 0.12) !important;
+    cursor: default !important;
+  }
+
+  /* Subtle loading indicator on clicked size card during AJAX transition */
+  .tp-size-card.is-loading {
+    position: relative !important;
+  }
+  .tp-size-card.is-loading::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 6px !important;
+    right: 6px !important;
+    width: 14px !important;
+    height: 14px !important;
+    border: 2px solid rgba(0, 109, 68, 0.2) !important;
+    border-top-color: #006d44 !important;
+    border-radius: 50% !important;
+    animation: tpSizeSpin 0.6s linear infinite !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+  }
+  @keyframes tpSizeSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Image Container */
+  .tp-size-card__image-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #ffffff !important;
+    padding: 10px 8px 8px !important;
+    height: 84px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .tp-size-card__img {
+    max-width: 100% !important;
+    max-height: 72px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    transition: transform 0.22s ease !important;
+  }
+
+  .tp-size-card:not(.is-selected):hover .tp-size-card__img {
+    transform: scale(1.05) !important;
+  }
+
+  /* Info Section */
+  .tp-size-card__info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 6px 9px !important;
+    text-align: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 48px !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  .tp-size-card:not(.is-selected) .tp-size-card__info {
+    background: #faf8f5 !important;
+    border-top: 1px solid #eae0d5 !important;
+  }
+
+  .tp-size-card.is-selected .tp-size-card__info {
+    background: #ebf5f0 !important;
+    border-top: 1px solid rgba(0, 109, 68, 0.2) !important;
+  }
+
+  /* Size Text */
+  .tp-size-card__size {
+    font-family: inherit !important;
+    font-size: 13.5px !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.1px !important;
+    display: block !important;
+  }
+
+  .tp-size-card:not(.is-selected) .tp-size-card__size {
+    color: #17120e !important;
+    font-weight: 700 !important;
+  }
+
+  .tp-size-card.is-selected .tp-size-card__size {
+    color: #006d44 !important;
+    font-weight: 800 !important;
+  }
+
+  /* Pack Text */
+  .tp-size-card__pack {
+    font-family: inherit !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+    margin-top: 2px !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+
+  .tp-size-card:not(.is-selected) .tp-size-card__pack {
+    color: #74695d !important;
+    font-weight: 500 !important;
+  }
+
+  .tp-size-card.is-selected .tp-size-card__pack {
+    color: #005636 !important;
+    font-weight: 600 !important;
+  }
+
+  /* Mobile Responsive Adjustments */
+  @media only screen and (max-width: 767px) {
+    .tp-size-card__image-box {
+      height: 72px !important;
+      padding: 8px 6px 6px !important;
+    }
+    .tp-size-card__img {
+      max-height: 60px !important;
+    }
+    .tp-size-card__info {
+      padding: 6px 4px 7px !important;
+      min-height: 42px !important;
+    }
+    .tp-size-card__size {
+      font-size: 12.5px !important;
+    }
+    .tp-size-card__pack {
+      font-size: 10px !important;
+      margin-top: 1px !important;
+    }
+  }
+
+  /* Scroll Arrows */
+  .tp-size-arrow {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: 1px solid #d8d2ca !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    color: #17120e !important;
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    padding: 0 !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+  }
+
+  .tp-size-arrow svg {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    stroke: currentColor !important;
+  }
+
+  .tp-size-arrow:hover:not(:disabled) {
+    background: #006d44 !important;
+    border-color: #006d44 !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(0, 109, 68, 0.25) !important;
+  }
+
+  .tp-size-arrow:disabled {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .tp-size-arrow--prev {
+    left: -12px !important;
+  }
+
+  .tp-size-arrow--next {
+    right: -12px !important;
+  }
+
+  /* Display arrows when scroll is active */
+  @media only screen and (min-width: 768px) {
+    .tp-size-carousel-wrapper.has-desktop-scroll .tp-size-arrow {
+      display: flex !important;
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .tp-size-carousel-wrapper.has-mobile-scroll .tp-size-arrow {
+      display: flex !important;
+      width: 28px !important;
+      height: 28px !important;
+    }
+    .tp-size-arrow--prev {
+      left: -8px !important;
+    }
+    .tp-size-arrow--next {
+      right: -8px !important;
+    }
+  }
+{%- endstyle -%}
+
+<fieldset class="radio__fieldset tp-size-options">
+  <legend class="radio__legend tp-size-options__legend" aria-label="Select Size">
+    <span class="radio__legend__label tp-size-options__title">Select Size:</span>
+  </legend>
+
+  {%- comment -%}
+    Hidden radio inputs matching Shopify standard structure so variant selection,
+    price recalculation, and Add to Cart function seamlessly without JavaScript errors.
+  {%- endcomment -%}
+  <div
+    class="tp-size-options__hidden-inputs radio__inputs"
+    data-product-id="{{ product.id }}"
+    style="display: none !important; position: absolute; opacity: 0; pointer-events: none;"
+    aria-hidden="true"
+  >
+    {%- for value in option.values -%}
+      {%- capture input_id -%}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once | handleize }}{%- endcapture -%}
+      {%- assign matched_variant = product.variants[forloop.index0] -%}
+      {%- for v in product.variants -%}
+        {%- if v.title contains value or v.option1 == value or v.options contains value -%}
+          {%- assign matched_variant = v -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <input
+        type="radio"
+        name="options[{{ option.name | escape_once }}]"
+        value="{{ value | escape_once }}"
+        id="{{ input_id }}-{{ forloop.index }}"
+        form="{{ uniq_id }}"
+        {% if value == current_value %}
+          checked="checked"
+        {% endif %}
+        data-variant-id-value="{{ matched_variant.id }}"
+        variant-number-id="{{ matched_variant.id }}"
+      >
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%}
+    Calculate total number of cards to determine scrolling mode
+  {%- endcomment -%}
+  {%- assign valid_related_count = 0 -%}
+  {%- for rel_p in size_products -%}
+    {%- if rel_p.id != product.id and rel_p.handle != product.handle -%}
+      {%- assign valid_related_count = valid_related_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign total_cards = valid_related_count | plus: 1 -%}
+
+  {%- assign has_desktop_scroll = false -%}
+  {%- if total_cards > 5 -%}
+    {%- assign has_desktop_scroll = true -%}
+  {%- endif -%}
+
+  {%- assign has_mobile_scroll = false -%}
+  {%- if total_cards > 2 -%}
+    {%- assign has_mobile_scroll = true -%}
+  {%- endif -%}
+
+  <div
+    class="tp-size-carousel-wrapper{% if has_desktop_scroll %} has-desktop-scroll{% endif %}{% if has_mobile_scroll %} has-mobile-scroll{% endif %}"
+    data-total-cards="{{ total_cards }}"
+  >
+    <button type="button" class="tp-size-arrow tp-size-arrow--prev" aria-label="Previous sizes" disabled>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <div class="tp-size-track" data-size-track>
+      {%- render 'tp-product-size-card', p: product, is_selected: true -%}
+      {%- for rel_p in size_products -%}
+        {%- if rel_p.id == product.id or rel_p.handle == product.handle -%}{%- continue -%}{%- endif -%}
+        {%- render 'tp-product-size-card', p: rel_p, is_selected: false -%}
+      {%- endfor -%}
+    </div>
+
+    <button type="button" class="tp-size-arrow tp-size-arrow--next" aria-label="Next sizes">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+</fieldset>
+
+<script>
+  (function () {
+    /* --- 1. Size Carousel Horizontal Navigation --- */
+    function initSizeCarousels() {
+      var carousels = document.querySelectorAll('.tp-size-carousel-wrapper');
+      carousels.forEach(function (wrapper) {
+        if (wrapper.dataset.carouselInitialized === 'true') return;
+        wrapper.dataset.carouselInitialized = 'true';
+
+        var track = wrapper.querySelector('[data-size-track]');
+        var prevBtn = wrapper.querySelector('.tp-size-arrow--prev');
+        var nextBtn = wrapper.querySelector('.tp-size-arrow--next');
+        if (!track || !prevBtn || !nextBtn) return;
+
+        function updateArrows() {
+          var sl = track.scrollLeft;
+          var maxScroll = track.scrollWidth - track.clientWidth;
+          prevBtn.disabled = sl <= 2;
+          nextBtn.disabled = sl >= maxScroll - 2;
+        }
+
+        function getScrollStep() {
+          var firstCard = track.querySelector('.tp-size-card');
+          if (firstCard) {
+            var cardWidth = firstCard.offsetWidth;
+            var isMobile = window.innerWidth < 768;
+            var gap = isMobile ? 8 : 10;
+            return (cardWidth + gap) * (isMobile ? 1 : 2);
+          }
+          return track.clientWidth * 0.75;
+        }
+
+        prevBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          track.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          track.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+        });
+
+        track.addEventListener('scroll', updateArrows, { passive: true });
+        window.addEventListener('resize', updateArrows, { passive: true });
+        setTimeout(updateArrows, 150);
+      });
+    }
+
+    window.initTpSizeCarousels = initSizeCarousels;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSizeCarousels);
+    } else {
+      initSizeCarousels();
+    }
+
+    /* --- 2. AJAX Dynamic Product / Size Switcher --- */
+    if (window.__tpProductSwitcherInit) return;
+    window.__tpProductSwitcherInit = true;
+
+    var activeAbortController = null;
+
+    function getSectionElements() {
+      var productSection = document.querySelector('[data-section-type="product"]');
+      if (!productSection) return null;
+      var sectionId = productSection.getAttribute('data-section-id') || 'main';
+      var shopifySection = productSection.closest('.shopify-section') || document.getElementById('shopify-section-' + sectionId) || productSection;
+      return {
+        productSection: productSection,
+        shopifySection: shopifySection,
+        sectionId: sectionId
+      };
+    }
+
+    function executeSectionScripts(container) {
+      if (!container) return;
+      var scripts = container.querySelectorAll('script');
+      scripts.forEach(function (oldScript) {
+        if (oldScript.type && oldScript.type.indexOf('json') !== -1) return;
+        var newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(function (attr) {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+        newScript.textContent = oldScript.textContent;
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+
+    function reinitAfterSwitch(shopifySection, sectionId) {
+      if (!shopifySection) return;
+
+      var newProductSection = shopifySection.querySelector('[data-section-type="product"]') || shopifySection;
+
+      // 1. Re-execute section scripts (accordion, reviews observer, etc.)
+      executeSectionScripts(shopifySection);
+
+      // 2. Unload / load section in Shopify theme
+      if (window.Shopify && window.Shopify.theme && window.Shopify.theme.sections && typeof window.Shopify.theme.sections.load === 'function') {
+        try {
+          window.Shopify.theme.sections.load('product', newProductSection);
+        } catch (e) {
+          console.warn('[TP Size Switcher] Sections.load warning:', e);
+        }
+      }
+
+      // 3. Dispatch shopify:section:load event
+      document.dispatchEvent(new CustomEvent('shopify:section:load', {
+        detail: { sectionId: sectionId },
+        bubbles: true
+      }));
+
+      // 4. Re-init Alpine components (ATC button, forms)
+      if (window.Alpine && typeof window.Alpine.initTree === 'function') {
+        try {
+          window.Alpine.initTree(shopifySection);
+        } catch (e) {
+          console.warn('[TP Size Switcher] Alpine.initTree warning:', e);
+        }
+      }
+
+      // 5. Reinitialize TP Size Carousel
+      if (typeof window.initTpSizeCarousels === 'function') {
+        window.initTpSizeCarousels();
+      }
+
+      // 6. Refresh Flickity / theme layout
+      window.dispatchEvent(new Event('resize'));
+      document.dispatchEvent(new CustomEvent('theme:resize:width'));
+
+      // 7. Judge.me review badges
+      if (window.jdgm && typeof window.jdgm.customizeBadges === 'function') {
+        try { window.jdgm.customizeBadges(); } catch (e) {}
+      }
+      if (window.jdgm && typeof window.jdgm.initializeBadges === 'function') {
+        try { window.jdgm.initializeBadges(); } catch (e) {}
+      }
+
+      // 8. GoKwik Buy Now button sync
+      if (typeof window.syncGokwikBuyNow === 'function') {
+        window.syncGokwikBuyNow();
+        setTimeout(window.syncGokwikBuyNow, 60);
+        setTimeout(window.syncGokwikBuyNow, 300);
+      } else {
+        var _gkBtn = document.getElementById('gokwik-buy-now');
+        if (_gkBtn) {
+          _gkBtn.removeAttribute('disabled');
+          _gkBtn.disabled = false;
+          _gkBtn.classList.remove('disabled');
+          var _gkLdr = _gkBtn.querySelector('#btn-loader');
+          if (_gkLdr) _gkLdr.style.display = 'none';
+        }
+      }
+    }
+
+    function tpSwitchProduct(targetUrl, clickedCard, updateHistory) {
+      if (!targetUrl) return;
+
+      var elements = getSectionElements();
+      if (!elements || !elements.shopifySection) {
+        window.location.href = targetUrl;
+        return;
+      }
+
+      // Abort previous in-flight request if user rapidly clicked another card
+      if (activeAbortController) {
+        activeAbortController.abort();
+      }
+      activeAbortController = new AbortController();
+      var signal = activeAbortController.signal;
+
+      // Immediate visual feedback on clicked card
+      if (clickedCard) {
+        var track = clickedCard.closest('[data-size-track]') || document;
+        track.querySelectorAll('.tp-size-card').forEach(function (c) {
+          c.classList.remove('is-selected');
+          c.classList.remove('is-loading');
+        });
+        clickedCard.classList.add('is-selected');
+        clickedCard.classList.add('is-loading');
+      }
+
+      var shopifySection = elements.shopifySection;
+      var productSection = elements.productSection;
+      var sectionId = elements.sectionId;
+
+      var sep = targetUrl.indexOf('?') !== -1 ? '&' : '?';
+      var sectionApiUrl = targetUrl + sep + 'section_id=' + encodeURIComponent(sectionId);
+
+      function applySectionHtml(newHtml, docTitle) {
+        // Unload old section instance
+        if (window.Shopify && window.Shopify.theme && window.Shopify.theme.sections && typeof window.Shopify.theme.sections.unload === 'function') {
+          try {
+            window.Shopify.theme.sections.unload(productSection);
+          } catch (e) {}
+        }
+
+        if (docTitle) {
+          document.title = docTitle;
+        }
+
+        shopifySection.innerHTML = newHtml;
+
+        if (updateHistory !== false) {
+          try {
+            history.pushState({ tpProductUrl: targetUrl }, '', targetUrl);
+          } catch (e) {}
+        }
+
+        reinitAfterSwitch(shopifySection, sectionId);
+      }
+
+      // Request Section Rendering API first for minimal payload
+      fetch(sectionApiUrl, {
+        signal: signal,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Section rendering API returned status ' + res.status);
+          return res.text();
+        })
+        .then(function (html) {
+          if (!html || html.indexOf('data-section-type="product"') === -1) {
+            throw new Error('Section rendering API response missing product section');
+          }
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, 'text/html');
+          var newShopifySection = doc.querySelector('#shopify-section-' + sectionId) ||
+            (doc.querySelector('[data-section-type="product"]') ? doc.querySelector('[data-section-type="product"]').closest('.shopify-section') : null) ||
+            doc.body;
+
+          applySectionHtml(newShopifySection.innerHTML, doc.title);
+        })
+        .catch(function (err) {
+          if (err.name === 'AbortError') return;
+
+          // Fallback: Fetch full page via AJAX and extract section
+          console.warn('[TP Size Switcher] Section API fallback to full page:', err.message);
+          fetch(targetUrl, {
+            signal: signal,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          })
+            .then(function (res) {
+              if (!res.ok) throw new Error('Full page fetch status ' + res.status);
+              return res.text();
+            })
+            .then(function (html) {
+              var parser = new DOMParser();
+              var doc = parser.parseFromString(html, 'text/html');
+              var newShopifySection = doc.querySelector('#shopify-section-' + sectionId) ||
+                (doc.querySelector('[data-section-type="product"]') ? doc.querySelector('[data-section-type="product"]').closest('.shopify-section') : null);
+
+              if (!newShopifySection) {
+                throw new Error('Could not find product section in full page response');
+              }
+
+              // Update optional product metafield sections if present (e.g. A+ content, comparison)
+              var extraSelectors = [
+                '[id*="product_a_pluse_content"]',
+                '[id*="product_comparison"]'
+              ];
+              extraSelectors.forEach(function (sel) {
+                var oldEl = document.querySelector(sel);
+                var newEl = doc.querySelector(sel);
+                if (oldEl && newEl) {
+                  oldEl.innerHTML = newEl.innerHTML;
+                }
+              });
+
+              applySectionHtml(newShopifySection.innerHTML, doc.title);
+            })
+            .catch(function (fallbackErr) {
+              if (fallbackErr.name === 'AbortError') return;
+              console.error('[TP Size Switcher] Both AJAX fetches failed, falling back to full navigation:', fallbackErr);
+              window.location.href = targetUrl;
+            });
+        });
+    }
+
+    // Delegated click listener on document for size cards
+    document.addEventListener('click', function (e) {
+      var card = e.target.closest('.tp-size-card');
+      if (!card) return;
+
+      if (card.classList.contains('is-selected')) {
+        e.preventDefault();
+        return;
+      }
+
+      var targetUrl = card.getAttribute('href') || card.dataset.productUrl;
+      if (!targetUrl) return;
+
+      e.preventDefault();
+      tpSwitchProduct(targetUrl, card, true);
+    });
+
+    // Browser Back / Forward navigation handling
+    window.addEventListener('popstate', function () {
+      var currentUrl = window.location.pathname + window.location.search;
+      if (currentUrl.indexOf('/products/') !== -1) {
+        tpSwitchProduct(currentUrl, null, false);
+      } else {
+        window.location.reload();
+      }
+    });
+
+    window.tpSwitchProduct = tpSwitchProduct;
+  })();
+</script>

@@ -30,7 +30,11 @@
     {%- assign width = string_width | times: 1 -%}
     {%- if width > 0 -%}
       {%- unless is_first -%}, {%- endunless -%}
-      {{ image | image_url: width: width, format: format }} {{ width }}w
+      {%- if format != blank and format == 'pjpg' or format == 'jpg' -%}
+        {{ image | image_url: width: width, format: format }} {{ width }}w
+      {%- else -%}
+        {{ image | image_url: width: width }} {{ width }}w
+      {%- endif -%}
       {%- assign is_first = false -%}
     {%- endif -%}
   {%- endfor -%}
@@ -40,7 +44,11 @@
     {%- if included_widths contains needle -%}
     {%- else -%}
       {%- unless is_first -%}, {%- endunless -%}
-      {{ image | image_url: width: image_width, format: format }} {{ image_width }}w
+      {%- if format != blank and format == 'pjpg' or format == 'jpg' -%}
+        {{ image | image_url: width: image_width, format: format }} {{ image_width }}w
+      {%- else -%}
+        {{ image | image_url: width: image_width }} {{ image_width }}w
+      {%- endif -%}
     {%- endif -%}
   {%- endif -%}
 {%- else -%}

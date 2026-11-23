@@ -29,7 +29,7 @@
         "text_wGQiWR": {
           "type": "text",
           "settings": {
-            "title": "<p>Premium quality sanitary pads offering <strong>superior absorption</strong> and <strong>maximum comfort.</strong></p>",
+            "title": "<p>Sanitary pads for everyday period care.</p>",
             "padding_bottom": 20
           }
         },
@@ -46,15 +46,6 @@
         "product_features_bB8X4A": {
           "type": "Product-Features",
           "settings": {}
-        },
-        "product_certificates_VXjA7f": {
-          "type": "product-certificates",
-          "settings": {
-            "heading": "Certificates We Have",
-            "image_1": "shopify://shop_images/Clinically-Tested.png",
-            "image_2": "shopify://shop_images/Dermatologically-Tested.png",
-            "image_3": "shopify://shop_images/Non---irritant.png"
-          }
         },
         "price": {
           "type": "price",
@@ -86,16 +77,56 @@
             "padding_bottom": 20
           }
         },
-        "selling_fast_PFkH86": {
-          "type": "selling-fast",
-          "settings": {}
-        },
         "buttons": {
           "type": "add-buttons",
           "settings": {
             "enable_payment_button": true,
             "enable_gift_card_recipient": true,
             "padding_bottom": 20
+          }
+        },
+        "product_certificates_VXjA7f": {
+          "type": "product-certificates",
+          "settings": {
+            "heading": "Certificates We Have",
+            "image_1": "shopify://shop_images/Clinically-Tested.png",
+            "image_2": "shopify://shop_images/Dermatologically-Tested.png",
+            "image_3": "shopify://shop_images/Non---irritant.png"
+          }
+        },
+        "aov_ai_bundle_offer_upsell_LtBxGD": {
+          "type": "shopify://apps/aov-ai-bundle/blocks/offer-upsell/0335d423-143c-4ad7-b224-99a1db74a9ee",
+          "settings": {}
+        },
+        "last_houre_sale": {
+          "type": "last-houre-sale",
+          "disabled": true,
+          "settings": {}
+        },
+        "selling_fast_PFkH86": {
+          "type": "selling-fast",
+          "disabled": true,
+          "settings": {}
+        },
+        "description_product_PrHYrn": {
+          "type": "description-product",
+          "settings": {}
+        },
+        "icon_FwCCTX": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
+            "padding_bottom": 8
+          }
+        },
+        "product_view_i8nFPx": {
+          "type": "Product-view",
+          "disabled": true,
+          "settings": {
+            "view_text": "Peoples are viewing this right now"
           }
         },
         "sharing": {
@@ -106,20 +137,13 @@
             "padding_bottom": 20
           }
         },
-        "product_view_i8nFPx": {
-          "type": "Product-view",
+        "complimentary_qpi4yC": {
+          "type": "complimentary",
+          "disabled": true,
           "settings": {
-            "view_text": "Peoples are viewing this right now"
-          }
-        },
-        "icon_FwCCTX": {
-          "type": "icon",
-          "settings": {
-            "icon_name": "icon-truck",
-            "icon_size": 16,
-            "icon_color": "#4b4b4b",
-            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
-            "padding_bottom": 8
+            "title": "Bought together",
+            "complimentary_list_limit": 3,
+            "padding_bottom": 20
           }
         },
         "upsell": {
@@ -148,24 +172,9 @@
             "padding_bottom": 20
           }
         },
-        "complimentary_qpi4yC": {
-          "type": "complimentary",
-          "settings": {
-            "title": "Bought together",
-            "complimentary_list_limit": 3,
-            "padding_bottom": 20
-          }
-        },
         "variant_descriptions_description_zFaPiT": {
           "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
-          "settings": {}
-        },
-        "last_houre_sale": {
-          "type": "last-houre-sale",
-          "settings": {}
-        },
-        "description_product_PrHYrn": {
-          "type": "description-product",
+          "disabled": true,
           "settings": {}
         },
         "icon_d8teE9": {
@@ -198,12 +207,13 @@
         "short_info_H3zWWy",
         "extrainfo_cEj4pt",
         "product_features_bB8X4A",
-        "product_certificates_VXjA7f",
         "price",
         "shipping_text_GRcYBH",
         "variants",
         "quantity",
         "buttons",
+        "product_certificates_VXjA7f",
+        "aov_ai_bundle_offer_upsell_LtBxGD",
         "last_houre_sale",
         "selling_fast_PFkH86",
         "description_product_PrHYrn",
@@ -246,6 +256,19 @@
     },
     "gif_images_gb6mrC": {
       "type": "gif-images",
+      "blocks": {
+        "collection_images_CBpiUV": {
+          "type": "Collection-Images",
+          "settings": {
+            "collection_image": "shopify://shop_images/Clinically-Tested.png",
+            "alt_text": "clicnically"
+          }
+        }
+      },
+      "block_order": [
+        "collection_images_CBpiUV"
+      ],
+      "disabled": true,
       "settings": {
         "padding_top": 0,
         "padding_bottom": 20,
@@ -263,6 +286,7 @@
     },
     "counting_number_arqh6C": {
       "type": "counting-number",
+      "disabled": true,
       "settings": {
         "heading": "",
         "padding_top": 36,
@@ -364,6 +388,17 @@
         "padding_bottom": 36
       }
     },
+    "tp_recommended_products": {
+      "type": "tp-recommended-products",
+      "settings": {
+        "eyebrow": "PAIRS WELL WITH THIS",
+        "heading": "Recommended For You",
+        "subtitle": "Thoughtful period care essentials curated for your comfort.",
+        "products_limit": 4,
+        "fallback_collection": "",
+        "bg_color": "#ffffff"
+      }
+    },
     "section_liquid_r9y3aC": {
       "type": "section-liquid",
       "name": "Custom Liquid",
@@ -381,6 +416,7 @@
     "product_a_pluse_content_kKtNqB",
     "related",
     "section_faq_brbRd3",
+    "tp_recommended_products",
     "section_liquid_r9y3aC"
   ]
 }

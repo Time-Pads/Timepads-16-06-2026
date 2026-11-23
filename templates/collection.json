@@ -67,7 +67,7 @@
             "collection_title": "Ultra thin Regular pads",
             "collection_size": "",
             "font_weight_title": 600,
-            "collection_url": "shopify://collections/cotton-sanitary-pads"
+            "collection_url": "shopify://collections/rashfree-teen-sanitary-pads"
           }
         },
         "collection_images_nqb3mf": {
@@ -207,7 +207,7 @@
       ],
       "settings": {
         "product_limit": 36,
-        "grid_large": 3,
+        "grid_large": 4,
         "grid_mobile": "2",
         "enable_layout_toggle": true,
         "color_bg": "palette--light bg--neutral",

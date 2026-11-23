@@ -42,14 +42,6 @@
           "type": "product-cup",
           "settings": {}
         },
-        "product_certificates_k9E9iB": {
-          "type": "product-certificates",
-          "settings": {
-            "heading": "Certificates We Have",
-            "image_1": "shopify://shop_images/Gemini_Generated_Image_zfy5qvzfy5qvzfy5-removebg-preview.png",
-            "image_2": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png"
-          }
-        },
         "price": {
           "type": "price",
           "settings": {
@@ -86,10 +78,6 @@
             "heading": ""
           }
         },
-        "selling_fast_Nm64Pm": {
-          "type": "selling-fast",
-          "settings": {}
-        },
         "buttons": {
           "type": "add-buttons",
           "settings": {
@@ -98,19 +86,31 @@
             "padding_bottom": 20
           }
         },
-        "sharing": {
-          "type": "sharing",
+        "product_certificates_k9E9iB": {
+          "type": "product-certificates",
           "settings": {
-            "share_label": "Share",
-            "target_device": "",
-            "padding_bottom": 20
+            "heading": "Certificates We Have",
+            "image_1": "shopify://shop_images/Gemini_Generated_Image_zfy5qvzfy5qvzfy5-removebg-preview.png",
+            "image_2": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png"
           }
         },
-        "product_view_i8nFPx": {
-          "type": "Product-view",
-          "settings": {
-            "view_text": "Peoples are viewing this right now"
-          }
+        "aov_ai_bundle_offer_upsell_MJFLin": {
+          "type": "shopify://apps/aov-ai-bundle/blocks/offer-upsell/0335d423-143c-4ad7-b224-99a1db74a9ee",
+          "settings": {}
+        },
+        "last_houre_sale": {
+          "type": "last-houre-sale",
+          "disabled": true,
+          "settings": {}
+        },
+        "selling_fast_Nm64Pm": {
+          "type": "selling-fast",
+          "disabled": true,
+          "settings": {}
+        },
+        "description_product_PrHYrn": {
+          "type": "description-product",
+          "settings": {}
         },
         "icon_FwCCTX": {
           "type": "icon",
@@ -118,8 +118,33 @@
             "icon_name": "icon-truck",
             "icon_size": 16,
             "icon_color": "#4b4b4b",
-            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
+            "text": "<p>Estimated Delivery time <strong>3-7 days</strong></p>",
             "padding_bottom": 8
+          }
+        },
+        "product_view_i8nFPx": {
+          "type": "Product-view",
+          "disabled": true,
+          "settings": {
+            "view_text": "Peoples are viewing this right now"
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share",
+            "target_device": "",
+            "padding_bottom": 20
+          }
+        },
+        "complimentary_MHiNjU": {
+          "type": "complimentary",
+          "disabled": true,
+          "settings": {
+            "title": "Bought together",
+            "complimentary_list_limit": 3,
+            "padding_bottom": 20
           }
         },
         "upsell": {
@@ -148,24 +173,9 @@
             "padding_bottom": 20
           }
         },
-        "complimentary_MHiNjU": {
-          "type": "complimentary",
-          "settings": {
-            "title": "Bought together",
-            "complimentary_list_limit": 3,
-            "padding_bottom": 20
-          }
-        },
         "variant_descriptions_description_zFaPiT": {
           "type": "shopify://apps/variant-descriptions/blocks/description/23514619-b4d1-428b-952f-d533fb59f56f",
-          "settings": {}
-        },
-        "last_houre_sale": {
-          "type": "last-houre-sale",
-          "settings": {}
-        },
-        "description_product_PrHYrn": {
-          "type": "description-product",
+          "disabled": true,
           "settings": {}
         },
         "icon_d8teE9": {
@@ -197,13 +207,14 @@
         "judge_me_reviews_preview_badge_bcEbpN",
         "text_f9kace",
         "product_cup_eXjHex",
-        "product_certificates_k9E9iB",
         "price",
         "shipping_text_GRcYBH",
         "variants",
         "quantity",
         "sizing_guide_FqnmVX",
         "buttons",
+        "product_certificates_k9E9iB",
+        "aov_ai_bundle_offer_upsell_MJFLin",
         "last_houre_sale",
         "selling_fast_Nm64Pm",
         "description_product_PrHYrn",
@@ -226,6 +237,15 @@
         "enable_video_looping": true,
         "zoom_enable": true,
         "alt_text_enable": true,
+        "show_media_highlights": true,
+        "highlight_1_title": "",
+        "highlight_1_subtitle": "",
+        "highlight_2_title": "",
+        "highlight_2_subtitle": "",
+        "highlight_3_title": "",
+        "highlight_3_subtitle": "",
+        "highlight_4_title": "",
+        "highlight_4_subtitle": "",
         "product_breadcrumbs_enable": true,
         "product_breadcrumbs_list": [
           "regular-sanitary-pads"
@@ -327,6 +347,7 @@
     },
     "gif_images_gb6mrC": {
       "type": "gif-images",
+      "disabled": true,
       "settings": {
         "padding_top": 0,
         "padding_bottom": 20,
@@ -338,8 +359,13 @@
         "text_color": ""
       }
     },
+    "product_comparison_table": {
+      "type": "product-comparison",
+      "settings": {}
+    },
     "counting_number_arqh6C": {
       "type": "counting-number",
+      "disabled": true,
       "settings": {
         "heading": "",
         "padding_top": 36,
@@ -404,42 +430,42 @@
           "type": "faq",
           "settings": {
             "question": "1. Why should I switch to the TIME Menstrual Cup?",
-            "answer": "TIME Menstrual Cup saves money, prevents rashes, and is eco-friendly. One cup lasts 5\nyears, It’s comfortable for work, travel, and sleep."
+            "answer": "TIME Menstrual Cup saves money, prevents rashes, and is eco-friendly. One cup lasts 5\nyears, It\u2019s comfortable for work, travel, and sleep."
           }
         },
         "faq_pQiNBt": {
           "type": "faq",
           "settings": {
             "question": "2. Is TIME Menstrual Cup safe for sensitive skin?",
-            "answer": "Yes 👍 It is made from 100% medical-grade silicone, BPA-free, toxin-free, and dermatologically safe. No smell, no itching, no rashes."
+            "answer": "Yes \ud83d\udc4d It is made from 100% medical-grade silicone, BPA-free, toxin-free, and dermatologically safe. No smell, no itching, no rashes."
           }
         },
         "faq_DkLWcq": {
           "type": "faq",
           "settings": {
             "question": "3. Can I use it during heavy flow or overnight?",
-            "answer": "Yes. TIME Menstrual cups hold 3× more fluid than pads and can be worn safely for 6–8 hours, even overnight. Just empty earlier on very heavy days."
+            "answer": "Yes. TIME Menstrual cups hold 3\u00d7 more fluid than pads and can be worn safely for 6\u20138 hours, even overnight. Just empty earlier on very heavy days."
           }
         },
         "faq_NWCQgK": {
           "type": "faq",
           "settings": {
             "question": "4. How do I clean and maintain the cup?",
-            "answer": "During periods → Wash with clean water or mild soap\nAfter periods → Boil in water for 5 minutes\n\nDry and store in the breathable pouch provided."
+            "answer": "During periods \u2192 Wash with clean water or mild soap\nAfter periods \u2192 Boil in water for 5 minutes\n\nDry and store in the breathable pouch provided."
           }
         },
         "faq_Y8UPKf": {
           "type": "faq",
           "settings": {
-            "question": "5. What if the cup doesn’t fit or I’m not comfortable?",
-            "answer": "Don’t worry 😊 Most users need 1–2 cycles to adjust.\nIf you still feel uncomfortable, try a different fold or size."
+            "question": "5. What if the cup doesn\u2019t fit or I\u2019m not comfortable?",
+            "answer": "Don\u2019t worry \ud83d\ude0a Most users need 1\u20132 cycles to adjust.\nIf you still feel uncomfortable, try a different fold or size."
           }
         },
         "faq_E7EjGz": {
           "type": "faq",
           "settings": {
             "question": "6. What if cup gets stuck?",
-            "answer": "Don’t worry 😊 A menstrual cup cannot get lost inside your body.\n\nStay calm and try these steps:\n\nRelax your muscles and take slow breaths.\n\nGently pinch the base of the cup to break the suction seal.\n\nIf needed, slide one finger along the side of the cup and press the rim inward to release the seal.\n\nSlowly wiggle and pull the cup downward.\n\nIf it still feels difficult, squat or sit on the toilet to make removal easier.\n\n👉 Most users need a few cycles to get comfortable."
+            "answer": "Don\u2019t worry \ud83d\ude0a A menstrual cup cannot get lost inside your body.\n\nStay calm and try these steps:\n\nRelax your muscles and take slow breaths.\n\nGently pinch the base of the cup to break the suction seal.\n\nIf needed, slide one finger along the side of the cup and press the rim inward to release the seal.\n\nSlowly wiggle and pull the cup downward.\n\nIf it still feels difficult, squat or sit on the toilet to make removal easier.\n\n\ud83d\udc49 Most users need a few cycles to get comfortable."
           }
         }
       },
@@ -509,9 +535,15 @@
         "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
       }
     },
-    "product_comparison_table": {
-      "type": "product-comparison",
-      "settings": {}
+    "tp_recommended_products": {
+      "type": "tp-recommended-products",
+      "settings": {
+        "eyebrow": "PAIRS WELL WITH THIS",
+        "heading": "Recommended For You",
+        "subtitle": "Thoughtful period care essentials curated for your comfort.",
+        "products_limit": 4,
+        "bg_color": "#FFFFFF"
+      }
     }
   },
   "order": [
@@ -526,6 +558,7 @@
     "related",
     "faq_menstrual_cup_zCE8ct",
     "section_faq_brbRd3",
+    "tp_recommended_products",
     "section_liquid_ei7fXL"
   ]
 }

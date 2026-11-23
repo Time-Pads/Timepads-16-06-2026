@@ -1,0 +1,125 @@
+{%- comment -%}
+  TIMEPADS - Clean Minimal Cart Drawer Upsell Section
+  Section ID / Name: tp-comfort-upsell-grid
+  Displays:
+    1. Header: Outlined heart icon + "Complete your comfort" + Subtitle + Desktop outlined pill badge "Add & Save More"
+    2. Product Grid: Horizontal scroll/carousel with compact cards (image left, info right, + Add pill button)
+    Excludes products already in the cart.
+{%- endcomment -%}
+
+{%- liquid
+  assign upsell_heading = heading | default: settings.cart_drawer_upsell_heading | default: 'Complete your comfort'
+  assign upsell_subtitle = subtitle | default: 'Add these essentials for a more comfortable period.'
+  assign upsell_badge_text = badge_text | default: 'Add & Save More'
+  assign upsell_limit = limit | default: settings.cart_drawer_upsell_limit | default: 6 | plus: 0
+
+  assign cart_product_ids = '|'
+  for item in cart.items
+    assign cart_product_ids = cart_product_ids | append: item.product.id | append: '|'
+  endfor
+
+  assign candidate_handles = ''
+
+  if candidate_handles_input != blank
+    assign candidate_handles = candidate_handles | append: candidate_handles_input | append: ','
+  endif
+
+  for cart_item in cart.items
+    assign single_upsell = cart_item.product.metafields.theme.upsell.value
+    if single_upsell and single_upsell.available
+      assign candidate_handles = candidate_handles | append: single_upsell.handle | append: ','
+    endif
+
+    assign upsell_list = cart_item.product.metafields.theme.upsell_list.value
+    for upsell_product in upsell_list
+      if upsell_product and upsell_product.available
+        assign candidate_handles = candidate_handles | append: upsell_product.handle | append: ','
+      endif
+    endfor
+  endfor
+
+  if product_list != blank
+    for p in product_list
+      assign candidate_handles = candidate_handles | append: p.handle | append: ','
+    endfor
+  endif
+
+  assign upsell_col = collection_setting | default: settings.cart_drawer_upsell_collection
+  if upsell_col != blank
+    if upsell_col.products
+      for prod in upsell_col.products limit: 20
+        assign candidate_handles = candidate_handles | append: prod.handle | append: ','
+      endfor
+    elsif collections[upsell_col].products.size > 0
+      for prod in collections[upsell_col].products limit: 20
+        assign candidate_handles = candidate_handles | append: prod.handle | append: ','
+      endfor
+    endif
+  endif
+
+  # Curated fallback handles matching actual catalog handles (Ultra Velvet & Ultra Soft first)
+  assign default_handles = 'ultra-velvet-290mm-xl-pack-of-30-single-pack,soft-sanitary-pads,heavy-flow-sanitary-pads,time-ultra-thin-quality-sanitary-pads,period-pain-relief-cream,menstrual-cup,overnight-wider-back-rash-free-pads-xxl-15-pads,premium-cotton-top-sheet-ultra-thin-rash-free-pads-xl-21-pads,sanitary-pads-for-heavy-flow-pocket-friendly,overnight-pads'
+  assign candidate_handles = candidate_handles | append: default_handles | append: ','
+
+  if collections['all'].products.size > 0
+    for prod in collections['all'].products limit: 20
+      assign candidate_handles = candidate_handles | append: prod.handle | append: ','
+    endfor
+  endif
+
+  assign candidate_handles_arr = candidate_handles | split: ','
+  assign seen_handles = '|'
+  assign rendered_count = 0
+-%}
+
+{%- capture upsell_cards_html -%}
+  {%- for h in candidate_handles_arr -%}
+    {%- assign clean_h = h | strip -%}
+    {%- if clean_h != blank and rendered_count < upsell_limit -%}
+      {%- assign marker = '|' | append: clean_h | append: '|' -%}
+      {%- unless seen_handles contains marker -%}
+        {%- assign seen_handles = seen_handles | append: clean_h | append: '|' -%}
+        {%- assign u_prod = all_products[clean_h] -%}
+        {%- if u_prod != blank and u_prod.available -%}
+          {%- assign prod_id_marker = '|' | append: u_prod.id | append: '|' -%}
+          {%- unless cart_product_ids contains prod_id_marker -%}
+            {%- assign rendered_count = rendered_count | plus: 1 -%}
+            {%- render 'cart-drawer-upsell-card', card_product: u_prod, card_index: rendered_count -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if rendered_count > 0 -%}
+  <div class="tp-comfort-upsell-section" data-tp-cart-upsell id="tp-comfort-upsell-grid-wrapper">
+    <!-- 1. HEADER -->
+    <div class="tp-comfort-upsell-head">
+      <div class="tp-upsell-heading-left">
+        <div class="tp-upsell-title-row">
+          <span class="tp-heart-icon" aria-hidden="true">
+            <svg class="tp-heart-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </span>
+          <h3 class="tp-upsell-main-title">{{ upsell_heading }}</h3>
+        </div>
+        {%- if upsell_subtitle != blank -%}
+          <p class="tp-upsell-subtitle">{{ upsell_subtitle }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if upsell_badge_text != blank -%}
+        <div class="tp-upsell-badge-wrap">
+          <span class="tp-upsell-pill-badge">{{ upsell_badge_text }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- 2. PRODUCT GRID / CAROUSEL -->
+    <div class="tp-comfort-upsell-grid" id="tp-comfort-upsell-grid" role="region" aria-label="{{ upsell_heading | escape }}">
+      {{ upsell_cards_html }}
+    </div>
+  </div>
+{%- endif -%}

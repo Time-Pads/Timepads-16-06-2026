@@ -1676,8 +1676,7 @@ body:not(.focus-enabled)
   -moz-osx-font-smoothing: auto;
   -webkit-font-smoothing: subpixel-antialiased;
   direction: ltr;
-  font-family: Avenir, Avenir Next, Helvetica Neue, Segoe UI, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--FONT-STACK-BODY);
     font-display: swap;
   font-variant-numeric: tabular-nums;
   font-weight: 500;
@@ -3133,8 +3132,7 @@ html,
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+  font-family: var(--FONT-STACK-BODY);
   font-feature-settings: normal;
   font-variation-settings: normal;
   -webkit-tap-highlight-color: transparent;
@@ -25488,3 +25486,15 @@ input:not(.sold-out):not(.unavailable):not(:disabled)
   display: inline-block;
 }
 /*# sourceMappingURL=/s/files/1/0845/7886/1371/t/22/assets/theme.css.map?v=1737615720 */
+
+/* Typography: Spectral heading weights — H3 and smaller use 600 */
+h3,
+h4,
+h5,
+h6,
+h3[class],
+h4[class],
+h5[class],
+h6[class] {
+  font-weight: 600;
+}

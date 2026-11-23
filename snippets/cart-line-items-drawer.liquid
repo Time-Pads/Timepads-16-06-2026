@@ -1,0 +1,100 @@
+<!-- /snippets/cart-line-items.liquid -->
+
+{%- assign cart_products = '|' -%}
+
+<div class="cart__items tp-comfort-items">
+  {% for line_item in cart.items %}
+    {%- assign compare_price = line_item.variant.compare_at_price | default: line_item.original_price -%}
+    {%- assign item_savings = 0 -%}
+    {%- assign item_discount_pct = 0 -%}
+    {%- if compare_price > line_item.final_price -%}
+      {%- assign item_savings = compare_price | minus: line_item.final_price -%}
+      {%- assign item_discount_pct = item_savings | times: 100.0 | divided_by: compare_price | round -%}
+    {%- endif -%}
+
+    <div class="cart__items__row tp-comfort-item-card" data-cart-item>
+      <div class="item--loadbar" data-item-loadbar style="display: none;">&nbsp;</div>
+      <div class="tp-comfort-item-inner" data-item>
+
+        <!-- LEFT: PRODUCT IMAGE -->
+        <div class="tp-comfort-item-image{% unless line_item.image %} product-no-image{% endunless %}">
+          <a href="{{ line_item.url }}">
+            {% if line_item.image %}
+              {% assign image = line_item.image %}
+              <img src="{{ image | image_url: width: 160 }}"
+                   alt="{{ line_item.title | escape }}"
+                   class="tp-item-img"
+                   loading="lazy"
+                   width="74"
+                   height="74">
+            {% endif %}
+          </a>
+        </div>
+
+        <!-- RIGHT: TITLE, PRICING, VARIANT, SAVINGS, AND ACTIONS -->
+        <div class="tp-comfort-item-body">
+
+          <!-- TOP ROW: TITLE + TRASH ICON -->
+          <div class="tp-comfort-item-top">
+            <h4 class="tp-comfort-item-title">
+              <a href="{{ line_item.url }}">{{ line_item.product.title }}</a>
+            </h4>
+            <div class="tp-comfort-trash-wrap">
+              <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0"
+                data-remove-key="{{ line_item.key }}"
+                class="tp-comfort-trash-btn"
+                aria-label="{{ 'cart.general.remove' | t }}"
+                tabindex="0">
+                {%- render 'icon-core-trash' -%}
+              </a>
+            </div>
+          </div>
+
+          <!-- SECOND ROW: VARIANT INFO -->
+          {% unless line_item.product.has_only_default_variant %}
+            <p class="tp-comfort-variant">{{ line_item.variant.title }}</p>
+          {% endunless %}
+
+          <!-- THIRD ROW: PRICING -->
+          <div class="tp-comfort-pricing-row">
+            {%- if compare_price > line_item.final_price -%}
+              <span class="tp-comfort-mrp"><del>M.R.P: {{ compare_price | money_without_trailing_zeros }}</del></span>
+            {%- endif -%}
+            <strong class="tp-comfort-final-price">{{ line_item.final_price | money_without_trailing_zeros }}</strong>
+          </div>
+
+          <!-- FOURTH ROW: SAVINGS BADGE ON LEFT + QUANTITY PILL ON RIGHT -->
+          <div class="tp-comfort-item-bottom-row">
+            <div class="tp-comfort-save-badge-wrap">
+              {%- if item_savings > 0 -%}
+                <span class="tp-comfort-save-badge">
+                  Save {{ item_savings | money_without_trailing_zeros }}{% if item_discount_pct > 0 %} ({{ item_discount_pct }}%){% endif %}
+                </span>
+              {%- endif -%}
+            </div>
+
+            <div class="tp-comfort-qty-pill" data-quantity-selector>
+              <button class="tp-qty-btn tp-qty-btn--minus" data-decrease-quantity type="button" aria-label="Decrease">&minus;</button>
+              <label for="updates_{{ line_item.key }}" class="visually-hidden">{{ 'cart.label.quantity' | t }}</label>
+              <input data-quantity-input
+                data-update-cart="{{ line_item.key }}"
+                class="tp-qty-input"
+                type="number"
+                min="0"
+                id="updates_{{ line_item.key }}"
+                name="updates[]"
+                value="{{ line_item.quantity }}"/>
+              <button class="tp-qty-btn tp-qty-btn--plus" data-increase-quantity type="button" aria-label="Increase">+</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {%- assign cart_products = cart_products | append: line_item.product.id | append: '|' -%}
+  {% endfor %}
+</div>
+
+{%- if settings.cart_drawer_show_upsell -%}
+  {%- render 'tp-comfort-upsell-grid' -%}
+{%- endif -%}

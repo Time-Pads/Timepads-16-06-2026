@@ -96,15 +96,32 @@
 
     {% assign short_desc = product.metafields.custom.short_info_product.value | default: product.metafields.custom.short_info_product %}
     {% if short_desc == blank %}
+      {% assign short_desc = product.metafields.custom.short_info.value | default: product.metafields.custom.short_info %}
+    {% endif %}
+    {% if short_desc == blank %}
+      {% assign short_desc = product.metafields.custom.short_description.value | default: product.metafields.custom.short_description %}
+    {% endif %}
+    {% if short_desc == blank %}
+      {% assign short_desc = product.metafields.descriptors.subtitle.value | default: product.metafields.descriptors.subtitle %}
+    {% endif %}
+    {% if short_desc == blank %}
+      {% assign short_desc = product.metafields.theme.cutline.value | default: product.metafields.theme.cutline %}
+    {% endif %}
+    {% if short_desc == blank and product.description != blank %}
+      {% assign short_desc = product.description | strip_html | strip_newlines | strip | truncatewords: 14 %}
+    {% endif %}
+    {% if short_desc == blank %}
       {% if title_dc contains 'cream' %}
         {% assign short_desc = 'Fast-acting cramp relief cream made with natural Ayurvedic ingredients.' %}
       {% elsif title_dc contains 'cup' %}
         {% assign short_desc = '100% medical-grade silicone menstrual cup for eco-friendly comfort.' %}
       {% else %}
-        {% assign short_desc = 'Premium sanitary pads for superior absorption and comfort.' %}
+        {% assign short_desc = '' %}
       {% endif %}
     {% endif %}
-    <p class="tp-combo-card-desc">{{ short_desc | escape }}</p>
+    {% if short_desc != blank %}
+      <p class="tp-combo-card-desc">{{ short_desc | strip_html | strip | escape }}</p>
+    {% endif %}
 
     <!-- Rating Row -->
     {% assign rating_val = product.metafields.reviews.rating.value.rating | default: product.metafields.reviews.rating.value | default: '4.8' %}

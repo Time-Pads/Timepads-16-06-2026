@@ -1,0 +1,227 @@
+{%- comment -%}
+  Renders an individual product size card for the TIME PDP size selector
+  Accepts:
+    - p: Product drop (required)
+    - is_selected: Boolean (true if current active product)
+{%- endcomment -%}
+
+{%- liquid
+  assign card_img = p.featured_image
+  if card_img == blank and p.images.size > 0
+    assign card_img = p.images.first
+  endif
+
+  assign card_size = ''
+  assign card_pack = ''
+  assign raw_size_val = ''
+  assign raw_pack_val = ''
+  assign raw_dim_val = ''
+
+  comment
+    1. Check specific custom size label metafields (ignore pure numeric IDs like 8, 9, 10, 11, 12)
+  endcomment
+  if p.metafields.custom.size_label != blank
+    assign raw_size_val = p.metafields.custom.size_label.value | default: p.metafields.custom.size_label
+  elsif p.metafields.custom.size_name != blank
+    assign raw_size_val = p.metafields.custom.size_name.value | default: p.metafields.custom.size_name
+  elsif p.metafields.custom.size != blank
+    assign temp_meta = p.metafields.custom.size.value | default: p.metafields.custom.size | strip
+    assign temp_meta_num = temp_meta | plus: 0
+    if temp_meta_num == 0 and temp_meta != '0'
+      assign raw_size_val = temp_meta
+    endif
+  endif
+
+  comment
+    2. Check options on the product (Option: Size, SIZE, etc.)
+  endcomment
+  for opt in p.options_with_values
+    assign o_name = opt.name | downcase | strip
+    if raw_size_val == blank and o_name contains 'size'
+      assign opt_val = opt.values.first | strip
+      assign opt_val_num = opt_val | plus: 0
+      if opt_val_num == 0 and opt_val != '0'
+        assign raw_size_val = opt_val
+      endif
+    endif
+    if raw_pack_val == blank
+      if o_name contains 'available' or o_name contains 'pack' or o_name contains 'qty' or o_name contains 'quantity'
+        assign raw_pack_val = opt.values.first | strip
+      endif
+    endif
+  endfor
+
+  comment
+    3. Split size and dimension if format is "XXL+ 330MM" or "XL+ 290MM"
+  endcomment
+  if raw_size_val != blank
+    assign words = raw_size_val | split: ' '
+    if words.size > 1
+      assign first_w = words[0]
+      assign second_w = words[1]
+      assign second_w_up = second_w | upcase
+      if second_w_up contains 'MM' or second_w_up contains 'CM' or second_w_up contains 'G' or second_w_up contains 'ML'
+        assign card_size = first_w
+        assign raw_dim_val = second_w
+      else
+        assign card_size = raw_size_val
+      endif
+    else
+      assign card_size = raw_size_val
+    endif
+  endif
+
+  comment
+    4. Fallback: Deduce size from product title and handle
+  endcomment
+  assign t_up = p.title | upcase
+  assign h_up = p.handle | upcase
+  assign combined_text = t_up | append: ' ' | append: h_up
+
+  if card_size == blank
+    if combined_text contains 'XXL+'
+      assign card_size = 'XXL+'
+    elsif combined_text contains 'XL+'
+      assign card_size = 'XL+'
+    elsif combined_text contains 'XXXL'
+      assign card_size = 'XXXL'
+    elsif combined_text contains 'XXL'
+      assign card_size = 'XXL'
+    elsif combined_text contains 'XL 290' or combined_text contains 'XL 280' or combined_text contains 'XL 240' or combined_text contains ' XL ' or combined_text contains '-XL-' or combined_text contains '-XL'
+      assign card_size = 'XL'
+    elsif combined_text contains 'CUDDLE'
+      assign card_size = 'XXL+'
+    elsif combined_text contains 'VELVET'
+      assign card_size = 'XL+'
+    elsif combined_text contains 'FEATHER'
+      assign card_size = 'XL'
+    elsif combined_text contains 'UNILINE' or combined_text contains 'STRAIGHT'
+      assign card_size = 'Straight'
+    elsif combined_text contains 'REGULAR'
+      assign card_size = 'Regular'
+    elsif combined_text contains 'TEEN'
+      assign card_size = 'Teen'
+    elsif combined_text contains 'CURATED'
+      assign card_size = 'Curated'
+    elsif combined_text contains 'TRIAL'
+      assign card_size = 'Trial'
+    elsif combined_text contains 'COMBO'
+      assign card_size = 'Combo'
+    elsif combined_text contains 'MENSTRUAL'
+      if combined_text contains ' S ' or combined_text contains 'SMALL' or combined_text contains '-S'
+        assign card_size = 'S'
+      elsif combined_text contains ' M ' or combined_text contains 'MEDIUM' or combined_text contains '-M'
+        assign card_size = 'M'
+      elsif combined_text contains ' L ' or combined_text contains 'LARGE' or combined_text contains '-L'
+        assign card_size = 'L'
+      else
+        assign card_size = 'Cup'
+      endif
+    else
+      assign card_size = p.title | truncate: 12
+    endif
+  endif
+
+  comment
+    5. Fallback dimension (e.g. 330MM, 290MM, 240MM)
+  endcomment
+  if raw_dim_val == blank
+    if combined_text contains '360MM' or combined_text contains '360 MM' or combined_text contains '360-MM'
+      assign raw_dim_val = '360MM'
+    elsif combined_text contains '330MM' or combined_text contains '330 MM' or combined_text contains '330-MM'
+      assign raw_dim_val = '330MM'
+    elsif combined_text contains '290MM' or combined_text contains '290 MM' or combined_text contains '290-MM'
+      assign raw_dim_val = '290MM'
+    elsif combined_text contains '280MM' or combined_text contains '280 MM' or combined_text contains '280-MM'
+      assign raw_dim_val = '280MM'
+    elsif combined_text contains '240MM' or combined_text contains '240 MM' or combined_text contains '240-MM'
+      assign raw_dim_val = '240MM'
+    elsif combined_text contains 'CUDDLE' or card_size == 'XXL+' or card_size == 'XXL'
+      assign raw_dim_val = '330MM'
+    elsif combined_text contains 'VELVET' or card_size == 'XL+'
+      assign raw_dim_val = '290MM'
+    elsif combined_text contains 'FEATHER' or card_size == 'XL'
+      assign raw_dim_val = '290MM'
+    elsif combined_text contains 'UNILINE' or card_size == 'Straight'
+      assign raw_dim_val = '240MM'
+    endif
+  endif
+
+  comment
+    6. Fallback pack info (e.g. 30 Pads, 21 Pads, 15 Pads, 07 Pads)
+  endcomment
+  if raw_pack_val == blank
+    if p.metafields.custom.pack != blank
+      assign raw_pack_val = p.metafields.custom.pack.value | default: p.metafields.custom.pack
+    elsif p.metafields.custom.pack_size != blank
+      assign raw_pack_val = p.metafields.custom.pack_size.value | default: p.metafields.custom.pack_size
+    elsif combined_text contains '30 PADS' or combined_text contains '30PADS' or combined_text contains '30-PADS' or combined_text contains 'PACK OF 30'
+      assign raw_pack_val = '30 Pads'
+    elsif combined_text contains '21 PADS' or combined_text contains '21PADS' or combined_text contains '21-PADS' or combined_text contains 'PACK OF 21'
+      assign raw_pack_val = '21 Pads'
+    elsif combined_text contains '15 PADS' or combined_text contains '15PADS' or combined_text contains '15-PADS' or combined_text contains 'PACK OF 15'
+      assign raw_pack_val = '15 Pads'
+    elsif combined_text contains '07 PADS' or combined_text contains '7 PADS' or combined_text contains '7-PADS' or combined_text contains 'PACK OF 7'
+      assign raw_pack_val = '07 Pads'
+    endif
+  endif
+
+  comment
+    7. Format card_pack line (Dimension / Pack)
+  endcomment
+  if raw_dim_val != blank and raw_pack_val != blank
+    assign card_pack = raw_dim_val | append: ' / ' | append: raw_pack_val
+  elsif raw_dim_val != blank
+    assign card_pack = raw_dim_val
+  elsif raw_pack_val != blank
+    assign card_pack = raw_pack_val
+  else
+    assign card_pack = ''
+  endif
+-%}
+
+{%- if is_selected -%}
+  <div class="tp-size-card is-selected" aria-current="true" role="button" tabindex="0" data-product-url="{{ p.url }}">
+    <div class="tp-size-card__image-box">
+      {%- if card_img != blank -%}
+        <img
+          src="{{ card_img | image_url: width: 240 }}"
+          alt="{{ card_size | escape }}{% if card_pack != blank %} - {{ card_pack | escape }}{% endif %}"
+          width="100"
+          height="100"
+          loading="lazy"
+          decoding="async"
+          class="tp-size-card__img"
+        >
+      {%- endif -%}
+    </div>
+    <div class="tp-size-card__info">
+      <span class="tp-size-card__size">{{ card_size }}</span>
+      {%- if card_pack != blank -%}
+        <span class="tp-size-card__pack">{{ card_pack }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+{%- else -%}
+  <a href="{{ p.url }}" class="tp-size-card" title="{{ p.title | escape }}" data-product-url="{{ p.url }}">
+    <div class="tp-size-card__image-box">
+      {%- if card_img != blank -%}
+        <img
+          src="{{ card_img | image_url: width: 240 }}"
+          alt="{{ card_size | escape }}{% if card_pack != blank %} - {{ card_pack | escape }}{% endif %}"
+          width="100"
+          height="100"
+          loading="lazy"
+          decoding="async"
+          class="tp-size-card__img"
+        >
+      {%- endif -%}
+    </div>
+    <div class="tp-size-card__info">
+      <span class="tp-size-card__size">{{ card_size }}</span>
+      {%- if card_pack != blank -%}
+        <span class="tp-size-card__pack">{{ card_pack }}</span>
+      {%- endif -%}
+    </div>
+  </a>
+{%- endif -%}

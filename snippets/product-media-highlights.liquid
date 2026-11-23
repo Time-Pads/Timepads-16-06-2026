@@ -34,7 +34,7 @@
     if is_cup
       assign default_1_title = 'Medical-Grade Silicone'
       assign default_1_sub = '100% safe & toxin-free'
-      assign default_2_title = '10–12 Hours Comfort'
+      assign default_2_title = '8–12 Hours Comfort'
       assign default_2_sub = 'Day & night protection'
       assign default_3_title = 'Reusable & Eco-Safe'
       assign default_3_sub = 'Lasts for up to 5+ years'
@@ -54,7 +54,7 @@
       assign default_1_sub = 'Stays dry all night'
       assign default_2_title = 'Wider Back Coverage'
       assign default_2_sub = 'Extra protection where you need it'
-      assign default_3_title = 'Overnight Comfort'
+      assign default_3_title = 'Day & Overnight Comfort'
       assign default_3_sub = 'For heavy flow days'
       assign default_4_title = 'Soft & Skin-Friendly'
       assign default_4_sub = 'Gentle on skin for all-night use'
@@ -92,7 +92,7 @@
     assign h3_title = section.settings.highlight_3_title
     assign h3_sub = section.settings.highlight_3_subtitle
     if is_cup or is_cream
-      if h3_title == blank or h3_title == 'Overnight Comfort'
+      if h3_title == blank or h3_title == 'Day & Overnight Comfort'
         assign h3_title = default_3_title
         assign h3_sub = default_3_sub
       endif
@@ -115,6 +115,30 @@
         assign h4_title = default_4_title
         assign h4_sub = default_4_sub
       endif
+    endif
+
+    if is_sanitary_pad
+      assign h1_title = 'Flow Suitability'
+      assign h1_sub = 'Find your fit in the flow guide'
+      if pad_info[2] != blank
+        assign h1_sub = pad_info[2] | downcase | prepend: 'Designed for ' | append: ' days'
+      endif
+
+      assign h2_title = 'Pad Coverage'
+      assign h2_sub = 'Compare lengths in the size guide'
+      if pad_info[1] != blank
+        assign h2_sub = pad_info[1] | append: ' pad length'
+      endif
+      if pad_info[1] == '290mm'
+        assign h2_title = 'Extended Coverage'
+      elsif pad_info[1] == '330mm'
+        assign h2_title = 'Extra-Long Coverage'
+      endif
+
+      assign h3_title = 'Recommended Use'
+      assign h3_sub = pad_info[4] | default: 'Choose by flow and coverage'
+      assign h4_title = 'Made With'
+      assign h4_sub = pad_info[5] | default: 'See product details'
     endif
 
     assign h1_icon = section.settings.highlight_1_icon
@@ -259,7 +283,7 @@
       [data-thumbnails-left] .product__media__wrapper {
         display: flex !important;
         flex-wrap: wrap !important;
-        justify-content: flex-end !important;
+        justify-content: space-between !important;
       }
       [data-thumbnails-left] .product__media__wrapper .product__grid--slides {
         max-width: calc(100% - 60px - var(--IMAGE-SPACING, 10px)) !important;

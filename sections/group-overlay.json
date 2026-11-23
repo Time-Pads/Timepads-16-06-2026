@@ -14,15 +14,11 @@
     "cart": {
       "type": "cart-drawer",
       "settings": {
+        "cart_notes_enable": true,
         "cart_shipping_enable": false,
         "cart_show_quantity": true,
-        "cart_notes_enable": true,
-        "show_free_shipping_message": true,
-        "message": "Spend ||amount|| more for free shipping",
-        "cart_custom_message_enable": true,
-        "cart_custom_message_text": "<p>Use code <strong>TENOFF</strong> at checkout for 10% off</p>",
-        "cart_color_bg": "palette--light bg--accent",
-        "cart_show_additional_buttons": true
+        "cart_show_additional_buttons": true,
+        "cart_color_bg": "palette--light bg--accent"
       }
     },
     "popups": {

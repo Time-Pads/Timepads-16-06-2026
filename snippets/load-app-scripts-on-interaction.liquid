@@ -1,118 +1,125 @@
-<script>
-  (function () {
-    // Define the array of strings to look for in the script or content
-    const stringsToMatch = [
-      'uppromote', 'searchpie', 'googletagmanager', 'clarity', 'klaviyo'
-    ];
-
-    // Function to check if a script src or content contains any of the strings in the array
-    function scriptContainsString(scriptElement, strings) {
-      if (scriptElement.hasAttribute('data-bypass-lazy')) return false;
-      const scriptSrc = scriptElement.getAttribute('src') || '';
-      const scriptContent = scriptElement.textContent || '';
-      return strings.some((str) => scriptSrc.includes(str) || scriptContent.includes(str));
-    }
-
-    // Callback function to execute when mutations are observed
-    function mutationCallback(mutationsList) {
-      mutationsList.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-          mutation.addedNodes.forEach((node) => {
-            if (node.tagName === 'SCRIPT') {
-              if (scriptContainsString(node, stringsToMatch)) {
-                node.setAttribute('type', 'lazy-script');
-              }
-            }
-          });
-        }
-      });
-    }
-
-    // Create an observer instance linked to the callback function
-    const observer = new MutationObserver(mutationCallback);
-
-    // Start observing the document for added script and link tags immediately
-    observer.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-    });
-
-    // Disconnect the observer after DOMContentLoaded event
-    document.addEventListener('DOMContentLoaded', () => {
-      observer.disconnect();
-    });
-
-    // ── Interaction-based script loading trigger ─────────────────────────────
-    var triggered = false;
-    function triggerInteraction() {
-      if (triggered) return;
-      triggered = true;
-
-      // Remove listeners
-      window.removeEventListener('scroll', triggerInteraction);
-      window.removeEventListener('mousemove', triggerInteraction);
-      window.removeEventListener('touchstart', triggerInteraction);
-      window.removeEventListener('keydown', triggerInteraction);
-
-      // Dispatch asyncLazyLoad for Shopify storefront non-critical features
-      document.dispatchEvent(new CustomEvent('asyncLazyLoad'));
-
-      // Find all scripts marked as lazy-script
-      const lazyScripts = Array.from(document.querySelectorAll('script[type="lazy-script"]'));
-
-      function loadNextScript() {
-        if (lazyScripts.length === 0) return;
-        const script = lazyScripts.shift();
-        if (!script) return;
-
-        var newScript = document.createElement('script');
-        if (script.src) {
-          newScript.src = script.src;
-          newScript.async = true;
-          
-          let resolved = false;
-          const resolveAndNext = () => {
-            if (resolved) return;
-            resolved = true;
-            // Introduce a 500ms pacing delay to yield main thread control to the browser
-            setTimeout(scheduleNext, 500);
-          };
-
-          newScript.onload = resolveAndNext;
-          newScript.onerror = resolveAndNext;
-          
-          // Safety timeout of 4 seconds in case script fails to respond
-          setTimeout(resolveAndNext, 4000);
-          
-          document.head.appendChild(newScript);
-        } else {
-          newScript.textContent = script.textContent;
-          document.head.appendChild(newScript);
-          // Inline scripts execute synchronously, yield 200ms before next script
-          setTimeout(scheduleNext, 200);
-        }
-        
-        script.remove();
-      }
-
-      function scheduleNext() {
-        if (lazyScripts.length === 0) return;
-        if (typeof requestIdleCallback === 'function') {
-          requestIdleCallback(() => loadNextScript(), { timeout: 2000 });
-        } else {
-          setTimeout(loadNextScript, 100);
-        }
-      }
-
-      // Start the paced sequential script loading
-      scheduleNext();
-    }
-
-    window.triggerInteraction = triggerInteraction;
-
-    window.addEventListener('scroll', triggerInteraction, {passive: true});
-    window.addEventListener('mousemove', triggerInteraction, {passive: true});
-    window.addEventListener('touchstart', triggerInteraction, {passive: true});
-    window.addEventListener('keydown', triggerInteraction, {passive: true});
-  })(); 
-</script>
+<script>
+  (function () {
+    // Define the array of strings to look for in the script or content
+    const stringsToMatch = [
+      'uppromote', 'searchpie', 'googletagmanager', 'clarity', 'klaviyo',
+      'shopify_chat', 'inbox', 'trackingmore', 'whatmore',
+      'facebook.net', 'connect.facebook', 'snapchat', 'tiktok'
+    ];
+
+    // Function to check if a script src or content contains any of the strings in the array
+    function scriptContainsString(scriptElement, strings) {
+      if (scriptElement.hasAttribute('data-bypass-lazy')) return false;
+      const scriptSrc = scriptElement.getAttribute('src') || '';
+      const scriptContent = scriptElement.textContent || '';
+      return strings.some((str) => scriptSrc.includes(str) || scriptContent.includes(str));
+    }
+
+    // Callback function to execute when mutations are observed
+    function mutationCallback(mutationsList) {
+      mutationsList.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.tagName === 'SCRIPT') {
+              if (scriptContainsString(node, stringsToMatch)) {
+                node.setAttribute('type', 'lazy-script');
+              }
+            }
+          });
+        }
+      });
+    }
+
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(mutationCallback);
+
+    // Start observing the document for added script and link tags immediately
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Disconnect the observer after DOMContentLoaded event
+    document.addEventListener('DOMContentLoaded', () => {
+      observer.disconnect();
+    });
+
+    // ── Interaction-based script loading trigger ─────────────────────────────
+    var triggered = false;
+    function triggerInteraction() {
+      if (triggered) return;
+      triggered = true;
+
+      // Remove listeners
+      window.removeEventListener('scroll', triggerInteraction);
+      window.removeEventListener('mousemove', triggerInteraction);
+      window.removeEventListener('touchstart', triggerInteraction);
+      window.removeEventListener('keydown', triggerInteraction);
+
+      // Dispatch asyncLazyLoad for Shopify storefront non-critical features
+      document.dispatchEvent(new CustomEvent('asyncLazyLoad'));
+
+      // Find all scripts marked as lazy-script
+      const lazyScripts = Array.from(document.querySelectorAll('script[type="lazy-script"]'));
+
+      function loadNextScript() {
+        if (lazyScripts.length === 0) return;
+        const script = lazyScripts.shift();
+        if (!script) return;
+
+        var newScript = document.createElement('script');
+        if (script.src) {
+          newScript.src = script.src;
+          newScript.async = true;
+          
+          let resolved = false;
+          const resolveAndNext = () => {
+            if (resolved) return;
+            resolved = true;
+            // Introduce a 500ms pacing delay to yield main thread control to the browser
+            setTimeout(scheduleNext, 500);
+          };
+
+          newScript.onload = resolveAndNext;
+          newScript.onerror = resolveAndNext;
+          
+          // Safety timeout of 4 seconds in case script fails to respond
+          setTimeout(resolveAndNext, 4000);
+          
+          document.head.appendChild(newScript);
+        } else {
+          newScript.textContent = script.textContent;
+          document.head.appendChild(newScript);
+          // Inline scripts execute synchronously, yield 200ms before next script
+          setTimeout(scheduleNext, 200);
+        }
+        
+        script.remove();
+      }
+
+      function scheduleNext() {
+        if (lazyScripts.length === 0) return;
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(() => loadNextScript(), { timeout: 2000 });
+        } else {
+          setTimeout(loadNextScript, 100);
+        }
+      }
+
+      // Start the paced sequential script loading
+      scheduleNext();
+    }
+
+    window.triggerInteraction = triggerInteraction;
+
+    window.addEventListener('scroll', triggerInteraction, {passive: true});
+    window.addEventListener('mousemove', triggerInteraction, {passive: true});
+    window.addEventListener('touchstart', triggerInteraction, {passive: true});
+    window.addEventListener('keydown', triggerInteraction, {passive: true});
+
+    // Also trigger after window load with delay so apps run without user interaction
+    window.addEventListener('load', function() {
+      setTimeout(triggerInteraction, 2500);
+    });
+  })(); 
+</script>

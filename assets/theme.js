@@ -1379,6 +1379,10 @@
               callbackError();
           }
       };
+      script.onerror = function() {
+          script.remove();
+          callbackError(new Error(`Unable to load script: ${url}`));
+      };
       head.appendChild(script);
   }
 
@@ -1430,8 +1434,8 @@
           } else {
               getScript(url, function() {
                   resolve();
-              }, function() {
-                  reject();
+              }, function(error) {
+                  reject(error);
               });
           }
       });
@@ -2479,6 +2483,25 @@
       }
       return containers;
   }
+  window.Shopify = window.Shopify || {};
+  window.Shopify.theme = window.Shopify.theme || {};
+  window.Shopify.theme.sections = window.Shopify.theme.sections || {};
+  window.Shopify.theme.sections.load = load;
+  window.Shopify.theme.sections.unload = unload;
+
+  document.addEventListener('shopify:section:load', function(event) {
+      if (window.Shopify.designMode) return; // Handled below in designMode
+      var id = event.detail && event.detail.sectionId;
+      if (!id) return;
+      var container = (event.target && event.target.querySelector) ? event.target.querySelector('[' + selectors$_.id + '="' + id + '"]') : null;
+      if (!container) {
+          container = document.querySelector('[' + selectors$_.id + '="' + id + '"]');
+      }
+      if (container !== null && !isInstance(container)) {
+          load(container.getAttribute(selectors$_.type), container);
+      }
+  });
+
   if (window.Shopify.designMode) {
       document.addEventListener('shopify:section:load', function(event) {
           var id = event.detail.sectionId;
@@ -3678,9 +3701,12 @@
               }
               this.hidePopdown();
           }).bind(this));
-          this.close.addEventListener('click', (function() {
-              this.hidePopdown();
-          }).bind(this));
+          var closeButtons = this.popdown.querySelectorAll(selectors$P.close);
+          closeButtons.forEach((btn) => {
+              btn.addEventListener('click', (function() {
+                  this.hidePopdown();
+              }).bind(this));
+          });
           this.underlay.addEventListener('click', (function() {
               this.hidePopdown();
           }).bind(this));
@@ -7896,6 +7922,24 @@
                   }
               });
           }
+          if (typeof window.syncGokwikBuyNow === 'function') {
+              window.syncGokwikBuyNow();
+          } else {
+              var gkBtn = document.getElementById('gokwik-buy-now');
+              if (gkBtn) {
+                  if (variant && variant.available) {
+                      gkBtn.removeAttribute('disabled');
+                      gkBtn.disabled = false;
+                      gkBtn.classList.remove('disabled');
+                      var ldr = gkBtn.querySelector('#btn-loader');
+                      if (ldr) ldr.style.display = 'none';
+                  } else {
+                      gkBtn.setAttribute('disabled', 'disabled');
+                      gkBtn.disabled = true;
+                      gkBtn.classList.add('disabled');
+                  }
+              }
+          }
           /*
         Critical JS: Update the hidden form input to the new variand ID
       */ if (buttonsWrapper && variant) {
@@ -8289,83 +8333,109 @@
       mediaId: 'data-media-id'
   };
   function productPhotoswipeZoom(container, json) {
-      const loadedPromise = loadScript({
-          url: window.theme.assets.photoswipe
-      });
-      const returnZoom = loadedPromise.then(()=>{
-          const PhotoSwipe = window.themePhotoswipe.PhotoSwipe.default;
-          const PhotoSwipeUI = window.themePhotoswipe.PhotoSwipeUI.default;
-          const triggers = container.querySelectorAll(selectors$l.zoomButton);
-          triggers.forEach((trigger)=>{
-              trigger.addEventListener('click', (event)=>{
-                  const el = container.querySelector(selectors$l.zoomWrapper);
-                  const dataId = event.target.closest(`[${selectors$l.mediaId}]`).getAttribute(selectors$l.mediaId).toString();
-                  const items = [];
-                  for(let i = 0; i < json.media.length; i++){
-                      if (json.media[i].media_type === 'image') {
-                          items[items.length] = {
-                              src: json.media[i].src,
-                              w: json.media[i].width,
-                              h: json.media[i].height,
-                              id: json.media[i].id
-                          };
-                      }
-                  }
-                  const findImage = (element)=>element.id.toString() === dataId
-                  ;
-                  const index = items.findIndex(findImage);
-                  const options = {
-                      index,
-                      showHideOpacity: true,
-                      showAnimationDuration: 150,
-                      hideAnimationDuration: 250,
-                      bgOpacity: 1,
-                      spacing: 0,
-                      allowPanToNext: false,
-                      maxSpreadZoom: 3,
-                      history: false,
-                      loop: true,
-                      pinchToClose: false,
-                      modal: false,
-                      closeOnScroll: false,
-                      closeOnVerticalDrag: true,
-                      getDoubleTapZoom: function getDoubleTapZoom(isMouseClick, item) {
-                          if (isMouseClick) {
-                              return 1.67;
-                          } else {
-                              return item.initialZoomLevel < 0.7 ? 1 : 1.3;
-                          }
-                      },
-                      getThumbBoundsFn: function getThumbBoundsFn() {
-                          let imageLocation = container.querySelector(selectors$l.slideshow);
-                          if (!imageLocation) {
-                              imageLocation = container.querySelector(selectors$l.singeImage);
-                          }
-                          const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-                          const rect = imageLocation.getBoundingClientRect();
-                          return {
-                              x: rect.left,
-                              y: rect.top + pageYScroll,
-                              w: rect.width
-                          };
-                      }
+      const triggers = container.querySelectorAll(selectors$l.zoomButton);
+      const el = container.querySelector(selectors$l.zoomWrapper) ||
+          container.parentElement?.querySelector(`:scope > ${selectors$l.zoomWrapper}`);
+      let opening = false;
+      let disposed = false;
+      let gallery;
+
+      async function openZoom(event) {
+          if (!el || opening || el.classList.contains('pswp--open')) return;
+          const slide = event.currentTarget.closest(`[${selectors$l.mediaId}]`);
+          if (!slide) return;
+          const dataId = slide.getAttribute(selectors$l.mediaId);
+          const items = [];
+          for(let i = 0; i < json.media.length; i++){
+              if (json.media[i].media_type === 'image') {
+                  items[items.length] = {
+                      src: json.media[i].src,
+                      w: json.media[i].width,
+                      h: json.media[i].height,
+                      id: json.media[i].id
                   };
-                  el.dispatchEvent(new CustomEvent('theme:scroll:lock', {
-                      bubbles: true
-                  }));
-                  // Initializes and opens PhotoSwipe
-                  const gallery = new PhotoSwipe(el, PhotoSwipeUI, items, options);
+              }
+          }
+          const index = items.findIndex((item) => String(item.id) === dataId);
+          const options = {
+              index,
+              showHideOpacity: true,
+              showAnimationDuration: 150,
+              hideAnimationDuration: 250,
+              bgOpacity: 1,
+              spacing: 0,
+              allowPanToNext: false,
+              maxSpreadZoom: 3,
+              history: false,
+              loop: true,
+              pinchToClose: false,
+              modal: false,
+              closeOnScroll: false,
+              closeOnVerticalDrag: true,
+              getDoubleTapZoom: function getDoubleTapZoom(isMouseClick, item) {
+                  if (isMouseClick) {
+                      return 1.67;
+                  } else {
+                      return item.initialZoomLevel < 0.7 ? 1 : 1.3;
+                  }
+              },
+              getThumbBoundsFn: function getThumbBoundsFn() {
+                  let imageLocation = container.querySelector(selectors$l.slideshow);
+                  if (!imageLocation) {
+                      imageLocation = container.querySelector(selectors$l.singeImage);
+                  }
+                  const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+                  const rect = imageLocation.getBoundingClientRect();
+                  return {
+                      x: rect.left,
+                      y: rect.top + pageYScroll,
+                      w: rect.width
+                  };
+              }
+          };
+          if (index < 0) return;
+
+          opening = true;
+          const url = window.theme.assets.photoswipe;
+          try {
+              if (!window.themePhotoswipe) {
+                  const loading = loadScript({ url });
+                  try {
+                      await loading;
+                  } catch (error) {
+                      if (loaders[url] === loading) delete loaders[url];
+                      throw error;
+                  }
+              }
+              if (disposed || !el.isConnected || !slide.isConnected) return;
+              const PhotoSwipe = window.themePhotoswipe.PhotoSwipe.default;
+              const PhotoSwipeUI = window.themePhotoswipe.PhotoSwipeUI.default;
+              gallery = new PhotoSwipe(el, PhotoSwipeUI, items, options);
+              gallery.listen('close', unlockScroll);
+              el.dispatchEvent(new CustomEvent('theme:scroll:lock', { bubbles: true }));
+              try {
                   gallery.init();
-                  gallery.listen('close', function() {
-                      document.dispatchEvent(new CustomEvent('theme:scroll:unlock', {
-                          bubbles: true
-                      }));
-                  });
-              });
-          });
-      }).catch((e)=>console.error(e)
-      );
-      return returnZoom;
+              } catch (error) {
+                  unlockScroll();
+                  throw error;
+              }
+          } catch (error) {
+              console.error('Unable to open product image zoom:', error);
+          } finally {
+              opening = false;
+          }
+      }
+
+      function unlockScroll() {
+          document.dispatchEvent(new CustomEvent('theme:scroll:unlock', { bubbles: true }));
+      }
+
+      triggers.forEach((trigger) => trigger.addEventListener('click', openZoom));
+      return () => {
+          disposed = true;
+          triggers.forEach((trigger) => trigger.removeEventListener('click', openZoom));
+          if (gallery) gallery.close();
+      };
   }
 
   const selectors$k = {
@@ -8668,7 +8738,7 @@
       init() {
           this.zoomEnabled = this.container.querySelector(selectors$g.zoomButton) !== null;
           if (this.zoomEnabled) {
-              productPhotoswipeZoom(this.container, this.product);
+              this.disposeZoom = productPhotoswipeZoom(this.container, this.product);
           }
           if (this.truncateElementHolder && this.truncateElement) {
               setTimeout(this.resizeEventTruncate, 50);
@@ -8731,6 +8801,7 @@
           }
       }
       onUnload() {
+          if (this.disposeZoom) this.disposeZoom();
           this.media.destroy();
           if (this.truncateElementHolder && this.truncateElement) {
               document.removeEventListener('theme:resize', this.resizeEventTruncate);
@@ -8763,9 +8834,8 @@
           sections$3[this.id] = new ProductTemplate(this);
       },
       onUnload () {
-          if (typeof sections$3[this.id].unload === 'function') {
-              sections$3[this.id].unload();
-          }
+          sections$3[this.id].onUnload();
+          delete sections$3[this.id];
       },
       onBlockSelect (evt) {
           if (typeof sections$3[this.id].onBlockSelect === 'function') {
@@ -18509,7 +18579,6 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
           handleSuccess (response) {
               const variant = response.data;
               this.state = STATES$1.SUCCESS;
-              this.updateHeaderTotal();
               // Reset the state back to initial after a duration
               setTimeout(()=>{
                   this.state = STATES$1.INITIAL;
@@ -18518,13 +18587,16 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
               if (this.isInsideQuickViewModal) {
                   this.closeQuickView();
               }
-              // If cart is open, reload the cart
-              if (window.theme.state.cartOpen || this.isInCartPage || this.isOnCartPage) {
-                  this.reloadCart();
-              } else {
-                  // Do not open default theme cart drawer, let the third-party app handle it.
-                  this.reloadCart();
-              }
+              this.updateHeaderTotal().then((cart)=>{
+                  if (typeof window.tpRefreshCartDrawer === 'function') {
+                      window.tpRefreshCartDrawer({
+                          cart: cart,
+                          open: true
+                      });
+                  } else {
+                      this.reloadCart();
+                  }
+              });
           },
           handleError (error) {
               if (error === null || error === void 0 ? void 0 : error.data) {
@@ -18575,6 +18647,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
                       },
                       bubbles: true
                   }));
+                  return response.data;
               }).catch((e)=>{
                   console.error(e);
               });

@@ -23,15 +23,17 @@
   /* Dynamic Accordion & Benefits Styles for pdp-additions */
   .pdp-accordion-item {
     position: relative !important;
-    border: 1px solid #ECECEC !important;
+    border: 1px solid #ececec !important;
     border-radius: 12px !important;
     overflow: hidden !important;
     box-shadow: none !important;
     margin-bottom: 8px !important;
-    background: #FFFFFF !important;
+    background: #ffffff !important;
     transition: border-color 0.2s ease !important;
   }
-  .pdp-accordion-item[open] { border-color: #D5EBDC !important; }
+  .pdp-accordion-item[open] {
+    border-color: #d5ebdc !important;
+  }
   .product-summary {
     display: flex !important;
     justify-content: space-between !important;
@@ -39,34 +41,47 @@
     font-size: 14.5px !important;
     font-weight: 700 !important;
     padding: 13px 16px !important;
-    background-color: #FFFFFF !important;
-    color: #1A202C !important;
+    background-color: #ffffff !important;
+    color: #1a202c !important;
     cursor: pointer !important;
     border: none !important;
     list-style: none !important;
     user-select: none !important;
   }
-  .product-summary::-webkit-details-marker { display: none !important; }
-  .tp-acc-title-wrap { display: flex !important; align-items: center !important; gap: 10px !important; }
-  .tp-acc-icon { display: inline-flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; }
+  .product-summary::-webkit-details-marker {
+    display: none !important;
+  }
+  .tp-acc-title-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  .tp-acc-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
   .tp-acc-chevron {
     transition: transform 0.25s ease !important;
     flex-shrink: 0 !important;
   }
-  details[open] .tp-acc-chevron { transform: rotate(180deg) !important; }
+  details[open] .tp-acc-chevron {
+    transform: rotate(180deg) !important;
+  }
   .pdp-accordion-content {
     padding: 14px 16px !important;
     font-size: 13px !important;
     line-height: 1.6 !important;
     color: #444444 !important;
-    background: #FFFFFF !important;
-    border-top: 1px solid #ECECEC !important;
+    background: #ffffff !important;
+    border-top: 1px solid #ececec !important;
   }
   .tp-benefits-strip-card {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
-    background: #EDF7F2 !important;
-    border: 1px solid #D9ECE1 !important;
+    background: #edf7f2 !important;
+    border: 1px solid #d9ece1 !important;
     border-radius: 14px !important;
     padding: 14px 6px !important;
     margin-top: 14px !important;
@@ -82,19 +97,19 @@
     padding: 0 4px !important;
   }
   .tp-benefits-strip-card__col:not(:last-child)::after {
-    content: "" !important;
+    content: '' !important;
     position: absolute !important;
     right: 0 !important;
     top: 12% !important;
     height: 76% !important;
     width: 1px !important;
-    background: #D4E8DC !important;
+    background: #d4e8dc !important;
   }
   .tp-benefits-strip-card__icon-wrap {
     width: 44px !important;
     height: 44px !important;
     border-radius: 50% !important;
-    background: #FFFFFF !important;
+    background: #ffffff !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -104,19 +119,34 @@
   .tp-benefits-strip-card__label {
     font-size: 11px !important;
     font-weight: 700 !important;
-    color: #164A36 !important;
+    color: #164a36 !important;
     line-height: 1.25 !important;
   }
 </style>
 
 <div class="pdp-additions-wrapper" style="margin-top: 10px;">
-  
+  {%- if is_sanitary_pad -%}
+    {%- capture selected_pad_data -%}
+      {%- render 'pad-product-data', product: product, variant: current_variant, flow_guide: flow_guide -%}
+    {%- endcapture -%}
+    {%- assign selected_pad_info = selected_pad_data | split: '||' -%}
+    {%- render 'pad-product-content', part: 'guide', flow_guide: flow_guide, pad_length: selected_pad_info[1] -%}
+  {%- endif -%}
   <!-- 1. Specification Table -->
-  <details class="product-details pdp-accordion-item">
+  <details class="product-details pdp-accordion-item"{% if is_sanitary_pad %} data-pad-specifications{% endif %}>
     <summary class="product-summary">
       <span class="tp-acc-title-wrap">
         <span class="tp-acc-icon">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="#222"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
             <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
             <line x1="9" y1="11" x2="15" y2="11"></line>
@@ -125,16 +155,39 @@
         </span>
         Product Specifications
       </span>
-      <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        class="tp-acc-chevron"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="#555"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
     </summary>
     <div class="pdp-accordion-content">
       <table class="spec-table" style="width: 100%; border-collapse: collapse;">
-        {%- if product.vendor != blank -%}
+        {%- if is_sanitary_pad -%}
+          <tbody data-pad-spec-rows>
+            {%- render 'pad-specification-rows', variant: current_variant, pad_info: selected_pad_info -%}
+          </tbody>
+        {%- else -%}
+        {%- liquid
+          assign brand_val = product.vendor
+          if cat_pads or brand_val == 'Bioweal Products' or brand_val == 'Bioweal Products Private Limited' or brand_val == 'Bioweal'
+            assign brand_val = 'TIMEPADS'
+          elsif brand_val == blank
+            assign brand_val = 'TIMEPADS'
+          endif
+        -%}
+        {%- if brand_val != blank -%}
           <tr style="border-bottom: 1px solid #f4f4f4;">
             <td class="spec-label" style="padding: 8px 0; font-weight: 600; color: #555; width: 45%;">Brand</td>
-            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ product.vendor }}</td>
+            <td class="spec-val" style="padding: 8px 0; color: #222;">{{ brand_val }}</td>
           </tr>
         {%- endif -%}
         {%- if product.type != blank -%}
@@ -149,16 +202,20 @@
             <td class="spec-val" style="padding: 8px 0; color: #222;">{{ current_variant.sku }}</td>
           </tr>
         {%- endif -%}
-        
+
         {%- liquid
           assign material_val = product.metafields.custom.material.value | default: product.metafields.custom.material
-          if material_val == blank
-            if cat_pads
-              assign material_val = "Premium organic cotton top cover, super-absorbent core"
-            elsif cat_cup
-              assign material_val = "100% Medical-grade liquid silicone"
+          if cat_pads
+            if material_val == blank
+              assign material_val = 'Premium soft top cover, super-absorbent core'
+            else
+              assign material_val = material_val | replace: 'Premium organic cotton', 'Premium soft' | replace: 'premium organic cotton', 'premium soft' | replace: 'Organic cotton', 'Soft cotton' | replace: 'organic cotton', 'soft cotton' | replace: 'Organic Cotton', 'Soft Cotton' | replace: 'Organic', 'Soft' | replace: 'organic', 'soft' | replace: 'ORGANIC', 'SOFT'
+            endif
+          elsif material_val == blank
+            if cat_cup
+              assign material_val = '100% Medical-grade liquid silicone'
             elsif cat_cream
-              assign material_val = "Natural Ayurvedic formulation"
+              assign material_val = 'Natural Ayurvedic formulation'
             endif
           endif
         -%}
@@ -170,7 +227,7 @@
         {%- endif -%}
 
         {%- liquid
-          assign size_val = ""
+          assign size_val = ''
           for option in product.options_with_values
             assign opt_name = option.name | downcase
             if opt_name contains 'size' or opt_name contains 'dimension'
@@ -190,14 +247,14 @@
           if usage_val == blank
             if cat_pads
               if product.title contains 'Overnight' or product.title contains 'XXL'
-                assign usage_val = "Heavy Flow (Overnight & Day Wear)"
+                assign usage_val = 'Heavy Flow (Overnight & Day Wear)'
               else
-                assign usage_val = "Medium to Regular Flow (Day Wear)"
+                assign usage_val = 'Day and Night Regular Flow'
               endif
             elsif cat_cup
-              assign usage_val = "12 Hours Leak-Proof Protection"
+              assign usage_val = '8 - 12 Hours Leak-Proof Protection'
             elsif cat_cream
-              assign usage_val = "External application for cramp relief"
+              assign usage_val = 'External application for cramp relief'
             endif
           endif
         -%}
@@ -207,7 +264,19 @@
             <td class="spec-val" style="padding: 8px 0; color: #222;">{{ usage_val }}</td>
           </tr>
         {%- endif -%}
+        {%- endif -%}
       </table>
+      {%- if is_sanitary_pad and product.variants.size > 1 -%}
+        {%- for variant in product.variants -%}
+          {%- capture variant_pad_data -%}
+            {%- render 'pad-product-data', product: product, variant: variant, flow_guide: flow_guide -%}
+          {%- endcapture -%}
+          {%- assign variant_pad_info = variant_pad_data | split: '||' -%}
+          <template data-pad-spec-variant="{{ variant.id }}" data-pad-length="{{ variant_pad_info[1] | escape }}">
+            {%- render 'pad-specification-rows', variant: variant, pad_info: variant_pad_info -%}
+          </template>
+        {%- endfor -%}
+      {%- endif -%}
     </div>
   </details>
 
@@ -216,71 +285,134 @@
     <summary class="product-summary">
       <span class="tp-acc-title-wrap">
         <span class="tp-acc-icon">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#164A36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="#164A36"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"></path>
             <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
           </svg>
         </span>
         Who This Is For
       </span>
-      <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        class="tp-acc-chevron"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="#555"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
     </summary>
     <div class="pdp-accordion-content">
       <ul class="who-list" style="list-style: none; padding: 0; margin: 0;">
-        {%- if cat_pads -%}
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Skin-friendly, completely rash-free period experience.</li>
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Heavy flows requiring secure leak-proof protection.</li>
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Active comfort with breathable, ultra-soft layers.</li>
+        {%- if is_sanitary_pad -%}
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ {{ pad_info[8] | default: 'Choose a length based on your flow and coverage preferences.' | escape }}
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ {% if pad_info[1] != blank %}{{ pad_info[1] | escape }} pad length{% else %}See the flow guide to compare coverage by pad length.{% endif %}
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ {{ pad_info[7] | default: 'See Product Specifications for the details of this pad.' | escape }}
+          </li>
+        {%- elsif cat_pads -%}
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Skin-friendly, completely rash-free period experience.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Heavy flows requiring secure leak-proof protection.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Active comfort with breathable, ultra-soft layers.
+          </li>
         {%- elsif cat_cup -%}
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Transition to an eco-friendly, zero-waste period.</li>
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Active users requiring 12 hours of secure hold.</li>
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Chemical-free protection respecting natural pH.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Transition to an eco-friendly, zero-waste period.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Active users requiring up to 12 hours of secure hold.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Chemical-free protection respecting natural pH.
+          </li>
         {%- elsif cat_cream -%}
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Individuals suffering from painful menstrual cramps.</li>
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Fast-acting Ayurvedic relief without pills.</li>
-          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Portable, mess-free cramp relief solution.</li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Individuals suffering from painful menstrual cramps.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Fast-acting Ayurvedic relief without pills.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ Portable, mess-free cramp relief solution.
+          </li>
         {%- endif -%}
       </ul>
     </div>
   </details>
-
   <!-- 3. Dynamic FAQ Section -->
   {%- liquid
-    if cat_pads
-      assign q1 = "What is this product?"
-      assign a1 = "Premium, rash-free sanitary pads designed with an ultra-soft cotton cover for high comfort and superior leak protection."
-      assign q2 = "Who is it suitable for?"
-      assign a2 = "Suitable for women and teens of all age groups, specifically optimized to protect sensitive skin from friction rashes."
-      assign q3 = "How should it be used?"
-      assign a3 = "Peel the paper backing, press the pad firmly into undergarment. Change every 4 to 6 hours for optimal hygiene."
-      assign q4 = "What makes it different?"
-      assign a4 = "Features an ultra-breathable organic cotton top-sheet and specialized absorbency layers to prevent rash and irritation."
-      assign q5 = "Can it be worn overnight?"
-      assign a5 = "Yes, our XL+ and XXL+ sizes feature wider back wings that are designed specifically to prevent leakages during sleep."
+    if is_sanitary_pad
+      assign q1 = 'What is this product?'
+      assign a1 = 'TIMEPADS sanitary pads. Check Product Specifications for the size and pack details.'
+      assign q2 = 'Who is it suitable for?'
+      assign a2 = 'Check the flow guide for the length that suits your flow and coverage preferences.'
+      if pad_info[2] != blank
+        assign a2 = pad_info[2] | downcase | prepend: 'This pad is designed for ' | append: ' days.'
+      endif
+      assign q3 = 'How should it be used?'
+      assign a3 = 'Peel away the paper backing and press the pad firmly into your underwear.'
+      assign q4 = 'What provides protection?'
+      assign a4 = pad_info[7] | default: 'Check Product Specifications for the details available for this pad.'
+      assign q5 = 'Can it be worn overnight?'
+      assign a5 = 'Check Recommended Usage in Product Specifications for this pad.'
+      if pad_info[4] != blank
+        assign a5 = pad_info[4] | prepend: 'This pad is best for: ' | append: '.'
+      endif
+    elsif cat_pads
+      assign q1 = 'What is this product?'
+      assign a1 = 'Premium, rash-free sanitary pads designed with an ultra-soft cotton cover for high comfort and superior leak protection.'
+      assign q2 = 'Who is it suitable for?'
+      assign a2 = 'Suitable for women and teens of all age groups, specifically optimized to protect sensitive skin from friction rashes.'
+      assign q3 = 'How should it be used?'
+      assign a3 = 'Peel the paper backing, press the pad firmly into undergarment. Change every 4 to 6 hours for optimal hygiene.'
+      assign q4 = 'What makes it different?'
+      assign a4 = 'Features an ultra-breathable soft cotton top-sheet and specialized absorbency layers to prevent rash and irritation.'
+      assign q5 = 'Can it be worn overnight?'
+      assign a5 = 'Yes, our XL+ and XXL+ sizes feature wider back wings that are designed specifically to prevent leakages during sleep.'
     elsif cat_cup
-      assign q1 = "What is this product?"
-      assign a1 = "A reusable menstrual cup made of 100% medical-grade silicone that offers safe, leak-proof period protection."
-      assign q2 = "Who is it suitable for?"
-      assign a2 = "Suitable for all menstruators looking for a comfortable, cost-effective, and environmentally friendly period solution."
-      assign q3 = "How should it be used?"
-      assign a3 = "Sterilize in boiling water first. Fold, insert gently, and let it pop open to form a seal. Empty every 8 to 12 hours."
-      assign q4 = "What makes it different?"
-      assign a4 = "Made of medical-grade silicone, reusable for up to 10 years, and contains absolutely zero toxins or bleaching agents."
-      assign q5 = "How do I choose the right size?"
+      assign q1 = 'What is this product?'
+      assign a1 = 'A reusable menstrual cup made of 100% medical-grade silicone that offers safe, leak-proof period protection.'
+      assign q2 = 'Who is it suitable for?'
+      assign a2 = 'Suitable for all menstruators looking for a comfortable, cost-effective, and environmentally friendly period solution.'
+      assign q3 = 'How should it be used?'
+      assign a3 = 'Sterilize in boiling water first. Fold, insert gently, and let it pop open to form a seal. Empty every 8 to 12 hours.'
+      assign q4 = 'What makes it different?'
+      assign a4 = 'Made of medical-grade silicone, reusable for up to 5 years, and contains absolutely zero toxins or bleaching agents.'
+      assign q5 = 'How do I choose the right size?'
       assign a5 = "S is for teenagers, M is for women who haven't given birth, and L is for mothers or heavy flow."
     elsif cat_cream
-      assign q1 = "What is this product?"
-      assign a1 = "A fast-acting Ayurvedic cramp relief cream formulated specifically to alleviate menstrual cramps and backaches."
-      assign q2 = "Who is it suitable for?"
-      assign a2 = "Suitable for anyone experiencing lower abdomen or back pain during their menstrual cycle."
-      assign q3 = "How should it be used?"
-      assign a3 = "Apply a thin layer to lower abdomen or back, and massage gently until absorbed."
-      assign q4 = "What makes it different?"
-      assign a4 = "Uses a natural Ayurvedic blend of herbal extracts that provides warmth and relief without any greasy residue."
-      assign q5 = "Is it safe to use daily?"
-      assign a5 = "Yes, completely safe and natural. We recommend a patch test before first use."
+      assign q1 = 'What is this product?'
+      assign a1 = 'A fast-acting Ayurvedic cramp relief cream formulated specifically to alleviate menstrual cramps and backaches.'
+      assign q2 = 'Who is it suitable for?'
+      assign a2 = 'Suitable for anyone experiencing lower abdomen or back pain during their menstrual cycle.'
+      assign q3 = 'How should it be used?'
+      assign a3 = 'Apply a thin layer to lower abdomen or back, and massage gently until absorbed.'
+      assign q4 = 'What makes it different?'
+      assign a4 = 'Uses a natural Ayurvedic blend of herbal extracts that provides warmth and relief without any greasy residue.'
+      assign q5 = 'Is it safe to use daily?'
+      assign a5 = 'Yes, completely safe and natural. We recommend a patch test before first use.'
     endif
   -%}
 
@@ -288,7 +420,16 @@
     <summary class="product-summary">
       <span class="tp-acc-title-wrap">
         <span class="tp-acc-icon">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="#222"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <circle cx="12" cy="12" r="10"></circle>
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
             <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -296,7 +437,17 @@
         </span>
         Frequently Asked Questions
       </span>
-      <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        class="tp-acc-chevron"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="#555"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
     </summary>
@@ -336,7 +487,16 @@
       <summary class="product-summary">
         <span class="tp-acc-title-wrap">
           <span class="tp-acc-icon">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="#222"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -344,21 +504,156 @@
           </span>
           Explore Sibling Products
         </span>
-        <svg class="tp-acc-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          class="tp-acc-chevron"
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="#555"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
       </summary>
-      <div class="pdp-accordion-content">
-        <div class="siblings-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+      <div class="pdp-accordion-content" style="padding: 12px 14px 16px;">
+        <style>
+          .tp-siblings-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: stretch;
+            justify-content: flex-start;
+          }
+          .tp-sibling-card {
+            flex: 0 1 150px;
+            width: 150px;
+            max-width: 165px;
+            background: #ffffff;
+            border: 1px solid #ebe3d8;
+            border-radius: 10px;
+            padding: 8px 8px 10px;
+            text-decoration: none !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            box-sizing: border-box;
+          }
+          .tp-sibling-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border-color: #987959;
+          }
+          .tp-sibling-img-wrap {
+            width: 100%;
+            height: 110px;
+            background: #fbf8f5;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+          }
+          .tp-sibling-img-wrap img {
+            max-width: 90%;
+            max-height: 95px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.2s ease;
+          }
+          .tp-sibling-card:hover .tp-sibling-img-wrap img {
+            transform: scale(1.04);
+          }
+          .tp-sibling-title {
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            color: #2d2319 !important;
+            line-height: 1.3 !important;
+            margin: 2px 0 6px !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+            height: 28px !important;
+            text-align: left !important;
+          }
+          .tp-sibling-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 2px;
+          }
+          .tp-sibling-price {
+            font-size: 12.5px !important;
+            font-weight: 700 !important;
+            color: #2d2319 !important;
+          }
+          .tp-sibling-btn {
+            font-size: 10.5px !important;
+            font-weight: 700 !important;
+            color: #987959 !important;
+            background: #f7efe6 !important;
+            border-radius: 4px !important;
+            padding: 2px 7px !important;
+            line-height: 1.2 !important;
+          }
+          @media (max-width: 640px) {
+            .tp-siblings-grid {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 8px;
+            }
+            .tp-sibling-card {
+              width: 100%;
+              flex: 1 1 0;
+              max-width: none;
+              padding: 6px 6px 8px;
+            }
+            .tp-sibling-img-wrap {
+              height: 85px;
+            }
+            .tp-sibling-img-wrap img {
+              max-height: 75px;
+            }
+            .tp-sibling-title {
+              font-size: 10px !important;
+              height: 26px !important;
+              margin-bottom: 4px !important;
+            }
+            .tp-sibling-price {
+              font-size: 11px !important;
+            }
+            .tp-sibling-btn {
+              display: none !important;
+            }
+          }
+        </style>
+        <div class="tp-siblings-grid siblings-grid">
           {%- for sib in related_col.products -%}
-            {%- if sib.handle != product.handle and sibling_count < 3 -%}
+            {%- if sib.handle != product.handle and sibling_count < 4 -%}
               {%- assign sibling_count = sibling_count | plus: 1 -%}
-              <a href="{{ sib.url }}" class="sibling-card" style="text-align: center; text-decoration: none; display: block; border: 1px solid #eee; border-radius: 6px; padding: 6px; background: #fafafa;">
-                <div class="sibling-img-wrapper" style="position: relative; padding-bottom: 100%; overflow: hidden; border-radius: 4px;">
-                  <img src="{{ sib.featured_image | image_url: width: 400 }}" alt="{{ sib.title | escape }}" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;" loading="lazy">
+              <a href="{{ sib.url }}" class="tp-sibling-card sibling-card">
+                <div class="tp-sibling-img-wrap sibling-img-wrapper">
+                  <img
+                    src="{{ sib.featured_image | image_url: width: 300 }}"
+                    alt="{{ sib.title | escape }}"
+                    loading="lazy"
+                    width="150"
+                    height="110"
+                  >
                 </div>
-                <h5 style="font-size: 11px; margin: 4px 0; color: #333; height: 32px; overflow: hidden;">{%- render 'clean-product-title', product: sib -%}</h5>
-                <span class="sibling-price" style="font-size: 11px; font-weight: bold; color: #ee3d43;">{{ sib.price | money }}</span>
+                <h5 class="tp-sibling-title">{%- render 'clean-product-title', product: sib -%}</h5>
+                <div class="tp-sibling-footer">
+                  <span class="tp-sibling-price sibling-price">{{ sib.price | money }}</span>
+                  <span class="tp-sibling-btn">View</span>
+                </div>
               </a>
             {%- endif -%}
           {%- endfor -%}
@@ -368,106 +663,130 @@
   {%- endif -%}
 
   <!-- 5. Product Benefits Strip Card (Item 11) -->
-  {% comment %} <div class="tp-benefits-strip-card">
-    <div class="tp-benefits-strip-card__col">
-      <div class="tp-benefits-strip-card__icon-wrap">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 11c0 4.5 3.5 8 8 8s8-3.5 8-8H4z"></path>
-          <line x1="3" y1="11" x2="21" y2="11"></line>
-          <line x1="12" y1="11" x2="12" y2="5"></line>
-          <path d="M12 8c-2-2-3.5-1-4.5 1 2 1 3.5 0 4.5-1z"></path>
-          <path d="M12 7c2-2 3.5-1 4.5 1-2 1-3.5 0-4.5-1z"></path>
-        </svg>
+  {% comment %}
+    <div class="tp-benefits-strip-card">
+      <div class="tp-benefits-strip-card__col">
+        <div class="tp-benefits-strip-card__icon-wrap">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11c0 4.5 3.5 8 8 8s8-3.5 8-8H4z"></path>
+            <line x1="3" y1="11" x2="21" y2="11"></line>
+            <line x1="12" y1="11" x2="12" y2="5"></line>
+            <path d="M12 8c-2-2-3.5-1-4.5 1 2 1 3.5 0 4.5-1z"></path>
+            <path d="M12 7c2-2 3.5-1 4.5 1-2 1-3.5 0-4.5-1z"></path>
+          </svg>
+        </div>
+        <span class="tp-benefits-strip-card__label">Ayurvedic<br>Care</span>
       </div>
-      <span class="tp-benefits-strip-card__label">Ayurvedic<br>Care</span>
-    </div>
-    <div class="tp-benefits-strip-card__col">
-      <div class="tp-benefits-strip-card__icon-wrap">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3c-1.5 2-3 3.8-3 5.5a3 3 0 0 0 6 0c0-1.7-1.5-3.5-3-5.5z"></path>
-          <path d="M4 14c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
-          <path d="M4 17c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
-          <circle cx="7" cy="20" r="1" fill="#164A36"></circle>
-          <circle cx="12" cy="20" r="1" fill="#164A36"></circle>
-          <circle cx="17" cy="20" r="1" fill="#164A36"></circle>
-        </svg>
+      <div class="tp-benefits-strip-card__col">
+        <div class="tp-benefits-strip-card__icon-wrap">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3c-1.5 2-3 3.8-3 5.5a3 3 0 0 0 6 0c0-1.7-1.5-3.5-3-5.5z"></path>
+            <path d="M4 14c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
+            <path d="M4 17c2.5-1 5.5-1 8 0s5.5 1 8 0"></path>
+            <circle cx="7" cy="20" r="1" fill="#164A36"></circle>
+            <circle cx="12" cy="20" r="1" fill="#164A36"></circle>
+            <circle cx="17" cy="20" r="1" fill="#164A36"></circle>
+          </svg>
+        </div>
+        <span class="tp-benefits-strip-card__label">Skin<br>Friendly</span>
       </div>
-      <span class="tp-benefits-strip-card__label">Skin<br>Friendly</span>
-    </div>
-    <div class="tp-benefits-strip-card__col">
-      <div class="tp-benefits-strip-card__icon-wrap">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="14" cy="13" r="7"></circle>
-          <polyline points="14 10 14 13 16.5 14.5"></polyline>
-          <line x1="14" y1="4" x2="14" y2="6"></line>
-          <line x1="12" y1="4" x2="16" y2="4"></line>
-          <line x1="2" y1="9" x2="6" y2="9"></line>
-          <line x1="1" y1="13" x2="5" y2="13"></line>
-          <line x1="3" y1="17" x2="6" y2="17"></line>
-        </svg>
+      <div class="tp-benefits-strip-card__col">
+        <div class="tp-benefits-strip-card__icon-wrap">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="13" r="7"></circle>
+            <polyline points="14 10 14 13 16.5 14.5"></polyline>
+            <line x1="14" y1="4" x2="14" y2="6"></line>
+            <line x1="12" y1="4" x2="16" y2="4"></line>
+            <line x1="2" y1="9" x2="6" y2="9"></line>
+            <line x1="1" y1="13" x2="5" y2="13"></line>
+            <line x1="3" y1="17" x2="6" y2="17"></line>
+          </svg>
+        </div>
+        <span class="tp-benefits-strip-card__label">Instant<br>Relief</span>
       </div>
-      <span class="tp-benefits-strip-card__label">Instant<br>Relief</span>
-    </div>
-    <div class="tp-benefits-strip-card__col">
-      <div class="tp-benefits-strip-card__icon-wrap">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
-          <path d="M15 9c-3 0-5 2-6 5 2.5 0 5-1.5 6-5z"></path>
-          <path d="M9 14l3-3"></path>
-        </svg>
+      <div class="tp-benefits-strip-card__col">
+        <div class="tp-benefits-strip-card__icon-wrap">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#164A36" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
+            <path d="M15 9c-3 0-5 2-6 5 2.5 0 5-1.5 6-5z"></path>
+            <path d="M9 14l3-3"></path>
+          </svg>
+        </div>
+        <span class="tp-benefits-strip-card__label">Moody<br>Free Days</span>
       </div>
-      <span class="tp-benefits-strip-card__label">Moody<br>Free Days</span>
     </div>
-  </div> {% endcomment %}
-
+  {% endcomment %}
 </div>
 
+{%- unless template.suffix == 'menstrual-cup' or template.suffix == 'pain-relief-cream' -%}
 <!-- 5. Dynamic FAQ Structured Data (Schema JSON-LD) -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": {{ q1 | json }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ a1 | json }}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": {{ q1 | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ a1 | json }}
+        }
+      },
+      {
+        "@type": "Question",
+        "name": {{ q2 | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ a2 | json }}
+        }
+      },
+      {
+        "@type": "Question",
+        "name": {{ q3 | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ a3 | json }}
+        }
+      },
+      {
+        "@type": "Question",
+        "name": {{ q4 | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ a4 | json }}
+        }
+      },
+      {
+        "@type": "Question",
+        "name": {{ q5 | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ a5 | json }}
+        }
       }
-    },
-    {
-      "@type": "Question",
-      "name": {{ q2 | json }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ a2 | json }}
-      }
-    },
-    {
-      "@type": "Question",
-      "name": {{ q3 | json }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ a3 | json }}
-      }
-    },
-    {
-      "@type": "Question",
-      "name": {{ q4 | json }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ a4 | json }}
-      }
-    },
-    {
-      "@type": "Question",
-      "name": {{ q5 | json }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ a5 | json }}
-      }
-    }
-  ]
-}
+    ]
+  }
 </script>
+{%- endunless -%}
+
+{% javascript %}
+  document.addEventListener('theme:variant:change', (event) => {
+    const section = event.target.closest('[data-section-type="product"]');
+    const variant = event.detail?.variant;
+    if (!section || !variant) return;
+
+    const specs = section.querySelector('[data-pad-specifications]');
+    const template = specs?.querySelector(`template[data-pad-spec-variant="${variant.id}"]`);
+    if (!template) return;
+
+    specs.querySelector('[data-pad-spec-rows]').replaceChildren(template.content.cloneNode(true));
+    section.querySelectorAll('.tp-pad-guide [data-pad-length]').forEach((option) => {
+      if (option.dataset.padLength === template.dataset.padLength) {
+        option.setAttribute('aria-current', 'true');
+      } else {
+        option.removeAttribute('aria-current');
+      }
+    });
+  });
+{% endjavascript %}

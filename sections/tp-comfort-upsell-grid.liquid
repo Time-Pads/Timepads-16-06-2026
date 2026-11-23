@@ -1,0 +1,65 @@
+{%- comment -%}
+  TIMEPADS - Clean Minimal Cart Drawer Upsell Section
+  Section ID: tp-comfort-upsell-grid
+{%- endcomment -%}
+
+{%- render 'tp-comfort-upsell-grid',
+  heading: section.settings.heading,
+  subtitle: section.settings.subtitle,
+  badge_text: section.settings.badge_text,
+  product_list: section.settings.product_list,
+  collection_setting: section.settings.upsell_collection,
+  limit: section.settings.products_to_show
+-%}
+
+{% schema %}
+{
+  "name": "Cart Upsell Grid",
+  "tag": "section",
+  "class": "tp-section-comfort-upsell",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete your comfort"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Supporting text",
+      "default": "Add these essentials for a more comfortable period."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text (desktop)",
+      "default": "Add & Save More"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Select products"
+    },
+    {
+      "type": "collection",
+      "id": "upsell_collection",
+      "label": "Upsell collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Upsell Grid"
+    }
+  ]
+}
+{% endschema %}

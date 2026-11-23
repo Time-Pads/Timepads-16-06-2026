@@ -1,15 +1,27 @@
-{% if settings.goBuynowEnable %}             
-<button type="button" class="btn disabled" disabled onclick="onBuyNowClick(this)" id="gokwik-buy-now"{% if settings.hideFlow %} style="display:none !important;" {% endif %}>{{ settings.buynow-titile }}
+{% if settings.goBuynowEnable %}
+{%- assign current_v = product.selected_or_first_available_variant -%}
+<button type="button" class="btn{% if current_v != blank and current_v.available == false %} disabled{% endif %}" {% if current_v != blank and current_v.available == false %}disabled{% endif %} onclick="onBuyNowClick(this)" id="gokwik-buy-now"{% if settings.hideFlow %} style="display:none !important;" {% endif %}>{{ settings.buynow-titile }}
 <div style="display:none" class="addloadr" id="btn-loader"><div class="cir-loader">Loading..</div></div>
 </button>  
+<script>
+  (function() {
+    function initBtn() {
+      if (typeof window.syncGokwikBuyNow === 'function') {
+        window.syncGokwikBuyNow();
+      } else {
+        var btn = document.getElementById('gokwik-buy-now');
+        if (btn) {
+          btn.removeAttribute('disabled');
+          btn.disabled = false;
+          btn.classList.remove('disabled');
+          var ldr = btn.querySelector('#btn-loader');
+          if (ldr) ldr.style.display = 'none';
+        }
+      }
+    }
+    initBtn();
+    setTimeout(initBtn, 100);
+    setTimeout(initBtn, 400);
+  })();
+</script>
 {% endif %}
-
-
-
-
-
-
-
-
-
-

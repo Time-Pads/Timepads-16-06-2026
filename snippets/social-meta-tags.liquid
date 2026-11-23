@@ -1,21 +1,8 @@
 <!-- /snippets/social-meta-tags.liquid -->
 
 {%- liquid
-  # 1. Title optimization
-  assign og_title = page_title | default: shop.name
-  if template.name == 'product'
-    capture cleaned_product_title
-      render 'clean-product-title', product: product
-    endcapture
-    assign og_title = cleaned_product_title | strip | strip_html
-  endif
-
-  # Prevent duplicate brand name in OG Title
-  assign og_title_downcase = og_title | downcase | replace: ' ', '' | replace: '-', '' | replace: '_', ''
-  assign shop_name_downcase = shop.name | downcase | replace: ' ', '' | replace: '-', '' | replace: '_', ''
-  unless og_title_downcase contains shop_name_downcase or og_title_downcase contains 'timepads'
-    assign og_title = og_title | append: ' | ' | append: shop.name
-  endunless
+  assign og_title = seo_title | strip
+  assign og_description = seo_description | strip
 
   # 2. Url
   assign og_url = canonical_url | default: shop.url
@@ -27,12 +14,6 @@
   elsif template.name == 'article'
     assign og_type = 'article'
   endif
-
-  # 4. Description Optimization
-  capture optimized_meta_description
-    render 'optimized-meta-description', product: product, collection: collection, article: article, blog: blog, page: page
-  endcapture
-  assign og_description = optimized_meta_description | strip | strip_html | escape
 
   # 5. Image Optimization
   assign default_image = 'https://timepads.in/cdn/shop/files/Untitled-11200.png?v=1741172243'
@@ -52,9 +33,9 @@
 <!-- Open Graph (ONLY ONCE) -->
 <meta property="og:site_name" content="{{ shop.name }}">
 <meta property="og:url" content="{{ og_url }}">
-<meta property="og:title" content="{{ og_title | escape }}">
+<meta property="og:title" content="{{ og_title | escape_once }}">
 <meta property="og:type" content="{{ og_type }}">
-<meta property="og:description" content="{{ og_description }}">
+<meta property="og:description" content="{{ og_description | escape_once }}">
 {%- if og_image contains 'http' -%}
   <meta property="og:image" content="{{ og_image }}">
   <meta property="og:image:secure_url" content="{{ og_image }}">
@@ -67,8 +48,8 @@
 
 <!-- Twitter (ONLY ONCE) -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ og_title | escape }}">
-<meta name="twitter:description" content="{{ og_description }}">
+<meta name="twitter:title" content="{{ og_title | escape_once }}">
+<meta name="twitter:description" content="{{ og_description | escape_once }}">
 {%- if og_image contains 'http' -%}
   <meta name="twitter:image" content="{{ og_image }}">
 {%- else -%}

@@ -1,14 +1,45 @@
-<!-- /snippets/cart-subtotal.liquid -->
+{%- assign tp_total_savings = 0 -%}
+
+{%- for line_item in cart.items -%}
+  {%- assign tp_compare_price = line_item.variant.compare_at_price | default: line_item.original_price -%}
+  {%- assign tp_unit_savings = tp_compare_price | minus: line_item.final_price -%}
+  {%- if tp_unit_savings > 0 -%}
+    {%- assign tp_line_savings = tp_unit_savings | times: line_item.quantity -%}
+    {%- assign tp_total_savings = tp_total_savings | plus: tp_line_savings -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- unless request.page_type == 'cart' or template.name == 'cart' -%}
+  <span data-tp-raw-savings="{{ tp_total_savings }}" style="display:none;"></span>
+  <div class="tp-cart-savings" data-tp-cart-savings {% unless tp_total_savings > 0 %}hidden{% endunless %}>
+    <span class="tp-cart-savings__label">You save</span>
+    <strong class="tp-cart-savings__value" data-tp-rendered-savings>
+      {%- if settings.currency_code_enable -%}
+        {{ tp_total_savings | money_with_currency }}
+      {%- else -%}
+        {{ tp_total_savings | money }}
+      {%- endif -%}
+    </strong>
+  </div>
+{%- endunless -%}
 
 {%- if cart.cart_level_discount_applications.size > 0 -%}
-  <p class="cart__footer__itemtotal">
+  <p class="cart__footer__itemtotal tp-cart-itemtotal">
     <span class="cart__footer__label">{{ 'layout.cart.items_count.other' | t | capitalize }}:</span>
     <span class="cart__footer__value">{{ cart.items_subtotal_price | money_with_currency }}</span>
   </p>
-  {%- for discount in cart.cart_level_discount_applications -%}
-    <p class="cart__footer__discount">
-      <span class="cart__footer__label">{{ discount.title }}:</span>
-      <span class="cart__footer__value">-{{ discount.total_allocated_amount | money_with_currency }}</span>
-    </p>
-  {%- endfor -%}
+  <div class="tp-cart-discounts" data-tp-cart-discounts>
+    {%- for discount in cart.cart_level_discount_applications -%}
+      <p class="cart__footer__discount tp-cart-discounts__row">
+        <span class="cart__footer__label">{{ discount.title }}:</span>
+        <span class="cart__footer__value">
+          -{%- if settings.currency_code_enable -%}
+            {{ discount.total_allocated_amount | money_with_currency }}
+          {%- else -%}
+            {{ discount.total_allocated_amount | money }}
+          {%- endif -%}
+        </span>
+      </p>
+    {%- endfor -%}
+  </div>
 {%- endif -%}

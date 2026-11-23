@@ -1,0 +1,69 @@
+{%- comment -%}
+  TIMEPADS - Clean Minimal Cart Drawer Upsell Card
+  Displays compact product card: image on left, title + pricing + discount badge on right, full-width "+ Add" button at bottom.
+  No "Thoughtful Period Care" or category badges.
+{%- endcomment -%}
+
+{%- assign card_product = card_product | default: product -%}
+{%- assign card_variant = card_product.selected_or_first_available_variant -%}
+{%- assign image = card_product.featured_media.preview_image -%}
+
+{%- if card_variant.compare_at_price > card_variant.price -%}
+  {%- assign discount_percent = card_variant.compare_at_price | minus: card_variant.price | times: 100.0 | divided_by: card_variant.compare_at_price | round -%}
+{%- else -%}
+  {%- assign discount_percent = 0 -%}
+{%- endif -%}
+
+<article class="tp-comfort-upsell-card" data-tp-upsell-card>
+  <div class="tp-upsell-main-row">
+    <!-- PRODUCT MEDIA -->
+    <a class="tp-upsell-media" href="{{ card_product.url }}" aria-label="{{ card_product.title | strip_html | escape }}">
+      {%- if image -%}
+        {%- assign image_width = 140 | at_most: image.width -%}
+        {%- assign alt = image.alt | default: card_product.title -%}
+        <img
+          src="{{ image | image_url: width: image_width }}"
+          alt="{{ alt | escape }}"
+          loading="lazy"
+          width="56"
+          height="56"
+        >
+      {%- else -%}
+        <div class="tp-upsell-placeholder" aria-hidden="true"></div>
+      {%- endif -%}
+    </a>
+
+    <!-- PRODUCT INFO -->
+    <div class="tp-upsell-info">
+      <a class="tp-upsell-title" href="{{ card_product.url }}" title="{{ card_product.title | strip_html | escape }}">
+        {{ card_product.title | strip_html }}
+      </a>
+
+      <div class="tp-upsell-pricing-row">
+        {%- if card_variant.compare_at_price > card_variant.price -%}
+          <span class="tp-upsell-mrp">{{ card_variant.compare_at_price | money_without_trailing_zeros }}</span>
+        {%- endif -%}
+        <strong class="tp-upsell-final">{{ card_variant.price | money_without_trailing_zeros }}</strong>
+        {%- if discount_percent > 0 -%}
+          <span class="tp-upsell-disc-badge">{{ discount_percent }}% OFF</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL WIDTH + ADD BUTTON -->
+  <button
+    type="button"
+    class="tp-upsell-btn-add"
+    data-tp-upsell-add
+    data-variant-id="{{ card_variant.id }}"
+    aria-label="Add {{ card_product.title | strip_html | escape }} to cart"
+    {% unless card_variant.available %}disabled{% endunless %}
+  >
+    <span class="tp-upsell-add-label">+ Add</span>
+    <span class="tp-upsell-add-loading" aria-hidden="true">
+      <svg class="tp-btn-spinner" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path></svg>
+      <span>Adding...</span>
+    </span>
+  </button>
+</article>

@@ -1,281 +1,646 @@
 <!-- /sections/section-contact.liquid -->
 
-<section class="section-contact {{ section.settings.text_color }} {{ section.settings.height }} {{ section.settings.bg }}"
+<section
+  class="section-contact {{ section.settings.text_color }} {{ section.settings.height }} {{ section.settings.bg }}"
   data-section-id="{{ section.id }}"
   data-section-type="contact"
-  style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
-  <div class="{{ section.settings.width }} section-padding page-{{ page.title |  handleize}}">
+  style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="{{ section.settings.width }} section-padding page-{{ page.title | handleize }}">
     <div class="text__standard {{ section.settings.align_text }}">
-      <h2 style="font-size:28px; font-weight:700; margin-bottom:10px;">Let’s Talk 👋</h2>
-<p style="color:#666; margin-bottom:25px;">
-Have questions or feedback? Fill out the form and we’ll get back to you.
-</p>
-      <div>
-        {% form 'contact', id: 'contact-us-page' %}
+      <!-- Contact Heading -->
+      <div class="contact-header">
+        <h2 class="contact-main-title">We’re here for all your comfort queries.</h2>
 
-          {% comment %}
-            Successful message
-          {% endcomment %}
+        <p class="contact-intro">
+          Have questions about your period, our products, your order, or anything else? We’re always happy to help.
+          Reach out to us and our team will be here for you.
+        </p>
+
+        <!-- Direct Contact Information -->
+        <div class="contact-direct-info">
+          <div class="contact-direct-item">
+            <strong>Email:</strong>
+            <a href="mailto:info@bioweal.com">info@bioweal.com</a>
+          </div>
+
+          <div class="contact-direct-item">
+            <strong>Call us:</strong>
+            <a href="tel:+917975421029">+91 79754 21029</a>
+          </div>
+
+          <div class="contact-direct-item">
+            <strong>Working Hours:</strong>
+            <span>Monday – Saturday, 10:00 AM – 6:00 PM (excluding public holidays)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrapper">
+        {% form 'contact', id: 'contact-us-page' %}
+          <!-- Success Message -->
           {% if form.posted_successfully? %}
-            <p class="note form-success">
+            <div class="contact-form-success">
               {{ 'contact.form.post_success' | t }}
-            </p>
+            </div>
           {% endif %}
 
-          {{ form.errors | default_errors }}
-
-          {% for block in section.blocks %}
-
-            {% case block.type %}
-
-              {% when 'email' %}
-                <div class="float__wrapper" {{ block.shopify_attributes }}>
-                  <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  <input type="email" id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[email]" placeholder="{{ block.settings.title | escape }}" autocorrect="off" autocapitalize="off" />
-                </div>
-
-              {% when 'body' %}
-                <div class="float__wrapper" {{ block.shopify_attributes }}>
-                  <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  <textarea rows="10" id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[body]" placeholder="{{ block.settings.title | escape }}"></textarea>
-                </div>
-
-              {% when 'text' %}
-                <div class="float__wrapper" {{ block.shopify_attributes }}>
-                  <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  <input type="text" id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[{{ block.settings.title | handleize | default: 'text' }}]" placeholder="{{ block.settings.title | escape }}" autocapitalize="words" value="" />
-                </div>
-
-              {% when 'textarea' %}
-                <div class="float__wrapper" {{ block.shopify_attributes }}>
-                  <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  <textarea rows="10" id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[{{ block.settings.title | handleize | default: 'textarea' }}]" placeholder="{{ block.settings.title | escape }}"></textarea>
-                </div>
-
-              {% when 'telephone' %}
-                <div class="float__wrapper" {{ block.shopify_attributes }}>
-                  <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  <input type="tel" id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[telephone]" placeholder="{{ block.settings.title | escape }}" value="" />
-                </div>
-
-              {% when 'form_heading' %}
-                <div class="contact__block" {{ block.shopify_attributes }}>
-                  <p class="strong">{{ block.settings.title }}</p>
-                </div>
-
-              {% when 'spacer' %}
-                {%- assign hr_class = 'hr--small hr--clear' -%}
-                {%- if block.settings.line -%}
-                  {%- assign hr_class = 'hr--small' -%}
-                {%- endif -%}
-                <div class="contact__block">
-                  <hr class="{{ hr_class }}" {{ block.shopify_attributes }}>
-                </div>
-
-              {% when 'checkbox' %}
-                <div class="contact__block" {{ block.shopify_attributes }}>
-                  <div class="contact__check">
-                    <input type="checkbox" id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[{{ block.settings.title | handleize | default: 'checkbox' }}]" value="{{ block.settings.title | escape }}">
-                    <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  </div>
-                </div>
-
-              {% when 'radio' %}
-                <fieldset class="contact__block" {{ block.shopify_attributes }}>
-                  {% if block.settings.title != blank %}
-                    <legend>{{ block.settings.title }}</legend>
-                  {% endif %}
-                  {% if block.settings.label_one != blank %}
-                    <div class="contact__radio">
-                      <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}-1" name="contact[{{ block.settings.title | handleize | default: 'radio' }}]" value="{{ block.settings.label_one | escape }}">
-                      <label for="Form-{{ section.id }}-{{ forloop.index0 }}-1">{{ block.settings.label_one }}</label>
-                    </div>
-                  {% endif %}
-                  {% if block.settings.label_two != blank %}
-                    <div class="contact__radio">
-                      <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}-2" name="contact[{{ block.settings.title | handleize | default: 'radio' }}]" value="{{ block.settings.label_two | escape }}">
-                      <label for="Form-{{ section.id }}-{{ forloop.index0 }}-2">{{ block.settings.label_two }}</label>
-                    </div>
-                  {% endif %}
-                  {% if block.settings.label_three != blank %}
-                    <div class="contact__radio">
-                      <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}-3" name="contact[{{ block.settings.title | handleize | default: 'radio' }}]" value="{{ block.settings.label_three | escape }}">
-                      <label for="Form-{{ section.id }}-{{ forloop.index0 }}-3">{{ block.settings.label_three }}</label>
-                    </div>
-                  {% endif %}
-                  {% if block.settings.label_four != blank %}
-                    <div class="contact__radio">
-                      <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}-4" name="contact[{{ block.settings.title | handleize | default: 'radio' }}]" value="{{ block.settings.label_four | escape }}">
-                      <label for="Form-{{ section.id }}-{{ forloop.index0 }}-4">{{ block.settings.label_four }}</label>
-                    </div>
-                  {% endif %}
-                  {% if block.settings.label_five != blank %}
-                    <div class="contact__radio">
-                      <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}-5" name="contact[{{ block.settings.title | handleize | default: 'radio' }}]" value="{{ block.settings.label_five | escape }}">
-                      <label for="Form-{{ section.id }}-{{ forloop.index0 }}-5">{{ block.settings.label_five }}</label>
-                    </div>
-                  {% endif %}
-                  {% if block.settings.label_six != blank %}
-                    <div class="contact__radio">
-                      <input type="radio" id="Form-{{ section.id }}-{{ forloop.index0 }}-6" name="contact[{{ block.settings.title | handleize | default: 'radio' }}]" value="{{ block.settings.label_six | escape }}">
-                      <label for="Form-{{ section.id }}-{{ forloop.index0 }}-6">{{ block.settings.label_six }}</label>
-                    </div>
-                  {% endif %}
-                </fieldset>
-
-              {% when 'select' %}
-                <div class="contact__block" {{ block.shopify_attributes }}>
-                  {% if block.settings.title != blank %}
-                    <label for="Form-{{ section.id }}-{{ forloop.index0 }}">{{ block.settings.title }}</label>
-                  {% endif %}
-                  <select id="Form-{{ section.id }}-{{ forloop.index0 }}" name="contact[{{ block.settings.title | handleize | default: 'select' }}]">
-                    {% if block.settings.label_one != blank %}
-                      <option value="{{ block.settings.label_one | escape }}">{{ block.settings.label_one }}</option>
-                    {% endif %}
-                    {% if block.settings.label_two != blank %}
-                      <option value="{{ block.settings.label_two | escape }}">{{ block.settings.label_two }}</option>
-                    {% endif %}
-                    {% if block.settings.label_three != blank %}
-                      <option value="{{ block.settings.label_three | escape }}">{{ block.settings.label_three }}</option>
-                    {% endif %}
-                    {% if block.settings.label_four != blank %}
-                      <option value="{{ block.settings.label_four | escape }}">{{ block.settings.label_four }}</option>
-                    {% endif %}
-                    {% if block.settings.label_five != blank %}
-                      <option value="{{ block.settings.label_five | escape }}">{{ block.settings.label_five }}</option>
-                    {% endif %}
-                    {% if block.settings.label_six != blank %}
-                      <option value="{{ block.settings.label_six | escape }}">{{ block.settings.label_six }}</option>
-                    {% endif %}
-
-                  </select>
-                </div>
-            {% endcase %}
-          {% endfor %}
-
-          {% assign types = '' %}
-          {% for block in section.blocks %}
-            {% assign types = types | append: block.type %}
-          {% endfor %}
-
-          {% unless types contains "email" %}
-            <div class="float__wrapper">
-              <label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
-              <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t | escape }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          <!-- Form Errors -->
+          {% if form.errors %}
+            <div class="contact-form-errors">
+              {{ form.errors | default_errors }}
             </div>
-          {% endunless %}
+          {% endif %}
 
-          {% unless types contains "body" %}
-            <div class="float__wrapper contact__block">
-              <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
-              <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t | escape }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
-            </div>
-          {% endunless %}
+          <!-- Name -->
+          <div class="float__wrapper contact-field contact-field-name">
+            <label for="ContactFormName"> Name </label>
 
-          <button type="submit" class="{{ section.settings.button_color }} {{ section.settings.button_size }} {{ section.settings.button_style }}">
-            {{ 'contact.form.send' | t }}
+            <input
+              type="text"
+              id="ContactFormName"
+              name="contact[name]"
+              placeholder="Name"
+              autocomplete="name"
+              autocapitalize="words"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            >
+          </div>
+
+          <!-- Email -->
+          <div class="float__wrapper contact-field contact-field-email">
+            <label for="ContactFormEmail"> E-mail </label>
+
+            <input
+              type="email"
+              id="ContactFormEmail"
+              name="contact[email]"
+              placeholder="E-mail"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              required
+            >
+          </div>
+
+          <!-- Phone Number -->
+          <div class="float__wrapper contact-field contact-field-phone">
+            <label for="ContactFormPhone"> Phone Number </label>
+
+            <input
+              type="tel"
+              id="ContactFormPhone"
+              name="contact[phone]"
+              placeholder="Phone Number"
+              autocomplete="tel"
+              value="{% if form.phone %}{{ form.phone }}{% endif %}"
+            >
+          </div>
+
+          <!-- Message -->
+          <div class="float__wrapper contact-field contact-field-message">
+            <label for="ContactFormMessage"> Message </label>
+
+            <textarea
+              rows="5"
+              id="ContactFormMessage"
+              name="contact[body]"
+              placeholder="Message"
+            >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="contact-submit-button"
+          >
+            Send message
           </button>
-
-      
         {% endform %}
       </div>
     </div>
-    
-    <div class="location_info">
-      <p class="standard__kicker kicker__line">Contact Details</p>
-      <p>{{ section.settings.Contact_details }}</p>
- 
- <p class="contactus_svg">
-     <span>{% render 'phone-icon' %}</span>
-     <a href="tel:7975421029" target="_self">{{ section.settings.mobile_number }}</a>
- </p>
- 
-      <p class="contactus_svg"><span>{% render 'email-icon' %}</span><a class="gamil_text" href="mailto:{{ section.settings.email_address }}">{{ section.settings.email_address }}</a></p>
-   </div>
+
+    <!-- Optional Existing Contact Details -->
+    {% if section.settings.show_contact_details %}
+      <div class="location_info">
+        {% if section.settings.Contact_details != blank %}
+          <p class="standard__kicker kicker__line">Contact Details</p>
+
+          <div class="contact-location-text">
+            {{ section.settings.Contact_details }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.mobile_number != blank %}
+          <p class="contactus_svg">
+            <span>
+              {% render 'phone-icon' %}
+            </span>
+
+            <a
+              href="tel:{{ section.settings.mobile_number | remove: ' ' }}"
+              target="_self"
+            >
+              {{ section.settings.mobile_number }}
+            </a>
+          </p>
+        {% endif %}
+
+        {% if section.settings.email_address != blank %}
+          <p class="contactus_svg">
+            <span>
+              {% render 'email-icon' %}
+            </span>
+
+            <a
+              class="gamil_text"
+              href="mailto:{{ section.settings.email_address }}"
+            >
+              {{ section.settings.email_address }}
+            </a>
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
 </section>
 
-{%  style %} 
-.contactus_svg svg{
-   height: 15px;
-   width: 15px;
-}
-.contactus_svg {
-  margin: 1rem;
-  display: flex;
-    gap: 1rem;
-}
-#contact-us-page {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.06);
-}
-.float__wrapper {
-  position: relative;
-  margin-bottom: 18px;
-}
+{% style %}
+  .contact-direct-info {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px 32px;
+    max-width: 1100px;
+    margin: 0 auto 30px;
+    text-align: center;
+  }
 
-.float__wrapper input,
-.float__wrapper textarea {
-  width: 100%;
-  padding: 16px 14px;
-  border-radius: 12px;
-  border: 1.5px solid #e5e5e5;
-  background: #f9f9f9;
-  font-size: 15px;
-  transition: all 0.25s ease;
-}
+  .contact-direct-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
 
-.float__wrapper input:focus,
-.float__wrapper textarea:focus {
-  border-color: #000;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
-}
+  .contact-direct-item strong {
+    font-weight: 700;
+  }
 
-.float__wrapper label {
-  font-size: 13px;
-  margin-bottom: 6px;
-  display: block;
-  color: #444;
-  font-weight: 500;
-}
-#contact-us-page button {
-  width: 100%;
-  background: linear-gradient(135deg, #000, #333);
-  color: white;
-  padding: 14px;
-  border-radius: 40px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
+  .contact-direct-item a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-#contact-us-page button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
-.page-contact {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 90%;
-}
-.page-contact .btn--neutral.btn--outline{
-  background: black;
-    color: white;
-    border: none;
-}
-@media only screen and (max-width: 767px){
-  .page-contact{
-    flex-direction: column;
+  .contact-direct-item a:hover {
+    text-decoration: underline;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .contact-direct-info {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      margin-bottom: 28px;
+    }
+
+    .contact-direct-item {
+      white-space: normal;
+      text-align: center;
+      line-height: 1.5;
+    }
+  }
+  /* =========================================================
+   TIMEPADS CONTACT SECTION
+   ========================================================= */
+
+  .section-contact {
+    --contact-black: #231f20;
+    --contact-text: #111111;
+    --contact-muted: #555555;
+    --contact-border: #d9d9d9;
+    --contact-white: #ffffff;
+  }
+
+  /* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+  .section-contact .text__standard {
     width: 100%;
   }
-}
-{% endstyle %} 
+
+  /* =========================================================
+   HEADER
+   ========================================================= */
+
+  .contact-header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .contact-main-title {
+    margin: 0 0 12px;
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: var(--contact-text);
+  }
+
+  .contact-intro {
+    max-width: 800px;
+    margin: 0 auto 18px;
+    color: var(--contact-text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* =========================================================
+   DIRECT CONTACT INFORMATION
+   ========================================================= */
+
+  .contact-direct-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 26px;
+    row-gap: 8px;
+    margin: 0 auto 32px;
+    color: var(--contact-text);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .contact-direct-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--contact-text);
+    text-decoration: none;
+  }
+
+  .contact-direct-item:hover {
+    color: var(--contact-black);
+    text-decoration: underline;
+  }
+
+  .contact-direct-label {
+    font-weight: 600;
+  }
+
+  .contact-hours {
+    cursor: default;
+  }
+
+  .contact-hours:hover {
+    text-decoration: none;
+  }
+
+  /* =========================================================
+   FORM
+   ========================================================= */
+
+  .contact-form-wrapper {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+  }
+
+  #contact-us-page {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 18px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* =========================================================
+   FORM FIELDS
+   ========================================================= */
+
+  #contact-us-page .contact-field {
+    width: 100%;
+    margin: 0;
+  }
+
+  #contact-us-page .contact-field-name,
+  #contact-us-page .contact-field-email {
+    grid-column: span 1;
+  }
+
+  #contact-us-page .contact-field-phone,
+  #contact-us-page .contact-field-message {
+    grid-column: 1 / -1;
+  }
+
+  #contact-us-page .contact-field label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  #contact-us-page input,
+  #contact-us-page textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--contact-border);
+    border-radius: 14px;
+    background: var(--contact-white);
+    color: var(--contact-text);
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.4;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  #contact-us-page input {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  #contact-us-page textarea {
+    min-height: 116px;
+    padding: 16px;
+    resize: vertical;
+  }
+
+  #contact-us-page input::placeholder,
+  #contact-us-page textarea::placeholder {
+    color: #777777;
+    opacity: 1;
+  }
+
+  #contact-us-page input:focus,
+  #contact-us-page textarea:focus {
+    border-color: #222222;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+  }
+
+  /* =========================================================
+   SUCCESS / ERROR
+   ========================================================= */
+
+  #contact-us-page .contact-form-success,
+  #contact-us-page .contact-form-errors {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    margin: 0;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  #contact-us-page .contact-form-success {
+    background: #f1f7ef;
+    color: #31512b;
+  }
+
+  #contact-us-page .contact-form-errors {
+    background: #fff2f2;
+    color: #8a1f1f;
+  }
+
+  /* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+  #contact-us-page .contact-submit-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 56px;
+    padding: 14px 24px;
+    margin: 0;
+    border: none;
+    border-radius: 30px;
+    background: var(--contact-black);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #contact-us-page .contact-submit-button:hover {
+    transform: translateY(-1px);
+    opacity: 0.94;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  }
+
+  #contact-us-page .contact-submit-button:active {
+    transform: translateY(0);
+  }
+
+  #contact-us-page .contact-submit-button:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 3px;
+  }
+
+  /* =========================================================
+   EXISTING CONTACT DETAILS
+   ========================================================= */
+
+  .location_info {
+    max-width: 850px;
+    margin: 45px auto 0;
+  }
+
+  .location_info .standard__kicker {
+    margin-bottom: 12px;
+  }
+
+  .contact-location-text {
+    margin-bottom: 15px;
+  }
+
+  .contactus_svg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  .contactus_svg svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .contactus_svg a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .contactus_svg a:hover {
+    text-decoration: underline;
+  }
+
+  /* =========================================================
+   DESKTOP SPACING
+   ========================================================= */
+
+  .page-contact {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  /* =========================================================
+   TABLET
+   ========================================================= */
+
+  @media only screen and (max-width: 900px) {
+    .contact-main-title {
+      font-size: 28px;
+    }
+
+    .contact-direct-info {
+      column-gap: 18px;
+    }
+  }
+
+  /* =========================================================
+   MOBILE
+   ========================================================= */
+
+  @media only screen and (max-width: 767px) {
+    .section-contact {
+      --PT: 30px;
+      --PB: 30px;
+    }
+
+    .contact-header {
+      padding: 0 5px;
+    }
+
+    .contact-main-title {
+      font-size: 25px;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+
+    .contact-intro {
+      font-size: 15px;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .contact-direct-info {
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+
+    .contact-direct-item {
+      justify-content: center;
+      text-align: center;
+    }
+
+    #contact-us-page {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    #contact-us-page .contact-field-name,
+    #contact-us-page .contact-field-email,
+    #contact-us-page .contact-field-phone,
+    #contact-us-page .contact-field-message {
+      width: 100%;
+    }
+
+    #contact-us-page input {
+      height: 54px;
+      font-size: 15px;
+    }
+
+    #contact-us-page textarea {
+      min-height: 120px;
+      font-size: 15px;
+    }
+
+    #contact-us-page .contact-submit-button {
+      min-height: 54px;
+      font-size: 15px;
+    }
+
+    .location_info {
+      margin-top: 35px;
+    }
+
+    .page-contact {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  /* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+  @media only screen and (max-width: 480px) {
+    .contact-main-title {
+      font-size: 23px;
+    }
+
+    .contact-intro {
+      font-size: 14px;
+    }
+
+    .contact-direct-info {
+      font-size: 13px;
+    }
+
+    #contact-us-page input,
+    #contact-us-page textarea {
+      border-radius: 12px;
+    }
+
+    #contact-us-page .contact-submit-button {
+      border-radius: 28px;
+    }
+  }
+
+  .wrapper.section-padding.page-contact {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .contact-direct-info {
+    padding-bottom: 1rem;
+  }
+{% endstyle %}
 
 {% schema %}
 {
@@ -283,143 +648,277 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
   "settings": [
     {
       "type": "richtext",
-      "id":"Contact_details",
-      "label":"Contact Location"
+      "id": "Contact_details",
+      "label": "Contact Location"
     },
+
     {
       "type": "text",
-      "id":"address",
-      "label":"Address"
+      "id": "address",
+      "label": "Address"
     },
-    {
-     "type": "text",
-     "id":"whatsapp_number",
-     "label":"Whatsapp Number"
-    },
+
     {
       "type": "text",
-      "id":"mobile_number",
-      "label":"Mobile Number"
+      "id": "whatsapp_number",
+      "label": "Whatsapp Number"
     },
+
     {
       "type": "text",
-      "id":"corporate_website_link",
-      "label":"Corporate Website link"
+      "id": "mobile_number",
+      "label": "Mobile Number",
+      "default": "+91 79754 21029"
     },
+
     {
       "type": "text",
-      "id":"email_address",
-      "label":"Eamil"
+      "id": "corporate_website_link",
+      "label": "Corporate Website link"
     },
+
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email",
+      "default": "info@bioweal.com"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_contact_details",
+      "label": "Show additional contact details",
+      "default": false
+    },
+
     {
       "type": "text",
       "id": "title",
       "label": "Title"
     },
+
     {
       "type": "select",
       "id": "align_text",
       "label": "Title alignment",
-      "default": "text-left",
+      "default": "text-center",
       "options": [
-        { "value": "text-left","label": "Left" },
-        { "value": "text-center","label": "Centered" },
-        { "value": "text-right","label": "Right" }
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Centered"
+        },
+        {
+          "value": "text-right",
+          "label": "Right"
+        }
       ]
     },
+
     {
       "type": "header",
       "content": "Button"
     },
+
     {
       "type": "select",
       "id": "button_size",
       "label": "Size",
       "default": "btn--long",
       "options": [
-        {"value": "btn--small", "label": "Small button"},
-        {"value": "btn--medium", "label": "Medium button"},
-        {"value": "btn--large", "label": "Large button"},
-        {"value": "btn--long", "label": "Long button"},
-        {"value": "btn--large btn--full", "label": "Full width button"}
+        {
+          "value": "btn--small",
+          "label": "Small button"
+        },
+        {
+          "value": "btn--medium",
+          "label": "Medium button"
+        },
+        {
+          "value": "btn--large",
+          "label": "Large button"
+        },
+        {
+          "value": "btn--long",
+          "label": "Long button"
+        },
+        {
+          "value": "btn--large btn--full",
+          "label": "Full width button"
+        }
       ]
     },
+
     {
       "type": "select",
       "id": "button_color",
       "label": "Color",
       "default": "btn--neutral",
       "options": [
-        { "value": "btn--primary", "label": "Bright accent" },
-        { "value": "btn--secondary", "label": "Secondary accent" },
-        { "value": "btn--neutral", "label": "Text color" },
-        { "value": "btn--black", "label": "Black" },
-        { "value": "btn--white", "label": "White" }
+        {
+          "value": "btn--primary",
+          "label": "Bright accent"
+        },
+        {
+          "value": "btn--secondary",
+          "label": "Secondary accent"
+        },
+        {
+          "value": "btn--neutral",
+          "label": "Text color"
+        },
+        {
+          "value": "btn--black",
+          "label": "Black"
+        },
+        {
+          "value": "btn--white",
+          "label": "White"
+        }
       ]
     },
+
     {
       "type": "select",
       "id": "button_style",
       "label": "Button style",
       "default": "btn--outline",
       "options": [
-        { "value": "btn", "label": "Solid button" },
-        { "value": "btn--soft", "label": "Soft button" },
-        { "value": "btn--outline", "label": "Outlined button" }
+        {
+          "value": "btn",
+          "label": "Solid button"
+        },
+        {
+          "value": "btn--soft",
+          "label": "Soft button"
+        },
+        {
+          "value": "btn--outline",
+          "label": "Outlined button"
+        }
       ]
     },
+
     {
       "type": "header",
       "content": "Colors"
     },
+
     {
       "type": "select",
       "id": "text_color",
       "label": "Text",
       "default": "text--neutral",
       "options": [
-        { "value": "text--neutral", "label": "Normal text"},
-        { "value": "text--white", "label": "White"},
-        { "value": "text--primary", "label": "Primary accent"},
-        { "value": "text--secondary", "label": "Secondary accent"},
-        { "value": "text--black", "label": "Black"},
-        { "value": "text--invert--primary", "label": "Primary dark accent"},
-        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
-        { "value": "text--invert", "label": "Inverted text color"},
-        { "value": "text--bright--primary", "label": "Primary bright accent"},
-        { "value": "text--bright--secondary", "label": "Secondary bright accent"}
+        {
+          "value": "text--neutral",
+          "label": "Normal text"
+        },
+        {
+          "value": "text--white",
+          "label": "White"
+        },
+        {
+          "value": "text--primary",
+          "label": "Primary accent"
+        },
+        {
+          "value": "text--secondary",
+          "label": "Secondary accent"
+        },
+        {
+          "value": "text--black",
+          "label": "Black"
+        },
+        {
+          "value": "text--invert--primary",
+          "label": "Primary dark accent"
+        },
+        {
+          "value": "text--invert--secondary",
+          "label": "Secondary dark accent"
+        },
+        {
+          "value": "text--invert",
+          "label": "Inverted text color"
+        },
+        {
+          "value": "text--bright--primary",
+          "label": "Primary bright accent"
+        },
+        {
+          "value": "text--bright--secondary",
+          "label": "Primary bright accent"
+        }
       ]
     },
+
     {
       "type": "select",
       "id": "bg",
       "label": "Background",
       "default": "palette--light bg--neutral",
       "options": [
-        { "value": "palette--light bg--neutral", "label": "Default"},
-        { "value": "palette--light bg--accent", "label": "Light"},
-        { "value": "palette--dark bg--invert", "label": "Dark"},
-        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"},
-        { "value": "palette--bright bg--bright", "label": "Bright"},
-        { "value": "palette--bright bg--bright--accent", "label": "Bright accent"}
+        {
+          "value": "palette--light bg--neutral",
+          "label": "Default"
+        },
+        {
+          "value": "palette--light bg--accent",
+          "label": "Light"
+        },
+        {
+          "value": "palette--dark bg--invert",
+          "label": "Dark"
+        },
+        {
+          "value": "palette--dark bg--invert--accent",
+          "label": "Dark accent"
+        },
+        {
+          "value": "palette--bright bg--bright",
+          "label": "Bright"
+        },
+        {
+          "value": "palette--bright bg--bright--accent",
+          "label": "Bright accent"
+        }
       ]
     },
+
     {
       "type": "header",
       "content": "Section spacing"
     },
+
     {
       "type": "select",
       "id": "width",
       "label": "Width",
       "default": "wrapper--narrow",
       "options": [
-        { "value": "wrapper--full", "label": "Full width padded" },
-        { "value": "wrapper", "label": "Page width" },
-        { "value": "wrapper--narrow", "label": "Page width narrow" },
-        { "value": "wrapper--tiny", "label": "Page width extra narrow" }
+        {
+          "value": "wrapper--full",
+          "label": "Full width padded"
+        },
+        {
+          "value": "wrapper",
+          "label": "Page width"
+        },
+        {
+          "value": "wrapper--narrow",
+          "label": "Page width narrow"
+        },
+        {
+          "value": "wrapper--tiny",
+          "label": "Page width extra narrow"
+        }
       ]
     },
+
     {
       "type": "range",
       "id": "padding_top",
@@ -430,6 +929,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
       "label": "Padding top",
       "default": 36
     },
+
     {
       "type": "range",
       "id": "padding_bottom",
@@ -441,6 +941,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
       "default": 36
     }
   ],
+
   "blocks": [
     {
       "type": "email",
@@ -455,6 +956,21 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
+    {
+      "type": "telephone",
+      "name": "Telephone",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "Phone Number"
+        }
+      ]
+    },
+
     {
       "type": "body",
       "name": "Message",
@@ -468,6 +984,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
     {
       "type": "text",
       "name": "Text line",
@@ -481,6 +998,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
     {
       "type": "textarea",
       "name": "Text area",
@@ -494,20 +1012,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
-    {
-      "type": "telephone",
-      "name": "Telephone",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Label",
-          "default": "Phone Number",
-          "info": "Example: Phone Number"
-        }
-      ]
-    },
+
     {
       "type": "form_heading",
       "name": "Heading",
@@ -521,6 +1026,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
     {
       "type": "spacer",
       "name": "Spacer",
@@ -533,6 +1039,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
     {
       "type": "checkbox",
       "name": "Single checkbox",
@@ -546,6 +1053,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
     {
       "type": "select",
       "name": "Select dropdown",
@@ -560,7 +1068,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         {
           "type": "header",
           "content": "Include up to six options",
-          "info":  "Options with blank text will not appear."
+          "info": "Options with blank text will not appear."
         },
         {
           "type": "text",
@@ -600,6 +1108,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         }
       ]
     },
+
     {
       "type": "radio",
       "name": "Radio buttons",
@@ -613,7 +1122,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
         {
           "type": "header",
           "content": "Include up to six options",
-          "info":  "Leave option text blank to exclude"
+          "info": "Leave option text blank to exclude"
         },
         {
           "type": "text",
@@ -650,6 +1159,7 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
       ]
     }
   ],
+
   "presets": [
     {
       "name": "Contact form",
@@ -662,13 +1172,17 @@ Have questions or feedback? Fill out the form and we’ll get back to you.
           "type": "email"
         },
         {
+          "type": "telephone"
+        },
+        {
           "type": "body"
         }
       ]
     }
   ],
+
   "disabled_on": {
-    "groups": ["header","footer","aside"]
+    "groups": ["header", "footer", "aside"]
   }
 }
 {% endschema %}

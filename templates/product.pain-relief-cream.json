@@ -49,16 +49,6 @@
           "disabled": true,
           "settings": {}
         },
-        "product_certificates_QBtkqW": {
-          "type": "product-certificates",
-          "settings": {
-            "heading": "Certificates We Have",
-            "image_1": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png",
-            "image_2": "shopify://shop_images/Gemini_Generated_Image_zfy5qvzfy5qvzfy5-removebg-preview.png",
-            "image_3": "shopify://shop_images/Clinically-Tested.png",
-            "image_4": "shopify://shop_images/Dermatologically-Tested.png"
-          }
-        },
         "price": {
           "type": "price",
           "settings": {
@@ -98,13 +88,63 @@
             "padding_bottom": 20
           }
         },
+        "product_certificates_QBtkqW": {
+          "type": "product-certificates",
+          "settings": {
+            "heading": "Certificates We Have",
+            "image_1": "shopify://shop_images/Gemini_Generated_Image_bi1r2vbi1r2vbi1r-removebg-preview.png",
+            "image_2": "shopify://shop_images/Gemini_Generated_Image_zfy5qvzfy5qvzfy5-removebg-preview.png",
+            "image_3": "shopify://shop_images/Clinically-Tested.png",
+            "image_4": "shopify://shop_images/Dermatologically-Tested.png"
+          }
+        },
+        "aov_ai_bundle_offer_upsell_mDVrDt": {
+          "type": "shopify://apps/aov-ai-bundle/blocks/offer-upsell/0335d423-143c-4ad7-b224-99a1db74a9ee",
+          "settings": {}
+        },
+        "aov_ai_bundle_offer_inline_QGDyD3": {
+          "type": "shopify://apps/aov-ai-bundle/blocks/offer-inline/0335d423-143c-4ad7-b224-99a1db74a9ee",
+          "disabled": true,
+          "settings": {}
+        },
         "last_houre_sale_eiz4aA": {
           "type": "last-houre-sale",
+          "disabled": true,
           "settings": {}
         },
         "selling_fast_WELGfa": {
           "type": "selling-fast",
+          "disabled": true,
           "settings": {}
+        },
+        "description_product_PrHYrn": {
+          "type": "description-product",
+          "settings": {}
+        },
+        "icon_FwCCTX": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 16,
+            "icon_color": "#4b4b4b",
+            "text": "<p>Estimated Delivery time <strong>3-7 days</strong></p>",
+            "padding_bottom": 8
+          }
+        },
+        "product_view_i8nFPx": {
+          "type": "Product-view",
+          "disabled": true,
+          "settings": {
+            "view_text": "Peoples are viewing this right now"
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "settings": {
+            "share_label": "Share",
+            "target_device": "",
+            "padding_bottom": 20
+          }
         },
         "description_GdkpfD": {
           "type": "description",
@@ -132,20 +172,6 @@
           "disabled": true,
           "settings": {}
         },
-        "description_product_PrHYrn": {
-          "type": "description-product",
-          "settings": {}
-        },
-        "icon_FwCCTX": {
-          "type": "icon",
-          "settings": {
-            "icon_name": "icon-truck",
-            "icon_size": 16,
-            "icon_color": "#4b4b4b",
-            "text": "<p>Estimated Delivery time <strong>2-3 days</strong></p>",
-            "padding_bottom": 8
-          }
-        },
         "icon_d8teE9": {
           "type": "icon",
           "disabled": true,
@@ -168,26 +194,12 @@
             "padding_bottom": 8
           }
         },
-        "product_view_i8nFPx": {
-          "type": "Product-view",
-          "settings": {
-            "view_text": "Peoples are viewing this right now"
-          }
-        },
         "complimentary_3bNLrn": {
           "type": "complimentary",
           "disabled": true,
           "settings": {
             "title": "Bought together",
             "complimentary_list_limit": 3,
-            "padding_bottom": 20
-          }
-        },
-        "sharing": {
-          "type": "sharing",
-          "settings": {
-            "share_label": "Share",
-            "target_device": "",
             "padding_bottom": 20
           }
         },
@@ -224,12 +236,14 @@
         "text_qn3Tef",
         "product_featuress_jLFxUg",
         "product_features_tbA4hx",
-        "product_certificates_QBtkqW",
         "price",
         "shipping_text_GRcYBH",
         "variants",
         "quantity",
         "buttons",
+        "product_certificates_QBtkqW",
+        "aov_ai_bundle_offer_upsell_mDVrDt",
+        "aov_ai_bundle_offer_inline_QGDyD3",
         "last_houre_sale_eiz4aA",
         "selling_fast_WELGfa",
         "description_product_PrHYrn",
@@ -318,6 +332,7 @@
         "collection_images_EiH9zQ",
         "collection_images_EqjAwj"
       ],
+      "disabled": true,
       "settings": {
         "padding_top": 0,
         "padding_bottom": 20,
@@ -335,6 +350,7 @@
     },
     "counting_number_arqh6C": {
       "type": "counting-number",
+      "disabled": true,
       "settings": {
         "heading": "",
         "padding_top": 36,
@@ -378,28 +394,28 @@
           "type": "faq",
           "settings": {
             "question": "How quickly does TIME Period Pain Relief Cream work?",
-            "answer": "Most users feel soothing relief within 10–15 minutes after applying. TIME Period Pain Relief Cream Results may vary depending on pain intensity."
+            "answer": "Most users feel soothing relief within 10\u201315 minutes after applying. TIME Period Pain Relief Cream Results may vary depending on pain intensity."
           }
         },
         "faq_6adYYG": {
           "type": "faq",
           "settings": {
             "question": "Is TIME Period Pain Relief Cream safe for daily use?",
-            "answer": "Yes 👍  TIME Period Pain Relief Cream is made with natural ingredients like Satva Pudina, Eucalyptus Oil, and Coconut Milk, making it safe for regular use during periods."
+            "answer": "Yes \ud83d\udc4d  TIME Period Pain Relief Cream is made with natural ingredients like Satva Pudina, Eucalyptus Oil, and Coconut Milk, making it safe for regular use during periods."
           }
         },
         "faq_TBjH4z": {
           "type": "faq",
           "settings": {
             "question": "How do I use TIME Period Pain Relief Cream for best results?",
-            "answer": "Apply a small amount of  TIME Period Pain Relief Cream on the lower abdomen or back, gently massage in circular motion, and let it absorb. Use 2–3 times a day as needed."
+            "answer": "Apply a small amount of  TIME Period Pain Relief Cream on the lower abdomen or back, gently massage in circular motion, and let it absorb. Use 2\u20133 times a day as needed."
           }
         },
         "faq_LKkbUr": {
           "type": "faq",
           "settings": {
             "question": "Does TIME Period Pain Relief Cream cause stains or stickiness?",
-            "answer": "No 😊  TIME Period Pain Relief Cream is non-sticky and non-staining, so you can use it anytime even before going out."
+            "answer": "No \ud83d\ude0a  TIME Period Pain Relief Cream is non-sticky and non-staining, so you can use it anytime even before going out."
           }
         },
         "faq_8Cg7dN": {
@@ -501,6 +517,16 @@
       "settings": {
         "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
       }
+    },
+    "tp_recommended_products": {
+      "type": "tp-recommended-products",
+      "settings": {
+        "eyebrow": "PAIRS WELL WITH THIS",
+        "heading": "Recommended For You",
+        "subtitle": "Thoughtful period care essentials curated for your comfort.",
+        "products_limit": 4,
+        "bg_color": "#FFFFFF"
+      }
     }
   },
   "order": [
@@ -513,6 +539,7 @@
     "faq_menstrual_cup_R4nb3A",
     "related",
     "section_faq_brbRd3",
+    "tp_recommended_products",
     "section_liquid_FJ3qmy"
   ]
 }

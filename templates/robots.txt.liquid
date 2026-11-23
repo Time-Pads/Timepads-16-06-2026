@@ -1,38 +1,30 @@
 # we use Shopify as our ecommerce platform
 
+{% capture line_break %}
+{% endcapture -%}
+{%- assign policy_paths = '/policies,/policies/,/*/policies,/*/policies/' | split: ',' -%}
+{%- assign utility_rules = 'Disallow: /cart/*|Disallow: /*add-to-cart*|Disallow: /account/*|Disallow: /checkouts/*|Disallow: /checkout/*|Disallow: /challenge|Disallow: /challenge/*' | split: '|' -%}
 {%- for group in robots.default_groups -%}
-  {{- group.user_agent -}}
-
-  {%- for rule in group.rules -%}
-    {%- assign rule_val = rule.value -%}
-    {%- unless rule.directive == 'Disallow' and rule_val == '/policies' or rule_val == '/policies/' or rule_val == '/*/policies' or rule_val == '/*/policies/' -%}
-      {{- rule -}}
-    {%- endunless -%}
-  {%- endfor -%}
-
+  {{ group.user_agent }}{{ line_break }}
   {%- assign group_is_blocked = false -%}
   {%- for rule in group.rules -%}
     {%- if rule.directive == 'Disallow' and rule.value == '/' -%}
       {%- assign group_is_blocked = true -%}
     {%- endif -%}
+    {%- unless rule.directive == 'Disallow' and policy_paths contains rule.value -%}
+      {{ rule }}{{ line_break }}
+    {%- endunless -%}
   {%- endfor -%}
-
   {%- unless group_is_blocked -%}
-    # Extra rules to block standard utility URLs while allowing products/collections
-    Disallow: /cart/*
-    Disallow: /*add-to-cart*
-    Disallow: /account/*
-    Disallow: /checkouts/*
-    Disallow: /checkout/*
-    Disallow: /challenge
-    Disallow: /challenge/*
+    {%- for rule in utility_rules -%}
+      {{ rule }}{{ line_break }}
+    {%- endfor -%}
   {%- endunless -%}
-
   {%- if group.sitemap != blank -%}
-    {{ group.sitemap }}
+    {{ group.sitemap }}{{ line_break }}
   {%- endif -%}
+  {{ line_break }}
 {%- endfor -%}
-
 # --------------------------------------------------
 # Explicitly Allow AI Search Bots & Web Crawlers
 # --------------------------------------------------

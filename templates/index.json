@@ -11,6 +11,7 @@
   "sections": {
     "customer_welcome_name": {
       "type": "customer-welcome-name",
+      "disabled": true,
       "settings": {
         "prefix": "Hi",
         "suffix": "welcome back!",
@@ -29,9 +30,9 @@
       "type": "static-hero-banner",
       "name": "Static Hero Banner",
       "settings": {
-        "image": "shopify://shop_images/Desktop-w_1.webp",
-        "mobile_image": "shopify://shop_images/mobile-w_1.webp",
-        "link": "",
+        "image": "shopify://shop_images/desktop-banner.jpg",
+        "mobile_image": "shopify://shop_images/mobile-banner.jpg",
+        "link": "shopify://collections/all",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_top_mobile": 0,
@@ -66,7 +67,7 @@
         "tab_qNmpaP": {
           "type": "tab",
           "settings": {
-            "collection": "cotton-sanitary-pads",
+            "collection": "rashfree-teen-sanitary-pads",
             "header_image": "shopify://shop_images/Feather_7.avif",
             "header_title": "Ultra Feather",
             "collection_url": "shopify://collections/cotton-sanitary-pads",
@@ -124,7 +125,7 @@
         "columns_mobile": 2,
         "gap_desktop": 28,
         "gap_mobile": 18,
-        "bg_color": "#faf7fb",
+        "bg_color": "#ffffff",
         "padding_top": 30,
         "padding_bottom": 0
       }
@@ -150,11 +151,47 @@
         "width": "wrapper"
       }
     },
+    "1793880185ff465c5a": {
+      "type": "apps",
+      "blocks": {
+        "doran_shoppable_videos_basic_widget_f3qFHb": {
+          "type": "shopify://apps/doran-shoppable-videos/blocks/basic-widget/9f421243-1cc3-42c0-8a88-49922de1eacf",
+          "settings": {
+            "widgets": [
+              "44c995e1-6719-4d92-a366-3a0ced8e8bc5"
+            ],
+            "widget_type": "carousel",
+            "heading": "",
+            "heading_tag": "h2",
+            "description": "",
+            "alignment": "center",
+            "is_custom_grid": false,
+            "grid_item_in_desktop": 4,
+            "grid_item_in_tablet": 3,
+            "grid_item_in_mobile": 2,
+            "is_custom_carousel": false,
+            "carousel_item_in_desktop": 4,
+            "carousel_item_in_tablet": 3,
+            "carousel_item_in_mobile": 2
+          }
+        }
+      },
+      "block_order": [
+        "doran_shoppable_videos_basic_widget_f3qFHb"
+      ],
+      "settings": {
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "combo_offers_QYL3gj": {
       "type": "combo-offers",
       "name": "Combo Offers Section",
       "settings": {
-        "section_bg_color": "#faf7fb",
+        "section_bg_color": "#ffffff",
         "eyebrow_text": "BETTER TOGETHER",
         "headline_prefix": "Combo",
         "headline_accent": "Offers",
@@ -165,13 +202,15 @@
         "tab_1_name": "Best Sellers",
         "tab_1_collection": "good-quality-sanitary-pads",
         "tab_2_name": "Heavy Flow",
-        "tab_2_collection": "",
-        "tab_3_name": "Everyday Care",
-        "tab_3_collection": "",
+        "tab_2_collection": "heavy-flow",
+        "tab_3_name": "Medium Flow",
+        "tab_3_collection": "medium-flow-pads",
+        "tab_4_name": "Low and Medium Flow",
+        "tab_4_collection": "regular-sanitary-pads",
         "enable_bottom_banner": true,
-        "banner_heading": "Save more with combos",
-        "banner_sub": "Everything you need for a comfortable, confident period.",
-        "banner_cta_text": "View All Combo Offers →",
+        "banner_heading": "Your Complete Period Care, All in One Place",
+        "banner_sub": "Explore pads, menstrual cups, period care creams & more.",
+        "banner_cta_text": "Explore All Products →",
         "banner_cta_url": "",
         "padding_top": 20,
         "padding_bottom": 20
@@ -221,15 +260,15 @@
       ],
       "name": "Why Choose TIME",
       "settings": {
-        "primary_color": "#7b3f6d",
-        "primary_dark_color": "#5f2e54",
-        "primary_light_color": "#d9a7c2",
-        "bg_color": "#faf0f2",
-        "bg_secondary_color": "#f2ecf5",
+        "primary_color": "#b7a487",
+        "primary_dark_color": "#75614c",
+        "primary_light_color": "#e8d9c3",
+        "bg_color": "#ffffff",
+        "bg_secondary_color": "#faf7f2",
         "surface_color": "#ffffff",
-        "text_color": "#241d25",
-        "text_secondary_color": "#625a63",
-        "border_color": "#e6dce9",
+        "text_color": "#3d3329",
+        "text_secondary_color": "#74695d",
+        "border_color": "#e8d9c3",
         "eyebrow_text": "MORE THAN A PAD, A BETTER PERIOD",
         "headline_prefix": "Why Choose",
         "headline_accent": "TIME?",
@@ -278,7 +317,7 @@
           "settings": {
             "image": "shopify://shop_images/a-11_5.jpg",
             "name": "— Divya, Hyderabad",
-            "quote": "The pure cotton top sheet feels so natural. I can wear them through long office hours with zero worry."
+            "quote": "I use it whenever my cramps start, and it feels soothing and comforting. It has become part of my period-day routine."
           }
         },
         "story_5": {
@@ -286,7 +325,7 @@
           "settings": {
             "image": "shopify://shop_images/a-12_5.jpg",
             "name": "— Pooja, Pune",
-            "quote": "Organic, comfortable, and gentle on sensitive skin. Best period care purchase ever!"
+            "quote": "Easy to use, comfortable, and surprisingly convenient. Once I got used to it, my periods became much easier to manage. I love that I can wear it confidently throughout the day without worrying about leaks."
           }
         }
       },
@@ -298,20 +337,20 @@
         "story_5"
       ],
       "settings": {
-        "trust_heading": "Trusted by Millions of Women",
-        "badge_1_val": "5L+",
+        "trust_heading": "Trusted by Thousands of Women",
+        "badge_1_val": "50K+",
         "badge_1_lbl": "Happy Customers",
         "badge_2_val": "4.8/5",
         "badge_2_lbl": "Average Rating",
-        "badge_3_val": "100% Safe",
-        "badge_3_lbl": "& Dermat Tested",
-        "badge_4_val": "Made in India",
-        "badge_4_lbl": "with ❤️",
+        "badge_3_val": "Clinically Tested",
+        "badge_3_lbl": "&  Dermatologist Approved",
+        "badge_4_val": "",
+        "badge_4_lbl": "",
         "badge_5_val": "10L+",
         "badge_5_lbl": "Pads Delivered",
         "stories_heading": "Real Stories, Real Confidence",
-        "bg_color": "#faf7fb",
-        "text_color": "#1a1a1a",
+        "bg_color": "#faf7f2",
+        "text_color": "#3d3329",
         "padding_top": 36,
         "padding_bottom": 36,
         "padding_top_mobile": 24,
@@ -403,6 +442,7 @@
     "static_hero_banner_qfUPyM",
     "collection_tabs_jwbj9a",
     "product-grid",
+    "1793880185ff465c5a",
     "combo_offers_QYL3gj",
     "why_choose_time_acRejL",
     "social_proof_testimonials",

@@ -56,9 +56,10 @@
       </div>
     {% endif %}
 
-    <h3 class="article__item-title heading-size-6 mb-0">
+    {%- assign article_heading_tag = heading_tag | default: 'h3' -%}
+    <{{ article_heading_tag }} class="article__item-title heading-size-6 mb-0">
       <a href="{{ article.url }}">{{ article.title }}</a>
-    </h3>
+    </{{ article_heading_tag }}>
 
     {% if show_author %}
       <div class="article__item-author">

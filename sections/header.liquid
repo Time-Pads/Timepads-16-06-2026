@@ -9,636 +9,972 @@
 -%}
 
 {% style %}
-/* Google Fonts - Caveat / Playfair / Plus Jakarta loaded async via theme.liquid (single request, non-render-blocking) */
-/* ─── TIME MASTER MULTI-ROW HEADER SYSTEM (IMAGE 1 TARGET MATCH) ─── */
-#shopify-section-header,
-.shopify-section-group-header-group,
-header.theme__header,
-.tp-header-master-wrapper {
-  width: 100% !important;
-  max-width: 100% !important;
-  position: relative;
-  z-index: 100;
-  font-family: 'Poppins', var(--FONT-STACK-BODY), sans-serif;
-  background-color: var(--time-background) !important;
-  box-shadow: 0 4px 20px rgba(123, 63, 109, 0.08);
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* ── ROW 1: TOP ANNOUNCEMENT BAR ── */
-.tp-header-announcement-bar {
-  width: 100% !important;
-  max-width: 100% !important;
-  background-color: var(--time-text) !important; /* Deep dark plum #241D25 */
-  color: var(--time-white) !important;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 8px 32px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-sizing: border-box !important;
-}
-
-.tp-announcement-container {
-  width: 100% !important;
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  box-sizing: border-box !important;
-}
-
-.tp-announcement-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.tp-announcement-center {
-  font-weight: 600;
-  color: var(--time-primary-light);
-}
-
-.tp-announcement-heart {
-  color: var(--time-primary-light);
-  font-size: 13px;
-}
-
-/* ── ROW 2: MAIN HEADER (LOGO, SEARCH, USER ACTIONS) ── */
-.tp-main-header-bar {
-  width: 100% !important;
-  max-width: 100% !important;
-  background-color: var(--time-background) !important;
-  padding: 14px 32px;
-  border-bottom: 1px solid var(--time-border);
-  box-sizing: border-box !important;
-}
-
-.tp-main-header-container {
-  width: 100% !important;
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  box-sizing: border-box !important;
-}
-
-/* Logo Column */
-.tp-header-logo-wrap {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.tp-header-logo-link {
-  text-decoration: none !important;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.tp-header-logo-serif {
-  font-family: 'Playfair Display', Didot, serif;
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: var(--time-text);
-  line-height: 1;
-}
-
-.tp-trademark {
-  font-size: 12px;
-  font-weight: 600;
-  margin-left: 2px;
-  top: -4px;
-  position: relative;
-}
-
-.tp-header-logo-sub {
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.42em;
-  color: var(--time-primary);
-  margin-top: 3px;
-  text-transform: uppercase;
-}
-
-/* Search Column */
-.tp-header-search-wrap {
-  flex: 1;
-  max-width: 560px;
-  margin: 0 16px;
-}
-
-.tp-header-search-form {
-  width: 100%;
-  margin: 0;
-}
-
-.tp-search-pill-box {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background: var(--time-surface) !important; /* White */
-  border: 1.5px solid var(--time-border) !important;
-  border-radius: 999px !important;
-  padding: 3px 3px 3px 12px !important;
-  height: 38px !important;
-  box-sizing: border-box !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
-}
-
-.tp-search-pill-box:focus-within {
-  border-color: var(--time-primary) !important;
-  box-shadow: 0 0 0 3px rgba(123, 63, 109, 0.12) !important;
-}
-
-.tp-search-icon-left {
-  width: 16px !important;
-  height: 16px !important;
-  stroke: var(--time-text-secondary) !important;
-  flex-shrink: 0 !important;
-  margin-right: 6px !important;
-  display: block !important;
-  align-self: center !important;
-}
-
-.tp-search-input-field {
-  flex: 1 !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  color: var(--time-text) !important;
-  font-size: 12.5px !important;
-  font-family: inherit !important;
-  padding: 0 4px !important;
-  margin: 0 !important;
-  height: 100% !important;
-  line-height: 32px !important;
-  display: flex !important;
-  align-items: center !important;
-  align-self: center !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-}
-
-.tp-search-input-field::placeholder {
-  color: var(--time-text-secondary) !important;
-  opacity: 0.75 !important;
-  line-height: normal !important;
-}
-
-.tp-search-btn-submit {
-  background: var(--time-primary-dark) !important; /* Plum button */
-  color: var(--time-white) !important;
-  border: none !important;
-  border-radius: 999px !important;
-  padding: 0 18px !important;
-  height: 32px !important;
-  line-height: 32px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  white-space: nowrap !important;
-  align-self: center !important;
-  margin: 0 !important;
-}
-
-.tp-search-btn-submit:hover {
-  background: var(--time-primary) !important;
-  transform: scale(1.02) !important;
-}
-
-/* User Actions Column (Account, Wishlist, Cart) */
-.tp-header-actions-wrap {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-shrink: 0;
-}
-
-.tp-user-action-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none !important;
-  color: var(--time-text) !important;
-  transition: transform 0.2s ease;
-  position: relative;
-}
-
-.tp-user-action-item:hover {
-  transform: translateY(-2px);
-}
-
-.tp-action-icon-box {
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 2px;
-}
-
-.tp-action-icon-box svg {
-  width: 22px;
-  height: 22px;
-  stroke: var(--time-text);
-  fill: none;
-}
-
-.tp-action-text-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--time-text);
-  line-height: 1.1;
-}
-
-/* Cart Badge Count */
-.tp-cart-count-badge {
-  position: absolute;
-  top: -6px;
-  right: -8px;
-  background: var(--time-primary-dark) !important;
-  color: var(--time-white) !important;
-  font-size: 10px;
-  font-weight: 800;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  border: 1.5px solid var(--time-background);
-}
-
-/* ── ROW 3: NAVIGATION / CATEGORY BAR ── */
-.tp-category-nav-bar {
-  width: 100% !important;
-  max-width: 100% !important;
-  background-color: var(--time-background) !important;
-  padding: 10px 32px;
-  border-bottom: 1px solid var(--time-border);
-  box-sizing: border-box !important;
-}
-
-.tp-category-nav-container {
-  width: 100% !important;
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  flex-wrap: wrap;
-  box-sizing: border-box !important;
-}
-
-.tp-cat-nav-list {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tp-cat-item-link {
-  color: var(--time-text) !important;
-  font-size: 13.5px !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  transition: color 0.2s ease !important;
-  white-space: nowrap;
-}
-
-.tp-cat-item-link:hover {
-  color: var(--time-primary) !important;
-}
-
-/* New Arrivals Pill Badge */
-.tp-new-arrivals-pill-btn {
-  background: rgba(123, 63, 109, 0.08) !important;
-  border: 1.2px solid var(--time-primary-light) !important;
-  border-radius: 999px !important;
-  padding: 4px 14px 4px 6px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  text-decoration: none !important;
-  transition: all 0.2s ease !important;
-}
-
-.tp-new-arrivals-pill-btn:hover {
-  background: rgba(123, 63, 109, 0.15) !important;
-  transform: scale(1.02);
-}
-
-.tp-red-new-tag {
-  background: #FF3B30 !important;
-  color: #FFFFFF !important;
-  font-size: 9px !important;
-  font-weight: 800 !important;
-  padding: 2px 7px !important;
-  border-radius: 999px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-}
-
-.tp-new-title-text {
-  color: var(--time-text) !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-}
-
-/* Right Secondary Links (Period Tips, Blogs) */
-.tp-cat-nav-divider {
-  width: 1px;
-  height: 18px;
-  background: var(--time-border);
-}
-
-.tp-secondary-nav-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.tp-sec-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--time-text) !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  transition: color 0.2s ease !important;
-}
-
-.tp-sec-nav-item:hover {
-  color: var(--time-primary) !important;
-}
-
-.tp-sec-nav-item svg {
-  width: 16px;
-  height: 16px;
-  stroke: var(--time-primary);
-  fill: none;
-}
-
-/* Mobile Adjustments */
-.tp-mobile-header-bar {
-  display: none;
-}
-
-@media (max-width: 1024px) {
+  /* Google Fonts - Caveat / Playfair / Plus Jakarta loaded async via theme.liquid (single request, non-render-blocking) */
+  /* ─── TIME MASTER MULTI-ROW HEADER SYSTEM (IMAGE 1 TARGET MATCH) ─── */
   #shopify-section-header,
   .shopify-section-group-header-group,
-  .shopify-section-group-header,
   header.theme__header,
   .tp-header-master-wrapper {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    margin-left: calc(-50vw + 50%) !important;
-    margin-right: calc(-50vw + 50%) !important;
-    left: 0 !important;
-    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative;
+    z-index: 100;
+    font-family: 'Poppins', var(--FONT-STACK-BODY), sans-serif;
+    background-color: #FAF8F5 !important;
+    box-shadow: 0 4px 20px rgba(123, 63, 109, 0.08);
+    margin: 0 !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
   }
+
+  /* ── ROW 1: TOP ANNOUNCEMENT BAR (AUTO-SCROLLING MARQUEE) ── */
   .tp-header-announcement-bar {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 5px 12px !important;
-    font-size: 11px !important;
+    background-color: #2B2117 !important; /* Rich espresso dark brown */
+    color: #F5EFE6 !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-sizing: border-box !important;
+    line-height: 1.3 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    cursor: default !important;
   }
-  .tp-announcement-left, .tp-announcement-right {
-    display: none !important;
-  }
-  .tp-announcement-container {
+
+  .tp-announcement-marquee {
     width: 100% !important;
-    justify-content: center !important;
-    padding: 0 8px !important;
-    box-sizing: border-box !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
   }
-  .tp-main-header-bar, .tp-category-nav-bar {
-    display: none !important;
+
+  .tp-announcement-track {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+    align-items: center !important;
+    will-change: transform !important;
+    animation: tpAnnouncementMarquee 32s linear infinite !important;
   }
-  .tp-mobile-header-bar {
-    display: block !important;
+
+  .tp-header-announcement-bar:hover .tp-announcement-track {
+    animation-play-state: paused !important;
+  }
+
+  .tp-announcement-group {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+    gap: clamp(24px, 3.5vw, 44px) !important;
+    padding-right: clamp(24px, 3.5vw, 44px) !important;
+  }
+
+  .tp-announcement-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    white-space: nowrap !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #F5EFE6 !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  .tp-announcement-item strong {
+    font-weight: 700 !important;
+    color: #F5EFE6 !important;
+  }
+
+  .tp-announcement-icon {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    stroke: #F5EFE6 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-announcement-divider {
+    color: rgba(245, 239, 230, 0.45) !important;
+    font-size: 13px !important;
+    font-weight: 300 !important;
+    user-select: none !important;
+  }
+
+  @keyframes tpAnnouncementMarquee {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tp-announcement-track {
+      animation: none !important;
+    }
+  }
+
+  /* ── ROW 2: MAIN HEADER (ONE HORIZONTAL LINE: LOGO + NAV ON LEFT, SEARCH + ACTIONS ON RIGHT) ── */
+  .tp-main-header-bar {
     width: 100% !important;
-    background: var(--time-background) !important;
-    padding: 6px 12px !important;
-    border-bottom: 1px solid var(--time-border) !important;
+    max-width: 100% !important;
+    background-color: #FAF8F5 !important;
+    padding: 10px clamp(16px, 2.5vw, 40px) !important;
+    border-bottom: 1px solid #ece4dc !important;
     box-sizing: border-box !important;
   }
-  .tp-mobile-header-inner {
+
+  .tp-main-header-container {
+    width: 100% !important;
+    max-width: 1560px !important;
+    margin: 0 auto !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    gap: 8px !important;
-    width: 100% !important;
+    flex-wrap: nowrap !important;
+    gap: clamp(14px, 1.8vw, 28px) !important;
     box-sizing: border-box !important;
   }
-  .tp-mobile-header-inner img {
-    max-height: 54px !important;
-    height: 54px !important;
+
+  /* Left Group: Logo + Category Navigation */
+  .tp-header-left-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(18px, 2.4vw, 36px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-header-logo-wrap {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-header-logo-link {
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .tp-header-logo-link img {
+    max-height: 44px !important;
+    height: 44px !important;
     width: auto !important;
+    display: block !important;
+    object-fit: contain !important;
   }
-  .tp-mobile-header-inner .tp-header-logo-serif {
-    font-size: 42px !important;
+
+  .tp-header-logo-serif {
+    font-family: 'Playfair Display', Didot, serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #2d2319;
+    line-height: 1;
   }
-  .tp-mobile-header-inner svg {
-    width: 20px !important;
-    height: 20px !important;
+
+  .tp-trademark {
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 2px;
+    top: -4px;
+    position: relative;
   }
-  .tp-mobile-search-row {
-    margin-top: 4px !important;
+
+  .tp-header-logo-sub {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.38em;
+    color: #987959;
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Category Navigation (Next to Logo) */
+  .tp-header-nav-wrap {
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+  }
+
+  .tp-cat-nav-list {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(12px, 1.6vw, 24px) !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .tp-cat-nav-list li {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .tp-cat-item-link {
+    color: #2d2319 !important;
+    font-size: clamp(12.5px, 0.92vw, 13.5px) !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
+    letter-spacing: -0.1px !important;
+  }
+
+  .tp-cat-item-link:hover {
+    color: #6E5233 !important;
+  }
+
+  /* Right Group: Search Pill + Divider + User Actions */
+  .tp-header-right-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(10px, 1.2vw, 18px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Search Column */
+  .tp-header-search-wrap {
+    width: clamp(230px, 20vw, 320px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-header-search-form {
     width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .tp-search-pill-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #ffffff !important;
+    border: 1.5px solid #ddd4ca !important;
+    border-radius: 999px !important;
+    padding: 3px 3px 3px 14px !important;
+    height: 38px !important;
     box-sizing: border-box !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
   }
-  .tp-mobile-search-row .tp-search-pill-box {
-    padding: 2px 2px 2px 12px !important;
+
+  .tp-search-pill-box:focus-within {
+    border-color: #6E5233 !important;
+    box-shadow: 0 0 0 3px rgba(152, 121, 89, 0.15) !important;
   }
-  .tp-mobile-search-row .tp-search-input-field {
+
+  .tp-search-icon-left {
+    width: 16px !important;
+    height: 16px !important;
+    stroke: #5c5247 !important;
+    flex-shrink: 0 !important;
+    margin-right: 8px !important;
+    display: block !important;
+  }
+
+  .tp-search-input-field {
+    flex: 1 !important;
+    min-width: 60px !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #2d2319 !important;
     font-size: 12px !important;
-    padding: 4px 0 !important;
+    font-family: inherit !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    height: 100% !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
   }
-  .tp-mobile-search-row .tp-search-btn-submit {
-    padding: 4px 14px !important;
+
+  .tp-search-input-field::placeholder {
+    color: #8c8074 !important;
     font-size: 11.5px !important;
   }
-}
+
+  .tp-search-btn-submit {
+    background: #6E5233 !important; /* Brushed Bronze */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 0 16px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: opacity 0.2s ease, transform 0.15s ease !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-search-btn-submit:hover {
+    opacity: 0.92 !important;
+    transform: scale(1.02) !important;
+  }
+
+  /* Vertical Divider between Search and User Actions */
+  .tp-header-vdivider {
+    width: 1px !important;
+    height: 26px !important;
+    background-color: #e2d7cc !important;
+    margin: 0 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* User Actions Column (Account, Wishlist, Cart) */
+  .tp-header-actions-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(14px, 1.4vw, 22px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-user-action-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #2d2319 !important;
+    transition: transform 0.2s ease !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tp-user-action-item:hover {
+    transform: translateY(-2px) !important;
+  }
+
+  .tp-action-icon-box {
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    margin-bottom: 2px !important;
+  }
+
+  .tp-action-icon-box svg {
+    width: 20px !important;
+    height: 20px !important;
+    stroke: #2d2319 !important;
+    fill: none !important;
+  }
+
+  .tp-action-text-label {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #2d2319 !important;
+    line-height: 1.1 !important;
+  }
+
+  .tp-cart-count-badge {
+    position: absolute !important;
+    top: -5px !important;
+    right: -7px !important;
+    background: #6E5233 !important;
+    color: #ffffff !important;
+    font-size: 9.5px !important;
+    font-weight: 800 !important;
+    min-width: 17px !important;
+    height: 17px !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 3px !important;
+    border: 1.5px solid #ffffff !important;
+  }
+  /* Responsive reduction for compact desktops */
+  @media (min-width: 1025px) and (max-width: 1320px) {
+    .tp-main-header-bar {
+      padding: 8px 14px !important;
+    }
+    .tp-main-header-container {
+      gap: 10px !important;
+    }
+    .tp-header-search-wrap {
+      min-width: 120px !important;
+      max-width: 200px !important;
+    }
+    .tp-search-pill-box {
+      height: 36px !important;
+      padding: 2px 2px 2px 8px !important;
+    }
+    .tp-search-btn-submit {
+      padding: 0 10px !important;
+      height: 28px !important;
+      line-height: 28px !important;
+      font-size: 11px !important;
+    }
+    .tp-header-nav-wrap {
+      gap: 8px !important;
+      margin: 0 8px !important;
+    }
+    .tp-cat-nav-list {
+      gap: 8px !important;
+    }
+    .tp-cat-item-link,
+    .tp-sec-nav-item {
+      font-size: 11px !important;
+    }
+    .tp-header-actions-wrap {
+      gap: 10px !important;
+    }
+    .tp-header-right-wrap {
+      gap: 10px !important;
+    }
+  }
+
+  /* Mobile adjustments */
+  .tp-mobile-header-bar {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    #shopify-section-header,
+    .shopify-section-group-header-group,
+    .shopify-section-group-header,
+    header.theme__header,
+    .tp-header-master-wrapper {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-left: calc(-50vw + 50%) !important;
+      margin-right: calc(-50vw + 50%) !important;
+      left: 0 !important;
+      right: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .tp-header-announcement-bar {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 6.5px 0 !important;
+      font-size: 11.5px !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+    .tp-main-header-bar,
+    .tp-category-nav-bar {
+      display: none !important;
+    }
+    .tp-mobile-header-bar {
+      display: block !important;
+      width: 100% !important;
+      background: #FAF8F5 !important;
+      padding: 6px 12px !important;
+      border-bottom: 1px solid var(--time-border) !important;
+      box-sizing: border-box !important;
+    }
+    .tp-mobile-header-inner {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+      width: 100% !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .tp-mobile-header-inner img {
+      max-height: 54px !important;
+      height: 54px !important;
+      width: auto !important;
+    }
+    .tp-mobile-header-inner .tp-header-logo-serif {
+      font-size: 42px !important;
+    }
+    .tp-mobile-header-inner svg {
+      width: 20px !important;
+      height: 20px !important;
+    }
+    .tp-mobile-search-row {
+      margin-top: 4px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .tp-mobile-search-row .tp-search-pill-box {
+      padding: 2px 2px 2px 12px !important;
+    }
+    .tp-mobile-search-row .tp-search-input-field {
+      font-size: 12px !important;
+      padding: 4px 0 !important;
+    }
+    .tp-mobile-search-row .tp-search-btn-submit {
+      padding: 4px 14px !important;
+      font-size: 11.5px !important;
+    }
+  }
 {% endstyle %}
 
 <div class="tp-header-master-wrapper" data-header-wrapper data-section-id="{{ section.id }}" data-section-type="header">
   <header class="theme__header">
-
-    <!-- ── ROW 1: TOP ANNOUNCEMENT BAR ── -->
-    <div class="tp-header-announcement-bar">
-      <div class="tp-announcement-container">
-        <div class="tp-announcement-item tp-announcement-left">
-          <span>🚚</span>
-          <span>Free Shipping on Orders above ₹499</span>
-        </div>
-        <div class="tp-announcement-item tp-announcement-center">
-          <span class="tp-announcement-heart">♡</span>
-          <span>Thoughtful Period Care for a Kinder You</span>
-          <span class="tp-announcement-heart">♡</span>
-        </div>
-        <div class="tp-announcement-item tp-announcement-right">
-          <span>🏷</span>
-          <span>Use Code <strong>TIME10</strong> for 10% Off</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ROW 2: MAIN HEADER (DESKTOP) ── -->
-    <div class="tp-main-header-bar">
-      <div class="tp-main-header-container">
-        <!-- Logo Column -->
-        <div class="tp-header-logo-wrap">
-          <a href="{{ routes.root_url }}" class="tp-header-logo-link">
-            {% if section.settings.logo != blank %}
-              <img src="{{ section.settings.logo | image_url: width: 320 }}" alt="{{ shop.name }}" width="320" height="{{ 320 | divided_by: section.settings.logo.aspect_ratio | round }}" style="max-height: 64px; width: auto;" loading="eager" fetchpriority="high" decoding="async">
-            {% else %}
-              <div class="tp-header-logo-serif" style="font-size: 42px;">TIME<span class="tp-trademark">™</span></div>
-              <div class="tp-header-logo-sub">SANITARY PADS</div>
-            {% endif %}
-          </a>
-        </div>
-
-        <!-- Search Column -->
-        <div class="tp-header-search-wrap">
-          <form action="{{ routes.search_url }}" method="get" role="search" class="tp-header-search-form">
-            <div class="tp-search-pill-box" data-popdown-toggle="search-popdown" style="cursor: pointer;">
-              <svg class="tp-search-icon-left" viewBox="0 0 24 24" fill="none">
-                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
+    <!-- ── ROW 1: TOP ANNOUNCEMENT BAR (AUTO-SCROLLING MARQUEE) ── -->
+    <div class="tp-header-announcement-bar" role="region" aria-label="Announcement">
+      <div class="tp-announcement-marquee">
+        <div class="tp-announcement-track">
+          <div class="tp-announcement-group">
+            <!-- 1. Premium Comfort -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
               </svg>
-              <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search for pads, menstrual cups, pain relief cream..." class="tp-search-input-field" aria-label="Search" data-popdown-toggle="search-popdown">
-              <button type="button" class="tp-search-btn-submit" data-popdown-toggle="search-popdown">Search</button>
+              <span>Premium Comfort • Gentle on Skin</span>
             </div>
-          </form>
-        </div>
 
-        <!-- User Actions Column -->
-        <div class="tp-header-actions-wrap">
-          <!-- Account -->
-          <a href="{{ routes.account_url }}" class="tp-user-action-item" aria-label="Account">
-            <div class="tp-action-icon-box">
-              <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 2. Brand Tagline -->
+            <div class="tp-announcement-item tp-announcement-center">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
-            </div>
-            <span class="tp-action-text-label">Account</span>
-          </a>
-
-          <!-- Wishlist -->
-          <a href="/pages/wishlist" class="tp-user-action-item" aria-label="Wishlist">
-            <div class="tp-action-icon-box">
-              <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <span>Comfort First • Designed for Everyday Comfort</span>
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </div>
-            <span class="tp-action-text-label">Wishlist</span>
-          </a>
 
-          <!-- Cart -->
-          <a href="{{ routes.cart_url }}" class="tp-user-action-item" data-drawer-toggle="drawer-cart" aria-label="Cart" aria-expanded="false" aria-controls="drawer-cart">
-            <div class="tp-action-icon-box">
-              <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 3. Reliable Protection -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
               </svg>
-              <span class="tp-cart-count-badge" data-header-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+              <span>Reliable Protection • Designed for Every Flow</span>
             </div>
-            <span class="tp-action-text-label">Cart</span>
-          </a>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+          </div>
+          <div class="tp-announcement-group">
+            <!-- 1. Premium Comfort -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+              <span>Premium Comfort • Gentle on Skin</span>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 2. Brand Tagline -->
+            <div class="tp-announcement-item tp-announcement-center">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span>Comfort First • Designed for Everyday Comfort</span>
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 3. Reliable Protection -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+              </svg>
+              <span>Reliable Protection • Designed for Every Flow</span>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+          </div>
+          <div class="tp-announcement-group" aria-hidden="true">
+            <!-- 1. Premium Comfort -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+              <span>Premium Comfort • Gentle on Skin</span>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 2. Brand Tagline -->
+            <div class="tp-announcement-item tp-announcement-center">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span>Comfort First • Designed for Everyday Comfort</span>
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 3. Reliable Protection -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+              </svg>
+              <span>Reliable Protection • Designed for Every Flow</span>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+          </div>
+          <div class="tp-announcement-group" aria-hidden="true">
+            <!-- 1. Premium Comfort -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+              <span>Premium Comfort • Gentle on Skin</span>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 2. Brand Tagline -->
+            <div class="tp-announcement-item tp-announcement-center">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span>Comfort First • Designed for Everyday Comfort</span>
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+
+            <!-- 3. Reliable Protection -->
+            <div class="tp-announcement-item">
+              <svg
+                class="tp-announcement-icon"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+              </svg>
+              <span>Reliable Protection • Designed for Every Flow</span>
+            </div>
+
+            <div class="tp-announcement-divider" aria-hidden="true">|</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ── ROW 3: NAVIGATION / CATEGORY BAR (DESKTOP) ── -->
-    <div class="tp-category-nav-bar">
-      <div class="tp-category-nav-container">
-        <ul class="tp-cat-nav-list">
-          {% assign menu_links = linklists[main_menu_linklist].links %}
-          {% if menu_links and menu_links.size > 0 %}
-            {% for link in menu_links %}
-              {% assign title_dc = link.title | downcase %}
-              {% if title_dc contains 'new arrival' %}
-                <li>
-                  <a href="{{ link.url }}" class="tp-new-arrivals-pill-btn">
-                    <span class="tp-red-new-tag">NEW</span>
-                    <span class="tp-new-title-text">{{ link.title }}</span>
-                  </a>
-                </li>
+    <!-- ── SINGLE ROW MAIN HEADER (DESKTOP) ── -->
+    <div class="tp-main-header-bar">
+      <div class="tp-main-header-container">
+        <!-- Left Group: Logo + Category Navigation -->
+        <div class="tp-header-left-group">
+          <!-- 1. Logo Column -->
+          <div class="tp-header-logo-wrap">
+            <a href="{{ routes.root_url }}" class="tp-header-logo-link">
+              {% if section.settings.logo != blank %}
+                <img
+                  src="{{ section.settings.logo | image_url: width: 320 }}"
+                  alt="{{ shop.name }}"
+                  width="320"
+                  height="{{ 320 | divided_by: section.settings.logo.aspect_ratio | round }}"
+                  style="max-height: 44px; width: auto;"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                >
               {% else %}
-                <li><a href="{{ link.url }}" class="tp-cat-item-link">{{ link.title }}</a></li>
+                <div class="tp-header-logo-serif" style="font-size: 32px;">TIME<span class="tp-trademark">™</span></div>
+                <div class="tp-header-logo-sub">SANITARY PADS</div>
               {% endif %}
-            {% endfor %}
-          {% else %}
-            <li><a href="/collections/all" class="tp-cat-item-link">Period Pain Relief Cream</a></li>
-            <li><a href="/collections/all" class="tp-cat-item-link">Menstrual Cup</a></li>
-            <li><a href="/collections/all" class="tp-cat-item-link">Best Sellers</a></li>
-            <li>
-              <a href="/collections/all" class="tp-new-arrivals-pill-btn">
-                <span class="tp-red-new-tag">NEW</span>
-                <span class="tp-new-title-text">New Arrivals</span>
-              </a>
-            </li>
-            <li><a href="/collections/all" class="tp-cat-item-link">Shop All</a></li>
-          {% endif %}
-        </ul>
+            </a>
+          </div>
 
-        <div class="tp-cat-nav-divider"></div>
+          <!-- 2. Navigation Links Directly Next to Logo -->
+          <nav class="tp-header-nav-wrap" aria-label="Main Navigation">
+            <ul class="tp-cat-nav-list">
+              {% assign menu_links = linklists[main_menu_linklist].links %}
+              {% if menu_links and menu_links.size > 0 %}
+                {% for link in menu_links %}
+                  {% assign title_dc = link.title | downcase %}
+                  {% unless title_dc contains 'blog'
+                    or title_dc contains 'period tip'
+                    or title_dc contains 'new arrival'
+                  %}
+                    {% assign link_title = link.title %}
+                    {% if link_title == 'Sanitary pads' %}
+                      {% assign link_title = 'Sanitary Pads' %}
+                    {% endif %}
+                    <li>
+                      <a href="{{ link.url }}" class="tp-cat-item-link">{{ link_title }}</a>
+                    </li>
+                  {% endunless %}
+                {% endfor %}
+              {% else %}
+                <li><a href="/collections/all" class="tp-cat-item-link">Period Pain Relief Cream</a></li>
+                <li><a href="/collections/all" class="tp-cat-item-link">Menstrual Cup</a></li>
+                <li><a href="/collections/all" class="tp-cat-item-link">Sanitary Pads</a></li>
+                <li><a href="/collections/all" class="tp-cat-item-link">Best Sellers</a></li>
+                <li><a href="/collections/all" class="tp-cat-item-link">Shop All</a></li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
 
-        <div class="tp-secondary-nav-links">
-          <a href="/pages/period-tips" class="tp-sec-nav-item">
-            <!-- Leaf SVG -->
-            <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 9a9 9 0 0 1-10 9Z"></path>
-              <path d="M11 20v-8"></path>
-            </svg>
-            <span>Period Tips</span>
-          </a>
+        <!-- 3. Right Group (Search + Divider + Actions: Account, Wishlist, Cart) -->
+        <div class="tp-header-right-wrap">
+          <!-- Search Column -->
+          <div class="tp-header-search-wrap">
+            <form action="{{ routes.search_url }}" method="get" role="search" class="tp-header-search-form">
+              <div class="tp-search-pill-box" data-popdown-toggle="search-popdown" style="cursor: pointer;">
+                <svg class="tp-search-icon-left" viewBox="0 0 24 24" fill="none">
+                  <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
+                </svg>
+                <input
+                  type="search"
+                  name="q"
+                  value="{{ search.terms | escape }}"
+                  placeholder="Search for pads, menstrual cups, pain relief cream..."
+                  class="tp-search-input-field"
+                  aria-label="Search"
+                  data-popdown-toggle="search-popdown"
+                >
+                <button type="button" class="tp-search-btn-submit" data-popdown-toggle="search-popdown">Search</button>
+              </div>
+            </form>
+          </div>
 
-          <div class="tp-cat-nav-divider"></div>
+          <!-- Vertical Divider -->
+          <div class="tp-header-vdivider" aria-hidden="true"></div>
 
-          <a href="/blogs/news" class="tp-sec-nav-item">
-            <!-- Book SVG -->
-            <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
-            <span>Blogs</span>
-          </a>
+          <!-- User Actions Column (Account, Wishlist, Cart) -->
+          <div class="tp-header-actions-wrap">
+            <!-- Account -->
+            <a href="{{ routes.account_url }}" class="tp-user-action-item" aria-label="Account">
+              <div class="tp-action-icon-box">
+                <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <span class="tp-action-text-label">Account</span>
+            </a>
+
+            <!-- Cart -->
+            <a
+              href="{{ routes.cart_url }}"
+              class="tp-user-action-item"
+              data-drawer-toggle="drawer-cart"
+              aria-label="Cart"
+              aria-expanded="false"
+              aria-controls="drawer-cart"
+            >
+              <div class="tp-action-icon-box">
+                <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span class="tp-cart-count-badge" data-header-cart-count="{{ cart.item_count }}">
+                  {{- cart.item_count -}}
+                </span>
+              </div>
+              <span class="tp-action-text-label">Cart</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-
     <!-- ── MOBILE HEADER BAR ── -->
     <div class="tp-mobile-header-bar">
       <div class="tp-mobile-header-inner">
         <!-- Hamburger -->
-        <button type="button" class="header__mobile__button" data-drawer-toggle="hamburger" aria-label="Open Menu" aria-expanded="false" aria-controls="header-menu">
+        <button
+          type="button"
+          class="header__mobile__button"
+          data-drawer-toggle="hamburger"
+          aria-label="Open Menu"
+          aria-expanded="false"
+          aria-controls="header-menu"
+        >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--time-text)" stroke-width="2">
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -649,7 +985,16 @@ header.theme__header,
         <!-- Logo -->
         <a href="{{ routes.root_url }}" class="tp-header-logo-link">
           {% if section.settings.logo != blank %}
-            <img src="{{ section.settings.logo | image_url: width: 280 }}" alt="{{ shop.name }}" width="280" height="{{ 280 | divided_by: section.settings.logo.aspect_ratio | round }}" style="max-height: 54px; height: 54px; width: auto;" loading="eager" fetchpriority="high" decoding="async">
+            <img
+              src="{{ section.settings.logo | image_url: width: 280 }}"
+              alt="{{ shop.name }}"
+              width="280"
+              height="{{ 280 | divided_by: section.settings.logo.aspect_ratio | round }}"
+              style="max-height: 54px; height: 54px; width: auto;"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            >
           {% else %}
             <div class="tp-header-logo-serif" style="font-size: 42px;">TIME<span class="tp-trademark">™</span></div>
           {% endif %}
@@ -664,19 +1009,22 @@ header.theme__header,
             </svg>
           </a>
 
-          <a href="/pages/wishlist" aria-label="Wishlist" style="color: var(--time-text);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-          </a>
-
-          <a href="{{ routes.cart_url }}" data-drawer-toggle="drawer-cart" aria-label="Cart" aria-expanded="false" aria-controls="drawer-cart" style="color: var(--time-text); position: relative;">
+          <a
+            href="{{ routes.cart_url }}"
+            data-drawer-toggle="drawer-cart"
+            aria-label="Cart"
+            aria-expanded="false"
+            aria-controls="drawer-cart"
+            style="color: var(--time-text); position: relative;"
+          >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-            <span class="tp-cart-count-badge" data-header-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+            <span class="tp-cart-count-badge" data-header-cart-count="{{ cart.item_count }}">
+              {{- cart.item_count -}}
+            </span>
           </a>
         </div>
       </div>
@@ -689,33 +1037,76 @@ header.theme__header,
               <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
             </svg>
-            <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search for pads, cups, relief..." class="tp-search-input-field" aria-label="Search" data-popdown-toggle="search-popdown">
-            <button type="button" class="tp-search-btn-submit" style="padding: 6px 16px;" data-popdown-toggle="search-popdown">Search</button>
+            <input
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="Search for pads, cups, relief..."
+              class="tp-search-input-field"
+              aria-label="Search"
+              data-popdown-toggle="search-popdown"
+            >
+            <button
+              type="button"
+              class="tp-search-btn-submit"
+              style="padding: 6px 16px;"
+              data-popdown-toggle="search-popdown"
+            >
+              Search
+            </button>
           </div>
         </form>
       </div>
     </div>
-
   </header>
 
   <!-- ── MOBILE SLIDING DRAWER MENU ── -->
-  <nav class="drawer header__drawer display-none" data-drawer="hamburger" id="header-menu" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
+  <nav
+    class="drawer header__drawer display-none"
+    data-drawer="hamburger"
+    id="header-menu"
+    aria-hidden="true"
+    inert
+    role="dialog"
+    aria-modal="true"
+    aria-label="Mobile navigation menu"
+  >
     <div class="drawer__content">
-      
       <!-- Drawer Top Bar -->
       <div class="tp-drawer-header">
         <div class="tp-drawer-header-left">
           {% if section.settings.logo != blank %}
-            <img src="{{ section.settings.logo | image_url: width: 180 }}" alt="{{ shop.name }}" width="180" height="{{ 180 | divided_by: section.settings.logo.aspect_ratio | round }}" style="max-height: 38px; width: auto;" loading="eager" fetchpriority="high">
+            <img
+              src="{{ section.settings.logo | image_url: width: 180 }}"
+              alt="{{ shop.name }}"
+              width="180"
+              height="{{ 180 | divided_by: section.settings.logo.aspect_ratio | round }}"
+              style="max-height: 38px; width: auto;"
+              loading="eager"
+              fetchpriority="high"
+            >
           {% else %}
             <div class="tp-drawer-header-text">
-              <span class="tp-drawer-header-title" style="font-family: 'Playfair Display', serif !important; font-size: 20px !important;">TIME<span style="font-size: 10px; vertical-align: super;">™</span></span>
+              <span
+                class="tp-drawer-header-title"
+                style="font-family: 'Playfair Display', serif !important; font-size: 20px !important;"
+                >TIME<span style="font-size: 10px; vertical-align: super;">™</span></span
+              >
               <span class="tp-drawer-header-subtitle">SANITARY PADS &amp; CARE</span>
             </div>
           {% endif %}
         </div>
         <button type="button" class="tp-drawer-close-btn" data-drawer-close="hamburger" aria-label="Close menu">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -723,17 +1114,35 @@ header.theme__header,
       </div>
 
       <div class="drawer__inner" data-drawer-scrolls>
-        
         <!-- Search Pill Bar inside Drawer -->
         <div style="padding: 14px 14px 4px;">
           <form action="{{ routes.search_url }}" method="get" role="search" class="tp-header-search-form">
-            <div class="tp-search-pill-box" style="box-shadow: 0 2px 8px rgba(123, 63, 109, 0.06); background: #FAF7FB !important; border: 1.5px solid var(--time-border) !important;">
-              <svg class="tp-search-icon-left" viewBox="0 0 24 24" fill="none" style="width: 16px; height: 16px; stroke: var(--time-primary);">
+            <div
+              class="tp-search-pill-box"
+              style="box-shadow: 0 2px 8px rgba(123, 63, 109, 0.06); background: #FAF7FB !important; border: 1.5px solid var(--time-border) !important;"
+            > 
+            
+              <svg
+                class="tp-search-icon-left"
+                viewBox="0 0 24 24"
+                fill="none"
+                style="width: 16px; height: 16px; stroke: var(--time-primary);"
+              >   
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"></line>
               </svg>
-              <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search pads, cups, pain relief..." class="tp-search-input-field" aria-label="Search" style="font-size: 12px;">
-              <button type="submit" class="tp-search-btn-submit" style="padding: 4px 14px; font-size: 11.5px;">Search</button>
+              <input
+                type="search"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="Search pads, cups, pain relief..."
+                class="tp-search-input-field"
+                aria-label="Search"
+                style="font-size: 12px;"
+              >
+              <button type="submit" class="tp-search-btn-submit" style="padding: 4px 14px; font-size: 11.5px;">
+                Search
+              </button>
             </div>
           </form>
         </div>
@@ -742,56 +1151,140 @@ header.theme__header,
         <div class="tp-drawer-essentials-card">
           <div class="tp-drawer-essentials-head">
             <span class="tp-drawer-essentials-title">
-              <span style="color: var(--time-primary);">✦</span> EXPLORE CATEGORIES
+              <span style="color: var(--time-primary);">✦</span> EXPLORE PRODUCTS
             </span>
-            <a href="/collections/all" class="tp-drawer-view-all">
-              View All <span>›</span>
-            </a>
+            <a href="/collections/all" class="tp-drawer-view-all"> View All <span>›</span> </a>
           </div>
           <div class="tp-drawer-quick-products-wrapper">
             <div class="tp-drawer-quick-products__track">
-              {% assign main_links = linklists[main_menu_linklist].links %}
-              {% if main_links.size > 0 %}
-                {% for link in main_links limit: 6 %}
-                  {% assign nav_img = link.object.image | default: link.object.products.first.featured_media.preview_image %}
-                  <a href="{{ link.url }}" class="tp-drawer-product-card">
-                    <div class="tp-drawer-product-card__img-wrap">
-                      {% if nav_img != blank %}
-                        <img src="{{ nav_img | image_url: width: 120, height: 120, crop: 'center' }}" alt="{{ link.title }}" class="tp-drawer-product-card__img" width="120" height="120" loading="lazy">
-                      {% else %}
-                        <div class="tp-drawer-product-card__placeholder" style="background: linear-gradient(135deg, #FAF7FB, #F2E8F0); display: flex; align-items: center; justify-content: center; color: var(--time-primary); font-weight: 700; font-size: 16px;">
-                          {{ link.title | slice: 0, 1 }}
-                        </div>
-                      {% endif %}
-                    </div>
-                    <span class="tp-drawer-product-card__title">{{ link.title }}</span>
-                  </a>
+              {% assign rendered_product_ids = '' %}
+              {% assign quick_count = 0 %}
+
+              {% comment %} 1. If a custom collection is specified in settings {% endcomment %}
+              {% if section.settings.drawer_collection != blank and collections[section.settings.drawer_collection].products.size > 0 %}
+                {% for prod in collections[section.settings.drawer_collection].products limit: 12 %}
+                  {% assign pid_str = prod.id | append: ',' %}
+                  {% unless rendered_product_ids contains pid_str %}
+                    {% assign rendered_product_ids = rendered_product_ids | append: pid_str %}
+                    {% assign quick_count = quick_count | plus: 1 %}
+                    <a href="{{ prod.url }}" class="tp-drawer-product-card">
+                      <div class="tp-drawer-product-card__img-wrap">
+                        {% if prod.featured_image != blank %}
+                          <img
+                            src="{{ prod.featured_image | image_url: width: 120, height: 120, crop: 'center' }}"
+                            alt="{{ prod.title | escape }}"
+                            class="tp-drawer-product-card__img"
+                            width="60"
+                            height="60"
+                            loading="lazy"
+                          >
+                        {% endif %}
+                      </div>
+                      <span class="tp-drawer-product-card__title">{{ prod.title }}</span>
+                    </a>
+                  {% endunless %}
                 {% endfor %}
               {% else %}
-                <a href="/collections/all" class="tp-drawer-product-card">
-                  <div class="tp-drawer-product-card__img-wrap">
-                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">🌸</div>
-                  </div>
-                  <span class="tp-drawer-product-card__title">Pads</span>
-                </a>
-                <a href="/collections/all" class="tp-drawer-product-card">
-                  <div class="tp-drawer-product-card__img-wrap">
-                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">💧</div>
-                  </div>
-                  <span class="tp-drawer-product-card__title">Cream</span>
-                </a>
-                <a href="/collections/all" class="tp-drawer-product-card">
-                  <div class="tp-drawer-product-card__img-wrap">
-                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">🍷</div>
-                  </div>
-                  <span class="tp-drawer-product-card__title">Cups</span>
-                </a>
-                <a href="/collections/all" class="tp-drawer-product-card">
-                  <div class="tp-drawer-product-card__img-wrap">
-                    <div class="tp-drawer-product-card__placeholder" style="background: #F3E8F1; color: var(--time-primary); font-size: 20px; display: flex; align-items: center; justify-content: center;">✨</div>
-                  </div>
-                  <span class="tp-drawer-product-card__title">Combos</span>
-                </a>
+                {% comment %} 2. Extract products from main_links: direct products + products from collections {% endcomment %}
+                {% assign main_links = linklists[main_menu_linklist].links %}
+                {% if main_links.size > 0 %}
+                  {% for link in main_links %}
+                    {% if quick_count >= 10 %}{% break %}{% endif %}
+                    {% assign link_dc = link.title | downcase %}
+
+                    {% if link.type == 'product_link' or link.url contains '/products/' %}
+                      {% assign p_obj = link.object %}
+                      {% if p_obj == blank or p_obj.title == blank %}
+                        {% assign p_h = link.url | split: '/products/' | last | split: '?' | first | split: '#' | first %}
+                        {% assign p_obj = all_products[p_h] %}
+                      {% endif %}
+                      {% if p_obj != blank and p_obj.title != blank %}
+                        {% assign pid_str = p_obj.id | append: ',' %}
+                        {% unless rendered_product_ids contains pid_str %}
+                          {% assign rendered_product_ids = rendered_product_ids | append: pid_str %}
+                          {% assign quick_count = quick_count | plus: 1 %}
+                          <a href="{{ p_obj.url }}" class="tp-drawer-product-card">
+                            <div class="tp-drawer-product-card__img-wrap">
+                              {% if p_obj.featured_image != blank %}
+                                <img
+                                  src="{{ p_obj.featured_image | image_url: width: 120, height: 120, crop: 'center' }}"
+                                  alt="{{ p_obj.title | escape }}"
+                                  class="tp-drawer-product-card__img"
+                                  width="60"
+                                  height="60"
+                                  loading="lazy"
+                                >
+                              {% endif %}
+                            </div>
+                            <span class="tp-drawer-product-card__title">{{ p_obj.title }}</span>
+                          </a>
+                        {% endunless %}
+                      {% endif %}
+                    {% elsif link.type == 'collection_link' or link.url contains '/collections/' %}
+                      {% comment %} Instead of printing the collection card, print the products of this collection! {% endcomment %}
+                      {% unless link_dc contains 'all' or link.url contains '/all' %}
+                        {% assign c_obj = link.object %}
+                        {% if c_obj == blank or c_obj.products == blank %}
+                          {% assign c_h = link.url | split: '/collections/' | last | split: '?' | first | split: '#' | first %}
+                          {% assign c_obj = collections[c_h] %}
+                        {% endif %}
+                        {% if c_obj != blank and c_obj.products.size > 0 %}
+                          {% for prod in c_obj.products limit: 3 %}
+                            {% if quick_count >= 10 %}{% break %}{% endif %}
+                            {% assign pid_str = prod.id | append: ',' %}
+                            {% unless rendered_product_ids contains pid_str %}
+                              {% assign rendered_product_ids = rendered_product_ids | append: pid_str %}
+                              {% assign quick_count = quick_count | plus: 1 %}
+                              <a href="{{ prod.url }}" class="tp-drawer-product-card">
+                                <div class="tp-drawer-product-card__img-wrap">
+                                  {% if prod.featured_image != blank %}
+                                    <img
+                                      src="{{ prod.featured_image | image_url: width: 120, height: 120, crop: 'center' }}"
+                                      alt="{{ prod.title | escape }}"
+                                      class="tp-drawer-product-card__img"
+                                      width="60"
+                                      height="60"
+                                      loading="lazy"
+                                    >
+                                  {% endif %}
+                                </div>
+                                <span class="tp-drawer-product-card__title">{{ prod.title }}</span>
+                              </a>
+                            {% endunless %}
+                          {% endfor %}
+                        {% endif %}
+                      {% endunless %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+
+                {% comment %} 3. If under 4 products, fill with store's all products {% endcomment %}
+                {% if quick_count < 4 %}
+                  {% assign store_products = collections['all'].products | default: collections['good-quality-sanitary-pads'].products %}
+                  {% for prod in store_products limit: 10 %}
+                    {% if quick_count >= 8 %}{% break %}{% endif %}
+                    {% assign pid_str = prod.id | append: ',' %}
+                    {% unless rendered_product_ids contains pid_str %}
+                      {% assign rendered_product_ids = rendered_product_ids | append: pid_str %}
+                      {% assign quick_count = quick_count | plus: 1 %}
+                      <a href="{{ prod.url }}" class="tp-drawer-product-card">
+                        <div class="tp-drawer-product-card__img-wrap">
+                          {% if prod.featured_image != blank %}
+                            <img
+                              src="{{ prod.featured_image | image_url: width: 120, height: 120, crop: 'center' }}"
+                              alt="{{ prod.title | escape }}"
+                              class="tp-drawer-product-card__img"
+                              width="60"
+                              height="60"
+                              loading="lazy"
+                            >
+                          {% endif %}
+                        </div>
+                        <span class="tp-drawer-product-card__title">{{ prod.title }}</span>
+                      </a>
+                    {% endunless %}
+                  {% endfor %}
+                {% endif %}
               {% endif %}
             </div>
           </div>
@@ -808,116 +1301,197 @@ header.theme__header,
           {% if main_links.size > 0 %}
             {% for link in main_links %}
               {% assign link_dc = link.title | downcase %}
-              {% assign nav_img = link.object.image | default: link.object.products.first.featured_media.preview_image %}
+              {% assign nav_img = link.object.featured_image
+                | default: link.object.featured_media.preview_image
+                | default: link.object.image
+                | default: link.object.products.first.featured_media.preview_image
+                | default: link.object.products.first.featured_image
+              %}
+
+              {% if nav_img == blank and link.url contains '/products/' %}
+                {% assign p_h = link.url | split: '/products/' | last | split: '?' | first | split: '#' | first %}
+                {% assign nav_img = all_products[p_h].featured_image %}
+              {% elsif nav_img == blank and link.url contains '/collections/' %}
+                {% assign c_h = link.url | split: '/collections/' | last | split: '?' | first | split: '#' | first %}
+                {% assign nav_img = collections[c_h].image | default: collections[c_h].products.first.featured_image %}
+              {% endif %}
+
+              {% if nav_img == blank %}
+                {% if link_dc contains 'cream'
+                  or link_dc contains 'pain'
+                  or link_dc contains 'relief'
+                  or link.url contains 'cream'
+                %}
+                  {% assign nav_img = all_products['period-pain-relief-cream-oil'].featured_image
+                    | default: collections['period-pain-relief-cream'].products.first.featured_image
+                  %}
+                {% elsif link_dc contains 'cup' or link_dc contains 'menstrual' or link.url contains 'cup' %}
+                  {% assign nav_img = all_products['menstrual-cup'].featured_image
+                    | default: collections['menstrual-cups'].products.first.featured_image
+                  %}
+                {% elsif link_dc contains 'pad' or link_dc contains 'sanitary' %}
+                  {% assign nav_img = collections['sanitary-pads'].products.first.featured_image
+                    | default: collections['good-quality-sanitary-pads'].products.first.featured_image
+                  %}
+                {% elsif link_dc contains 'best' or link_dc contains 'seller' or link_dc contains 'popular' %}
+                  {% assign nav_img = collections['good-quality-sanitary-pads'].products.first.featured_image
+                    | default: collections.all.products.first.featured_image
+                  %}
+                {% elsif link_dc contains 'all' or link_dc contains 'shop' %}
+                  {% assign nav_img = collections.all.products.first.featured_image
+                    | default: collections['good-quality-sanitary-pads'].products.first.featured_image
+                  %}
+                {% else %}
+                  {% assign nav_img = collections.all.products.first.featured_image
+                    | default: collections['good-quality-sanitary-pads'].products.first.featured_image
+                  %}
+                {% endif %}
+              {% endif %}
 
               <a href="{{ link.url }}" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
                 <div class="sliderow__content">
-                  <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border);">
-                    {% if nav_img != blank %}
-                      <img src="{{ nav_img | image_url: width: 96, height: 96, crop: 'center' }}" alt="{{ link.title }}" class="sliderow__thumb-img" width="96" height="96" loading="lazy">
-                    {% else %}
-                      {% if link_dc contains 'cream' or link_dc contains 'relief' %}
-                        <span style="font-size: 22px;">🧴</span>
-                      {% elsif link_dc contains 'cup' %}
-                        <span style="font-size: 22px;">🍷</span>
-                      {% elsif link_dc contains 'new' %}
-                        <span style="font-size: 22px;">✨</span>
-                      {% elsif link_dc contains 'combo' or link_dc contains 'offer' %}
-                        <span style="font-size: 22px;">🎁</span>
-                      {% else %}
-                        <span style="font-size: 22px;">🌸</span>
-                      {% endif %}
-                    {% endif %}
-                  </div>
                   <div class="sliderow__text-group">
                     {% if link_dc contains 'new' %}
                       <span class="combo-highlight-tag">NEW</span>
                     {% elsif link_dc contains 'best' or link_dc contains 'popular' %}
-                      <span class="combo-highlight-tag" style="background: var(--time-primary) !important;">POPULAR</span>
+                      <span class="combo-highlight-tag" style="background: var(--time-primary) !important;"
+                        >POPULAR</span
+                      >
                     {% elsif link_dc contains 'combo' %}
                       <span class="combo-highlight-tag" style="background: #2D6A4F !important;">EXTRA SAVINGS</span>
                     {% endif %}
-                    <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">{{ link.title }}</span>
+                    <span
+                      class="sliderow__title-text"
+                      style="color: var(--time-text); font-size: 14.5px; font-weight: 700;"
+                    >
+                      {{- link.title -}}
+                    </span>
                   </div>
                 </div>
                 <div class="sliderow__arrow" style="color: var(--time-primary);">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <polyline points="9 18 15 12 9 6"></polyline>
                   </svg>
                 </div>
               </a>
             {% endfor %}
           {% else %}
-            <!-- Fallback Category Rows with Crisp Icons & Styling -->
-            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+            <!-- Fallback Category Rows with Real Product Images (NO SVG/EMOJI) -->
+            {% assign f_cream = all_products['period-pain-relief-cream-oil'].featured_image
+              | default: collections['period-pain-relief-cream'].products.first.featured_image
+            %}
+            <a
+              href="/products/period-pain-relief-cream-oil"
+              class="sliderow"
+              style="border-radius: 12px; margin: 0 10px 4px;"
+            >
               <div class="sliderow__content">
-                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 22px;">🧴</span>
-                </div>
                 <div class="sliderow__text-group">
-                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Period Pain Relief Cream</span>
+                  <span
+                    class="sliderow__title-text"
+                    style="color: var(--time-text); font-size: 14.5px; font-weight: 700;"
+                    >Period Pain Relief Cream</span
+                  >
                 </div>
               </div>
               <div class="sliderow__arrow" style="color: var(--time-primary);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
               </div>
             </a>
 
-            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+            {% assign f_cup = all_products['menstrual-cup'].featured_image
+              | default: collections['menstrual-cups'].products.first.featured_image
+            %}
+            <a href="/products/menstrual-cup" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
               <div class="sliderow__content">
-                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 22px;">🍷</span>
-                </div>
                 <div class="sliderow__text-group">
-                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Menstrual Cup</span>
+                  <span
+                    class="sliderow__title-text"
+                    style="color: var(--time-text); font-size: 14.5px; font-weight: 700;"
+                    >Menstrual Cup</span
+                  >
                 </div>
               </div>
               <div class="sliderow__arrow" style="color: var(--time-primary);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
               </div>
             </a>
 
-            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+            {% assign f_best = collections['good-quality-sanitary-pads'].products.first.featured_image
+              | default: collections.all.products.first.featured_image
+            %}
+            <a
+              href="/collections/good-quality-sanitary-pads"
+              class="sliderow"
+              style="border-radius: 12px; margin: 0 10px 4px;"
+            >
               <div class="sliderow__content">
-                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 22px;">🔥</span>
-                </div>
                 <div class="sliderow__text-group">
                   <span class="combo-highlight-tag" style="background: var(--time-primary) !important;">POPULAR</span>
-                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Best Sellers</span>
+                  <span
+                    class="sliderow__title-text"
+                    style="color: var(--time-text); font-size: 14.5px; font-weight: 700;"
+                    >Best Sellers</span
+                  >
                 </div>
               </div>
               <div class="sliderow__arrow" style="color: var(--time-primary);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
               </div>
             </a>
 
-            <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
+            {% assign f_pads = collections['sanitary-pads'].products.first.featured_image
+              | default: collections.all.products[1].featured_image
+            %}
+            <a href="/collections/sanitary-pads" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
               <div class="sliderow__content">
-                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 22px;">✨</span>
-                </div>
                 <div class="sliderow__text-group">
-                  <span class="combo-highlight-tag">NEW</span>
-                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">New Arrivals</span>
+                  <span
+                    class="sliderow__title-text"
+                    style="color: var(--time-text); font-size: 14.5px; font-weight: 700;"
+                    >Sanitary pads</span
+                  >
                 </div>
               </div>
               <div class="sliderow__arrow" style="color: var(--time-primary);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
               </div>
             </a>
 
+            {% assign f_all = collections.all.products.first.featured_image
+              | default: collections['good-quality-sanitary-pads'].products.first.featured_image
+            %}
             <a href="/collections/all" class="sliderow" style="border-radius: 12px; margin: 0 10px 4px;">
               <div class="sliderow__content">
-                <div class="sliderow__thumb" style="background: #FAF7FB; border: 1px solid var(--time-border); display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 22px;">🌸</span>
-                </div>
                 <div class="sliderow__text-group">
-                  <span class="sliderow__title-text" style="color: var(--time-text); font-size: 14.5px; font-weight: 700;">Shop All</span>
+                  <span
+                    class="sliderow__title-text"
+                    style="color: var(--time-text); font-size: 14.5px; font-weight: 700;"
+                    >Shop All</span
+                  >
                 </div>
               </div>
               <div class="sliderow__arrow" style="color: var(--time-primary);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
               </div>
             </a>
           {% endif %}
@@ -929,30 +1503,38 @@ header.theme__header,
             MORE FROM TIME
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <a href="/pages/period-tips" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+            <a
+              href="/blogs/time-blog"
+              style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;"
+            >
               <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 9a9 9 0 0 1-10 9Z"></path><path d="M11 20v-8"></path></svg>
-              </div>
-              <span>Period Tips &amp; Care Guide</span>
-            </a>
-
-            <a href="/blogs/news" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
-              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
               </div>
               <span>Blogs &amp; Articles</span>
             </a>
 
-            <a href="/pages/about-us" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+            <a
+              href="/pages/why-time"
+              style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;"
+            >
               <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
               </div>
               <span>About TIME</span>
             </a>
 
-            <a href="/pages/contact" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;">
+            <a
+              href="/pages/contact"
+              style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #FAF7FB; text-decoration: none; color: var(--time-text); font-size: 13.5px; font-weight: 600;"
+            >
               <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(123, 63, 109, 0.1); color: var(--time-primary); display: flex; align-items: center; justify-content: center;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
               </div>
               <span>Contact Us &amp; Support</span>
             </a>
@@ -960,28 +1542,29 @@ header.theme__header,
         </div>
 
         <!-- ── PROMO CARD & QUICK ACCOUNT ACTION BUTTONS ── -->
-        <div class="tp-drawer-bottom-card" style="background: linear-gradient(135deg, #FAF7FB 0%, #F5EAF3 100%) !important; border: 1.5px dashed var(--time-primary-light) !important; flex-direction: column !important; gap: 6px !important; margin: 16px 14px 12px !important;">
-          <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 13.5px; color: var(--time-text);">
-            <span>🎁</span> <span>GET 10% OFF YOUR FIRST ORDER</span>
+        {% comment %}
+          <div class="tp-drawer-bottom-card" style="background: linear-gradient(135deg, #FAF7FB 0%, #F5EAF3 100%) !important; border: 1.5px dashed var(--time-primary-light) !important; flex-direction: column !important; gap: 6px !important; margin: 16px 14px 12px !important;">
+            <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 13.5px; color: var(--time-text);">
+              <span>🎁</span> <span>GET 10% OFF YOUR FIRST ORDER</span>
+            </div>
+            <div style="font-size: 11.5px; color: var(--time-primary); font-weight: 600;">
+              Use Code: <strong style="background: var(--time-primary-dark); color: #FFF; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.05em;">TIME10</strong>
+            </div>
           </div>
-          <div style="font-size: 11.5px; color: var(--time-primary); font-weight: 600;">
-            Use Code: <strong style="background: var(--time-primary-dark); color: #FFF; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.05em;">TIME10</strong>
-          </div>
-        </div>
+        {% endcomment %}
 
-        <!-- Account / Wishlist Footer Buttons -->
-        <div style="padding: 0 14px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-          <a href="{{ routes.account_url }}" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; background: var(--time-text); color: #FFF; text-decoration: none; font-size: 12.5px; font-weight: 700;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <!-- Account Footer Button -->
+        <div style="padding: 0 14px 20px;">
+          <a
+            href="{{ routes.account_url }}"
+            style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; background: var(--time-text); color: #FFF; text-decoration: none; font-size: 13px; font-weight: 700; width: 100%; box-sizing: border-box;"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+            </svg>
             <span>My Account</span>
           </a>
-
-          <a href="/pages/wishlist" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; background: #FAF7FB; border: 1.5px solid var(--time-border); color: var(--time-text); text-decoration: none; font-size: 12.5px; font-weight: 700;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            <span>Wishlist</span>
-          </a>
         </div>
-
       </div>
     </div>
 
@@ -990,10 +1573,11 @@ header.theme__header,
       <span class="drawer__underlay__blur"></span>
     </span>
   </nav>
-</div> <!-- end .tp-header-master-wrapper -->
+</div>
+<!-- end .tp-header-master-wrapper -->
 
 <script>
-  (function() {
+  (function () {
     function setupHamburgerDrawer() {
       var drawer = document.querySelector('[data-drawer="hamburger"]');
       if (!drawer) return;
@@ -1005,12 +1589,12 @@ header.theme__header,
         drawer.classList.remove('display-none');
         drawer.removeAttribute('inert');
         drawer.setAttribute('aria-hidden', 'false');
-        setTimeout(function() {
+        setTimeout(function () {
           drawer.classList.add('drawer--visible');
           drawer.classList.add('is-open');
           document.body.classList.add('drawer--is-open');
         }, 10);
-        openBtns.forEach(function(btn) {
+        openBtns.forEach(function (btn) {
           btn.setAttribute('aria-expanded', 'true');
         });
       }
@@ -1021,21 +1605,23 @@ header.theme__header,
         drawer.setAttribute('aria-hidden', 'true');
         drawer.setAttribute('inert', '');
         document.body.classList.remove('drawer--is-open');
-        setTimeout(function() {
+        setTimeout(function () {
           if (!drawer.classList.contains('drawer--visible') && !drawer.classList.contains('is-open')) {
             drawer.classList.add('display-none');
           }
         }, 300);
-        openBtns.forEach(function(btn) {
+        openBtns.forEach(function (btn) {
           btn.setAttribute('aria-expanded', 'false');
         });
       }
 
-      openBtns.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
+      openBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
-          var isOpen = (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open')) && !drawer.classList.contains('display-none');
+          var isOpen =
+            (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open')) &&
+            !drawer.classList.contains('display-none');
           if (isOpen) {
             closeMenu();
           } else {
@@ -1044,8 +1630,8 @@ header.theme__header,
         });
       });
 
-      closeBtns.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
+      closeBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
@@ -1055,15 +1641,18 @@ header.theme__header,
 
       var underlay = drawer.querySelector('[data-drawer-underlay]');
       if (underlay) {
-        underlay.addEventListener('click', function(e) {
+        underlay.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
           closeMenu();
         });
       }
 
-      document.addEventListener('keyup', function(e) {
-        if (e.key === 'Escape' && (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open'))) {
+      document.addEventListener('keyup', function (e) {
+        if (
+          e.key === 'Escape' &&
+          (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open'))
+        ) {
           closeMenu();
         }
       });
@@ -1083,8 +1672,8 @@ header.theme__header,
     align-items: center !important;
     justify-content: space-between !important;
     padding: 14px 16px 12px !important;
-    border-bottom: 1px solid #F3EDE7 !important;
-    background: #FFFFFF !important;
+    border-bottom: 1px solid #f3ede7 !important;
+    background: #ffffff !important;
     min-height: 56px !important;
     box-sizing: border-box !important;
   }
@@ -1099,7 +1688,7 @@ header.theme__header,
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: #1A1816 !important;
+    color: #1a1816 !important;
   }
   .tp-drawer-header-text {
     display: flex !important;
@@ -1110,13 +1699,13 @@ header.theme__header,
     font-size: 16px !important;
     font-weight: 800 !important;
     letter-spacing: 0.05em !important;
-    color: #1A1816 !important;
+    color: #1a1816 !important;
     font-family: 'Poppins', 'Outfit', sans-serif !important;
     margin: 0 !important;
   }
   .tp-drawer-header-subtitle {
     font-size: 12px !important;
-    color: #7A746E !important;
+    color: #7a746e !important;
     font-weight: 500 !important;
     margin-top: 2px !important;
     line-height: 1 !important;
@@ -1130,7 +1719,7 @@ header.theme__header,
     background: none !important;
     border: none !important;
     cursor: pointer !important;
-    color: #1A1816 !important;
+    color: #1a1816 !important;
     padding: 0 !important;
     position: static !important;
   }
@@ -1153,8 +1742,8 @@ header.theme__header,
   .tp-drawer-essentials-card {
     flex: 0 0 auto !important;
     margin: 12px 14px 10px !important;
-    background: #FAF5F2 !important;
-    border: 1px solid #F0E9E3 !important;
+    background: #faf5f2 !important;
+    border: 1px solid #f0e9e3 !important;
     border-radius: 16px !important;
     padding: 12px 12px 14px !important;
     box-sizing: border-box !important;
@@ -1172,7 +1761,7 @@ header.theme__header,
     font-weight: 800 !important;
     letter-spacing: 0.05em !important;
     text-transform: uppercase !important;
-    color: #1A1816 !important;
+    color: #1a1816 !important;
     display: flex !important;
     align-items: center !important;
     gap: 4px !important;
@@ -1181,7 +1770,7 @@ header.theme__header,
   .tp-drawer-view-all {
     font-size: 12px !important;
     font-weight: 600 !important;
-    color: #C0395D !important;
+    color: #c0395d !important;
     text-decoration: none !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -1226,8 +1815,8 @@ header.theme__header,
     width: 58px !important;
     height: 58px !important;
     border-radius: 50% !important;
-    background: #FFFFFF !important;
-    border: 1.5px solid #FFFFFF !important;
+    background: #ffffff !important;
+    border: 1.5px solid #ffffff !important;
     overflow: hidden !important;
     display: flex !important;
     align-items: center !important;
@@ -1246,18 +1835,22 @@ header.theme__header,
   .tp-drawer-product-card__placeholder {
     width: 100% !important;
     height: 100% !important;
-    background: #F0EAE1 !important;
+    background: #f0eae1 !important;
   }
   .tp-drawer-product-card__title {
-    font-size: 10px !important;
-    font-weight: 700 !important;
-    color: #1A1816 !important;
-    line-height: 1.2 !important;
-    text-align: center !important;
-    width: 66px !important;
-    display: block !important;
-    word-break: normal !important;
-  }
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      color: #1a1816 !important;
+      line-height: 1.25 !important;
+      text-align: center !important;
+      width: 66px !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      word-break: normal !important;
+    }
   .tp-drawer-track-arrow {
     position: absolute !important;
     right: -4px !important;
@@ -1265,14 +1858,14 @@ header.theme__header,
     width: 26px !important;
     height: 26px !important;
     border-radius: 50% !important;
-    background: #FFFFFF !important;
-    border: 1px solid #F0D4DC !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+    background: #ffffff !important;
+    border: 1px solid #f0d4dc !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    color: #C0395D !important;
+    color: #c0395d !important;
     z-index: 3 !important;
   }
 
@@ -1288,13 +1881,13 @@ header.theme__header,
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 12px 16px !important;
-    border-bottom: 1px solid #F5F1EC !important;
+    padding: 14px 16px !important;
+    border-bottom: 1px solid #f5f1ec !important;
     text-decoration: none !important;
-    background: #FFFFFF !important;
+    background: #ffffff !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    min-height: 60px !important;
+    min-height: 50px !important;
   }
   .sliderow__content {
     display: flex !important;
@@ -1303,16 +1896,7 @@ header.theme__header,
     flex-grow: 1 !important;
   }
   .sliderow__thumb {
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
-    flex-shrink: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 3px !important;
-    box-sizing: border-box !important;
+    display: none !important;
   }
   .sliderow__thumb-img {
     width: 100% !important;
@@ -1328,12 +1912,12 @@ header.theme__header,
   .sliderow__title-text {
     font-size: 15px !important;
     font-weight: 700 !important;
-    color: #1A1816 !important;
+    color: #1a1816 !important;
     line-height: 1.25 !important;
   }
   .sliderow__text-group .combo-highlight-tag {
-    background-color: #E63946 !important;
-    color: #FFFFFF !important;
+    background-color: #e63946 !important;
+    color: #ffffff !important;
     font-size: 8.5px !important;
     font-weight: 800 !important;
     padding: 2px 6px !important;
@@ -1349,14 +1933,14 @@ header.theme__header,
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: #1A1816 !important;
+    color: #1a1816 !important;
     opacity: 0.8 !important;
   }
 
   /* ── Bottom Brand Card ── */
   .tp-drawer-bottom-card {
-    background: linear-gradient(90deg, #FFF6F6, #FFF9F4) !important;
-    border: 1px solid #FFEBE8 !important;
+    background: linear-gradient(90deg, #fff6f6, #fff9f4) !important;
+    border: 1px solid #ffebe8 !important;
     border-radius: 12px !important;
     padding: 12px 14px !important;
     margin: 14px 14px 24px !important;
@@ -1368,7 +1952,7 @@ header.theme__header,
   .tp-drawer-bottom-text {
     font-size: 12.5px !important;
     font-weight: 600 !important;
-    color: #8A4B56 !important;
+    color: #8a4b56 !important;
   }
 
   @media only screen and (max-width: 768px) {
@@ -1379,160 +1963,127 @@ header.theme__header,
 </style>
 
 <div style="display: none !important;" aria-hidden="true">
-<div class="header__wrapper"
-  data-header-wrapper
-  style="--bar-opacity: 0; --bar-width: 0; --bar-left: 0;"
-  data-header-transparent="{{ transparent_header }}"
-  data-underline-current="{{ section.settings.underline_current }}"
-  data-header-sticky="{{ section.settings.header_sticky }}"
-  data-header-style="{{ section.settings.header_style }}"
-  data-section-id="{{ section.id }}"
-  data-section-type="header">
-  <header class="theme__header" data-header-height>
+  <div
+    class="header__wrapper"
+    data-header-wrapper
+    style="--bar-opacity: 0; --bar-width: 0; --bar-left: 0;"
+    data-header-transparent="{{ transparent_header }}"
+    data-underline-current="{{ section.settings.underline_current }}"
+    data-header-sticky="{{ section.settings.header_sticky }}"
+    data-header-style="{{ section.settings.header_style }}"
+    data-section-id="{{ section.id }}"
+    data-section-type="header"
+  >
+    <header class="theme__header" data-header-height>
+      {% if has_toolbar %}
+        <div class="header__inner header__inner--bar{% unless has_toolbar_text %} header__inner--bar-nav{% endunless %}">
+          <div class="{{ width_wrapper_class }}" data-toolbar-height>
+            {{ toolbar }}
+            {{ toolbar_mobile }}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="header__inner" {{ cart_status_simple }}>
+        <div class="{{ width_wrapper_class }}">
+          <div class="header__mobile">
+            {{ minimal }}
+          </div>
+
+          <div data-header-desktop class="header__desktop header__desktop--{{ section.settings.header_style }}">
+            {%- case section.settings.header_style -%}
+              {%- when 'logo_center' -%}
+                <div data-takes-space class="header__desktop__bar__l">{{ menu }}</div>
+                <div data-takes-space class="header__desktop__bar__c">{{ logos }}</div>
+                <div data-takes-space class="header__desktop__bar__r">{{ cart_content }}</div>
+              {%- when 'menu_center' -%}
+                <div data-takes-space class="header__desktop__bar__l">{{ logos }}</div>
+                <div data-takes-space class="header__desktop__bar__c">{{ menu }}</div>
+                <div data-takes-space class="header__desktop__bar__r">{{ cart_content }}</div>
+              {%- when 'split' -%}
+                {% comment %}
+                  <div  data-takes-space class="header__desktop__bar__l">
+                    {{ logos }}
+                  </div>
+                {% endcomment %}
+                <div data-takes-space class="header__desktop__bar__r">
+                  <div class="header__desktop__bar__inline">
+                    {{ menu }}
+                    {{ cart_content }}
+                  </div>
+                </div>
+            {%- endcase -%}
+          </div>
+        </div>
+      </div>
+      {% if section.settings.enable_search %}
+        <div class="drawer__search desktop-hide" data-drawer-search>
+          {% render 'search-predictive', version: 'search-drawer' %}
+        </div>
+      {% endif %}
+    </header>
+    {{ drawer }}
+    <div data-product-add-popdown-wrapper class="product-add-popdown"></div>
+  </div>
+
+  {% comment %} Load correct header height when position absolute{% endcomment %}
+  <div class="header__backfill" data-header-backfill aria-hidden="true">
     {% if has_toolbar %}
       <div class="header__inner header__inner--bar{% unless has_toolbar_text %} header__inner--bar-nav{% endunless %}">
-        <div class="{{ width_wrapper_class }}" data-toolbar-height>
-          {{ toolbar }}
-          {{ toolbar_mobile }}
+        <div class="{{ width_wrapper_class }} theme__header__toolbar">
+          {% if has_toolbar_text %}
+            <div class="toolbar__text">
+              <p>&nbsp;</p>
+            </div>
+          {% endif %}
+
+          {% if toolbar_links or toolbar_locale or toolbar_currency %}
+            <div class="toolbar__links">
+              <div class="toolbar__elements header__desktop">
+                <span class="toolbar__navlink">
+                  <span class="navtext">&nbsp;</span>
+                </span>
+              </div>
+            </div>
+          {% endif %}
         </div>
       </div>
     {% endif %}
-
-    <div class="header__inner" {{ cart_status_simple }}>
+    <div class="header__inner">
       <div class="{{ width_wrapper_class }}">
-        <div class="header__mobile">
-          {{ minimal }}
-        </div>
-
-        <div data-header-desktop class="header__desktop header__desktop--{{ section.settings.header_style }}">
-          {%- case section.settings.header_style -%}
-            {%- when 'logo_center' -%}
-              <div  data-takes-space class="header__desktop__bar__l">{{ menu }}</div>
-              <div  data-takes-space class="header__desktop__bar__c">{{ logos }}</div>
-              <div  data-takes-space class="header__desktop__bar__r">{{ cart_content }}</div>
-            {%- when 'menu_center' -%}
-              <div  data-takes-space class="header__desktop__bar__l">{{ logos }}</div>
-              <div  data-takes-space class="header__desktop__bar__c">{{ menu }}</div>
-              <div  data-takes-space class="header__desktop__bar__r">{{ cart_content }}</div>
-            {%- when 'split' -%}
-              {% comment %} <div  data-takes-space class="header__desktop__bar__l">
-                {{ logos }}
-              </div> {% endcomment %}
-              <div  data-takes-space class="header__desktop__bar__r">
-                <div class="header__desktop__bar__inline">
-                  {{ menu }}
-                  {{ cart_content }}
+        <div class="header__backfill__content">
+          <div class="header__logo">
+            <div class="header__logo__link" style="--LOGO-WIDTH: {{ logo_width }}px">
+              {%- if section.settings.logo != blank -%}
+                <div
+                  class="overflow-hidden aspect-[--wh-ratio]"
+                  style="--wh-ratio: {{ section.settings.logo.aspect_ratio }}"
+                >
+                  <img
+                    data-src="logo__img"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                    width="{{ logo_width }}"
+                    height="{{ section.settings.logo.height }}"
+                    alt="sanitary pads"
+                    style="
+                      display: block;
+                      width: 100%;
+                      height: {{ section.settings.logo.height }}px;
+                    "
+                  >
                 </div>
-              </div>
-          {%- endcase -%}
-        </div>
-      </div>
-    </div>
-            {% if section.settings.enable_search %}
-          <div class="drawer__search desktop-hide" data-drawer-search>
-            {% render 'search-predictive', version: 'search-drawer' %}
-          </div>
-        {% endif %}
-
-  </header>
-  {{ drawer }}
-  <div data-product-add-popdown-wrapper class="product-add-popdown"></div>
-</div>
-
-{% comment %} Load correct header height when position absolute{% endcomment %}
-<div class="header__backfill" data-header-backfill aria-hidden="true">
-  {% if has_toolbar %}
-    <div class="header__inner header__inner--bar{% unless has_toolbar_text %} header__inner--bar-nav{% endunless %}">
-      <div class="{{ width_wrapper_class }} theme__header__toolbar">
-        {% if has_toolbar_text %}
-          <div class="toolbar__text">
-            <p>&nbsp;</p>
-          </div>
-        {% endif %}
-
-        {% if toolbar_links or toolbar_locale or toolbar_currency %}
-          <div class="toolbar__links">
-            <div class="toolbar__elements header__desktop">
-              <span class="toolbar__navlink">
-                <span class="navtext">&nbsp;</span>
-              </span>
+              {%- else -%}
+                <div class="header__logo__text {{ text_logo_length }} {{ text_logo_setting }}">
+                  <span>{{ shop.name }}</span>
+                </div>
+              {%- endif -%}
             </div>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  {% endif %}
-  <div class="header__inner">
-    <div class="{{ width_wrapper_class }}">
-      <div class="header__backfill__content">
-        <div class="header__logo">
-          <div class="header__logo__link" style="--LOGO-WIDTH: {{ logo_width }}px">
-            {%- if section.settings.logo != blank -%}
-              <div class="overflow-hidden aspect-[--wh-ratio]" style="--wh-ratio: {{ section.settings.logo.aspect_ratio }}">
-                <img data-src="logo__img"
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
-                  width="{{ logo_width }}"
-                  height="{{ section.settings.logo.height }}"
-                  alt="sanitary pads"
-                  style="
-                    display: block;
-                    width: 100%;
-                    height: {{ section.settings.logo.height }}px;
-                  ">
-              </div>
-            {%- else -%}
-              <div class="header__logo__text {{ text_logo_length }} {{ text_logo_setting }}">
-                <span>{{ shop.name }}</span>
-              </div>
-            {%- endif -%}
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "Organization",
-  "name": {{ shop.name | json }},
-  {% if section.settings.logo %}
-    {% assign image_size = section.settings.logo.width | append: 'x' %}
-    "logo": {{ section.settings.logo | img_url: image_size | prepend: "https:" | json }},
-  {% endif %}
-  "sameAs": [
-    {{ settings.social_twitter_link | json }},
-    {{ settings.social_facebook_link | json }},
-    {{ settings.social_instagram_link | json }},
-    {{ settings.social_pinterest_link | json }},
-    {{ settings.social_youtube_link | json }},
-    {{ settings.social_vimeo_link | json }},
-    {{ settings.social_snapchat_link | json }},
-    {{ settings.social_medium_link | json }},
-    {{ settings.social_tumblr_link | json }}
-  ],
-  "url": {{ shop.url | append: page.url | json }}
-}
-</script>
-
-{% if template.name == 'index' %}
-  {% assign potential_action_target = shop.url | append: "/search?q={search_term_string}" %}
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": {{ shop.name | json }},
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {{ potential_action_target | json }},
-        "query-input": "required name=search_term_string"
-      },
-      "url": {{ shop.url | append: page.url | json }}
-    }
-  </script>
-{% endif %}
 
 {% schema %}
 {
@@ -1544,10 +2095,10 @@ header.theme__header,
       "label": "Header style",
       "default": "split",
       "options": [
-        { "value": "logo_center", "label": "Menu | Logo | Cart"},
-        { "value": "menu_center", "label": "Logo | Menu | Cart"},
-        { "value": "split", "label": "Logo | Spacer | Menu + Cart"},
-        { "value": "drawer", "label": "Mobile drawer menu"}
+        { "value": "logo_center", "label": "Menu | Logo | Cart" },
+        { "value": "menu_center", "label": "Logo | Menu | Cart" },
+        { "value": "split", "label": "Logo | Spacer | Menu + Cart" },
+        { "value": "drawer", "label": "Mobile drawer menu" }
       ],
       "info": "Learn more about [header styles](https://groupthought.com/link/pipeline/docs/header-styles)"
     },
@@ -1557,33 +2108,33 @@ header.theme__header,
       "label": "Logo image"
     },
     {
-      "type":    "range",
-      "id":      "logo_max_limit",
-      "min":     5,
-      "max":     495,
-      "step":    5,
-      "unit":    "px",
-      "label":   "Logo width",
+      "type": "range",
+      "id": "logo_max_limit",
+      "min": 5,
+      "max": 495,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo width",
       "default": 120
     },
     {
-      "type":    "range",
-      "id":      "logo_padding",
-      "min":     0,
-      "max":     50,
-      "step":    1,
-      "unit":    "px",
-      "label":   "Logo padding",
+      "type": "range",
+      "id": "logo_padding",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo padding",
       "default": 15
     },
     {
-      "type":  "range",
-      "id":    "logo_text_size",
+      "type": "range",
+      "id": "logo_text_size",
       "label": "Logo text size",
-      "min":    1,
-      "max":    15,
-      "step":   1,
-      "default":5,
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "default": 5,
       "info": "Available only for text logo"
     },
     {
@@ -1734,7 +2285,17 @@ header.theme__header,
       "label": "Collection image height",
       "info": "Tall to wide",
       "default": 2.5
-    }
+    },
+      {
+        "type": "header",
+        "content": "Mobile Drawer Quick Products"
+      },
+      {
+        "type": "collection",
+        "id": "drawer_collection",
+        "label": "Drawer products collection",
+        "info": "Optional collection to populate the horizontal quick products track. If empty, automatically retrieves products from the menu and store."
+      }
   ],
   "blocks": [
     {
@@ -1820,16 +2381,16 @@ header.theme__header,
           "label": "Link position in main menu",
           "default": "1",
           "options": [
-            { "value": "1", "label": "Item 1"},
-            { "value": "2", "label": "Item 2"},
-            { "value": "3", "label": "Item 3"},
-            { "value": "4", "label": "Item 4"},
-            { "value": "5", "label": "Item 5"},
-            { "value": "6", "label": "Item 6"},
-            { "value": "7", "label": "Item 7"},
-            { "value": "8", "label": "Item 8"},
-            { "value": "9", "label": "Item 9"},
-            { "value": "10", "label": "Item 10"}
+            { "value": "1", "label": "Item 1" },
+            { "value": "2", "label": "Item 2" },
+            { "value": "3", "label": "Item 3" },
+            { "value": "4", "label": "Item 4" },
+            { "value": "5", "label": "Item 5" },
+            { "value": "6", "label": "Item 6" },
+            { "value": "7", "label": "Item 7" },
+            { "value": "8", "label": "Item 8" },
+            { "value": "9", "label": "Item 9" },
+            { "value": "10", "label": "Item 10" }
           ]
         },
         {
@@ -1855,13 +2416,13 @@ header.theme__header,
           "default": false
         },
         {
-          "type":    "range",
-          "id":      "overlay_opacity",
-          "min":     0,
-          "max":     100,
-          "step":    5,
-          "label":   "Image overlay opacity",
-          "info":    "Increase contrast for legible text.",
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "label": "Image overlay opacity",
+          "info": "Increase contrast for legible text.",
           "default": 0
         },
         {
@@ -1885,16 +2446,16 @@ header.theme__header,
           "label": "Color",
           "default": "text--white",
           "options": [
-            { "value": "text--neutral", "label": "Normal text"},
-            { "value": "text--white", "label": "White"},
-            { "value": "text--primary", "label": "Primary accent"},
-            { "value": "text--secondary", "label": "Secondary accent"},
-            { "value": "text--black", "label": "Black"},
-            { "value": "text--invert--primary", "label": "Primary dark accent"},
-            { "value": "text--invert--secondary", "label": "Secondary dark accent"},
-            { "value": "text--invert", "label": "Inverted text color"},
-            { "value": "text--bright--primary", "label": "Primary bright accent"},
-            { "value": "text--bright--secondary", "label": "Secondary bright accent"}
+            { "value": "text--neutral", "label": "Normal text" },
+            { "value": "text--white", "label": "White" },
+            { "value": "text--primary", "label": "Primary accent" },
+            { "value": "text--secondary", "label": "Secondary accent" },
+            { "value": "text--black", "label": "Black" },
+            { "value": "text--invert--primary", "label": "Primary dark accent" },
+            { "value": "text--invert--secondary", "label": "Secondary dark accent" },
+            { "value": "text--invert", "label": "Inverted text color" },
+            { "value": "text--bright--primary", "label": "Primary bright accent" },
+            { "value": "text--bright--secondary", "label": "Secondary bright accent" }
           ]
         },
         {
@@ -1947,9 +2508,9 @@ header.theme__header,
           "label": "Show on",
           "default": "all",
           "options": [
-            { "value": "all", "label": "Both desktop and mobile drawer"},
-            { "value": "mobile", "label": "Mobile drawer only"},
-            { "value": "desktop", "label": "Desktop dropdown only"}
+            { "value": "all", "label": "Both desktop and mobile drawer" },
+            { "value": "mobile", "label": "Mobile drawer only" },
+            { "value": "desktop", "label": "Desktop dropdown only" }
           ]
         }
       ]
@@ -1964,16 +2525,16 @@ header.theme__header,
           "label": "Link position in main menu",
           "default": "1",
           "options": [
-            { "value": "1", "label": "Item 1"},
-            { "value": "2", "label": "Item 2"},
-            { "value": "3", "label": "Item 3"},
-            { "value": "4", "label": "Item 4"},
-            { "value": "5", "label": "Item 5"},
-            { "value": "6", "label": "Item 6"},
-            { "value": "7", "label": "Item 7"},
-            { "value": "8", "label": "Item 8"},
-            { "value": "9", "label": "Item 9"},
-            { "value": "10", "label": "Item 10"}
+            { "value": "1", "label": "Item 1" },
+            { "value": "2", "label": "Item 2" },
+            { "value": "3", "label": "Item 3" },
+            { "value": "4", "label": "Item 4" },
+            { "value": "5", "label": "Item 5" },
+            { "value": "6", "label": "Item 6" },
+            { "value": "7", "label": "Item 7" },
+            { "value": "8", "label": "Item 8" },
+            { "value": "9", "label": "Item 9" },
+            { "value": "10", "label": "Item 10" }
           ]
         },
         {
@@ -1997,9 +2558,9 @@ header.theme__header,
           "label": "Show on",
           "default": "all",
           "options": [
-            { "value": "all", "label": "Both desktop and mobile drawer"},
-            { "value": "mobile", "label": "Mobile drawer only"},
-            { "value": "desktop", "label": "Desktop dropdown only"}
+            { "value": "all", "label": "Both desktop and mobile drawer" },
+            { "value": "mobile", "label": "Mobile drawer only" },
+            { "value": "desktop", "label": "Desktop dropdown only" }
           ]
         }
       ]
@@ -2014,16 +2575,16 @@ header.theme__header,
           "label": "Link position in main menu",
           "default": "1",
           "options": [
-            { "value": "1", "label": "Item 1"},
-            { "value": "2", "label": "Item 2"},
-            { "value": "3", "label": "Item 3"},
-            { "value": "4", "label": "Item 4"},
-            { "value": "5", "label": "Item 5"},
-            { "value": "6", "label": "Item 6"},
-            { "value": "7", "label": "Item 7"},
-            { "value": "8", "label": "Item 8"},
-            { "value": "9", "label": "Item 9"},
-            { "value": "10", "label": "Item 10"}
+            { "value": "1", "label": "Item 1" },
+            { "value": "2", "label": "Item 2" },
+            { "value": "3", "label": "Item 3" },
+            { "value": "4", "label": "Item 4" },
+            { "value": "5", "label": "Item 5" },
+            { "value": "6", "label": "Item 6" },
+            { "value": "7", "label": "Item 7" },
+            { "value": "8", "label": "Item 8" },
+            { "value": "9", "label": "Item 9" },
+            { "value": "10", "label": "Item 10" }
           ]
         },
         {
@@ -2032,12 +2593,12 @@ header.theme__header,
           "label": "Collection"
         },
         {
-          "type":    "range",
-          "id":      "limit",
-          "min":     1,
-          "max":     10,
-          "step":    1,
-          "label":   "Product limit",
+          "type": "range",
+          "id": "limit",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "Product limit",
           "default": 4
         },
         {
@@ -2056,9 +2617,9 @@ header.theme__header,
           "label": "Show on",
           "default": "all",
           "options": [
-            { "value": "all", "label": "Both desktop and mobile drawer"},
-            { "value": "mobile", "label": "Mobile drawer only"},
-            { "value": "desktop", "label": "Desktop dropdown only"}
+            { "value": "all", "label": "Both desktop and mobile drawer" },
+            { "value": "mobile", "label": "Mobile drawer only" },
+            { "value": "desktop", "label": "Desktop dropdown only" }
           ]
         }
       ]

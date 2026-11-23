@@ -4,32 +4,33 @@
   This snippet generates preload hints for images that are critical for LCP (Largest Contentful Paint)
   
   Usage in theme.liquid <head>:
-  {% render 'image-preload-critical', image: section.settings.hero_image, sizes: "100vw", formats: "avif,webp" %}
+  {% render 'image-preload-critical', image: section.settings.hero_image, sizes: "100vw", formats: "webp" %}
   
   Parameters:
     image {object} - The image object to preload
     sizes {string} - Sizes attribute
-    formats {string} - Comma-separated formats to preload (avif,webp,jpg) - default: all
+    formats {string} - Comma-separated formats to preload (webp,jpg) - default: all
     width {number} - Specific width for preload (optional)
 {%- endcomment -%}
 
 {%- liquid
   assign image_width = image.width | default: image.preview_image.width
-  assign formats = formats | default: "avif,webp,jpg" | split: ","
+  assign formats = formats | default: "webp,jpg" | split: ","
   assign sizes = sizes | default: "100vw"
   assign preload_width = width | default: 1200
   assign preload_width = preload_width | at_most: image_width
-  assign has_avif = formats | join: "," | downcase
-  assign has_webp = formats | join: "," | downcase
-  assign has_jpg = formats | join: "," | downcase
+  assign formats_str = formats | join: "," | downcase
+  assign has_webp = false
+  assign has_jpg = false
+  if formats_str contains "webp"
+    assign has_webp = true
+  endif
+  if formats_str contains "jpg"
+    assign has_jpg = true
+  endif
 -%}
 
 {%- if image != blank and image_width != blank -%}
-  {%- comment -%} Preload AVIF format (highest priority for modern browsers) {%- endcomment -%}
-  {%- if has_avif -%}
-    <link rel="preload" as="image" href="{{ image | image_url: width: preload_width, format: 'avif' }}" imagesrcset="{{ image | image_url: width: preload_width, format: 'avif' }}" type="image/avif" />
-  {%- endif -%}
-  
   {%- comment -%} Preload WebP format (good browser support) {%- endcomment -%}
   {%- if has_webp -%}
     <link rel="preload" as="image" href="{{ image | image_url: width: preload_width, format: 'webp' }}" imagesrcset="{{ image | image_url: width: preload_width, format: 'webp' }}" type="image/webp" />
@@ -40,19 +41,3 @@
     <link rel="preload" as="image" href="{{ image | image_url: width: preload_width }}" imagesrcset="{{ image | image_url: width: preload_width }}" />
   {%- endif -%}
 {%- endif -%}
-{% comment %}
-
-This file has been rewritten to preserve the original behavior.
-
----
-Changes:
-- from: "  assign has_avif = formats | join: \",\" | downcase | contains: \"avif\"\r"
-  to: '  assign has_avif = formats | join: "," | downcase'
-  position: 959..1009
-- from: "  assign has_webp = formats | join: \",\" | downcase | contains: \"webp\"\r"
-  to: '  assign has_webp = formats | join: "," | downcase'
-  position: 1010..1060
-- from: "  assign has_jpg = formats | join: \",\" | downcase | contains: \"jpg\"\r"
-  to: '  assign has_jpg = formats | join: "," | downcase'
-  position: 1061..1110
-{% endcomment %}

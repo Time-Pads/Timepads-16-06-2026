@@ -263,22 +263,23 @@
 
       if (!res.ok) throw new Error('Cart add failed');
 
-      // Trigger theme's native cart update/drawer
-      document.dispatchEvent(new CustomEvent('theme:cart:reload', { bubbles: true }));
-
-      atcBtn.textContent = '✓ ADDED';
-      setTimeout(() => {
-        atcBtn.textContent = 'ADD TO CART';
-        atcBtn.disabled = false;
-        isAdding = false;
-
-        /* Update cart count bubble if the theme has one */
+      if (typeof window.tpRefreshCartDrawer === 'function') {
+        window.tpRefreshCartDrawer({ open: true });
+      } else {
+        document.dispatchEvent(new CustomEvent('theme:cart:reload', { bubbles: true }));
         document.querySelectorAll('[data-cart-count], .cart-count, .js-cart-count').forEach(el => {
           fetch('/cart.js')
             .then(r => r.json())
             .then(cart => { el.textContent = cart.item_count; })
             .catch(() => {});
         });
+      }
+
+      atcBtn.textContent = '✓ ADDED';
+      setTimeout(() => {
+        atcBtn.textContent = 'ADD TO CART';
+        atcBtn.disabled = false;
+        isAdding = false;
       }, 1800);
     } catch (err) {
       console.error('[QuickView] ATC error:', err);

@@ -16,13 +16,101 @@
   if settings.cart_style == 'pop'
     assign pop_style = 'drawer--pop'
   endif
+
+  assign free_threshold = settings.cart_drawer_free_threshold | default: '499' | plus: 0
+  assign discount_threshold = settings.cart_drawer_discount_threshold | default: '599' | plus: 0
+  assign max_threshold = settings.cart_drawer_max_threshold | default: '999' | plus: 0
+
+  if discount_threshold < free_threshold
+    assign discount_threshold = free_threshold
+  endif
+
+  if max_threshold < discount_threshold
+    assign max_threshold = discount_threshold
+  endif
+
+  assign free_threshold_cents = free_threshold | times: 100
+  assign discount_threshold_cents = discount_threshold | times: 100
+  assign max_threshold_cents = max_threshold | times: 100
+
+  assign progress_percent = 0
+  if cart.total_price > 0
+    if cart.total_price < free_threshold_cents
+      assign progress_percent = cart.total_price | times: 33.33 | divided_by: free_threshold_cents
+    elsif cart.total_price < discount_threshold_cents
+      assign step_diff = discount_threshold_cents | minus: free_threshold_cents
+      assign current_diff = cart.total_price | minus: free_threshold_cents
+      assign step_pct = current_diff | times: 33.33 | divided_by: step_diff
+      assign progress_percent = 33.33 | plus: step_pct
+    elsif cart.total_price < max_threshold_cents
+      assign step_diff = max_threshold_cents | minus: discount_threshold_cents
+      assign current_diff = cart.total_price | minus: discount_threshold_cents
+      assign step_pct = current_diff | times: 33.34 | divided_by: step_diff
+      assign progress_percent = 66.66 | plus: step_pct
+    else
+      assign progress_percent = 100
+    endif
+  endif
+
+  assign remaining_free = free_threshold_cents | minus: cart.total_price | at_least: 0
+  assign remaining_discount = discount_threshold_cents | minus: cart.total_price | at_least: 0
+  assign remaining_max = max_threshold_cents | minus: cart.total_price | at_least: 0
+
+  assign free_label = settings.cart_drawer_free_label | default: 'FREE SHIPPING'
+  assign discount_label = settings.cart_drawer_discount_label | default: '5% OFF'
+  assign max_label = settings.cart_drawer_max_label | default: '10% OFF'
+
+  assign tp_total_savings = 0
+  for line_item in cart.items
+    assign tp_compare_price = line_item.variant.compare_at_price | default: line_item.original_price
+    assign tp_unit_savings = tp_compare_price | minus: line_item.final_price
+    if tp_unit_savings > 0
+      assign tp_line_savings = tp_unit_savings | times: line_item.quantity
+      assign tp_total_savings = tp_total_savings | plus: tp_line_savings
+    endif
+  endfor
+
+  if settings.currency_code_enable
+    assign tp_savings_money = tp_total_savings | money_with_currency
+  else
+    assign tp_savings_money = tp_total_savings | money_without_trailing_zeros
+  endif
+
+  capture progress_message_html
+    if cart.total_price >= max_threshold_cents
+      echo '<strong>'
+      echo max_label
+      echo ' UNLOCKED ✓</strong> &bull; All Offers Unlocked!'
+    elsif cart.total_price >= discount_threshold_cents
+      echo '<strong>'
+      echo discount_label
+      echo ' UNLOCKED ✓</strong> &bull; Add <strong class="tp-brand-amt">'
+      echo remaining_max | money_without_trailing_zeros
+      echo '</strong> more for <strong class="tp-brand-tag">'
+      echo max_label
+      echo '</strong>'
+    elsif cart.total_price >= free_threshold_cents
+      echo '<strong>'
+      echo free_label
+      echo ' UNLOCKED ✓</strong> &bull; Add <strong class="tp-brand-amt">'
+      echo remaining_discount | money_without_trailing_zeros
+      echo '</strong> more for <strong class="tp-brand-tag">'
+      echo discount_label
+      echo '</strong>'
+    else
+      echo 'Add <strong class="tp-brand-amt">'
+      echo remaining_free | money_without_trailing_zeros
+      echo '</strong> more to unlock <strong class="tp-brand-tag">'
+      echo free_label
+      echo '</strong> 🚚'
+    endif
+  endcapture
 -%}
 {%- if settings.cart_style == "drawer" or settings.cart_style == "pop" -%}
   {%- if template.name != 'cart' -%}
     <section
       data-section-id="{{ section.id }}"
       data-section-type="cart-drawer"
- 
     >
       <div class="drawer cart__drawer {{ pop_style }} {{ hide_quantity }} {{ section.settings.cart_color_bg }}"
         data-cart-message-container
@@ -34,40 +122,105 @@
         aria-modal="true"
         aria-label="{{ 'layout.cart.title' | t | default: 'Cart' }}">
         <div class="drawer__content" aria-label="{{ 'layout.cart.title' | t }}">
-          <div class="drawer__top">
 
-            <div class="drawer__top__left">
-              <p class="cart__drawer__title">{{ 'layout.cart.title' | t }}</p>
+          <!-- 1. HEADER (My Comfort Cart + Badge + Subtitle + Close X) -->
+          <div class="drawer__top tp-comfort-header">
+            <div class="drawer__top__left tp-comfort-header-left">
+              <div class="tp-comfort-title-row">
+                <p class="cart__drawer__title tp-comfort-title">
+                  <span>{{ settings.cart_drawer_title | default: 'My Comfort Cart' }}</span>
+                  <span class="tp-cart-count-bubble" data-tp-cart-count>{{ cart.item_count }}</span>
+                </p>
+              </div>
+              <p class="tp-comfort-subtitle">Add period care essentials and save more.</p>
             </div>
 
-            <button class="drawer__button drawer__close"
+            <button class="drawer__button drawer__close tp-comfort-close"
               data-first-focus
               data-drawer-toggle="drawer-cart"
               aria-label="{{ 'general.accessibility.close' | t }}">
               {% render 'icon-core-x' %}
             </button>
           </div>
+
+          <!-- 2. FREE DELIVERY CARD BANNER -->
+          {%- if section.settings.cart_drawer_show_delivery_banner -%}
+          <div class="tp-cart-delivery-banner tp-delivery-strip{% if cart.item_count == 0 %} is-empty{% endif %}" data-tp-top-bar>
+            <span class="tp-cart-delivery-truck tp-delivery-truck">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            </span>
+            <span class="tp-cart-delivery-text tp-delivery-text">{{ free_label }} on orders above ₹{{ free_threshold }}</span>
+          </div>
+          {%- endif -%}
+
           <div class="drawer__body" data-drawer-scrolls>
 
-            {% if section.settings.cart_custom_message_enable and section.settings.cart_custom_message_text != blank %}
-              <div class="cart__message cart__message--custom cart--hidden" data-cart-bar>
-                {{ section.settings.cart_custom_message_text }}
+            <!-- 3. MILESTONE PROGRESS CARD (MATCHES REF 1: Soft pink card with truck, %, gift) -->
+            {%- if section.settings.cart_drawer_show_progress -%}
+              <div class="tp-milestone-card{% if cart.item_count == 0 %} is-empty{% endif %}"
+                data-tp-cart-progress
+                data-cart-total="{{ cart.total_price }}"
+                data-free-threshold="{{ free_threshold }}"
+                data-discount-threshold="{{ discount_threshold }}"
+                data-max-threshold="{{ max_threshold }}"
+                data-free-label="{{ free_label | escape }}"
+                data-discount-label="{{ discount_label | escape }}"
+                data-max-label="{{ max_label | escape }}"
+                {% if cart.item_count == 0 %}hidden{% endif %}>
+
+                <p class="tp-milestone-msg" data-tp-progress-message aria-live="polite">{{ progress_message_html }}</p>
+
+                <!-- AMOUNTS ABOVE TRACK -->
+                <div class="tp-milestone-amounts">
+                  <span class="tp-m-amt tp-m-amt--1">₹{{ free_threshold }}</span>
+                  <span class="tp-m-amt tp-m-amt--2">₹{{ discount_threshold }}</span>
+                  <span class="tp-m-amt tp-m-amt--3">₹{{ max_threshold }}</span>
+                </div>
+
+                <!-- TRACK WITH 3 ICONS -->
+                <div class="tp-milestone-track-wrap">
+                  <div class="tp-milestone-track">
+                    <span class="tp-milestone-fill" data-tp-progress-fill style="width: {{ progress_percent }}%"></span>
+                  </div>
+
+                  <div class="tp-milestone-nodes">
+                    <!-- Node 1: Truck (at 33.33%) -->
+                    <div class="tp-milestone-node tp-mnode--1{% if cart.total_price >= free_threshold_cents %} is-unlocked{% endif %}" data-tp-milestone data-threshold="{{ free_threshold }}">
+                      <span class="tp-node-icon">
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                      </span>
+                    </div>
+                    <!-- Node 2: % (at 66.66%) -->
+                    <div class="tp-milestone-node tp-mnode--2{% if cart.total_price >= discount_threshold_cents %} is-unlocked{% endif %}" data-tp-milestone data-threshold="{{ discount_threshold }}">
+                      <span class="tp-node-icon">%</span>
+                    </div>
+                    <!-- Node 3: Gift (at 100%) -->
+                    <div class="tp-milestone-node tp-mnode--3{% if cart.total_price >= max_threshold_cents %} is-unlocked{% endif %}" data-tp-milestone data-threshold="{{ max_threshold }}">
+                      <span class="tp-node-icon">
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- LABELS BELOW TRACK -->
+                <div class="tp-milestone-labels">
+                  <span class="tp-mlabel tp-mlabel--1{% if cart.total_price >= free_threshold_cents %} is-unlocked{% endif %}">{{ free_label }}</span>
+                  <span class="tp-mlabel tp-mlabel--2{% if cart.total_price >= discount_threshold_cents %} is-unlocked{% endif %}">{{ discount_label }}</span>
+                  <span class="tp-mlabel tp-mlabel--3{% if cart.total_price >= max_threshold_cents %} is-unlocked{% endif %}">{{ max_label }}</span>
+                </div>
               </div>
-            {% endif %}
-           
-            {%- if section.settings.show_free_shipping_message -%}
-              {% render 'cart-shipping-message', message: section.settings.message, show_wheel: true %}
             {%- endif -%}
 
             <div class="errors" data-form-errors style="display: none;"></div>
 
             {% comment %}Shown if cart is empty{% endcomment %}
-            <div class="cart--hidden" data-cart-empty >
+            <div class="{% if cart.item_count > 0 %}cart--hidden{% endif %}" data-cart-empty >
               {% render 'cart-empty' %}
             </div>
 
             {% comment %}Shown if cart has contents{% endcomment %}
-            <div data-cart-form data-cart-loading>
+            <div data-cart-form data-cart-loading class="{% if cart.item_count == 0 %}cart--hidden{% endif %}">
               <div data-line-items>
                 <div class="cart__items cart__items--blankstate">
                   <div class="cart__items__row">
@@ -83,45 +236,121 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="drawer__bottom cart--hidden" data-cart-bottom data-accordion-group>
-            {%- if section.settings.cart_notes_enable -%}
-              <div class="drawer__bottom__notes drawer__accordion">
-                <button class="accordion__title"
+
+            <!-- 5. TRUST BADGES STRIP (MATCHES REF 1: 4 icons with protection, skin-friendly, tested, woman focused) -->
+            <div class="tp-trust-strip{% if cart.item_count == 0 %} is-empty{% endif %}" data-tp-trust-strip>
+              <div class="tp-trust-item">
+                <span class="tp-trust-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                </span>
+                <span class="tp-trust-text">Leak-Proof<br>Protection</span>
+              </div>
+              <div class="tp-trust-item">
+                <span class="tp-trust-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+                </span>
+                <span class="tp-trust-text">Soft &<br>Skin-Friendly</span>
+              </div>
+              <div class="tp-trust-item">
+                <span class="tp-trust-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.69 17.5A2 2 0 0 0 6.36 21h11.28a2 2 0 0 0 1.67-3.5L14 9.31V2"></path><line x1="8.5" y1="2" x2="15.5" y2="2"></line><line x1="7" y1="14" x2="17" y2="14"></line></svg>
+                </span>
+                <span class="tp-trust-text">Quality<br>Tested</span>
+              </div>
+              <div class="tp-trust-item">
+                <span class="tp-trust-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </span>
+                <span class="tp-trust-text">Woman<br>Focused</span>
+              </div>
+            </div>
+
+            <!-- ORDER NOTES ACCORDION -->
+            {% comment %} {%- if section.settings.cart_notes_enable -%}
+              <div class="tp-comfort-notes drawer__accordion">
+                <button class="accordion__title tp-comfort-notes-trigger"
                   data-accordion-trigger="accordion-cart-notes"
                   aria-controls="accordion-cart-notes"
                   aria-haspopup="false"
                   aria-expanded="false">
-                  {{ 'cart.general.note' | t }}
+                  <span>Special instructions for seller</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion__icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
                 <div class="accordion__body drawer__accordion__body"
                   data-accordion-body
                   id="accordion-cart-notes">
-                  <label class="visually-hidden" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
-                  <textarea form="cart-form" name="note" placeholder="{{ 'cart.general.note' | t }}" class="drawer__notes__input input-full" id="CartSpecialInstructions" data-cart-note>{{ cart.note }}</textarea>
+                  <label class="visually-hidden" for="CartSpecialInstructions">Special instructions for seller</label>
+                  <textarea form="cart-form" name="note" placeholder="Special instructions for seller..." class="drawer__notes__input input-full" id="CartSpecialInstructions" data-cart-note>{{ cart.note }}</textarea>
                 </div>
               </div>
-            {%- endif -%}
+            {%- endif -%} {% endcomment %}
 
             {%- if section.settings.cart_shipping_enable -%}
               {% render 'cart-shipping-estimate' %}
             {%- endif -%}
 
-            <p class="drawer__bottom__meta body-size-3"><em>{{ 'cart.general.shipping_at_checkout' | t }}</em></p>
+          </div>
 
-            <div class="drawer__footer__subtotal" data-cart-subtotal>
+          <!-- 6. STICKY FOOTER (MATCHES REF 1: SAVING ₹28 badge + ₹251 + See Details v + Deep Wine Checkout ->) -->
+          <div class="drawer__bottom tp-comfort-footer cart--hidden" data-cart-bottom data-accordion-group>
+
+            <div class="tp-footer-subtotal-data" data-cart-subtotal style="display: none;">
               {% render 'cart-subtotal' %}
             </div>
 
-            <form id='cart-form' action="{{ routes.cart_url }}" method="post" novalidate class="cart">
-              {% comment %} <button type="submit" name="checkout" class="btn btn--primary btn--large btn--full checkout__button">
-                {{ 'cart.general.checkout' | t }} •
-                <span data-cart-final>
-                  {{ cart.total_price | money_with_currency }}
-                </span>
-              </button> {% endcomment %}
-              {% render 'gokwik-checkout' %}
-            </form>
+            <div class="tp-comfort-footer-bar">
+              <!-- LEFT: SAVINGS BADGE + PRICE + SEE DETAILS (MATCHES REF IMAGE 2) -->
+              <div class="tp-footer-price-col">
+                <div class="tp-footer-saving-badge" data-tp-saving-badge{% unless tp_total_savings > 0 %} style="display:none;"{% endunless %}>
+                  <span>SAVING <span data-tp-savings-amount>{{ tp_savings_money }}</span></span>
+                </div>
+                <div class="tp-footer-total-price">
+                  <strong data-tp-cart-total>{{ cart.total_price | money }}</strong>
+                </div>
+                <button type="button" class="tp-footer-details-link" aria-expanded="false">
+                  <span>SEE DETAILS</span>
+                </button>
+              </div>
+
+              <!-- VERTICAL DIVIDER (HIDDEN TO MATCH REF IMAGE 2) -->
+              <div class="tp-footer-divider"></div>
+
+              <!-- RIGHT: PROMINENT CHECKOUT BUTTON (MATCHES REF IMAGE 2) -->
+              <div class="tp-footer-checkout-col">
+                <form id='cart-form' action="{{ routes.cart_url }}" method="post" novalidate class="cart tp-checkout-form">
+                  {% if settings.goEnable %}
+                    {% render 'gokwik-checkout' %}
+                  {% else %}
+                    <button type="submit" name="checkout" class="tp-comfort-btn-checkout">
+                      <span class="btn-text">
+                        <span>CHECKOUT</span>
+                      </span>
+                      <span class="pay-opt-icon">
+                        <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg" alt="Paytm PhonePe GPay" class="tp-upi-icons-img" width="66" height="26">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="tp-chevron-icon"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                      </span>
+                    </button>
+                  {% endif %}
+                </form>
+              </div>
+            </div>
+
+            <!-- EXPANDABLE PRICE DETAILS DROPDOWN -->
+            <div class="tp-price-details-dropdown" id="accordion-price-details" style="display: none;">
+              <div class="tp-price-details-row">
+                <span>Subtotal</span>
+                <span data-tp-cart-total>{{ cart.total_price | money }}</span>
+              </div>
+              <div class="tp-price-details-row tp-row-savings"{% unless tp_total_savings > 0 %} style="display:none;"{% endunless %}>
+                <span>Total Savings</span>
+                <span data-tp-savings-amount>{{ tp_savings_money }}</span>
+              </div>
+              <div class="tp-price-details-row tp-row-muted">
+                <span>Shipping & Taxes</span>
+                <span>Calculated at checkout</span>
+              </div>
+            </div>
+
             {% if additional_checkout_buttons and section.settings.cart_show_additional_buttons %}
               <div class="drawer__checkout__additional">
                 <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
@@ -142,7 +371,26 @@
 
 {% schema %}
 {
+  "name": "Cart drawer",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "cart_drawer_show_delivery_banner",
+      "label": "Show free delivery banner",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_drawer_show_progress",
+      "label": "Show offer progress bar and milestone rewards",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_notes_enable",
+      "label": "Show cart notes",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "cart_shipping_enable",
@@ -152,51 +400,14 @@
     {
       "type": "checkbox",
       "id": "cart_show_quantity",
-      "label": "Show quantity selectors",
+      "label": "Show quantity selector",
       "default": true
     },
     {
       "type": "checkbox",
-      "id": "cart_notes_enable",
-      "label": "Show cart notes",
+      "id": "cart_show_additional_buttons",
+      "label": "Show additional checkout buttons",
       "default": false
-    },
-    {
-      "type": "header",
-      "content": "Free shipping message"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_free_shipping_message",
-      "label": "Show free shipping message",
-      "default": false
-    },
-    {
-      "type": "textarea",
-      "id": "message",
-      "label": "Message",
-      "info": "Use ||amount|| to display progress towards free shipping, set the amount in your global theme settings for cart.",
-      "default": "Spend ||amount|| more for free shipping"
-    },
-    {
-      "type": "header",
-      "content": "Custom cart message"
-    },
-    {
-      "type": "checkbox",
-      "id": "cart_custom_message_enable",
-      "label": "Show custom message",
-      "default": false
-    },
-    {
-      "type": "richtext",
-      "id": "cart_custom_message_text",
-      "label": "Message text",
-      "default": "<p>Use code <strong>TENOFF</strong> at checkout for 5% off</p>"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
     },
     {
       "type": "select",
@@ -204,46 +415,11 @@
       "label": "Background color",
       "default": "palette--light bg--neutral",
       "options": [
-        {
-          "value": "palette--light bg--neutral",
-          "label": "Default"
-        },
-        {
-          "value": "palette--light bg--accent",
-          "label": "Light"
-        },
-        {
-          "value": "palette--dark bg--invert",
-          "label": "Dark"
-        },
-        {
-          "value": "palette--dark bg--invert--accent",
-          "label": "Dark accent"
-        },
-        {
-          "value": "palette--bright bg--bright",
-          "label": "Bright"
-        },
-        {
-          "value": "palette--bright bg--bright--accent",
-          "label": "Bright accent"
-        }
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
       ]
-    },
-    {
-      "type": "header",
-      "content": "Additional checkout buttons"
-    },
-    {
-      "type": "paragraph",
-      "content": "Not recommended for drawer style and popup style cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "cart_show_additional_buttons",
-      "label": "Show additional checkout options on cart",
-      "info": "Move buttons for Apple Pay, Amazon Pay and PayPal express from the first step of the checkout to the cart.",
-      "default": false
     }
   ]
 }

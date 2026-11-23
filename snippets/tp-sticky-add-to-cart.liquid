@@ -1,0 +1,704 @@
+<!-- /snippets/tp-sticky-add-to-cart.liquid -->
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_img = current_variant.featured_image | default: product.featured_image
+  assign on_sale = false
+  if current_variant.compare_at_price > current_variant.price
+    assign on_sale = true
+    assign savings = current_variant.compare_at_price | minus: current_variant.price
+    assign discount_percent = savings | times: 100 | divided_by: current_variant.compare_at_price
+  endif
+-%}
+
+<div id="tp-sticky-atc" class="tp-sticky-atc" aria-hidden="true" role="region" aria-label="Quick Add to Cart">
+  <div class="tp-sticky-atc__container">
+    {%- comment -%} Desktop & Mobile Shared / Responsive Content {%- endcomment -%}
+    <div class="tp-sticky-atc__product-info">
+      {%- comment -%} Product Thumbnail (Desktop) {%- endcomment -%}
+      <div class="tp-sticky-atc__media">
+        {%- if featured_img -%}
+          <img
+            id="tpStickyAtcImage"
+            class="tp-sticky-atc__thumb"
+            src="{{ featured_img | image_url: width: 120 }}"
+            alt="{{ product.title | escape }}"
+            width="48"
+            height="48"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Details: Title (Desktop) + Pricing Row (Desktop & Mobile) {%- endcomment -%}
+      <div class="tp-sticky-atc__details">
+        <div id="tpStickyAtcTitle" class="tp-sticky-atc__title" title="{{ product.title | escape }}">
+          {{ product.title }}
+          {%- unless product.has_only_default_variant -%}
+            <span class="tp-sticky-atc__variant-title"> - {{ current_variant.title }}</span>
+          {%- endunless -%}
+        </div>
+
+        <div class="tp-sticky-atc__pricing">
+          <span id="tpStickyAtcPrice" class="tp-sticky-atc__price">
+            {{ current_variant.price | money }}
+          </span>
+          <span
+            id="tpStickyAtcCompare"
+            class="tp-sticky-atc__compare-price{% unless on_sale %} is-hidden{% endunless %}"
+          >
+            {{ current_variant.compare_at_price | money }}
+          </span>
+          <span
+            id="tpStickyAtcDiscount"
+            class="tp-sticky-atc__discount-badge{% unless on_sale %} is-hidden{% endunless %}"
+          >
+            {%- if on_sale -%}{{ discount_percent }}% OFF{%- endif -%}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} Action Button (Desktop right, Mobile bottom row) {%- endcomment -%}
+    <div class="tp-sticky-atc__action">
+      <button
+        type="button"
+        id="tpStickyAtcBtn"
+        class="tp-sticky-atc__btn{% unless current_variant.available %} is-disabled{% endunless %}"
+        {% unless current_variant.available %}disabled="disabled"{% endunless %}
+        aria-label="Add to cart"
+      >
+        <span class="tp-sticky-atc__btn-text">
+          {%- if current_variant.available -%}
+            ADD TO CART
+          {%- else -%}
+            SOLD OUT
+          {%- endif -%}
+        </span>
+        <span class="tp-sticky-atc__btn-spinner" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25" stroke="currentColor" />
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round" />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} JSON Variants for dynamic JS updates {%- endcomment -%}
+<script type="application/json" id="tpStickyVariantsJson">
+  {{ product.variants | json }}
+</script>
+
+<style>
+  /* ==========================================================
+     TIMEPADS STICKY ADD TO CART BAR
+     Responsive: Desktop (Image 2) & Mobile (Image 1)
+     Brand Colors: Plum #5F2E54, Hover #4A2241, Mint #D1F5EA
+     ========================================================== */
+  .tp-sticky-atc {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid #eae0d5;
+    box-shadow: 0 -4px 20px rgba(45, 35, 25, 0.08);
+    z-index: 990;
+    transform: translateY(115%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease,
+                visibility 0.25s ease;
+    font-family: inherit;
+  }
+
+  .tp-sticky-atc.tp-sticky-atc--visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Hide when ANY drawer is active (hamburger menu, cart drawer, search drawer, etc.) */
+  body.is-drawer-open .tp-sticky-atc,
+  body.drawer--open .tp-sticky-atc,
+  body.menu-open .tp-sticky-atc,
+  body.is-open .tp-sticky-atc,
+  body:has(.drawer--visible) .tp-sticky-atc,
+  body:has(.is-open) .tp-sticky-atc,
+  body:has(#header-menu.drawer--visible) .tp-sticky-atc,
+  body:has(#header-menu[aria-hidden="false"]) .tp-sticky-atc,
+  body:has([data-drawer="hamburger"].drawer--visible) .tp-sticky-atc,
+  body:has([data-drawer="hamburger"][aria-hidden="false"]) .tp-sticky-atc,
+  body:has(#drawer-cart.drawer--visible) .tp-sticky-atc,
+  body:has(#drawer-cart.is-open) .tp-sticky-atc,
+  body:has(#drawer-cart[aria-hidden="false"]) .tp-sticky-atc,
+  body:has([data-drawer-toggle="hamburger"][aria-expanded="true"]) .tp-sticky-atc,
+  body:has(.header__mobile__button[aria-expanded="true"]) .tp-sticky-atc,
+  .tp-sticky-atc.is-drawer-hidden {
+    transform: translateY(115%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    display: none !important;
+  }
+
+  .tp-sticky-atc__container {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+
+  .tp-sticky-atc__product-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  /* Product Thumbnail */
+  .tp-sticky-atc__media {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .tp-sticky-atc__thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: #faf8f5;
+    border: 1px solid #ede4dc;
+    display: block;
+  }
+
+  /* Details: Title & Pricing */
+  .tp-sticky-atc__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .tp-sticky-atc__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D2319;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 580px;
+    letter-spacing: -0.01em;
+  }
+
+  .tp-sticky-atc__variant-title {
+    color: #6B5E55;
+    font-weight: 500;
+  }
+
+  .tp-sticky-atc__pricing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+    line-height: 1;
+  }
+
+  .tp-sticky-atc__price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A140F;
+    letter-spacing: -0.02em;
+  }
+
+  .tp-sticky-atc__compare-price {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #8C7E72;
+    text-decoration: line-through;
+  }
+
+  .tp-sticky-atc__compare-price.is-hidden {
+    display: none !important;
+  }
+
+  .tp-sticky-atc__discount-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #065F46;
+    background: #D1F5EA;
+    padding: 2.5px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .tp-sticky-atc__discount-badge.is-hidden {
+    display: none !important;
+  }
+
+  /* Add to Cart Button */
+  .tp-sticky-atc__action {
+    flex-shrink: 0;
+  }
+
+  .tp-sticky-atc__btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 11px 36px;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(95, 46, 84, 0.25);
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    min-width: 160px;
+    outline: none;
+    line-height: 1.2;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tp-sticky-atc__btn:hover:not(:disabled) {
+    background: #4A2241 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(95, 46, 84, 0.35);
+  }
+
+  .tp-sticky-atc__btn:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .tp-sticky-atc__btn.is-disabled,
+  .tp-sticky-atc__btn:disabled {
+    background: #9C8E97 !important;
+    color: #EDE8EB !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .tp-sticky-atc__btn-spinner {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .tp-sticky-atc__btn.is-loading .tp-sticky-atc__btn-text {
+    opacity: 0;
+  }
+
+  .tp-sticky-atc__btn.is-loading .tp-sticky-atc__btn-spinner {
+    display: block;
+    animation: tp-spin 0.8s linear infinite;
+  }
+
+  @keyframes tp-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* ==========================================================
+     MOBILE VIEW (< 768px) - Image 1 Reference
+     Top line: Price + Strikethrough + Mint Discount Badge
+     Bottom line: Full-width ADD TO CART pill button
+     ========================================================== */
+  @media (max-width: 768px) {
+    /* Show immediately on mobile first view (landing view) */
+    .tp-sticky-atc {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    /* Hide when ANY drawer is active (hamburger menu, cart drawer, search drawer, etc.) */
+    body.is-drawer-open .tp-sticky-atc,
+    body.drawer--open .tp-sticky-atc,
+    body.menu-open .tp-sticky-atc,
+    body.is-open .tp-sticky-atc,
+    body:has(.drawer--visible) .tp-sticky-atc,
+    body:has(.is-open) .tp-sticky-atc,
+    body:has(#header-menu.drawer--visible) .tp-sticky-atc,
+    body:has(#header-menu[aria-hidden="false"]) .tp-sticky-atc,
+    body:has([data-drawer="hamburger"].drawer--visible) .tp-sticky-atc,
+    body:has([data-drawer="hamburger"][aria-hidden="false"]) .tp-sticky-atc,
+    body:has(#drawer-cart.drawer--visible) .tp-sticky-atc,
+    body:has(#drawer-cart.is-open) .tp-sticky-atc,
+    body:has(#drawer-cart[aria-hidden="false"]) .tp-sticky-atc,
+    body:has([data-drawer-toggle="hamburger"][aria-expanded="true"]) .tp-sticky-atc,
+    body:has(.header__mobile__button[aria-expanded="true"]) .tp-sticky-atc,
+    .tp-sticky-atc.is-drawer-hidden {
+      transform: translateY(115%) !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    .tp-sticky-atc__container {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)) 16px;
+      gap: 8px;
+    }
+
+    .tp-sticky-atc__media,
+    .tp-sticky-atc__title {
+      display: none !important;
+    }
+
+    .tp-sticky-atc__product-info {
+      width: 100%;
+      justify-content: flex-start;
+      margin-bottom: 0;
+    }
+
+    .tp-sticky-atc__details {
+      width: 100%;
+    }
+
+    .tp-sticky-atc__pricing {
+      margin-top: 0;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .tp-sticky-atc__price {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1A140F;
+    }
+
+    .tp-sticky-atc__compare-price {
+      font-size: 14.5px;
+      font-weight: 400;
+      color: #7A726C;
+    }
+
+    .tp-sticky-atc__discount-badge {
+      font-size: 11.5px;
+      padding: 2.5px 8px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .tp-sticky-atc__action {
+      width: 100%;
+    }
+
+    .tp-sticky-atc__btn {
+      width: 100%;
+      min-width: 100%;
+      padding: 13px 20px;
+      font-size: 14px;
+      border-radius: 999px !important;
+    }
+
+    /* Shift WhatsApp floating button up when sticky ATC is visible */
+    body.tp-sticky-atc-active .tp-whatsapp-sticky {
+      bottom: calc(124px + env(safe-area-inset-bottom, 0px)) !important;
+      transition: bottom 0.25s ease;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    'use strict';
+
+    function initStickyAtc() {
+      var stickyBar = document.getElementById('tp-sticky-atc');
+      if (!stickyBar) return;
+
+      var stickyBtn = document.getElementById('tpStickyAtcBtn');
+      var priceEl = document.getElementById('tpStickyAtcPrice');
+      var compareEl = document.getElementById('tpStickyAtcCompare');
+      var discountEl = document.getElementById('tpStickyAtcDiscount');
+      var titleEl = document.getElementById('tpStickyAtcTitle');
+      var imgEl = document.getElementById('tpStickyAtcImage');
+      var variantsDataEl = document.getElementById('tpStickyVariantsJson');
+
+      var variants = [];
+      if (variantsDataEl) {
+        try {
+          variants = JSON.parse(variantsDataEl.textContent);
+        } catch (e) {
+          variants = [];
+        }
+      }
+
+      var defaultTitle = {{ product.title | json }};
+
+      // Format currency helper
+      function formatMoney(cents) {
+        if (typeof cents === 'undefined' || cents === null) return '';
+        if (window.theme && window.themeCurrency && typeof window.themeCurrency.formatMoney === 'function') {
+          return window.themeCurrency.formatMoney(cents, window.theme.moneyFormat);
+        }
+        var formatted = (cents / 100).toLocaleString('en-IN', {
+          maximumFractionDigits: 0
+        });
+        return 'Rs. ' + formatted;
+      }
+
+      // Update sticky ATC UI on variant selection
+      function updateStickyVariant(variant) {
+        if (!variant) return;
+
+        // Price
+        if (priceEl && variant.price !== undefined) {
+          priceEl.innerHTML = formatMoney(variant.price);
+        }
+
+        // Compare price & Discount badge
+        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+          if (compareEl) {
+            compareEl.innerHTML = formatMoney(variant.compare_at_price);
+            compareEl.classList.remove('is-hidden');
+          }
+          if (discountEl) {
+            var diff = variant.compare_at_price - variant.price;
+            var pct = Math.round((diff * 100) / variant.compare_at_price);
+            discountEl.textContent = pct + '% OFF';
+            discountEl.classList.remove('is-hidden');
+          }
+        } else {
+          if (compareEl) compareEl.classList.add('is-hidden');
+          if (discountEl) discountEl.classList.add('is-hidden');
+        }
+
+        // Title (Desktop)
+        if (titleEl) {
+          if (variant.title && variant.title !== 'Default Title') {
+            titleEl.innerHTML = defaultTitle + ' <span class="tp-sticky-atc__variant-title">- ' + variant.title + '</span>';
+          } else {
+            titleEl.textContent = defaultTitle;
+          }
+        }
+
+        // Thumbnail (Desktop)
+        if (imgEl && variant.featured_image && variant.featured_image.src) {
+          imgEl.src = variant.featured_image.src;
+        }
+
+        // Button state
+        if (stickyBtn) {
+          var btnText = stickyBtn.querySelector('.tp-sticky-atc__btn-text');
+          if (variant.available) {
+            stickyBtn.disabled = false;
+            stickyBtn.classList.remove('is-disabled');
+            if (btnText) btnText.textContent = 'ADD TO CART';
+          } else {
+            stickyBtn.disabled = true;
+            stickyBtn.classList.add('is-disabled');
+            if (btnText) btnText.textContent = 'SOLD OUT';
+          }
+        }
+      }
+
+      // Listen for theme variant change events
+      document.addEventListener('theme:variant:change', function(evt) {
+        if (evt.detail && evt.detail.variant) {
+          updateStickyVariant(evt.detail.variant);
+        }
+      });
+
+      // Also listen to product form changes as a fallback
+      var form = document.querySelector('form[action*="/cart/add"]');
+      if (form) {
+        form.addEventListener('change', function(evt) {
+          var idInput = form.querySelector('input[name="id"], select[name="id"]');
+          if (idInput && variants.length > 0) {
+            var currentId = parseInt(idInput.value, 10);
+            var matchedVariant = variants.find(function(v) { return v.id === currentId; });
+            if (matchedVariant) updateStickyVariant(matchedVariant);
+          }
+        });
+      }
+
+      // Click handler: trigger main add to cart button
+      if (stickyBtn) {
+        stickyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (stickyBtn.disabled) return;
+
+          // Find the primary add-to-cart button
+          var mainBtn = document.querySelector(
+            '.product__block__buttons button[data-add-to-cart], ' +
+            'product-form button[type="submit"], ' +
+            'button.btn--add-to-cart[name="add"], ' +
+            'form[action*="/cart/add"] button[type="submit"]'
+          );
+
+          if (mainBtn && !mainBtn.disabled) {
+            stickyBtn.classList.add('is-loading');
+            mainBtn.click();
+            setTimeout(function() {
+              stickyBtn.classList.remove('is-loading');
+            }, 750);
+          } else if (form) {
+            if (typeof form.requestSubmit === 'function') {
+              form.requestSubmit();
+            } else {
+              form.submit();
+            }
+          }
+        });
+      }
+
+      // Helper to check if mobile viewport
+      function isMobileViewport() {
+        return window.innerWidth <= 768;
+      }
+
+      // Immediately show on mobile landing view
+      if (isMobileViewport()) {
+        stickyBar.classList.add('tp-sticky-atc--visible');
+        document.body.classList.add('tp-sticky-atc-active');
+        stickyBar.setAttribute('aria-hidden', 'false');
+      }
+
+      // Scroll trigger via IntersectionObserver (Desktop)
+      var target = document.querySelector('.product__block__buttons') ||
+                   document.querySelector('[data-product-form]') ||
+                   document.querySelector('.product__submit') ||
+                   document.querySelector('form[action*="/cart/add"]');
+
+      if (target && 'IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (isMobileViewport()) {
+              // On mobile: keep sticky ATC visible from first view and throughout browsing
+              stickyBar.classList.add('tp-sticky-atc--visible');
+              document.body.classList.add('tp-sticky-atc-active');
+              stickyBar.setAttribute('aria-hidden', 'false');
+              return;
+            }
+
+            // On Desktop: reveal when scrolled past main buy box
+            if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+              stickyBar.classList.add('tp-sticky-atc--visible');
+              document.body.classList.add('tp-sticky-atc-active');
+              stickyBar.setAttribute('aria-hidden', 'false');
+            } else {
+              stickyBar.classList.remove('tp-sticky-atc--visible');
+              document.body.classList.remove('tp-sticky-atc-active');
+              stickyBar.setAttribute('aria-hidden', 'true');
+            }
+          });
+        }, {
+          threshold: 0,
+          rootMargin: '0px 0px 0px 0px'
+        });
+
+        observer.observe(target);
+      } else {
+        window.addEventListener('scroll', function() {
+          if (isMobileViewport()) {
+            stickyBar.classList.add('tp-sticky-atc--visible');
+            document.body.classList.add('tp-sticky-atc-active');
+            return;
+          }
+          var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          if (scrollY > 300) {
+            stickyBar.classList.add('tp-sticky-atc--visible');
+            document.body.classList.add('tp-sticky-atc-active');
+          } else {
+            stickyBar.classList.remove('tp-sticky-atc--visible');
+            document.body.classList.remove('tp-sticky-atc-active');
+          }
+        }, { passive: true });
+      }
+
+      // Hide sticky ATC when ANY drawer opens (hamburger menu, cart drawer, etc.)
+      function checkDrawerState() {
+        var anyDrawerOpen = document.querySelector(
+          '.drawer.drawer--visible, ' +
+          'nav#header-menu.drawer--visible, ' +
+          'nav#header-menu[aria-hidden="false"], ' +
+          '#drawer-cart.drawer--visible, ' +
+          '#drawer-cart.is-open, ' +
+          '#drawer-cart[aria-hidden="false"], ' +
+          '[data-drawer-toggle="hamburger"][aria-expanded="true"], ' +
+          '.header__mobile__button[aria-expanded="true"]'
+        );
+
+        if (anyDrawerOpen) {
+          stickyBar.classList.add('is-drawer-hidden');
+          stickyBar.style.setProperty('display', 'none', 'important');
+        } else {
+          stickyBar.classList.remove('is-drawer-hidden');
+          stickyBar.style.removeProperty('display');
+        }
+      }
+
+      // Listen for custom theme drawer events
+      document.addEventListener('theme:drawer:open', checkDrawerState);
+      document.addEventListener('theme:drawer:close', checkDrawerState);
+      document.addEventListener('theme:scroll:lock', checkDrawerState);
+      document.addEventListener('theme:scroll:unlock', function() {
+        setTimeout(checkDrawerState, 50);
+      });
+
+      // Also observe changes on drawers (hamburger menu & cart drawer)
+      var hamburgerDrawer = document.getElementById('header-menu') || document.querySelector('[data-drawer="hamburger"]');
+      var cartDrawer = document.getElementById('drawer-cart') || document.querySelector('[data-drawer="drawer-cart"]');
+      var hamburgerBtn = document.querySelector('[data-drawer-toggle="hamburger"]');
+
+      if (window.MutationObserver) {
+        var drawerObserver = new MutationObserver(checkDrawerState);
+        if (hamburgerDrawer) {
+          drawerObserver.observe(hamburgerDrawer, { attributes: true, attributeFilter: ['class', 'aria-hidden'] });
+        }
+        if (cartDrawer) {
+          drawerObserver.observe(cartDrawer, { attributes: true, attributeFilter: ['class', 'aria-hidden'] });
+        }
+        if (hamburgerBtn) {
+          drawerObserver.observe(hamburgerBtn, { attributes: true, attributeFilter: ['aria-expanded'] });
+        }
+      }
+
+      // Check on click of any drawer toggle/close button
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('[data-drawer-toggle], [data-drawer-close], .header__mobile__button, .tp-drawer-close-btn')) {
+          setTimeout(checkDrawerState, 30);
+          setTimeout(checkDrawerState, 350);
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initStickyAtc);
+    } else {
+      initStickyAtc();
+    }
+  })();
+</script>
+

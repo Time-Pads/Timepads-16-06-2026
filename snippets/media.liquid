@@ -61,10 +61,13 @@
               assign media_width = 600
             endif
 
-            if media_width == 800
-              assign media_srcset_widths = '300,400,640,800'
-            else
-              assign media_srcset_widths = '300,480,600'
+            assign media_srcset_widths = srcset_widths
+            if media_srcset_widths == blank
+              if media_width == 800
+                assign media_srcset_widths = '300,400,640,800'
+              else
+                assign media_srcset_widths = '300,480,600'
+              endif
             endif
 
             if media.position == 1 and loading == blank and fetchpriority == blank and preload == blank
@@ -74,11 +77,13 @@
             endif
           %}
 
-          {%- capture sizes -%}
-            (min-width: 1100px) 50vw,
-            (min-width: 768px) 50vw,
-            calc(100vw - {{ section.settings.image_spacing | times: 2 }}px)
-          {%- endcapture -%}
+          {%- if sizes == blank -%}
+            {%- capture sizes -%}
+              (min-width: 1100px) 50vw,
+              (min-width: 768px) 50vw,
+              calc(100vw - {{ section.settings.image_spacing | times: 2 }}px)
+            {%- endcapture -%}
+          {%- endif -%}
 
           {%- render 'image',
             img_object: media.preview_image,

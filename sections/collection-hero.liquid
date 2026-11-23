@@ -29,6 +29,9 @@ h1.standard__heading.heading-size-8.collection__heading__text{
 <section class="{{ section.settings.color_bg }}"
   data-section-id="{{ section.id }}"
   data-section-type="hero">
+  {%- if show_image == false or section.settings.show_title_below or section.settings.show_title == false -%}
+    <h1 class="visually-hidden">{{ collection.title | escape }}</h1>
+  {%- endif -%}
   {% if show_image %}
     <div style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
       <div class="collection__hero {{ section.settings.width }} section-padding">

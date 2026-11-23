@@ -4,11 +4,11 @@
 {% endcomment %}
 
 {%- liquid
-  assign trust_heading = section.settings.trust_heading | default: 'Trusted by Millions of Women'
+  assign trust_heading = section.settings.trust_heading | default: 'Trusted by Thousands of Women'
   assign stories_heading = section.settings.stories_heading | default: 'Real Stories, Real Confidence'
 
-  assign bg_color = section.settings.bg_color | default: '#FAF7FB'
-  assign text_color = section.settings.text_color | default: '#1A1A1A'
+  assign bg_color = section.settings.bg_color | default: '#FBF5EB'
+  assign text_color = section.settings.text_color | default: '#3D3329'
   assign pad_top = section.settings.padding_top | default: 36
   assign pad_bottom = section.settings.padding_bottom | default: 40
   assign pad_top_m = section.settings.padding_top_mobile | default: 24
@@ -50,7 +50,7 @@
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 28px;
     font-weight: 700;
-    color: #241D25;
+    color: var(--time-text, #3D3329);
     margin: 0 0 24px 0;
     text-align: center;
     line-height: 1.2;
@@ -137,7 +137,7 @@
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 28px;
     font-weight: 700;
-    color: #241D25;
+    color: var(--time-text, #3D3329);
     text-align: center;
     margin: 0 0 24px 0;
     line-height: 1.2;
@@ -380,7 +380,6 @@
   aria-label="Social Proof & Customer Testimonials"
 >
   <div class="tp-social-proof__container">
-    
     <!-- ── 1. Top Trust Badges Bar ── -->
     <div class="tp-trust-bar">
       {%- if trust_heading != blank -%}
@@ -388,9 +387,9 @@
         <h2 class="tp-trust-bar__heading">
           {%- for word in trust_words -%}
             {%- if forloop.last -%}
-              <span style="color: #7B3F6D;">{{ word }}</span>
+              <span style="color: var(--time-primary, #B7A487);">{{ word }}</span>
             {%- else -%}
-              {{ word }} 
+              {{ word }}
             {%- endif -%}
           {%- endfor -%}
         </h2>
@@ -400,7 +399,14 @@
         <!-- Badge 1: Happy Customers -->
         <div class="tp-trust-badge">
           <div class="tp-trust-badge__icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
@@ -427,7 +433,14 @@
         <!-- Badge 3: 100% Safe -->
         <div class="tp-trust-badge">
           <div class="tp-trust-badge__icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
               <path d="m9 12 2 2 4-4"></path>
             </svg>
@@ -439,22 +452,31 @@
         </div>
 
         <!-- Badge 4: Made in India -->
-        <div class="tp-trust-badge">
-          <div class="tp-trust-badge__icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
+        {% comment %}
+          <div class="tp-trust-badge">
+            <div class="tp-trust-badge__icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+            <div class="tp-trust-badge__info">
+              <span class="tp-trust-badge__value">{{ section.settings.badge_4_val | default: 'Made in India' }}</span>
+              <span class="tp-trust-badge__label">{{ section.settings.badge_4_lbl | default: 'with ❤️' }}</span>
+            </div>
           </div>
-          <div class="tp-trust-badge__info">
-            <span class="tp-trust-badge__value">{{ section.settings.badge_4_val | default: 'Made in India' }}</span>
-            <span class="tp-trust-badge__label">{{ section.settings.badge_4_lbl | default: 'with ❤️' }}</span>
-          </div>
-        </div>
+        {% endcomment %}
 
         <!-- Badge 5: Pads Delivered -->
         <div class="tp-trust-badge">
           <div class="tp-trust-badge__icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
               <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
             </svg>
@@ -474,16 +496,15 @@
         <h2 class="tp-stories__heading">
           {%- for word in stories_words -%}
             {%- if forloop.last -%}
-              <span style="color: #7B3F6D;">{{ word }}</span>
+              <span style="color: var(--time-primary, #B7A487);">{{ word }}</span>
             {%- else -%}
-              {{ word }} 
+              {{ word }}
             {%- endif -%}
           {%- endfor -%}
         </h2>
       {%- endif -%}
 
       <div class="tp-stories__main-layout">
-        
         {%- liquid
           assign first_block = section.blocks.first
           if first_block != blank
@@ -520,16 +541,13 @@
               {{ first_quote }}
             </p>
             <div class="tp-stories__author" data-tp-author>{{ first_author }}</div>
-            <div class="tp-stories__stars">
-              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-            </div>
+            <div class="tp-stories__stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
           </div>
         </div>
 
         <!-- Right: Thumbnails Strip & Next Arrow -->
         <div class="tp-stories__thumbs-wrap">
           <div class="tp-stories__thumbs-track" data-tp-thumbs-track>
-            
             {%- if section.blocks.size > 0 -%}
               {%- for block in section.blocks -%}
                 {%- liquid
@@ -553,7 +571,14 @@
                   data-author="{{ story_name | escape }}"
                   {{ block.shopify_attributes }}
                 >
-                  <img src="{{ thumb_img }}" alt="{{ story_name | escape }}" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                  <img
+                    src="{{ thumb_img }}"
+                    alt="{{ story_name | escape }}"
+                    class="tp-stories__thumb-img"
+                    loading="lazy"
+                    width="110"
+                    height="140"
+                  >
                 </div>
               {%- endfor -%}
             {%- else -%}
@@ -565,7 +590,14 @@
                 data-quote="TIME pads are incredibly soft and give me confidence all day long. No rashes, no worries!"
                 data-author="— Priya, Bengaluru"
               >
-                <img src="{{ 'customer_review_1.webp' | asset_url }}" alt="Priya" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                <img
+                  src="{{ 'customer_review_1.webp' | asset_url }}"
+                  alt="Priya"
+                  class="tp-stories__thumb-img"
+                  loading="lazy"
+                  width="110"
+                  height="140"
+                >
               </div>
 
               <div
@@ -575,7 +607,14 @@
                 data-quote="Switching to TIME pads made my periods so comfortable. Absolutely no irritation or itching!"
                 data-author="— Ananya, Mumbai"
               >
-                <img src="{{ 'customer_review_2.webp' | asset_url }}" alt="Ananya" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                <img
+                  src="{{ 'customer_review_2.webp' | asset_url }}"
+                  alt="Ananya"
+                  class="tp-stories__thumb-img"
+                  loading="lazy"
+                  width="110"
+                  height="140"
+                >
               </div>
 
               <div
@@ -585,43 +624,70 @@
                 data-quote="Heavy flow days used to be a nightmare until I found TIME overnight pads. Maximum leakage protection!"
                 data-author="— Sneha, Delhi"
               >
-                <img src="{{ 'customer_review_3.webp' | asset_url }}" alt="Sneha" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                <img
+                  src="{{ 'customer_review_3.webp' | asset_url }}"
+                  alt="Sneha"
+                  class="tp-stories__thumb-img"
+                  loading="lazy"
+                  width="110"
+                  height="140"
+                >
               </div>
 
               <div
                 class="tp-stories__thumb-item"
                 data-tp-story-idx="3"
                 data-img-src="{{ 'customer_review_4.webp' | asset_url }}"
-                data-quote="The pure cotton top sheet feels so natural. I can wear them through long office hours with zero worry."
+                data-quote="I use it whenever my cramps start, and it feels soothing and comforting. It has become part of my period-day routine."
                 data-author="— Divya, Hyderabad"
               >
-                <img src="{{ 'customer_review_4.webp' | asset_url }}" alt="Divya" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                <img
+                  src="{{ 'customer_review_4.webp' | asset_url }}"
+                  alt="Divya"
+                  class="tp-stories__thumb-img"
+                  loading="lazy"
+                  width="110"
+                  height="140"
+                >
               </div>
 
               <div
                 class="tp-stories__thumb-item"
                 data-tp-story-idx="4"
                 data-img-src="{{ 'customer_review_5.webp' | asset_url }}"
-                data-quote="Organic, comfortable, and gentle on sensitive skin. Best period care purchase ever!"
+                data-quote="Easy to use, comfortable, and surprisingly convenient. Once I got used to it, my periods became much easier to manage. I love that I can wear it confidently throughout the day without worrying about leaks."
                 data-author="— Pooja, Pune"
               >
-                <img src="{{ 'customer_review_5.webp' | asset_url }}" alt="Pooja" class="tp-stories__thumb-img" loading="lazy" width="110" height="140">
+                <img
+                  src="{{ 'customer_review_5.webp' | asset_url }}"
+                  alt="Pooja"
+                  class="tp-stories__thumb-img"
+                  loading="lazy"
+                  width="110"
+                  height="140"
+                >
               </div>
             {%- endif -%}
-
           </div>
 
           <!-- Carousel Next Arrow -->
           <button type="button" class="tp-stories__arrow-btn" aria-label="Next story" data-tp-arrow-next>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#222"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </button>
         </div>
-
       </div>
     </div>
-
   </div>
 </section>
 
@@ -663,19 +729,25 @@
         if (featImg && newImg) {
           featImg.style.opacity = '0.4';
           featImg.src = newImg;
-          setTimeout(function () { featImg.style.opacity = '1'; }, 150);
+          setTimeout(function () {
+            featImg.style.opacity = '1';
+          }, 150);
         }
 
         if (quoteText && newQuote) {
           quoteText.style.opacity = '0.4';
           quoteText.textContent = newQuote;
-          setTimeout(function () { quoteText.style.opacity = '1'; }, 150);
+          setTimeout(function () {
+            quoteText.style.opacity = '1';
+          }, 150);
         }
 
         if (authorText && newAuthor) {
           authorText.style.opacity = '0.4';
           authorText.textContent = newAuthor;
-          setTimeout(function () { authorText.style.opacity = '1'; }, 150);
+          setTimeout(function () {
+            authorText.style.opacity = '1';
+          }, 150);
         }
       }
 
@@ -700,7 +772,10 @@
     }
 
     document.addEventListener('shopify:section:load', function (e) {
-      if (e.target.id === 'shopify-section-{{ section.id }}' || e.target.querySelector('#tp-social-proof-{{ section.id }}')) {
+      if (
+        e.target.id === 'shopify-section-{{ section.id }}' ||
+        e.target.querySelector('#tp-social-proof-{{ section.id }}')
+      ) {
         initSocialProofStories();
       }
     });
@@ -722,7 +797,7 @@
       "type": "text",
       "id": "trust_heading",
       "label": "Trust Bar Heading",
-      "default": "Trusted by Millions of Women"
+      "default": "Trusted by Thousands of Women"
     },
     {
       "type": "text",
@@ -798,7 +873,7 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
-      "default": "#FAF7FB"
+      "default": "#FBF5EB"
     },
     {
       "type": "color",
@@ -905,14 +980,14 @@
           "type": "story",
           "settings": {
             "name": "— Divya, Hyderabad",
-            "quote": "The pure cotton top sheet feels so natural. I can wear them through long office hours with zero worry."
+            "quote": "I use it whenever my cramps start, and it feels soothing and comforting. It has become part of my period-day routine."
           }
         },
         {
           "type": "story",
           "settings": {
             "name": "— Pooja, Pune",
-            "quote": "Organic, comfortable, and gentle on sensitive skin. Best period care purchase ever!"
+            "quote": "Easy to use, comfortable, and surprisingly convenient. Once I got used to it, my periods became much easier to manage. I love that I can wear it confidently throughout the day without worrying about leaks."
           }
         }
       ]

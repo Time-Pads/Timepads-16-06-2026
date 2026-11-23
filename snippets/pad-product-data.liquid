@@ -1,0 +1,178 @@
+{%- doc -%}
+  Resolves pad facts from the selected variant and the product catalog. The returned
+  fields are separated by ||: size, length, flow, pack, usage, material, style, protection and recommendation.
+  @param {product} product
+  @param {variant} variant
+  @param flow_guide - Entries in length|flow|guidance format
+  @param {boolean} [product_wide] - Omit size facts when length can vary by variant
+{%- enddoc -%}
+{%- liquid
+  assign pad_size = ''
+  assign pad_length = ''
+  assign flow = ''
+
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+    case option_name
+      when 'size', 'dimension', 'length', 'pad length'
+        assign size_option = variant.options[forloop.index0]
+        if option.values.size > 1
+          assign varying_size = true
+        endif
+      when 'available in', 'pack', 'pack size', 'pack quantity', 'number of pads'
+        if option.values.size > 1 and product_wide
+          assign varying_pack = true
+        else
+          assign pack = variant.options[forloop.index0] | strip
+        endif
+    endcase
+  endfor
+
+  unless product_wide and varying_size
+    assign metafield_size = product.metafields.custom.size_label.value | default: product.metafields.custom.size_name.value | default: product.metafields.custom.size.value
+    assign pad_size = size_option | default: metafield_size | strip
+    assign numeric_size = pad_size | plus: 0 | append: ''
+    if pad_size == numeric_size
+      assign pad_size = ''
+    endif
+
+    assign length_sources = size_option
+    unless varying_size
+      assign length_sources = length_sources | append: '||' | append: product.metafields.custom.pad_length.value | append: '||' | append: metafield_size | append: '||' | append: product.title | append: '||' | append: product.handle
+    endunless
+    assign length_sources = length_sources | split: '||'
+    for source in length_sources
+      assign normalized = source | downcase | replace: ' mm', 'mm' | replace: '-mm', 'mm' | replace: '-', ' ' | replace: '/', ' ' | replace: '(', ' ' | replace: ')', ' ' | replace: ',', ' ' | split: ' '
+      for word in normalized
+        assign unit = word | slice: -2, 2
+        assign number = word | remove: 'mm'
+        assign numeric_length = number | plus: 0
+        assign canonical_number = numeric_length | append: ''
+        if unit == 'mm' and number == canonical_number and numeric_length > 0
+          if pad_length != blank and pad_length != word
+            assign pad_length = ''
+            assign ambiguous_length = true
+            break
+          endif
+          assign pad_length = word
+        endif
+      endfor
+      if pad_length != blank or ambiguous_length
+        break
+      endif
+    endfor
+
+    for entry in flow_guide
+      assign entry_fields = entry | split: '|'
+      if entry_fields[0] == pad_length
+        assign flow = entry_fields[1]
+        break
+      endif
+    endfor
+
+    if pad_size != blank and pad_length != blank
+      assign normalized_size = pad_size | downcase | replace: ' mm', 'mm' | replace: '-mm', 'mm'
+      if normalized_size contains pad_length
+        assign size_words = normalized_size | split: pad_length
+        assign size_label = size_words[0] | strip
+        assign pad_size = pad_length
+        if size_label != blank
+          assign pad_size = size_label | upcase | append: ' ' | append: pad_length
+        endif
+      else
+        assign pad_size = pad_size | append: ' ' | append: pad_length
+      endif
+    endif
+    assign pad_size = pad_size | default: pad_length
+  endunless
+
+  unless varying_pack
+    assign pack = pack | default: product.metafields.custom.pack.value | default: product.metafields.custom.pack_size.value | strip
+  endunless
+  assign pack_digits = pack | downcase | remove: 'pack of ' | remove: 'pads' | remove: 'pad' | strip
+  assign pack_count = pack_digits | plus: 0
+  assign canonical_pack = pack_count | append: ''
+  assign zero_padded_pack = canonical_pack | prepend: '0'
+  if pack_count > 0
+    if pack_digits == canonical_pack or pack_digits == zero_padded_pack
+      assign pack = pack_count | append: ' pads'
+      if pack_count == 1
+        assign pack = '1 pad'
+      endif
+    endif
+  endif
+
+  assign title = product.title | downcase
+  assign catalog_copy = product.description | strip_html | downcase | replace: '&amp;', '&' | replace: '&nbsp;', ' '
+  assign usage = product.metafields.custom.usage.value | strip
+  assign usage_lower = usage | downcase
+  if usage_lower contains 'flow'
+    assign usage = ''
+    if usage_lower contains 'day & night' or usage_lower contains 'day and night' or usage_lower contains 'overnight & day'
+      assign usage = 'Day & night'
+    elsif usage_lower contains 'overnight'
+      assign usage = 'Overnight use'
+    endif
+  endif
+  if usage == blank
+    if catalog_copy contains 'day & night' or catalog_copy contains 'day and night' or title contains 'day & night' or title contains 'day and night'
+      assign usage = 'Day & night'
+    elsif title contains 'overnight' or title contains 'night sanitary pads' or catalog_copy contains 'overnight use' or catalog_copy contains 'during sleep'
+      assign usage = 'Overnight use'
+    elsif catalog_copy contains 'daily wear' or catalog_copy contains 'all-day wear' or catalog_copy contains 'all-day protection'
+      assign usage = 'Daytime wear'
+    endif
+  endif
+
+  assign recommendation = usage
+  case pad_length
+    when '240mm'
+      assign recommendation = 'Light flow on lighter period days'
+    when '280mm'
+      assign recommendation = 'Medium flow and everyday period care'
+    when '290mm'
+      assign recommendation = 'Medium to heavy flow days'
+    when '330mm'
+      assign recommendation = 'Heavy flow days'
+      assign usage_lower = usage | downcase
+      if usage_lower contains 'night'
+        assign recommendation = 'Heavy flow and overnight use'
+      endif
+  endcase
+
+  assign material = product.metafields.custom.material.value | strip
+  if material == blank
+    if catalog_copy contains '100% us cotton' or title contains 'us cotton netted top sheet'
+      assign material = 'US cotton'
+    elsif catalog_copy contains 'cottony top sheet'
+      assign material = 'Cottony top sheet'
+    elsif catalog_copy contains 'cotton top sheet' or title contains 'cotton top sheet' or title contains 'cotton top cover'
+      assign material = 'Cotton top sheet'
+    elsif catalog_copy contains 'soft top sheet'
+      assign material = 'Soft top sheet'
+    endif
+  endif
+
+  assign style = product.metafields.custom.pad_type.value | strip
+  if style == blank
+    if title contains 'ultra thin' or title contains 'ultra-thin' or catalog_copy contains 'ultra-thin design' or catalog_copy contains 'ultra thin design'
+      assign style = 'Ultra-thin pads'
+    elsif catalog_copy contains 'straight pad design' or title contains 'straight sanitary pads'
+      assign style = 'Straight pads'
+    endif
+  endif
+
+  assign protection = product.metafields.custom.pad_protection.value | strip
+  if protection == blank
+    if title contains 'double wings'
+      assign protection = 'Double wings help hold the pad in place.'
+    elsif title contains 'wider back' or title contains 'extra wide'
+      assign protection = 'A wider back adds coverage.'
+    elsif catalog_copy contains 'secure adhesive' or catalog_copy contains 'adhesive backing'
+      assign protection = 'Adhesive backing helps hold the pad in place.'
+    elsif catalog_copy contains 'locks in moisture' or catalog_copy contains 'lock away moisture'
+      assign protection = 'Absorbent layers help hold moisture.'
+    endif
+  endif
+-%}
+{{- pad_size -}}||{{- pad_length -}}||{{- flow -}}||{{- pack -}}||{{- usage -}}||{{- material -}}||{{- style -}}||{{- protection -}}||{{- recommendation -}}||end

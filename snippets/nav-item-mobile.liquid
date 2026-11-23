@@ -40,69 +40,10 @@
   assign collections_string = '/collections/'
 -%}
 
-{%- capture link_thumbnail -%}
-  {%- assign link_title_dc = link.title | downcase -%}
-  {%- assign item_bg = '#FAF5F0' -%}
-  {%- assign is_shop_all = false -%}
-
-  {%- if link_title_dc contains 'cream' or link_title_dc contains 'cramp' or link_title_dc contains 'pain' -%}
-    {%- assign item_bg = '#EDF7F2' -%}
-    {%- assign item_image = all_products['period-pain-relief-cream-oil'].featured_image | default: collections['all'].products.first.featured_image -%}
-  {%- elsif link_title_dc contains 'cup' -%}
-    {%- assign item_bg = '#FAF2EA' -%}
-    {%- assign item_image = all_products['menstrual-cup'].featured_image | default: collections['all'].products.first.featured_image -%}
-  {%- elsif link_title_dc contains 'best' or link_title_dc contains 'seller' -%}
-    {%- assign item_bg = '#FFF1EB' -%}
-    {%- assign item_image = collections['cotton-sanitary-pads'].image | default: collections['cotton-sanitary-pads'].products.first.featured_image | default: collections['all'].products.first.featured_image -%}
-  {%- elsif link_title_dc contains 'arrival' or link_title_dc contains 'new' or link_title_dc contains 'deal' -%}
-    {%- assign item_bg = '#FAF2EA' -%}
-    {%- assign item_image = all_products['menstrual-cup'].featured_image | default: collections['all'].products[1].featured_image -%}
-  {%- elsif link_title_dc contains 'shop all' or link_title_dc == 'shop all' or link_title_dc contains 'all' -%}
-    {%- assign item_bg = '#F2ECFA' -%}
-    {%- assign is_shop_all = true -%}
-  {%- else -%}
-    {%- if link.type == 'product_link' and link.object.featured_image != blank -%}
-      {%- assign item_image = link.object.featured_image -%}
-    {%- elsif link.type == 'collection_link' -%}
-      {%- assign item_image = link.object.image | default: link.object.products.first.featured_image -%}
-    {%- elsif link.url contains '/products/' -%}
-      {%- assign p_handle = link.url | split: '/products/' | last | split: '?' | split: '#' | first -%}
-      {%- assign p_obj = all_products[p_handle] -%}
-      {%- if p_obj != blank and p_obj.featured_image != blank -%}
-        {%- assign item_image = p_obj.featured_image -%}
-      {%- endif -%}
-    {%- elsif link.url contains '/collections/' -%}
-      {%- assign c_handle = link.url | split: '/collections/' | last | split: '?' | split: '#' | first -%}
-      {%- assign c_obj = collections[c_handle] -%}
-      {%- if c_obj != blank -%}
-        {%- assign item_image = c_obj.image | default: c_obj.products.first.featured_image -%}
-      {%- endif -%}
-    {%- endif -%}
-  {%- endif -%}
-
-  {%- if is_shop_all -%}
-    <span class="sliderow__thumb" style="background-color: {{ item_bg }};">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <path d="M12 11.5c-.8-.8-2 0-2 .8 0 1.2 2 2.7 2 2.7s2-1.5 2-2.7c0-.8-1.2-1.6-2-.8z" fill="#EC4899" stroke="#EC4899"></path>
-      </svg>
-    </span>
-  {%- elsif item_image != blank -%}
-    <span class="sliderow__thumb" style="background-color: {{ item_bg }};">
-      <img src="{{ item_image | image_url: width: 100, height: 100, crop: 'center' }}"
-           alt="{{ link.title | escape }}"
-           class="sliderow__thumb-img"
-           loading="lazy"
-           width="48"
-           height="48">
-    </span>
-  {%- endif -%}
-{%- endcapture -%}
+{%- assign link_thumbnail = '' -%}
 
 {%- capture link_content_inner -%}
   <div class="sliderow__content">
-    {{ link_thumbnail }}
     <div class="sliderow__text-group">
       {%- if link.title == 'New Arrivals' or link.title contains 'Arrival' -%}
         <span class="combo-highlight-tag">BEST DEALS</span>

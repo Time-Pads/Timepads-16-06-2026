@@ -1,0 +1,1744 @@
+{% comment %}
+
+
+
+  TIMEPADS - Recommended Products Section
+
+
+
+  Displays homepage-style product cards directly above the footer on PDP.
+
+
+
+  Uses high-performance card component with mint-green brand variant pills,
+
+
+
+  clean white background, and instant AJAX Add to Cart.
+
+
+
+{% endcomment %}
+
+
+
+
+
+
+
+{%- liquid
+
+
+
+  assign section_id = section.id
+
+
+
+  assign heading = section.settings.heading | default: 'Recommended For You'
+
+
+
+  assign subtitle = section.settings.subtitle | default: 'Thoughtful period care essentials curated for your comfort.'
+
+
+
+  assign eyebrow = section.settings.eyebrow | default: 'PAIRS WELL WITH THIS'
+
+
+
+  assign products_limit = section.settings.products_limit | default: 4 | plus: 0
+
+
+
+  assign bg_color = section.settings.bg_color | default: '#FFFFFF'
+
+
+
+
+
+
+
+  # Fallback products if recommendations API is loading or empty
+
+
+
+  assign current_prod_id = product.id
+
+
+
+  assign fallback_collection = section.settings.fallback_collection | default: product.collections.first
+
+
+
+  if fallback_collection == blank or fallback_collection.products_count == 0
+
+
+
+    assign fallback_collection = collections['all']
+
+
+
+  endif
+
+
+
+-%}
+
+
+
+
+
+
+
+<div
+
+
+
+  class="tp-recommended-section"
+
+
+
+  id="tp-recommended-{{ section_id }}"
+
+
+
+  data-section-id="{{ section_id }}"
+
+
+
+  data-product-id="{{ product.id }}"
+
+
+
+  data-limit="{{ products_limit }}"
+
+
+
+>
+
+
+
+  <style>
+
+
+
+    #tp-recommended-{{ section_id }} {
+
+
+
+      background-color: {{ bg_color }};
+
+
+
+      padding: 50px 0 65px;
+
+
+
+      width: 100%;
+
+
+
+      box-sizing: border-box;
+
+
+
+      border-top: 1px solid #EAE0D5;
+
+
+
+      margin-top: 30px;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-rec__container {
+
+
+
+      max-width: 1240px;
+
+
+
+      margin: 0 auto;
+
+
+
+      padding: 0 20px;
+
+
+
+      box-sizing: border-box;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-rec__header {
+
+
+
+      text-align: center;
+
+
+
+      margin-bottom: 32px;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-rec__eyebrow {
+
+
+
+      display: inline-block;
+
+
+
+      font-family: 'Inter', -apple-system, sans-serif;
+
+
+
+      font-size: 11px;
+
+
+
+      font-weight: 700;
+
+
+
+      letter-spacing: 1.5px;
+
+
+
+      text-transform: uppercase;
+
+
+
+      color: #9D8265;
+
+
+
+      margin-bottom: 6px;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-rec__title {
+
+
+
+      font-family: 'Spectral', Georgia, serif;
+
+
+
+      font-size: clamp(24px, 4vw, 34px);
+
+
+
+      font-weight: 600;
+
+
+
+      color: #17120E;
+
+
+
+      line-height: 1.25;
+
+
+
+      margin: 0 0 8px 0;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-rec__subtitle {
+
+
+
+      font-family: 'Inter', -apple-system, sans-serif;
+
+
+
+      font-size: 13.5px;
+
+
+
+      color: #74695D;
+
+
+
+      line-height: 1.5;
+
+
+
+      margin: 0 auto;
+
+
+
+      max-width: 560px;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-rec__grid {
+
+
+
+      display: grid;
+
+
+
+      grid-template-columns: repeat(4, 1fr);
+
+
+
+      gap: 20px;
+
+
+
+      width: 100%;
+
+
+
+      box-sizing: border-box;
+
+
+
+    }
+
+
+
+
+
+
+
+    /* ── Exact Homepage Card Brand Styling ── */
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card,
+
+
+
+    #tp-recommended-{{ section_id }} dynamic-card.tp-perf-card,
+
+
+
+    #tp-recommended-{{ section_id }} .product-grid-item__container {
+
+
+
+      background: #FFFFFF !important;
+
+
+
+      border: 1px solid #EAE0D5 !important;
+
+
+
+      border-radius: 14px !important;
+
+
+
+      padding: 10px !important;
+
+
+
+      box-sizing: border-box !important;
+
+
+
+      transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+
+
+
+      display: flex !important;
+
+
+
+      flex-direction: column !important;
+
+
+
+      height: 100% !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card:hover,
+
+
+
+    #tp-recommended-{{ section_id }} dynamic-card.tp-perf-card:hover,
+
+
+
+    #tp-recommended-{{ section_id }} .product-grid-item__container:hover {
+
+
+
+      box-shadow: 0 8px 24px rgba(17, 18, 22, 0.07), 0 2px 8px rgba(17, 18, 22, 0.04) !important;
+
+
+
+      transform: translateY(-2px) !important;
+
+
+
+    }
+
+
+
+
+
+
+
+    /* Variant Pills: Pure Mint/Sage Brand Design (Matching Image 2) */
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card {
+
+
+
+      position: relative !important;
+
+
+
+      display: flex !important;
+
+
+
+      flex-direction: column !important;
+
+
+
+      align-items: center !important;
+
+
+
+      justify-content: center !important;
+
+
+
+      border: 1.5px solid #E8E6E2 !important;
+
+
+
+      border-radius: 10px !important;
+
+
+
+      background: #FFFFFF !important;
+
+
+
+      padding: 8px 6px !important;
+
+
+
+      cursor: pointer !important;
+
+
+
+      transition: border-color 0.18s ease, background 0.18s ease !important;
+
+
+
+      width: 100% !important;
+
+
+
+      box-sizing: border-box !important;
+
+
+
+      text-align: center !important;
+
+
+
+      min-height: 42px !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card:hover {
+
+
+
+      border-color: #D9D4CE !important;
+
+
+
+      background: #FDFCFA !important;
+
+
+
+    }
+
+
+
+    /* Checked State: Soft Mint Green Background + Deep Forest Green Border + Solid Black Text */
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card {
+
+
+
+      border-color: #006D44 !important;
+
+
+
+      background: #F4F9F6 !important;
+
+
+
+      box-shadow: 0 0 0 1px rgba(0, 109, 68, 0.06) inset !important;
+
+
+
+      color: #000000 !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card *,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card .variant-name,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card .variant-name *,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card .variant-name span,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card *,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-name,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-name *,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-name span,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card *,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-name,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-name *,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-name span {
+
+
+
+      font-size: 12px !important;
+
+
+
+      font-weight: 700 !important;
+
+
+
+      color: #000000 !important;
+
+
+
+      line-height: 1.25 !important;
+
+
+
+      letter-spacing: -0.01em !important;
+
+
+
+    }
+
+
+
+    /* Discount Badge on Variant Pill */
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card .discount,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-variant-card .variant-discount {
+
+
+
+      position: absolute !important;
+
+
+
+      top: -8px !important;
+
+
+
+      left: 6px !important;
+
+
+
+      background: #FFFFFF !important;
+
+
+
+      padding: 0 4px !important;
+
+
+
+      font-size: 10px !important;
+
+
+
+      font-weight: 700 !important;
+
+
+
+      color: #006D44 !important;
+
+
+
+      line-height: 1 !important;
+
+
+
+      white-space: nowrap !important;
+
+
+
+      border-radius: 2px !important;
+
+
+
+      z-index: 2 !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .discount,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-discount,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .discount,
+
+
+
+    #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-discount {
+
+
+
+      background: #F4F9F6 !important;
+
+
+
+      color: #006D44 !important;
+
+
+
+    }
+
+
+
+
+
+
+
+    /* Price Row: Bold Black + Strikethrough + Save Green Badge */
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__price-row,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__price-wrap {
+
+
+
+      display: flex !important;
+
+
+
+      margin: 10px 0 !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__price-current {
+
+
+
+      font-size: 17px !important;
+
+
+
+      font-weight: 800 !important;
+
+
+
+      color: #121212 !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__price-compare {
+
+
+
+      font-size: 12.5px !important;
+
+
+
+      color: #8C827A !important;
+
+
+
+      text-decoration: line-through !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__save,
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__badge-save {
+
+
+
+      background: #EAF6F0 !important;
+
+
+
+      color: #006D44 !important;
+
+
+
+      font-size: 11px !important;
+
+
+
+      font-weight: 700 !important;
+
+
+
+      padding: 2px 6px !important;
+
+
+
+      border-radius: 4px !important;
+
+
+
+      border: 1px solid #DBEEE3 !important;
+
+
+
+      line-height: 1 !important;
+
+
+
+    }
+
+
+
+
+
+
+
+    /* Actions: Quantity Pill + Solid Black Add to Cart Button */
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__footer {
+
+
+
+      margin-top: auto !important;
+
+
+
+      padding-top: 6px !important;
+
+
+
+      width: 100% !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__qty {
+
+
+
+      border: 1.5px solid #E8E6E2 !important;
+
+
+
+      border-radius: 10px !important;
+
+
+
+      background: #FFFFFF !important;
+
+
+
+      height: 38px !important;
+
+
+
+      box-sizing: border-box !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__atc-btn,
+
+
+
+    #tp-recommended-{{ section_id }} .add-to-cart-button-for-product-card {
+
+
+
+      background: #000000 !important;
+
+
+
+      background-color: #000000 !important;
+
+
+
+      color: #FFFFFF !important;
+
+
+
+      border-radius: 999px !important;
+
+
+
+      font-weight: 700 !important;
+
+
+
+      font-size: 10px !important;
+
+
+
+      height: 38px !important;
+
+
+
+      flex: 1 !important;
+
+
+
+      border: none !important;
+
+
+
+      cursor: pointer !important;
+
+
+
+      display: flex !important;
+
+
+
+      align-items: center !important;
+
+
+
+      justify-content: center !important;
+
+
+
+      text-transform: uppercase !important;
+
+
+
+      letter-spacing: 0.5px !important;
+
+
+
+      transition: opacity 0.2s ease !important;
+
+
+
+    }
+
+
+
+    #tp-recommended-{{ section_id }} .tp-perf-card__atc-btn:hover,
+
+
+
+    #tp-recommended-{{ section_id }} .add-to-cart-button-for-product-card:hover {
+
+
+
+      opacity: 0.88 !important;
+
+
+
+    }
+
+
+
+
+
+
+
+    @media (max-width: 991px) {
+
+
+
+      #tp-recommended-{{ section_id }} .tp-rec__grid {
+
+
+
+        grid-template-columns: repeat(2, 1fr);
+
+
+
+        gap: 14px;
+
+
+
+      }
+
+
+
+    }
+
+
+
+
+
+
+
+    @media (max-width: 767px) {
+
+
+
+      #tp-recommended-{{ section_id }} {
+
+
+
+        padding: 34px 0 44px;
+
+
+
+        margin-top: 20px;
+
+
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-rec__container {
+
+
+
+        padding: 0 12px;
+
+
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-rec__header {
+
+
+
+        margin-bottom: 20px;
+
+
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-rec__grid {
+
+
+
+        grid-template-columns: repeat(2, 1fr);
+
+
+
+        gap: 10px;
+
+
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-perf-card,
+
+
+
+      #tp-recommended-{{ section_id }} dynamic-card.tp-perf-card,
+
+
+
+      #tp-recommended-{{ section_id }} .product-grid-item__container {
+
+
+
+        padding: 8px !important;
+
+
+
+      }
+
+
+
+      /* Mobile variant pill font size 10px single line */
+
+      #tp-recommended-{{ section_id }} .tp-variant-card,
+
+      #tp-recommended-{{ section_id }} .tp-variant-card *,
+
+      #tp-recommended-{{ section_id }} .tp-variant-card .variant-name,
+
+      #tp-recommended-{{ section_id }} .tp-variant-card .variant-name *,
+
+      #tp-recommended-{{ section_id }} .tp-variant-card .variant-name span,
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card,
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card *,
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-name,
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-name *,
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__radio-input:checked + .tp-variant-card .variant-name span,
+
+      #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card,
+
+      #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card *,
+
+      #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-name,
+
+      #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-name *,
+
+      #tp-recommended-{{ section_id }} .variant-radio-input:checked + .tp-variant-card .variant-name span {
+
+        font-size: 10px !important;
+
+        white-space: nowrap !important;
+
+        letter-spacing: -0.02em !important;
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-variant-card {
+
+        min-height: 34px !important;
+
+        padding: 5px 3px !important;
+
+      }
+
+
+
+      /* Task 1 Mobile Card Quick-Add alignment - Longer Length, Sleek Height */
+
+
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__qty {
+
+
+
+        flex: 0 0 54px !important;
+
+
+
+        max-width: 56px !important;
+
+
+
+        min-width: 50px !important;
+
+
+
+        height: 36px !important;
+
+
+
+        min-height: 36px !important;
+
+
+
+        max-height: 36px !important;
+
+
+
+        padding: 0 2px !important;
+
+
+
+        border-radius: 8px !important;
+
+
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__atc-btn,
+
+
+
+      #tp-recommended-{{ section_id }} .add-to-cart-button-for-product-card {
+
+
+
+        height: 36px !important;
+
+
+
+        min-height: 36px !important;
+
+
+
+        max-height: 36px !important;
+
+
+
+        border-radius: 8px !important;
+
+
+
+        font-size: 10px !important;
+
+
+
+        font-weight: 800 !important;
+
+
+
+      }
+
+
+
+      #tp-recommended-{{ section_id }} .tp-perf-card__atc-btn svg,
+
+
+
+      #tp-recommended-{{ section_id }} .add-to-cart-button-for-product-card svg {
+
+
+
+        width: 15px !important;
+
+
+
+        height: 15px !important;
+
+
+
+      }
+
+
+
+    }
+
+
+
+  </style>
+
+
+
+
+
+
+
+  <div class="tp-rec__container">
+
+
+
+    <div class="tp-rec__header">
+
+
+
+      {%- if eyebrow != blank -%}
+
+
+
+        <span class="tp-rec__eyebrow">{{ eyebrow | escape }}</span>
+
+
+
+      {%- endif -%}
+
+
+
+      {%- if heading != blank -%}
+
+
+
+        <h2 class="tp-rec__title">{{ heading | escape }}</h2>
+
+
+
+      {%- endif -%}
+
+
+
+      {%- if subtitle != blank -%}
+
+
+
+        <p class="tp-rec__subtitle">{{ subtitle | escape }}</p>
+
+
+
+      {%- endif -%}
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="tp-rec__grid" data-recommended-grid>
+
+
+
+      {%- liquid
+
+
+
+        assign rendered_count = 0
+
+
+
+        if recommendations.performed and recommendations.products_count > 0
+
+
+
+          for rec_product in recommendations.products limit: products_limit
+
+
+
+            render 'product-card-performance', product: rec_product, columns_desktop: 4, columns_mobile: 2, eagerload: false
+
+
+
+            assign rendered_count = rendered_count | plus: 1
+
+
+
+          endfor
+
+
+
+        endif
+
+
+
+
+
+
+
+        if rendered_count == 0
+
+
+
+          for fb_product in fallback_collection.products
+
+
+
+            if fb_product.id != current_prod_id and rendered_count < products_limit
+
+
+
+              render 'product-card-performance', product: fb_product, columns_desktop: 4, columns_mobile: 2, eagerload: false
+
+
+
+              assign rendered_count = rendered_count | plus: 1
+
+
+
+            endif
+
+
+
+          endfor
+
+
+
+        endif
+
+
+
+      -%}
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <script>
+
+
+
+    (function() {
+
+
+
+      var sectionContainer = document.getElementById('tp-recommended-{{ section_id }}');
+
+
+
+      if (!sectionContainer) return;
+
+
+
+
+
+
+
+      var productId = sectionContainer.getAttribute('data-product-id');
+
+
+
+      var limit = sectionContainer.getAttribute('data-limit') || 4;
+
+
+
+      var sectionId = sectionContainer.getAttribute('data-section-id');
+
+
+
+      var grid = sectionContainer.querySelector('[data-recommended-grid]');
+
+
+
+      if (!productId || !grid) return;
+
+
+
+
+
+
+
+      var url = '/recommendations/products?section_id=' + encodeURIComponent(sectionId) + '&product_id=' + encodeURIComponent(productId) + '&limit=' + encodeURIComponent(limit);
+
+
+
+
+
+
+
+      fetch(url)
+
+
+
+        .then(function(res) {
+
+
+
+          if (!res.ok) throw new Error('Network error');
+
+
+
+          return res.text();
+
+
+
+        })
+
+
+
+        .then(function(text) {
+
+
+
+          var parser = new DOMParser();
+
+
+
+          var doc = parser.parseFromString(text, 'text/html');
+
+
+
+          var newGrid = doc.querySelector('[data-recommended-grid]');
+
+
+
+          if (newGrid && newGrid.children.length > 0) {
+
+
+
+            grid.innerHTML = newGrid.innerHTML;
+
+
+
+          }
+
+
+
+        })
+
+
+
+        .catch(function(err) {
+
+
+
+          // Keep instant fallback products intact
+
+
+
+        });
+
+
+
+    })();
+
+
+
+  </script>
+
+
+
+</div>
+
+
+
+
+
+
+
+{% schema %}
+
+
+
+{
+
+
+
+  "name": "Recommended Products",
+
+
+
+  "tag": "section",
+
+
+
+  "class": "section-recommended-products",
+
+
+
+  "settings": [
+
+
+
+    {
+
+
+
+      "type": "text",
+
+
+
+      "id": "eyebrow",
+
+
+
+      "label": "Eyebrow Text",
+
+
+
+      "default": "PAIRS WELL WITH THIS"
+
+
+
+    },
+
+
+
+    {
+
+
+
+      "type": "text",
+
+
+
+      "id": "heading",
+
+
+
+      "label": "Heading",
+
+
+
+      "default": "Recommended For You"
+
+
+
+    },
+
+
+
+    {
+
+
+
+      "type": "text",
+
+
+
+      "id": "subtitle",
+
+
+
+      "label": "Subtitle",
+
+
+
+      "default": "Thoughtful period care essentials curated for your comfort."
+
+
+
+    },
+
+
+
+    {
+
+
+
+      "type": "range",
+
+
+
+      "id": "products_limit",
+
+
+
+      "label": "Products to show",
+
+
+
+      "min": 2,
+
+
+
+      "max": 8,
+
+
+
+      "step": 1,
+
+
+
+      "default": 4
+
+
+
+    },
+
+
+
+    {
+
+
+
+      "type": "collection",
+
+
+
+      "id": "fallback_collection",
+
+
+
+      "label": "Fallback Collection"
+
+
+
+    },
+
+
+
+    {
+
+
+
+      "type": "color",
+
+
+
+      "id": "bg_color",
+
+
+
+      "label": "Background Color",
+
+
+
+      "default": "#FFFFFF"
+
+
+
+    }
+
+
+
+  ],
+
+
+
+  "presets": [
+
+
+
+    {
+
+
+
+      "name": "Recommended Products",
+
+
+
+      "settings": {
+
+
+
+        "heading": "Recommended For You",
+
+
+
+        "products_limit": 4
+
+
+
+      }
+
+
+
+    }
+
+
+
+  ]
+
+
+
+}
+
+
+
+{% endschema %}
+
+
+

@@ -1,612 +1,655 @@
 <!-- /sections/footer.liquid -->
 
 {% style %}
-/* Google Fonts loaded async via theme.liquid */
+  /* Google Fonts loaded async via theme.liquid */
 
-/* ─── TIME MASTER FOOTER SYSTEM — PERFECT VISUAL REFERENCE MATCH ─── */
-.tp-footer-master {
-  background-color: var(--time-text) !important; /* Deep dark plum #241D25 */
-  color: var(--time-white) !important;
-  border-top: 3px solid var(--time-primary) !important;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Poppins', var(--FONT-STACK-BODY), sans-serif;
-  padding-top: 32px;
-  padding-bottom: 16px;
-}
-
-/* Botanical Background SVG Accents */
-.tp-footer-bg-accent {
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.tp-bg-leaf-top-left {
-  top: -10px;
-  left: -10px;
-  width: 160px;
-  height: 160px;
-}
-
-.tp-bg-stem-bottom-left {
-  bottom: 40px;
-  left: 0px;
-  width: 90px;
-  height: 180px;
-}
-
-.tp-bg-leaf-bottom-corner {
-  bottom: 30px;
-  left: -10px;
-  width: 100px;
-  height: 100px;
-}
-
-.tp-bg-leaf-top-right {
-  top: -10px;
-  right: -10px;
-  width: 160px;
-  height: 160px;
-}
-
-.tp-bg-heart-right {
-  right: 15px;
-  top: 45%;
-  width: 28px;
-  height: 28px;
-}
-
-.tp-bg-leaf-bottom-right {
-  bottom: 40px;
-  right: -10px;
-  width: 90px;
-  height: 90px;
-}
-
-/* Main Grid Layout */
-.tp-footer-container {
-  position: relative;
-  z-index: 2;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 32px;
-}
-
-.tp-footer-grid {
-  display: grid;
-  grid-template-columns: 2.2fr 1.35fr 1.45fr 1.35fr 3.3fr;
-  gap: 0;
-  align-items: flex-start;
-}
-
-/* Column Base Styling */
-.tp-footer-col {
-  padding: 0 22px;
-  display: flex;
-  flex-direction: column;
-}
-
-.tp-footer-col:first-child {
-  padding-left: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  padding-right: 22px;
-}
-
-.tp-footer-col:last-child {
-  padding-right: 0;
-}
-
-/* Specific Vertical Dividers matching Image 2 */
-.tp-nav-col-2 {
-  padding: 0 22px;
-}
-
-.tp-nav-col-2 .tp-nav-inner {
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  padding-right: 22px;
-}
-
-.tp-nav-col-3 {
-  padding: 0 22px;
-}
-
-.tp-nav-col-3 .tp-nav-inner {
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  padding-right: 22px;
-}
-
-.tp-nav-col-4 {
-  padding: 0 22px;
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  align-self: stretch;
-}
-
-/* Headings & Accent Bars */
-.tp-footer-heading {
-  color: var(--time-white) !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  margin-bottom: 18px !important;
-  display: inline-block;
-  position: relative;
-  line-height: 1.2;
-}
-
-.tp-footer-heading::after {
-  content: '';
-  display: block;
-  width: 28px;
-  height: 2px;
-  background-color: var(--time-primary-light);
-  margin-top: 4px;
-  border-radius: 2px;
-}
-
-/* ─── 1. BRAND COLUMN ─── */
-.tp-brand-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.tp-brand-logo-area {
-  margin-bottom: 2px;
-}
-
-.tp-brand-logo-serif {
-  font-family: 'Playfair Display', 'Cinzel', Didot, serif;
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: var(--time-white);
-  line-height: 1;
-  display: inline-flex;
-  align-items: flex-start;
-}
-
-.tp-trademark {
-  font-size: 12px;
-  font-weight: 600;
-  margin-left: 2px;
-  top: -4px;
-  position: relative;
-}
-
-.tp-brand-logo-sub {
-  font-family: 'Poppins', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.42em;
-  color: var(--time-primary-light);
-  margin-top: 4px;
-  text-transform: uppercase;
-}
-
-.tp-brand-script-wrap {
-  margin: 6px 0 8px;
-  text-align: center;
-  position: relative;
-  display: inline-block;
-}
-
-.tp-brand-script {
-  font-family: 'Caveat', 'Dancing Script', cursive;
-  font-size: 26px;
-  color: var(--time-primary-light);
-  line-height: 1.05;
-}
-
-.tp-script-main {
-  position: relative;
-}
-
-.tp-script-heart {
-  display: inline-block;
-  margin-left: 3px;
-  font-size: 20px;
-  vertical-align: middle;
-}
-
-.tp-script-underline {
-  width: 125px;
-  height: 11px;
-  margin-top: -2px;
-  display: block;
-}
-
-.tp-brand-desc {
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--time-primary-light);
-  max-width: 220px;
-  margin-bottom: 16px;
-  opacity: 0.9;
-}
-
-/* Brand Values */
-.tp-brand-values {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  width: 100%;
-  margin-top: 8px;
-}
-
-.tp-value-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  flex: 1;
-}
-
-.tp-value-icon-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1.2px solid rgba(255, 255, 255, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 5px;
-}
-
-.tp-value-icon-circle svg {
-  width: 17px;
-  height: 17px;
-  stroke: var(--time-white);
-  fill: none;
-}
-
-.tp-value-label {
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--time-white);
-  line-height: 1.2;
-}
-
-/* ─── 2. NAV COLUMNS (EXPLORE, POLICIES, QUICK LINKS) ─── */
-.tp-nav-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-.tp-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.tp-nav-list li a {
-  color: var(--time-primary-light) !important;
-  font-size: 13.5px !important;
-  text-decoration: none !important;
-  transition: all 0.22s ease !important;
-  display: inline-block;
-  opacity: 0.9;
-}
-
-.tp-nav-list li a:hover {
-  color: var(--time-white) !important;
-  opacity: 1 !important;
-  transform: translateX(3px);
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
-}
-
-/* ─── 3. CONTACT & NEWSLETTER COLUMN ─── */
-.tp-contact-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.tp-contact-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-bottom: 12px;
-}
-
-.tp-contact-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-bottom: 9px;
-  margin-bottom: 9px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.tp-contact-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-.tp-contact-icon-circle {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #4A2242; /* Filled dark plum circle */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.tp-contact-icon-circle svg {
-  width: 15px;
-  height: 15px;
-  fill: var(--time-white);
-  stroke: var(--time-white);
-}
-
-.tp-contact-text-wrap {
-  display: flex;
-  flex-direction: column;
-}
-
-.tp-contact-title {
-  color: var(--time-white);
-  font-size: 12.5px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.tp-contact-detail, .tp-contact-detail a {
-  color: var(--time-primary-light) !important;
-  font-size: 12px !important;
-  line-height: 1.35 !important;
-  text-decoration: none !important;
-  transition: color 0.2s ease !important;
-}
-
-.tp-contact-detail a:hover {
-  color: var(--time-white) !important;
-  text-decoration: underline !important;
-}
-
-/* Newsletter Area */
-.tp-newsletter-area {
-  margin-top: 6px;
-  margin-bottom: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.tp-newsletter-subtext {
-  font-size: 11.5px;
-  color: var(--time-primary-light);
-  margin-bottom: 8px;
-  opacity: 0.9;
-}
-
-.tp-newsletter-box {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--time-primary-light);
-  border-radius: 999px;
-  padding: 3px 3px 3px 14px;
-  background: rgba(0, 0, 0, 0.18);
-  max-width: 380px;
-}
-
-.tp-newsletter-input {
-  background: transparent !important;
-  border: none !important;
-  outline: none !important;
-  color: var(--time-white) !important;
-  font-size: 12px !important;
-  flex: 1;
-  padding: 5px 0;
-}
-
-.tp-newsletter-input::placeholder {
-  color: rgba(217, 167, 194, 0.65) !important;
-}
-
-.tp-newsletter-btn {
-  background: #E8A7C2 !important;
-  color: #241D25 !important;
-  border: none !important;
-  border-radius: 999px !important;
-  padding: 6px 16px !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  white-space: nowrap;
-}
-
-.tp-newsletter-btn:hover {
-  background: var(--time-white) !important;
-  transform: scale(1.02);
-}
-
-/* Social Media Area */
-.tp-social-area {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: relative;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.tp-social-icons {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.tp-social-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #4A2242; /* Filled dark plum circle */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--time-white);
-  text-decoration: none;
-  transition: all 0.25s ease;
-  font-weight: 700;
-  font-size: 13.5px;
-}
-
-.tp-social-btn:hover {
-  background: var(--time-primary);
-  border-color: var(--time-primary-light);
-  transform: translateY(-2px);
-}
-
-.tp-social-btn svg {
-  width: 14px;
-  height: 14px;
-  fill: var(--time-white);
-}
-
-/* Right Edge Tagline */
-.tp-right-tagline {
-  position: absolute;
-  right: 0;
-  bottom: -4px;
-  font-family: 'Caveat', 'Dancing Script', cursive;
-  font-size: 20px;
-  color: var(--time-primary-light);
-  text-align: right;
-  line-height: 1.1;
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-/* ─── INTEGRATED BOTTOM BAR MATCHING IMAGE 2 ─── */
-.tp-footer-bottom-bar {
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin-top: 24px;
-  padding-top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  color: var(--time-primary-light);
-  font-size: 12px;
-}
-
-.tp-bottom-left {
-  color: var(--time-white);
-  font-weight: 500;
-}
-
-.tp-bottom-center {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--time-primary-light);
-  opacity: 0.9;
-}
-
-.tp-bottom-tick {
-  width: 1px;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.tp-bottom-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.tp-payment-logos {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.tp-secure-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--time-white);
-  font-weight: 600;
-  font-size: 11.5px;
-  margin-left: 4px;
-}
-
-/* Mobile Accordions & Responsiveness */
-@media (max-width: 1024px) {
-  .tp-footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-  .tp-footer-col, .tp-nav-col-2, .tp-nav-col-3, .tp-nav-col-4 {
-    border-right: none !important;
-    padding: 0 !important;
-  }
-  .tp-nav-inner {
-    border-right: none !important;
-    padding-right: 0 !important;
-  }
-  .tp-brand-col {
-    grid-column: span 2;
-  }
-  .tp-contact-col {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 768px) {
+  /* ─── TIME MASTER FOOTER SYSTEM — PERFECT VISUAL REFERENCE MATCH ─── */
   .tp-footer-master {
-    padding-top: 24px;
+    background-color: #f6ead7 !important; /* Deep dark plum #241D25 */
+    color: black !important;
+    border-top: 3px solid var(--time-primary) !important;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Poppins', var(--FONT-STACK-BODY), sans-serif;
+    padding-top: 32px;
     padding-bottom: 16px;
   }
+
+  /* Botanical Background SVG Accents */
+  .tp-footer-bg-accent {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tp-bg-leaf-top-left {
+    top: -10px;
+    left: -10px;
+    width: 160px;
+    height: 160px;
+  }
+
+  .tp-bg-stem-bottom-left {
+    bottom: 40px;
+    left: 0px;
+    width: 90px;
+    height: 180px;
+  }
+
+  .tp-bg-leaf-bottom-corner {
+    bottom: 30px;
+    left: -10px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .tp-bg-leaf-top-right {
+    top: -10px;
+    right: -10px;
+    width: 160px;
+    height: 160px;
+  }
+
+  .tp-bg-heart-right {
+    right: 15px;
+    top: 45%;
+    width: 28px;
+    height: 28px;
+  }
+
+  .tp-bg-leaf-bottom-right {
+    bottom: 40px;
+    right: -10px;
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Main Grid Layout */
   .tp-footer-container {
-    padding: 0 16px;
+    position: relative;
+    z-index: 2;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
   }
+
   .tp-footer-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    display: grid;
+    grid-template-columns: 2.2fr 1.35fr 1.45fr 1.35fr 3.3fr;
+    gap: 0;
+    align-items: flex-start;
   }
-  .tp-brand-col, .tp-contact-col {
-    grid-column: span 1;
-  }
-  .tp-nav-col-2, .tp-nav-col-3, .tp-nav-col-4 {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    padding-bottom: 12px;
-  }
-  .tp-right-tagline {
-    display: none;
-  }
-  .tp-footer-bottom-bar {
+
+  /* Column Base Styling */
+  .tp-footer-col {
+    padding: 0 22px;
+    display: flex;
     flex-direction: column;
-    text-align: center;
-    gap: 10px;
   }
-}
+
+  .tp-footer-col:first-child {
+    padding-left: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    padding-right: 22px;
+  }
+
+  .tp-footer-col:last-child {
+    padding-right: 0;
+  }
+
+  /* Specific Vertical Dividers matching Image 2 */
+  .tp-nav-col-2 {
+    padding: 0 22px;
+  }
+
+  .tp-nav-col-2 .tp-nav-inner {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    padding-right: 22px;
+  }
+
+  .tp-nav-col-3 {
+    padding: 0 22px;
+  }
+
+  .tp-nav-col-3 .tp-nav-inner {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    padding-right: 22px;
+  }
+
+  .tp-nav-col-4 {
+    padding: 0 22px;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    align-self: stretch;
+  }
+
+  /* Headings & Accent Bars */
+  .tp-footer-heading {
+    color: black !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 18px !important;
+    display: inline-block;
+    position: relative;
+    line-height: 1.2;
+  }
+
+  .tp-footer-heading::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 2px;
+    background-color: var(--time-primary-light);
+    margin-top: 4px;
+    border-radius: 2px;
+  }
+
+  /* ─── 1. BRAND COLUMN ─── */
+  .tp-brand-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .tp-brand-logo-area {
+    margin-bottom: 2px;
+  }
+
+  .tp-brand-logo-serif {
+    font-family: 'Playfair Display', 'Cinzel', Didot, serif;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--time-white);
+    line-height: 1;
+    display: inline-flex;
+    align-items: flex-start;
+  }
+
+  .tp-trademark {
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 2px;
+    top: -4px;
+    position: relative;
+  }
+
+  .tp-brand-logo-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.42em;
+    color: var(--time-primary-light);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .tp-brand-script-wrap {
+    margin: 6px 0 8px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+  }
+
+  .tp-brand-script {
+    font-family: 'Caveat', 'Dancing Script', cursive;
+    font-size: 26px;
+    color: black;
+    line-height: 1.05;
+  }
+
+  .tp-script-main {
+    position: relative;
+  }
+
+  .tp-script-heart {
+    display: inline-block;
+    margin-left: 3px;
+    font-size: 20px;
+    vertical-align: middle;
+  }
+
+  .tp-script-underline {
+    width: 125px;
+    height: 11px;
+    margin-top: -2px;
+    display: block;
+  }
+
+  .tp-brand-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: black;
+    max-width: 220px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+
+  /* Brand Values */
+  .tp-brand-values {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .tp-value-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+
+  .tp-value-icon-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1.2px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+
+  .tp-value-icon-circle svg {
+    width: 17px;
+    height: 17px;
+    stroke: black;
+    fill: none;
+  }
+
+  .tp-value-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: black;
+    line-height: 1.2;
+  }
+
+  /* ─── 2. NAV COLUMNS (EXPLORE, POLICIES, QUICK LINKS) ─── */
+  .tp-nav-inner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tp-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tp-nav-list li a {
+    color: black !important;
+    font-size: 13.5px !important;
+    text-decoration: none !important;
+    transition: all 0.22s ease !important;
+    display: inline-block;
+    opacity: 0.9;
+  }
+
+  .tp-nav-list li a:hover {
+    color: var(--time-white) !important;
+    opacity: 1 !important;
+    transform: translateX(3px);
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+  }
+
+  /* ─── 3. CONTACT & NEWSLETTER COLUMN ─── */
+  .tp-contact-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tp-contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 12px;
+  }
+
+  .tp-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .tp-contact-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .tp-contact-icon-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--time-primary-dark); /* Deep taupe #75614C */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .tp-contact-icon-circle svg {
+    width: 15px;
+    height: 15px;
+    fill: var(--time-white);
+    stroke: var(--time-white);
+  }
+
+  .tp-contact-text-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tp-contact-title {
+    color: black;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .tp-contact-detail,
+  .tp-contact-detail a {
+    color: black !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+  }
+
+  .tp-contact-detail a:hover {
+    color: var(--time-white) !important;
+    text-decoration: underline !important;
+  }
+
+  /* Newsletter Area */
+  .tp-newsletter-area {
+    margin-top: 6px;
+    margin-bottom: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .tp-newsletter-subtext {
+    font-size: 11.5px;
+    color: black;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .tp-newsletter-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--time-primary-light);
+    border-radius: 999px;
+    padding: 3px 3px 3px 14px;
+    background: var(--time-surface);
+    max-width: 380px;
+  }
+
+  .tp-newsletter-input {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: var(--time-text) !important;
+    font-size: 12px !important;
+    flex: 1;
+    padding: 5px 0;
+  }
+
+  .tp-newsletter-input::placeholder {
+    color: var(--time-text-secondary) !important;
+  }
+
+  .tp-newsletter-btn {
+    background: var(--time-primary) !important;
+    color: var(--time-text) !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 6px 16px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap;
+  }
+
+  .tp-newsletter-btn:hover {
+    background: var(--time-white) !important;
+    transform: scale(1.02);
+  }
+
+  /* Social Media Area */
+  .tp-social-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .tp-social-icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tp-social-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--time-primary-dark); /* Deep taupe #75614C */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--time-white);
+    text-decoration: none;
+    transition: all 0.25s ease;
+    font-weight: 700;
+    font-size: 13.5px;
+  }
+
+  .tp-social-btn:hover {
+    background: var(--time-primary);
+    border-color: var(--time-primary-light);
+    transform: translateY(-2px);
+  }
+
+  .tp-social-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--time-white);
+  }
+
+  /* Right Edge Tagline */
+  .tp-right-tagline {
+    position: absolute;
+    right: 0;
+    bottom: -4px;
+    font-family: 'Caveat', 'Dancing Script', cursive;
+    font-size: 20px;
+    color: var(--time-primary-light);
+    text-align: right;
+    line-height: 1.1;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  /* ─── INTEGRATED BOTTOM BAR MATCHING IMAGE 2 ─── */
+  .tp-footer-bottom-bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 24px;
+    padding-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    color: black;
+    font-size: 12px;
+  }
+
+  .tp-bottom-left {
+    color: black;
+    font-weight: 500;
+  }
+
+  .tp-bottom-center {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    font-weight: 600;
+    color: black;
+    opacity: 0.9;
+  }
+
+  .tp-bottom-tick {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .tp-bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .tp-payment-logos {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .tp-secure-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: black;
+    font-weight: 600;
+    font-size: 11.5px;
+    margin-left: 4px;
+  }
+
+  /* Mobile Accordions & Responsiveness */
+  @media (max-width: 1024px) {
+    .tp-footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .tp-footer-col,
+    .tp-nav-col-2,
+    .tp-nav-col-3,
+    .tp-nav-col-4 {
+      border-right: none !important;
+      padding: 0 !important;
+    }
+    .tp-nav-inner {
+      border-right: none !important;
+      padding-right: 0 !important;
+    }
+    .tp-brand-col {
+      grid-column: span 2;
+    }
+    .tp-contact-col {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tp-footer-master {
+      padding-top: 24px;
+      padding-bottom: 16px;
+    }
+    .tp-footer-container {
+      padding: 0 16px;
+    }
+    .tp-footer-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 22px 18px !important;
+    }
+    .tp-brand-col {
+      grid-column: 1 / -1 !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+      padding-bottom: 20px !important;
+    }
+    .tp-nav-col-2 {
+      grid-column: 1 !important;
+      border-right: none !important;
+      padding: 0 !important;
+    }
+    .tp-nav-col-3 {
+      grid-column: 2 !important;
+      border-right: none !important;
+      padding: 0 !important;
+    }
+    .tp-nav-col-4 {
+      grid-column: 1 / -1 !important;
+      border-right: none !important;
+      padding: 0 !important;
+    }
+    .tp-contact-col {
+      grid-column: 1 / -1 !important;
+      border-right: none !important;
+      padding: 0 !important;
+    }
+    .tp-nav-col-2,
+    .tp-nav-col-3 {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+      padding-bottom: 16px !important;
+    }
+    .tp-nav-col-4 {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+      padding-bottom: 16px !important;
+    }
+    .tp-nav-list {
+      gap: 14px !important;
+    }
+    .tp-footer-heading {
+      margin-bottom: 14px !important;
+    }
+    .tp-right-tagline {
+      display: none;
+    }
+    .tp-footer-bottom-bar {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+    }
+  }
 {% endstyle %}
 
 <footer class="tp-footer-master" data-section-id="{{ section.id }}" data-section-type="footer">
-  
   <!-- Botanical Background Accents matching Reference Image 2 -->
-  <svg class="tp-footer-bg-accent tp-bg-leaf-top-left" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    class="tp-footer-bg-accent tp-bg-leaf-top-left"
+    viewBox="0 0 200 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M-20 -20 Q40 50 160 110" stroke="#B882A8" stroke-width="2.5" fill="none" opacity="0.65"/>
     <path d="M-20 -20 C30 40 80 80 140 100 C110 70 80 40 20 -20 Z" fill="#9C6B8E" opacity="0.45"/>
     <path d="M10 10 C35 5 60 20 65 45 C45 40 20 30 10 10Z" fill="#B882A8" opacity="0.55"/>
@@ -616,7 +659,12 @@
     <path d="M55 45 C45 75 65 105 95 110 C85 85 75 55 55 45Z" fill="#A46E94" opacity="0.5"/>
   </svg>
 
-  <svg class="tp-footer-bg-accent tp-bg-stem-bottom-left" viewBox="0 0 120 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    class="tp-footer-bg-accent tp-bg-stem-bottom-left"
+    viewBox="0 0 120 250"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M10 240 Q40 140 30 10" stroke="#B882A8" stroke-width="1.8" fill="none" opacity="0.5"/>
     <path d="M26 190 C45 180 55 160 45 145 C35 155 25 175 26 190Z" stroke="#B882A8" stroke-width="1.2" fill="none" opacity="0.5"/>
     <path d="M22 195 C5 185 -5 165 5 150 C15 160 20 180 22 195Z" stroke="#B882A8" stroke-width="1.2" fill="none" opacity="0.5"/>
@@ -624,56 +672,79 @@
     <path d="M28 135 C10 125 0 105 10 90 C20 100 25 120 28 135Z" stroke="#B882A8" stroke-width="1.2" fill="none" opacity="0.5"/>
   </svg>
 
-  <svg class="tp-footer-bg-accent tp-bg-leaf-bottom-corner" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    class="tp-footer-bg-accent tp-bg-leaf-bottom-corner"
+    viewBox="0 0 100 120"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M-10 130 C30 100 40 40 100 0 C60 40 10 70 -10 130Z" fill="#9C6B8E" opacity="0.5"/>
   </svg>
 
-  <svg class="tp-footer-bg-accent tp-bg-leaf-top-right" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M220 -20 Q160 50 40 110" stroke="#B882A8" stroke-width="2.5" fill="none" opacity="0.65"/>
-    <path d="M190 10 C165 5 140 20 135 45 C155 40 180 30 190 10Z" fill="#B882A8" opacity="0.55"/>
-    <path d="M165 35 C135 25 105 45 100 75 C125 65 155 55 165 35Z" fill="#A46E94" opacity="0.55"/>
-    <path d="M130 60 C95 50 65 75 55 105 C85 95 115 80 130 60Z" fill="#B882A8" opacity="0.55"/>
+  <svg
+    class="tp-footer-bg-accent tp-bg-leaf-top-right"
+    viewBox="0 0 200 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M220 -20 Q160 50 40 110" stroke="#B7A487" stroke-width="2.5" fill="none" opacity="0.65"/>
+    <path d="M190 10 C165 5 140 20 135 45 C155 40 180 30 190 10Z" fill="#B7A487" opacity="0.55"/>
+    <path d="M165 35 C135 25 105 45 100 75 C125 65 155 55 165 35Z" fill="#E8D9C3" opacity="0.55"/>
+    <path d="M130 60 C95 50 65 75 55 105 C85 95 115 80 130 60Z" fill="#B7A487" opacity="0.55"/>
   </svg>
 
   <svg class="tp-footer-bg-accent tp-bg-heart-right" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 34 L17.5 31.6 C8.8 23.7 3 18.5 3 12 C3 6.7 7.2 2.5 12.5 2.5 C15.5 2.5 18.4 3.9 20 6.1 C21.6 3.9 24.5 2.5 27.5 2.5 C32.8 2.5 37 6.7 37 12 C37 18.5 31.2 23.7 22.5 31.6 L20 34 Z" stroke="#D9A7C2" stroke-width="1.6" fill="none" opacity="0.75"/>
+    <path d="M20 34 L17.5 31.6 C8.8 23.7 3 18.5 3 12 C3 6.7 7.2 2.5 12.5 2.5 C15.5 2.5 18.4 3.9 20 6.1 C21.6 3.9 24.5 2.5 27.5 2.5 C32.8 2.5 37 6.7 37 12 C37 18.5 31.2 23.7 22.5 31.6 L20 34 Z" stroke="#B7A487" stroke-width="1.6" fill="none" opacity="0.75"/>
   </svg>
 
-  <svg class="tp-footer-bg-accent tp-bg-leaf-bottom-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M110 110 C70 80 60 20 0 -10 C40 30 90 60 110 110Z" fill="#9C6B8E" opacity="0.5"/>
+  <svg
+    class="tp-footer-bg-accent tp-bg-leaf-bottom-right"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M110 110 C70 80 60 20 0 -10 C40 30 90 60 110 110Z" fill="#E8D9C3" opacity="0.5"/>
   </svg>
 
   <div class="tp-footer-container">
     <div class="tp-footer-grid">
-      
       <!-- 1. BRAND COLUMN -->
       <div class="tp-footer-col tp-brand-col">
         <div class="tp-brand-logo-area">
           {% if section.settings.footer_image %}
             <a href="{{ routes.root_url }}">
-              <img src="{{ section.settings.footer_image | image_url: width: 240 }}" alt="{{ shop.name }}" style="max-width: 150px; height: auto;" loading="lazy">
+              <img
+                src="{{ section.settings.footer_image | image_url: width: 240 }}"
+                alt="{{ shop.name }}"
+                style="max-width: 150px; height: auto;"
+                loading="lazy"
+              >
             </a>
           {% else %}
             <a href="{{ routes.root_url }}" style="text-decoration: none;">
-              <div class="tp-brand-logo-serif">TIME<span class="tp-trademark">™</span></div>
-              <div class="tp-brand-logo-sub">SANITARY PADS</div>
+              {% comment %}
+                <div class="tp-brand-logo-serif">TIME<span class="tp-trademark">™</span></div>
+                <div class="tp-brand-logo-sub">SANITARY PADS</div>
+              {% endcomment %}
+              <img
+                src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/log-1.webp?v=1784808608"
+                alt="timepads"
+              />
             </a>
           {% endif %}
         </div>
 
         <div class="tp-brand-script-wrap">
           <div class="tp-brand-script">
-            For a<br>
-            <span class="tp-script-main">Kinder You <span class="tp-script-heart">♡</span></span>
+            Because Every Woman<br>
+            <span class="tp-script-main">Deserves Better Care <span class="tp-script-heart">♡</span></span>
           </div>
           <svg class="tp-script-underline" viewBox="0 0 160 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12 Q80 18 145 5" stroke="#D9A7C2" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <path d="M5 12 Q80 18 145 5" stroke="#B7A487" stroke-width="2" stroke-linecap="round" fill="none"/>
           </svg>
         </div>
 
-        <p class="tp-brand-desc">
-          Thoughtfully designed period care for every woman, every day.
-        </p>
+        <p class="tp-brand-desc">Thoughtfully designed period care for every woman, every day.</p>
 
         <!-- 3 Brand Values -->
         <div class="tp-brand-values">
@@ -684,7 +755,10 @@
                 <path d="M11 20v-8"/>
               </svg>
             </div>
-            <div class="tp-value-label">Real<br>Care</div>
+            <div class="tp-value-label">
+              Real<br>
+              Care
+            </div>
           </div>
 
           <div class="tp-value-item">
@@ -693,7 +767,10 @@
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
               </svg>
             </div>
-            <div class="tp-value-label">Real<br>Comfort</div>
+            <div class="tp-value-label">
+              Real<br>
+              Comfort
+            </div>
           </div>
 
           <div class="tp-value-item">
@@ -704,7 +781,10 @@
                 <path d="M12 21c-4-1-8-5-8-10 0-2 1-3.5 2.5-4.5C8 9 10 12 12 15"/>
               </svg>
             </div>
-            <div class="tp-value-label">A Brighter<br>You</div>
+            <div class="tp-value-label">
+              A Brighter<br>
+              You
+            </div>
           </div>
         </div>
       </div>
@@ -714,16 +794,18 @@
         <div class="tp-nav-inner">
           <div class="tp-footer-heading">EXPLORE</div>
           <ul class="tp-nav-list">
-            {% assign explore_menu = linklists['explore'] %}
+            {% assign explore_menu = linklists.explore %}
             {% if explore_menu and explore_menu.links.size > 0 %}
               {% for link in explore_menu.links %}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
               {% endfor %}
             {% else %}
               <li><a href="/pages/why-time">Why TIME ?</a></li>
               <li><a href="/pages/faqs">FAQ's</a></li>
               <li><a href="/pages/media">Media</a></li>
-              <li><a href="/blogs/news">Blogs</a></li>
+              <li><a href="/blogs/time-blog">Blogs</a></li>
             {% endif %}
           </ul>
         </div>
@@ -734,10 +816,12 @@
         <div class="tp-nav-inner">
           <div class="tp-footer-heading">POLICIES</div>
           <ul class="tp-nav-list">
-            {% assign policies_menu = linklists['policies'] %}
+            {% assign policies_menu = linklists.policies %}
             {% if policies_menu and policies_menu.links.size > 0 %}
               {% for link in policies_menu.links %}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
               {% endfor %}
             {% else %}
               <li><a href="/policies/shipping-policy">Shipping policy</a></li>
@@ -756,7 +840,9 @@
           {% assign quick_menu = linklists['quick-links'] %}
           {% if quick_menu and quick_menu.links.size > 0 %}
             {% for link in quick_menu.links %}
-              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
             {% endfor %}
           {% else %}
             <li><a href="/pages/contact">Contact us</a></li>
@@ -778,8 +864,7 @@
             </div>
             <div class="tp-contact-text-wrap">
               <div class="tp-contact-title">Customer Service</div>
-              <div class="tp-contact-detail">Monday – Friday: 9:30 AM – 6:30 PM</div>
-              <div class="tp-contact-detail">Saturday: 9:30 AM – 6:00 PM</div>
+              <div class="tp-contact-detail">Monday – Saturday: 10:00 AM – 6:00 PM</div>
             </div>
           </div>
 
@@ -807,7 +892,7 @@
             <div class="tp-contact-text-wrap">
               <div class="tp-contact-title">Email Us</div>
               <div class="tp-contact-detail">
-                <a href="mailto:business@bioweal.com">business@bioweal.com</a>
+                <a href="mailto:info@bioweal.com">info@bioweal.com</a>
               </div>
             </div>
           </div>
@@ -820,7 +905,14 @@
           {% form 'customer', id: 'footer-newsletter-master' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="tp-newsletter-box">
-              <input type="email" name="contact[email]" class="tp-newsletter-input" placeholder="Enter your email address" required aria-label="Enter your email address">
+              <input
+                type="email"
+                name="contact[email]"
+                class="tp-newsletter-input"
+                placeholder="Enter your email address"
+                required
+                aria-label="Enter your email address"
+              >
               <button type="submit" class="tp-newsletter-btn">Subscribe →</button>
             </div>
           {% endform %}
@@ -829,37 +921,79 @@
         <div class="tp-social-area">
           <div class="tp-footer-heading" style="margin-bottom: 6px !important;">Follow Us</div>
           <div class="tp-social-icons">
-            <a href="https://facebook.com" class="tp-social-btn" title="Facebook" target="_blank" aria-label="Facebook">
-              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            <a
+              href="https://www.facebook.com/people/Time-sanitary-pads/61566376860338/"
+              class="tp-social-btn"
+              title="Facebook"
+              target="_blank"
+              aria-label="Facebook"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
             </a>
-            <a href="https://x.com" class="tp-social-btn" title="X" target="_blank" aria-label="X">
-              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <a href="https://x.com/biowealproducts" class="tp-social-btn" title="X" target="_blank" aria-label="X">
+              <svg viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
             </a>
-            <a href="https://pinterest.com" class="tp-social-btn" title="Pinterest" target="_blank" aria-label="Pinterest">
-              <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.42 7.63 11.16-.1-.95-.2-2.4.04-3.44.22-.94 1.4-5.96 1.4-5.96s-.36-.72-.36-1.78c0-1.67.97-2.92 2.17-2.92 1.02 0 1.51.77 1.51 1.69 0 1.03-.66 2.57-1 3.99-.28 1.19.6 2.16 1.77 2.16 2.12 0 3.76-2.24 3.76-5.47 0-2.86-2.06-4.86-5-4.86-3.41 0-5.41 2.56-5.41 5.2 0 1.03.4 2.13.9 2.74.1.12.11.23.08.36-.09.38-.3.1.22-.4-.17-.4-.74-.1-1.37-1.34-1.37-2.73 0-4.45 3.23-8.6 9.4-8.6 4.94 0 8.78 3.52 8.78 8.23 0 4.91-3.1 8.86-7.4 8.86-1.45 0-2.81-.75-3.27-1.64l-.89 3.4c-.32 1.24-1.2 2.79-1.79 3.73A12.02 12.02 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/></svg>
+            <a
+              href="timepads.in/url?q=https%3A%2F%2Fin.pinterest.com%2Fbiowealproducts%2F&trigger=click"
+              class="tp-social-btn"
+              title="Pinterest"
+              target="_blank"
+              aria-label="Pinterest"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32">
+                <path d="M16.292 5C10.536 5 7.48 8.866 7.48 13.077c0 1.955 1.039 4.392 2.707 5.168.253.118.387.064.443-.18.047-.185.273-1.089.373-1.511a.402.402 0 0 0-.095-.386c-.55-.667-.988-1.896-.988-3.041 0-2.942 2.228-5.787 6.021-5.787 3.28 0 5.571 2.23 5.571 5.426 0 3.61-1.82 6.108-4.191 6.108-1.309 0-2.291-1.081-1.978-2.413.378-1.584 1.106-3.298 1.106-4.438 0-1.026-.552-1.883-1.685-1.883-1.341 0-2.415 1.385-2.415 3.241 0 1.182.4 1.978.4 1.978s-1.323 5.593-1.563 6.634c-.413 1.765.051 4.625.094 4.876.021.134.172.18.252.066.129-.175 1.725-2.565 2.174-4.292l.828-3.171c.439.829 1.707 1.531 3.061 1.531 4.021 0 6.923-3.703 6.923-8.299C24.52 8.301 20.92 5 16.292 5z"/>
+              </svg>
             </a>
-            <a href="https://instagram.com" class="tp-social-btn" title="Instagram" target="_blank" aria-label="Instagram">
-              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </a>
-            <a href="https://linkedin.com" class="tp-social-btn" title="LinkedIn" target="_blank" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <a
+              href="https://www.instagram.com/timepads.in/"
+              class="tp-social-btn"
+              title="Instagram"
+              target="_blank"
+              aria-label="Instagram"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                fill="#000000"
+                width="800px"
+                height="800px"
+                viewBox="0 0 32 32"
+                id="Camada_1"
+                version="1.1"
+                xml:space="preserve"
+              >
+                <g>
+
+                <path d="M22.3,8.4c-0.8,0-1.4,0.6-1.4,1.4c0,0.8,0.6,1.4,1.4,1.4c0.8,0,1.4-0.6,1.4-1.4C23.7,9,23.1,8.4,22.3,8.4z"/>
+
+                <path d="M16,10.2c-3.3,0-5.9,2.7-5.9,5.9s2.7,5.9,5.9,5.9s5.9-2.7,5.9-5.9S19.3,10.2,16,10.2z M16,19.9c-2.1,0-3.8-1.7-3.8-3.8   c0-2.1,1.7-3.8,3.8-3.8c2.1,0,3.8,1.7,3.8,3.8C19.8,18.2,18.1,19.9,16,19.9z"/>
+
+                <path d="M20.8,4h-9.5C7.2,4,4,7.2,4,11.2v9.5c0,4,3.2,7.2,7.2,7.2h9.5c4,0,7.2-3.2,7.2-7.2v-9.5C28,7.2,24.8,4,20.8,4z M25.7,20.8   c0,2.7-2.2,5-5,5h-9.5c-2.7,0-5-2.2-5-5v-9.5c0-2.7,2.2-5,5-5h9.5c2.7,0,5,2.2,5,5V20.8z"/>
+
+                </g>
+              </svg>
             </a>
           </div>
 
           <div class="tp-right-tagline">
-            Comfort<br>Through<br>Every Cycle <span style="font-size: 14px;">♡</span>
+            Comfort<br>
+            Through<br>
+            Every Cycle <span style="font-size: 14px;">♡</span>
           </div>
         </div>
-
       </div>
-
     </div>
 
     <!-- 6. INTEGRATED BOTTOM BAR MATCHING IMAGE 2 DIRECTLY -->
     <div class="tp-footer-bottom-bar">
       <!-- LEFT -->
       <div class="tp-bottom-left">
-        &copy; {{ 'now' | date: "%Y" }} <strong>TIME</strong>. All rights reserved.
+        &copy; {{ 'now' | date: '%Y' }}
+        <strong>TIME</strong>. All rights reserved.
       </div>
 
       <!-- CENTER -->
@@ -899,12 +1033,6 @@
           </span>
 
           <!-- AMEX -->
-          <span title="AMEX">
-            <svg viewBox="0 0 38 24" width="36" height="22" fill="none">
-              <rect width="38" height="24" rx="3" fill="#006FCF"/>
-              <text x="19" y="15.5" fill="#FFFFFF" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">AMEX</text>
-            </svg>
-          </span>
 
           <!-- UPI -->
           <span title="UPI">
@@ -918,7 +1046,7 @@
         </div>
 
         <div class="tp-secure-badge">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--time-white)" stroke-width="2">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="black" stroke-width="2">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
@@ -926,7 +1054,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </footer>
 

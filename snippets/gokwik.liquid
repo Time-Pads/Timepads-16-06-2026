@@ -37,6 +37,39 @@
   
   
     <script>
+      (function() {
+        function globalSyncGokwik() {
+          var addToCartButton = document.querySelector("button[name='add'], [data-add-to-cart]");
+          var gokwikBuyNowButton = document.getElementById('gokwik-buy-now');
+          if (!gokwikBuyNowButton) return;
+
+          var isSoldOut = addToCartButton && (addToCartButton.disabled || addToCartButton.hasAttribute('disabled')) && addToCartButton.textContent.toLowerCase().includes('sold');
+          if (isSoldOut) {
+            gokwikBuyNowButton.setAttribute('disabled', 'disabled');
+            gokwikBuyNowButton.disabled = true;
+            gokwikBuyNowButton.classList.add('disabled');
+          } else {
+            gokwikBuyNowButton.removeAttribute('disabled');
+            gokwikBuyNowButton.disabled = false;
+            gokwikBuyNowButton.classList.remove('disabled');
+            var loader = gokwikBuyNowButton.querySelector('#btn-loader');
+            if (loader) loader.style.display = 'none';
+          }
+        }
+        window.syncGokwikBuyNow = globalSyncGokwik;
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', globalSyncGokwik);
+        } else {
+          globalSyncGokwik();
+        }
+        document.addEventListener('theme:variant:change', globalSyncGokwik);
+        document.addEventListener('change', function(e) {
+          if (e.target && e.target.matches('input[name^="options"], select[name^="options"], input[name="id"]')) {
+            setTimeout(globalSyncGokwik, 30);
+            setTimeout(globalSyncGokwik, 150);
+          }
+        });
+      })();
 
      let gkButtonCode = '<div class="gokwik-checkout" {% if settings.hideFlow %} style="display:none !important;" {% endif %}><button type="button" class="disabled" disabled onclick="onCheckoutClick(this)"><span class="btn-text"><span>{{ settings.main-titile }}</span><span>{{ settings.sub-titile }}</span></span><span class="pay-opt-icon"></span><div style="display:none" class="addloadr" id="btn-loader"><div class="cir-loader">Loading..</div></div></button></div>'
     let parsedBtnCode = new DOMParser().parseFromString(gkButtonCode, 'text/html').querySelectorAll('.gokwik-checkout')[0];
@@ -99,15 +132,36 @@
           };
         }
   
+        function syncGokwikBuyNow() {
+          const addToCartButton = document.querySelector("button[name='add'], [data-add-to-cart]");
+          const gokwikBuyNowButton = document.getElementById('gokwik-buy-now');
+          if (!gokwikBuyNowButton) return;
+
+          const isSoldOut = addToCartButton && (addToCartButton.disabled || addToCartButton.hasAttribute('disabled'));
+          if (isSoldOut) {
+            gokwikBuyNowButton.setAttribute('disabled', 'disabled');
+            gokwikBuyNowButton.disabled = true;
+            gokwikBuyNowButton.classList.add('disabled');
+          } else {
+            gokwikBuyNowButton.removeAttribute('disabled');
+            gokwikBuyNowButton.disabled = false;
+            gokwikBuyNowButton.classList.remove('disabled');
+            const loader = gokwikBuyNowButton.querySelector('#btn-loader');
+            if (loader) loader.style.display = 'none';
+          }
+        }
+        window.syncGokwikBuyNow = syncGokwikBuyNow;
+        syncGokwikBuyNow();
+
+        document.addEventListener('theme:variant:change', syncGokwikBuyNow);
+        document.addEventListener('change', function(e) {
+          if (e.target && (e.target.matches('input[name^="options"], select[name^="options"], input[name="id"]'))) {
+            setTimeout(syncGokwikBuyNow, 30);
+          }
+        });
+
         const observer = new MutationObserver(() => {
-         const addToCartButton = document.querySelector("button[name='add']");
-  const gokwikBuyNowButton = document.getElementById('gokwik-buy-now');
-  
-  if (addToCartButton && addToCartButton.disabled) {
-      gokwikBuyNowButton?.setAttribute('disabled', 'disabled');
-  } else {
-      gokwikBuyNowButton?.removeAttribute('disabled');
-  }
+          syncGokwikBuyNow();
   
   
 
@@ -138,6 +192,9 @@
           //Do Not Touch this function
       
           gokwikCheckoutEnable(["#gokwik-buy-now",".gokwik-checkout button"])
+          if (typeof window.syncGokwikBuyNow === 'function') {
+            window.syncGokwikBuyNow();
+          }
           var gokwikCheckoutButtons = document.querySelectorAll('.gokwik-checkout button');
   gokwikCheckoutButtons.forEach(function(button) {
       button.disabled = false;
@@ -208,15 +265,25 @@
     .gokwik-checkout button.disabled{
       opacity:0.5;
       cursor: not-allowed;
-      }
-    .gokwik-checkout button.disabled .addloadr#btn-loader{
-       display: flex !important;
     }
-      #gokwik-buy-now.disabled .addloadr#btn-loader{
-       display: flex!important;
+    .gokwik-checkout button.is-loading .addloadr#btn-loader,
+    .gokwik-checkout button[data-loading="true"] .addloadr#btn-loader{
+      display: flex !important;
     }
-        #gokwik-buy-now:disabled{
-       cursor: not-allowed;
+    .gokwik-checkout button:not(.is-loading):not([data-loading="true"]) .addloadr#btn-loader{
+      display: none !important;
+    }
+    #gokwik-buy-now.is-loading .addloadr#btn-loader,
+    #gokwik-buy-now[data-loading="true"] .addloadr#btn-loader{
+      display: flex !important;
+    }
+    #gokwik-buy-now:not(.is-loading):not([data-loading="true"]) .addloadr#btn-loader{
+      display: none !important;
+    }
+    #gokwik-buy-now:disabled,
+    #gokwik-buy-now.disabled{
+      cursor: not-allowed;
+      opacity: 0.6;
     }
     
   .corner-widget-wrapper .widgets-by-corner .gokwik-checkout button {
@@ -256,9 +323,9 @@
   
     {% if settings.goBuynowEnable %}
      #gokwik-buy-now {
-       background: rgb(183, 164, 135);
+       background: black;
        width: 100%;
-       color: black;
+       color: white;
        cursor: pointer;
        line-height: 1;
        border: none;

@@ -49,12 +49,12 @@
         </a>
       </p>
 
-      <!-- Search Link -->
+      <!-- Search Link (Opens Mobile Menu) -->
       <p class="search-icon-opening-menu" id="search-icon">
-        <a href="{{ routes.search_url }}" class="mobile-menu__link" aria-label="Search">
+        <button type="button" class="mobile-menu__link mobile-menu__btn-trigger" data-drawer-toggle="hamburger" aria-label="Open menu">
           {% render 'search-icon' %}
           <span class="mobile-menu__title">Search</span>
-        </a>
+        </button>
       </p>
 
       <!-- Center Cart Icon -->
@@ -75,11 +75,14 @@
         </a>
       </p>
 
-      <!-- Track Order Link -->
+      <!-- Account Link -->
       <p>
-        <a href="https://timepads.in/apps/trackingmore" class="mobile-menu__link" aria-label="Track Order">
-          {% render 'tacking-icon' %}
-          <span class="mobile-menu__title">Track</span>
+        <a href="{{ routes.account_url }}" class="mobile-menu__link" onclick="if(window.kpHandleLogin){kpHandleLogin('/account');}" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="mobile-menu__title" id="kwik-pass-text">Account</span>
         </a>
       </p>
 
@@ -89,17 +92,21 @@
 
 {% style %}
 .mobile-navigation-bottom {
-  background: white;
-  color: black;
+  background: #ffffff;
+  color: #2B2117;
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   z-index: 9999;
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 0 8px;
+  border-top: 1px solid #ECE4DC;
   transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: 0 -3px 16px rgba(43, 33, 23, 0.08);
+  box-sizing: border-box;
 }
 
 .mobile-navigation-bottom.is-deferred {
@@ -109,62 +116,116 @@
 
 .mobile-navigation-menu {
   display: flex;
-  width: 95%;
-  justify-content: space-between;
+  width: 100%;
+  max-width: 480px;
+  justify-content: space-around;
   align-items: center;
   position: relative;
-  margin: auto;
+  margin: 0 auto;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.mobile-navigation-menu p {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobile-menu__link {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: black;
+  justify-content: center;
+  color: #2B2117;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 2px 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-menu__link.mobile-menu__btn-trigger {
+  font-family: inherit;
+  outline: none;
 }
 
 .mobile-menu__title {
-  margin-top: 4px;
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.1;
+  color: #2B2117;
 }
 
 .mobile-center-cart {
   position: relative;
+  width: 52px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mobile-center-cart .header__mobile__button {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cart-circle {
-    background: white;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  background: #FAF8F5 !important;
+  border-radius: 50% !important;
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+  min-height: 50px !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  aspect-ratio: 1 / 1 !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 14px rgba(43, 33, 23, 0.18) !important;
+  border: 2px solid #6E5233 !important;
+  box-sizing: border-box !important;
 }
 
 .cart-circle svg {
-  fill: #fff;
-  width: 30px;
-  height: 30px;
-}
-.mobile-navigation-menu svg{
-    width: 20px;
-    height: 17px;
-}
-.mobile-center-cart .header__mobile__button{
-    position: absolute;
-    top: -31px;
-    left: -32px;
-}
-@media only screen and (min-width: 768px){
-    .desktop-hide{
-       display: none;
-    }
+  fill: none !important;
+  stroke: #2B2117 !important;
+  color: #2B2117 !important;
+  width: 22px !important;
+  height: 22px !important;
 }
 
+.mobile-navigation-menu svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .desktop-hide {
+    display: none;
+  }
+}
 {% endstyle %}
 
 <script>
@@ -194,11 +255,22 @@
       }, { passive: true });
 
       if (searchIcon) {
-        searchIcon.addEventListener('click', function () {
-          var navElement = document.getElementById('header-menu');
-          if (!navElement) return;
-          navElement.classList.toggle('drawer--visible');
-          navElement.classList.toggle('display-none');
+        searchIcon.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var hamburger = document.querySelector('button.header__mobile__button[data-drawer-toggle="hamburger"]');
+          if (hamburger) {
+            hamburger.click();
+          } else {
+            var drawer = document.querySelector('[data-drawer="hamburger"]') || document.getElementById('header-menu');
+            if (drawer) {
+              drawer.classList.add('drawer--visible');
+              drawer.classList.remove('display-none');
+              var underlay = drawer.querySelector('.drawer__underlay') || document.querySelector('.drawer__underlay');
+              if (underlay) underlay.classList.add('underlay--visible');
+              document.dispatchEvent(new CustomEvent('theme:scroll:lock', { bubbles: true }));
+            }
+          }
         });
       }
     }

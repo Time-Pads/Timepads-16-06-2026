@@ -1,13 +1,12 @@
+{% assign image_block = section.blocks | where: 'type', 'images' %}
+
+{% if image_block != blank %}
 <link rel="stylesheet" href="{{ 'splide.min.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="{{ 'splide.min.css' | asset_url }}"></noscript>
 <script src="{{ 'splide.mins.js' | asset_url }}" defer></script>
 <script src="{{ 'grid-stack.js' | asset_url }}" defer></script>
 <link rel="stylesheet" href="{{ 'grid-stack.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="{{ 'grid-stack.aio.min.css' | asset_url }}"></noscript> 
-
-{% assign image_block = section.blocks | where: 'type', 'images' %}
-
-{% if image_block != blank %}
 
 
   {%- style -%}

@@ -673,6 +673,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
           {%- assign current_value = current_variant.options[forloop.index0] -%}
 
+          {%- assign opt_name_lower = option.name | downcase | strip -%}
+          {%- assign size_products = product.metafields.custom.size_options_products.value | default: product.metafields.custom.size_options_products -%}
+
+          {%- if opt_name_lower contains 'size' and size_products != blank and size_products.size > 0 -%}
+            {%- render 'tp-product-size-options',
+              product: product,
+              size_products: size_products,
+              option: option,
+              current_value: current_value,
+              uniq_id: uniq_id,
+              block: block
+            -%}
+          {%- else -%}
           <fieldset class="radio__fieldset">
             <legend class="radio__legend {% if product.handle == 'period-pain-relief-cream' %} bundle-product-heading {% endif %}" aria-label="{{ option.name | escape_once }}">
 
@@ -826,6 +839,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             </div>
           </fieldset>
+          {%- endif -%}
 
         </div>
 

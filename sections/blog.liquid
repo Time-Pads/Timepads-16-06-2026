@@ -41,11 +41,19 @@
 
   <div class="blog section-padding">
     <div class="{{ section.settings.width }}">
-      {% if section.settings.show_heading %}
-        <h4 class="blog__heading {{ section.settings.text_align }}">
+      {%- assign article_heading_tag = 'h2' -%}
+      {%- if section.settings.show_heading -%}
+        {%- assign blog_heading_tag = 'h1' -%}
+        {%- if section.settings.image -%}
+          {%- assign blog_heading_tag = 'h2' -%}
+          {%- assign article_heading_tag = 'h3' -%}
+        {%- endif -%}
+        <{{ blog_heading_tag }} class="blog__heading heading-size-7 {{ section.settings.text_align }}">
           {{ section.settings.heading | default: blog.title }}
-        </h4>
-      {% endif %}
+        </{{ blog_heading_tag }}>
+      {%- elsif section.settings.image == blank -%}
+        <h1 class="visually-hidden">{{ current_tags.first | default: section.settings.heading | default: blog.title | escape }}</h1>
+      {%- endif -%}
 
       {% if section.settings.tags %}
         <div class="blog__tags {{ section.settings.text_align }}">
@@ -81,6 +89,7 @@
               <div class="grid__item {{ blog_grid }}">
                 {% render 'article-grid-item',
                   article: article,
+                  heading_tag: article_heading_tag,
                   wh_ratio: section.settings.wh_ratio,
                   show_author: section.settings.show_author,
                   show_preview: section.settings.show_preview,

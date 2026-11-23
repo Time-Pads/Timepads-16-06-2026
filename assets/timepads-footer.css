@@ -1,8 +1,8 @@
 /* ─── TIMEPADS Footer Asset Styles ─── */
 :root {
-  --tp-bg:           #FAF7FB;
-  --tp-bg-card:      #F2ECF5;
-  --tp-border:       #E6DCE9;
+  --tp-bg:           #FFFFFF;
+  --tp-bg-card:      #FAF7F2;
+  --tp-border:       #E8D9C3;
   --tp-orange:        var(--time-primary);
   --tp-orange-light:  var(--time-primary-light);
   --tp-gold:          var(--time-primary);
@@ -13,7 +13,7 @@
   --tp-green-dark:    var(--time-primary-dark);
   --tp-radius:        999px;
   --tp-radius-card:   12px;
-  --tp-font:          'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+  --tp-font:          var(--font-body);
 }
 
 #timepads-footer * {
