@@ -1377,8 +1377,31 @@ class="loading-shimmer"
 {%- endif -%}
 {%- comment -%} Product media highlights card directly below the gallery {%- endcomment -%}
 </div> <!-- /.product__gallery__row -->
+{%- liquid
+  case product.handle
+    when 'uniline-280mm-pack-of-48-ppr-cream'
+      assign bundle_title = 'TIME Period Care Combo – 48 Pads + Period Cramp Relief Cream'
+      assign bundle_pad_count = '48 pads'
+      assign bundle_pad_length = '280 mm'
+      assign bundle_pad_flow = 'Medium flow'
+    when 'uniline-240mm-pack-of-18-ppr-cream-menstrual-cup'
+      assign bundle_title = 'TIME Period Care Combo – 18 Pads + Period Cramp Relief Cream + Large Menstrual Cup'
+      assign bundle_pad_count = '18 pads'
+      assign bundle_pad_length = '240 mm'
+      assign bundle_pad_flow = 'Light flow'
+      assign bundle_cup_size = 'Large'
+  endcase
+-%}
+{%- if bundle_title != blank -%}
+  {%- assign bundle_option_label = 'Bundle' -%}
+  {%- capture bundle_contents -%}
+    {{ bundle_pad_count | capitalize }} ({{ bundle_pad_length }}) and a 50 g tube of Period Cramp Relief Cream
+    {%- if bundle_cup_size != blank %} plus one {{ bundle_cup_size | downcase }} reusable menstrual cup{% endif -%}.
+  {%- endcapture -%}
+{%- endif -%}
 {%- assign is_sanitary_pad = false -%}
 {%- assign product_type_lower = product.type | downcase | strip -%}
+{%- if bundle_title == blank -%}
 {%- if product_type_lower contains 'sanitary pad' or product_type_lower contains 'menstrual pad' or product_type_lower == 'period pads' -%}
 {%- assign is_sanitary_pad = true -%}
 {{- 'pad-product-info.css' | asset_url | stylesheet_tag -}}
@@ -1388,7 +1411,8 @@ class="loading-shimmer"
 {%- endcapture -%}
 {%- assign pad_info = pad_info_raw | split: '||' -%}
 {%- endif -%}
-{%- render 'product-media-highlights', section: section, product: product, is_sanitary_pad: is_sanitary_pad, pad_info: pad_info -%}
+{%- endif -%}
+{%- render 'product-media-highlights', section: section, product: product, is_sanitary_pad: is_sanitary_pad, pad_info: pad_info, bundle_pad_count: bundle_pad_count, bundle_pad_length: bundle_pad_length, bundle_pad_flow: bundle_pad_flow, bundle_cup_size: bundle_cup_size -%}
 </div>
 <div class="product__main__content grid__item {{ product_description_width }}">
 <div class="product__inner is-sticky" data-product-form-wrapper>
@@ -1423,7 +1447,7 @@ endif
 {%- endif -%}
 </div> {% endcomment %}
 {%- endif -%}
-{%- render 'product-title', product: product, block: block, section: section -%}
+{%- render 'product-title', product: product, block: block, section: section, title_override: bundle_title -%}
 {%- when 'price' -%}
 {%- render 'product-price', product: product, block: block, section: section -%}
 {%- when 'product-certificates' -%}
@@ -1483,6 +1507,17 @@ decoding="async"
 {%- when 'Product-Features' -%}
 <div class="product-benefits" {{ block.shopify_attributes }}>
 <div class="product-benefits__track">
+{%- if bundle_title != blank -%}
+  {%- for copy in (1..2) -%}
+    <span class="benefit-pill pill-1"{% if copy == 2 %} aria-hidden="true"{% endif %}>{{ bundle_pad_flow | escape }} pads</span>
+    <span class="benefit-pill pill-2"{% if copy == 2 %} aria-hidden="true"{% endif %}>{{ bundle_pad_length | escape }} pads</span>
+    <span class="benefit-pill pill-4"{% if copy == 2 %} aria-hidden="true"{% endif %}>{{ bundle_pad_count | capitalize | escape }}</span>
+    <span class="benefit-pill pill-5"{% if copy == 2 %} aria-hidden="true"{% endif %}>50 g Cramp Relief Cream</span>
+    {%- if bundle_cup_size != blank -%}
+      <span class="benefit-pill pill-3"{% if copy == 2 %} aria-hidden="true"{% endif %}>{{ bundle_cup_size | escape }} Menstrual Cup</span>
+    {%- endif -%}
+  {%- endfor -%}
+{%- else -%}
 <span class="benefit-pill pill-1"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>{% if is_sanitary_pad %}{{ pad_info[2] | default: 'Flow Guide' | escape }}{% else %}High Absorption{% endif %}</span>
 <span class="benefit-pill pill-2"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>{% if is_sanitary_pad %}{% if pad_info[1] != blank %}{{ pad_info[1] | escape }} Coverage{% else %}Pad Coverage{% endif %}{% else %}Leak Protection{% endif %}</span>
 <span class="benefit-pill pill-4"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.59-6.59A2 2 0 1 1 18 13H2"/></svg>{% if is_sanitary_pad %}{{ pad_info[6] | default: 'Period Care' | escape }}{% else %}Breathable Layers{% endif %}</span>
@@ -1496,6 +1531,7 @@ decoding="async"
 <span class="benefit-pill pill-5"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0 M12 8v4 M12 16h.01"/></svg>{% if is_sanitary_pad %}{{ pad_info[4] | default: 'Flow & Fit' | escape }}{% else %}Odour Control{% endif %}</span>
 <span class="benefit-pill pill-3"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2.69c.5.5.9 1 1.2 1.6.3-.6.7-1.1 1.2-1.6 2-2 5.66.66 3.66 3.66L12 19.8 6.14 7.95c-2-3 1.66-5.66 3.66-3.66.5.5.9 1 1.2 1.6"/></svg>{% if is_sanitary_pad %}{{ pad_info[5] | default: 'Pad Materials' | escape }}{% else %}Soft &amp; Skin-Friendly{% endif %}</span>
 <span class="benefit-pill pill-6"><svg class="benefit-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M20 6L9 17l-5-5"/></svg>{% if is_sanitary_pad %}{% if pad_info[3] != blank %}{{ pad_info[3] | escape }}{% else %}Product Details{% endif %}{% else %}Rash-Free Comfort{% endif %}</span>
+{%- endif -%}
 </div>
 </div>
 {%- when 'Product-Featuress' -%}
@@ -1562,7 +1598,7 @@ decoding="async"
 {%- when 'quantity' -%}
 {%- render 'product-quantity', product: product, uniq_id: product_form_id, block: block -%}
 {%- when 'variant-selectors' -%}
-{%- render 'product-variant-options', product: product, uniq_id: product_form_id, block: block -%}
+{%- render 'product-variant-options', product: product, uniq_id: product_form_id, block: block, size_label: bundle_option_label -%}
 {%- when 'siblings' -%}
 {%- render 'product-siblings', product: product, uniq_id: product_form_id, block: block -%}
 {%- when 'subscription' -%}
@@ -1607,6 +1643,22 @@ decoding="async"
 Taxes & <a href="{{ block.settings.shipping_text_url }}">Shipping</a> calculated at checkout.
 </div>
 {%- when 'description-product' -%}
+{%- assign authored_description = product.description | strip -%}
+{%- capture full_description -%}
+  {%- if authored_description != blank -%}
+    {{ authored_description }}
+  {%- elsif bundle_title != blank -%}
+    <ul>
+      <li>TIME Uniline sanitary pads, {{ bundle_pad_count | escape }}, {{ bundle_pad_length | escape }} long, for {{ bundle_pad_flow | downcase | escape }} days.</li>
+      <li>One 50 g tube of TIME Period Cramp Relief Cream.</li>
+      {%- if bundle_cup_size != blank -%}
+        <li>One reusable TIME menstrual cup in size {{ bundle_cup_size | escape }}.</li>
+      {%- endif -%}
+    </ul>
+  {%- elsif is_sanitary_pad -%}
+    {%- render 'pad-product-content', part: 'details', pad_info: pad_info -%}
+  {%- endif -%}
+{%- endcapture -%}
 <details id="product-details" class="tp-description-card" open {{ block.shopify_attributes }}>
 <summary class="tp-description-card__header">
 <span>Product Description</span>
@@ -1615,7 +1667,9 @@ Taxes & <a href="{{ block.settings.shipping_text_url }}">Shipping</a> calculated
 </svg>
 </summary>
 <div class="tp-description-card__body">
-{%- if product.handle contains 'cream' or product.handle contains 'pain' -%}
+{%- if bundle_title != blank -%}
+<h3 class="tp-description-card__heading">What’s in the bundle</h3>
+{%- elsif product.handle contains 'cream' or product.handle contains 'pain' -%}
 <h3 class="tp-description-card__heading">Natural Relief for Period Pain &amp; Cramps</h3>
 {%- else -%}
 <h3 class="tp-description-card__heading">
@@ -1628,12 +1682,14 @@ TIMEPADS {{ pad_info[0] | escape }} Sanitary Pads
 {%- endif -%}
 <div class="tp-description-card__content-wrap">
 <div class="tp-description-card__excerpt">
-{%- if product.handle contains 'cream' or product.handle contains 'pain' -%}
+{%- if bundle_title != blank -%}
+{{ bundle_contents | escape }}
+{%- elsif authored_description != blank -%}
+{{ authored_description | replace: '</p>', '</p> ' | replace: '</li>', '</li> ' | strip_html | strip | truncatewords: 24, '...' | escape_once }}
+{%- elsif product.handle contains 'cream' or product.handle contains 'pain' -%}
 Experience fast, gentle comfort with our herbal Period Cramp Relief Cream. Made with natural ingredients, it helps soothe cramps, relax muscles, and keep you active during your period days.
 {%- elsif is_sanitary_pad -%}
 {%- render 'pad-product-content', part: 'intro', pad_info: pad_info -%}
-{%- elsif product.description != blank -%}
-{{ product.description | strip_html | truncatewords: 24, '...' }}
 {%- else -%}
 {{ product.title }}
 {%- endif -%}
@@ -1646,19 +1702,19 @@ Experience fast, gentle comfort with our herbal Period Cramp Relief Cream. Made 
 <img src="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/PainBalm.png" alt="{{ product.title | escape }}" width="280" height="280" loading="lazy" decoding="async">
 {%- endif -%}
 </div>
-<div class="tp-description-card__full-content" style="display: none;">
-{%- if is_sanitary_pad -%}
-{%- render 'pad-product-content', part: 'details', pad_info: pad_info -%}
-{%- else -%}
-{{ product.description }}
+{%- if full_description != blank -%}
+<div id="ProductDescription-{{ section.id }}-{{ block.id }}" class="tp-description-card__full-content{% if authored_description != blank %} rte{% endif %}" hidden>
+{{ full_description }}
+</div>
 {%- endif -%}
 </div>
-</div>
+{%- if full_description != blank -%}
 <div class="tp-description-card__btn-wrap">
-<button class="tp-description-card__read-more read-more-btn" type="button" aria-expanded="false">
-Read More <span class="arrow">â†’</span>
+<button class="tp-description-card__read-more read-more-btn" type="button" aria-expanded="false" aria-controls="ProductDescription-{{ section.id }}-{{ block.id }}">
+<span data-description-toggle-label>Read More</span> <span class="arrow" aria-hidden="true">&rarr;</span>
 </button>
 </div>
+{%- endif -%}
 </div>
 </details>
 {%- when 'sharing' -%}
@@ -1699,7 +1755,12 @@ Read More <span class="arrow">â†’</span>
 {%- when 'text' -%}
 {%- if block.settings.title != blank -%}
 <div class="product__block__text" style="--PB:{{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
+{%- assign block_text = block.settings.title | strip_html | strip -%}
+{%- if bundle_title != blank and block_text == 'Sanitary pads for everyday period care.' -%}
+<p>{{ bundle_contents | escape }}</p>
+{%- else -%}
 {{ block.settings.title }}
+{%- endif -%}
 </div>
 {%- endif -%}
 {%- when 'sizing-guide' -%}
@@ -1847,7 +1908,7 @@ To make your care
 </div>
 <div class="tp-delivery-strip__text">
 <span class="tp-delivery-strip__label">Estimated Delivery Time</span>
-<strong class="tp-delivery-strip__val">3â€“7 days</strong>
+<strong class="tp-delivery-strip__val">3&ndash;7 days</strong>
 </div>
 </div>
 <div class="tp-delivery-strip__divider"></div>
@@ -1903,7 +1964,7 @@ To make your care
 </div>
 {%- comment -%} PDP Additions & Recommendations rendered below 2-column buy box section {%- endcomment -%}
 <div class="pdp-additions-full-width">
-{%- render 'pdp-additions', product: product, is_sanitary_pad: is_sanitary_pad, flow_guide: flow_guide, pad_info: pad_info -%}
+{%- render 'pdp-additions', product: product, is_sanitary_pad: is_sanitary_pad, flow_guide: flow_guide, pad_info: pad_info, bundle_contents: bundle_contents, bundle_pad_count: bundle_pad_count, bundle_pad_length: bundle_pad_length, bundle_pad_flow: bundle_pad_flow, bundle_cup_size: bundle_cup_size -%}
 {%- assign recommended_product = product.metafields.custom.product_recommendation.value -%}
 {%- if recommended_product != blank -%}
 <div class="product-recommendation-offer" style="margin-top: 25px;">
@@ -1943,37 +2004,30 @@ decoding="async"
 <script>
 (function () {
 'use strict';
-/* â”€â”€ Product description accordion (description-product block) â”€â”€ */
-var detailsBtn = document.querySelector('#product-details .read-more-btn');
-if (detailsBtn) {
-var full = document.querySelector('#product-details .tp-description-card__full-content');
-var excerpt = document.querySelector('#product-details .tp-description-card__excerpt');
-var media = document.querySelector('#product-details .tp-description-card__media');
-function placeMediaInBetween() {
-if (!full || !media) return;
-var children = Array.from(full.children);
-if (children.length >= 2) {
-var targetIndex = Math.max(1, children.length - 1);
-children[targetIndex].before(media);
-}
-}
-detailsBtn.addEventListener('click', function () {
-var expanded = this.getAttribute('aria-expanded') === 'true';
-if (expanded) {
-if (excerpt) excerpt.style.display = 'block';
-if (full) full.style.display = 'none';
-if (excerpt && media) excerpt.after(media);
-this.innerHTML = 'Read More <span class="arrow">â†’</span>';
-this.setAttribute('aria-expanded', 'false');
-} else {
-if (excerpt) excerpt.style.display = 'none';
-if (full) full.style.display = 'block';
-placeMediaInBetween();
-this.innerHTML = 'Read Less <span class="arrow">â†‘</span>';
-this.setAttribute('aria-expanded', 'true');
-}
+/* Product description accordion */
+document.querySelectorAll('.tp-description-card .read-more-btn').forEach(function (button) {
+  var card = button.closest('.tp-description-card');
+  var full = document.getElementById(button.getAttribute('aria-controls'));
+  var excerpt = card.querySelector('.tp-description-card__excerpt');
+  var media = card.querySelector('.tp-description-card__media');
+  var label = button.querySelector('[data-description-toggle-label]');
+  var arrow = button.querySelector('.arrow');
+
+  button.addEventListener('click', function () {
+    var showFull = full.hidden;
+    full.hidden = !showFull;
+    excerpt.hidden = showFull;
+    label.textContent = showFull ? 'Read Less' : 'Read More';
+    arrow.textContent = showFull ? '\u2191' : '\u2192';
+    button.setAttribute('aria-expanded', String(showFull));
+
+    if (showFull && full.children.length >= 2) {
+      full.lastElementChild.before(media);
+    } else {
+      excerpt.after(media);
+    }
+  });
 });
-}
 /* â”€â”€ Extra info collapsible (Extrainfo block) â”€â”€ */
 if (document.readyState === 'loading') {
 document.addEventListener('DOMContentLoaded', initExtras, { once: true });

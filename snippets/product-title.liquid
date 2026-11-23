@@ -7,7 +7,11 @@
 <div class="product__block__title" style="--PB: {{ block.settings.padding_bottom }}px;" {{ block.shopify_attributes }}>
   <div class="product__headline">
     <div class="product__title__wrapper">
-      {%- capture cleaned_title -%}{%- render 'clean-product-title', product: product -%}{%- endcapture -%}
+      {%- if title_override != blank -%}
+        {%- assign cleaned_title = title_override | escape -%}
+      {%- else -%}
+        {%- capture cleaned_title -%}{%- render 'clean-product-title', product: product -%}{%- endcapture -%}
+      {%- endif -%}
       <h1 class="product__title {{ heading_size_class }}">
         {% if template contains 'product' and block %}
           {{ cleaned_title | strip }}

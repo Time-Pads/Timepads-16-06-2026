@@ -20,6 +20,17 @@
 -%}
 
 <style>
+  .bundle-spec-rows th,
+  .bundle-spec-rows td {
+    padding: 8px 0;
+    border-bottom: 1px solid #f4f4f4;
+    text-align: left;
+  }
+  .bundle-spec-rows th {
+    width: 45%;
+    font-weight: 600;
+  }
+
   /* Dynamic Accordion & Benefits Styles for pdp-additions */
   .pdp-accordion-item {
     position: relative !important;
@@ -171,7 +182,16 @@
     </summary>
     <div class="pdp-accordion-content">
       <table class="spec-table" style="width: 100%; border-collapse: collapse;">
-        {%- if is_sanitary_pad -%}
+        {%- if bundle_contents != blank -%}
+          <tbody class="bundle-spec-rows">
+            <tr><th class="spec-label" scope="row">Sanitary pads</th><td class="spec-val">{{ bundle_pad_count | capitalize | escape }}, {{ bundle_pad_length | escape }}</td></tr>
+            <tr><th class="spec-label" scope="row">Pad flow</th><td class="spec-val">{{ bundle_pad_flow | escape }}</td></tr>
+            <tr><th class="spec-label" scope="row">Period Cramp Relief Cream</th><td class="spec-val">One 50 g tube</td></tr>
+            {%- if bundle_cup_size != blank -%}
+              <tr><th class="spec-label" scope="row">Reusable menstrual cup</th><td class="spec-val">One cup, size {{ bundle_cup_size | escape }}</td></tr>
+            {%- endif -%}
+          </tbody>
+        {%- elsif is_sanitary_pad -%}
           <tbody data-pad-spec-rows>
             {%- render 'pad-specification-rows', variant: current_variant, pad_info: selected_pad_info -%}
           </tbody>
@@ -317,7 +337,19 @@
     </summary>
     <div class="pdp-accordion-content">
       <ul class="who-list" style="list-style: none; padding: 0; margin: 0;">
-        {%- if is_sanitary_pad -%}
+        {%- if bundle_contents != blank -%}
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ For shoppers who prefer {{ bundle_pad_length | escape }} pads on {{ bundle_pad_flow | downcase | escape }} days.
+          </li>
+          <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+            ✓ For shoppers who want sanitary pads and Period Cramp Relief Cream in one pack.
+          </li>
+          {%- if bundle_cup_size != blank -%}
+            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+              ✓ For shoppers who also want a reusable menstrual cup in size {{ bundle_cup_size | escape }}.
+            </li>
+          {%- endif -%}
+        {%- elsif is_sanitary_pad -%}
           <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
             ✓ {{ pad_info[8] | default: 'Choose a length based on your flow and coverage preferences.' | escape }}
           </li>
@@ -363,7 +395,21 @@
   </details>
   <!-- 3. Dynamic FAQ Section -->
   {%- liquid
-    if is_sanitary_pad
+    if bundle_contents != blank
+      assign q1 = 'What comes in this combo?'
+      assign a1 = bundle_contents
+      assign q2 = 'How long are the pads?'
+      assign a2 = 'The TIME Uniline pads are ' | append: bundle_pad_length | append: ' long.'
+      assign q3 = 'Which flow are the pads designed for?'
+      assign a3 = bundle_pad_flow | downcase | prepend: 'The pads in this bundle are designed for ' | append: ' days.'
+      assign q4 = 'How much cream is included?'
+      assign a4 = 'The combo includes one 50 g tube of TIME Period Cramp Relief Cream.'
+      assign q5 = 'Is a menstrual cup included?'
+      assign a5 = 'This bundle includes sanitary pads and cream.'
+      if bundle_cup_size != blank
+        assign a5 = 'Yes, the bundle includes one reusable menstrual cup in size ' | append: bundle_cup_size | append: '.'
+      endif
+    elsif is_sanitary_pad
       assign q1 = 'What is this product?'
       assign a1 = 'TIMEPADS sanitary pads. Check Product Specifications for the size and pack details.'
       assign q2 = 'Who is it suitable for?'

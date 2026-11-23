@@ -674,6 +674,10 @@ document.addEventListener("DOMContentLoaded", function() {
           {%- assign current_value = current_variant.options[forloop.index0] -%}
 
           {%- assign opt_name_lower = option.name | downcase | strip -%}
+          {%- assign legend_label = option.name -%}
+          {%- if opt_name_lower == 'size' and size_label != blank -%}
+            {%- assign legend_label = size_label -%}
+          {%- endif -%}
           {%- assign size_products = product.metafields.custom.size_options_products.value | default: product.metafields.custom.size_options_products -%}
 
           {%- if opt_name_lower contains 'size' and size_products != blank and size_products.size > 0 -%}
@@ -687,7 +691,7 @@ document.addEventListener("DOMContentLoaded", function() {
             -%}
           {%- else -%}
           <fieldset class="radio__fieldset">
-            <legend class="radio__legend {% if product.handle == 'period-pain-relief-cream' %} bundle-product-heading {% endif %}" aria-label="{{ option.name | escape_once }}">
+            <legend class="radio__legend {% if product.handle == 'period-pain-relief-cream' %} bundle-product-heading {% endif %}" aria-label="{{ legend_label | escape_once }}">
 
               <span class="radio__legend__label">
                 {% if product.handle == 'period-pain-relief-cream' %}
@@ -697,7 +701,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                   </div> {% endcomment %}
                 {% else %}
-                  {{ option.name | escape_once }}
+                  {{ legend_label | escape_once }}
                 {% endif %}
               </span>
 

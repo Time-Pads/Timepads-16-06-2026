@@ -117,7 +117,20 @@
       endif
     endif
 
-    if is_sanitary_pad
+    if bundle_pad_count != blank
+      assign h1_title = 'Uniline Sanitary Pads'
+      assign h1_sub = bundle_pad_count | capitalize | append: ' · ' | append: bundle_pad_length
+      assign h2_title = 'Pad Flow'
+      assign h2_sub = bundle_pad_flow
+      assign h3_title = 'Period Cramp Relief Cream'
+      assign h3_sub = 'One 50 g tube'
+      assign h4_title = 'Period Care Combo'
+      assign h4_sub = 'Pads and cream'
+      if bundle_cup_size != blank
+        assign h4_title = 'Reusable Menstrual Cup'
+        assign h4_sub = 'Size ' | append: bundle_cup_size
+      endif
+    elsif is_sanitary_pad
       assign h1_title = 'Flow Suitability'
       assign h1_sub = 'Find your fit in the flow guide'
       if pad_info[2] != blank
