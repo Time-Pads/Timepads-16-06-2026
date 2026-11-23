@@ -230,11 +230,26 @@ width: 100% !important;
 }
 .tp-description-card__excerpt,
 .tp-description-card__full-content {
+font-family: var(--FONT-STACK-BODY) !important;
 font-size: 12.5px !important;
 color: #4A3E33 !important; /* Warm dark brown readable body text */
 line-height: 1.65 !important;
 width: 100% !important;
 text-align: left !important;
+}
+.tp-description-card__full-content.rte :is(p, li, span, a, strong, b, em, i, blockquote, td, th) {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+.tp-description-card__full-content.rte :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--FONT-STACK-HEADING) !important;
+  font-size: 1.25em !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  margin: 1em 0 0.45em !important;
+}
+.tp-description-card__full-content.rte > :is(h1, h2, h3, h4, h5, h6):first-child {
+  margin-top: 0 !important;
 }
 .tp-description-card__full-content p {
 margin: 0 0 10px 0 !important;
@@ -2023,15 +2038,23 @@ decoding="async"
 document.querySelectorAll('.tp-description-card .read-more-btn').forEach(function (button) {
   var card = button.closest('.tp-description-card');
   var full = document.getElementById(button.getAttribute('aria-controls'));
+  var heading = card.querySelector('.tp-description-card__heading');
+  var firstContent = full.firstElementChild;
   var excerpt = card.querySelector('.tp-description-card__excerpt');
   var media = card.querySelector('.tp-description-card__media');
   var label = button.querySelector('[data-description-toggle-label]');
   var arrow = button.querySelector('.arrow');
+  function headingText(element) {
+    return element.textContent.trim().replace(/^[^\p{L}\p{N}]+/u, '').replace(/\s+/g, ' ').toLowerCase();
+  }
+  var repeatsHeading = heading && firstContent && firstContent.matches('h1, h2, h3, h4, h5, h6')
+    && headingText(heading) === headingText(firstContent);
 
   button.addEventListener('click', function () {
     var showFull = full.hidden;
     full.hidden = !showFull;
     excerpt.hidden = showFull;
+    if (repeatsHeading) heading.hidden = showFull;
     label.textContent = showFull ? 'Read Less' : 'Read More';
     arrow.textContent = showFull ? '\u2191' : '\u2192';
     button.setAttribute('aria-expanded', String(showFull));
