@@ -4,9 +4,10 @@
   if (window.tpCartDrawerLoaded) return;
   window.tpCartDrawerLoaded = true;
 
-  var pendingCart = null;
+  var latestRefresh = 0;
   var refreshDebounceTimer = null;
   var subtotalObserver = null;
+  var cartToggles = '[data-drawer-toggle="drawer-cart"], [data-mobile-cart-trigger]';
 
   function getRoot() {
     if (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) {
@@ -55,21 +56,14 @@
   }
 
   function fetchCart() {
-    if (pendingCart) return pendingCart;
-
-    pendingCart = fetch(getCartUrl(), {
+    return fetch(getCartUrl(), {
+      cache: 'no-store',
       credentials: 'same-origin',
       headers: { Accept: 'application/json' }
-    })
-      .then(function (response) {
-        if (!response.ok) throw new Error('Unable to refresh cart');
-        return response.json();
-      })
-      .finally(function () {
-        pendingCart = null;
-      });
-
-    return pendingCart;
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Unable to refresh cart');
+      return response.json();
+    });
   }
 
   function updateCount(cart) {
@@ -229,9 +223,12 @@
       bubbles: true
     }));
 
+    var drawerUpdates = [];
     document.dispatchEvent(new CustomEvent('theme:cart:reload', {
-      bubbles: true
+      bubbles: true,
+      detail: { waitUntil: function (update) { drawerUpdates.push(update); } }
     }));
+    return Promise.all(drawerUpdates);
   }
 
   function isCartPage() {
@@ -242,7 +239,7 @@
     if (isCartPage()) return;
 
     var drawer = document.getElementById('drawer-cart');
-    if (!drawer) return;
+    if (!drawer || drawer.classList.contains('is-open')) return;
 
     // Hide WhatsApp widget when cart drawer is active
     document.body.classList.add('is-drawer-open');
@@ -258,7 +255,7 @@
     drawer.setAttribute('aria-hidden', 'false');
     drawer.classList.add('drawer--visible', 'is-open');
 
-    document.querySelectorAll('[data-drawer-toggle="drawer-cart"]').forEach(function (btn) {
+    document.querySelectorAll(cartToggles).forEach(function (btn) {
       btn.setAttribute('aria-expanded', 'true');
     });
 
@@ -293,7 +290,7 @@
     drawer.setAttribute('aria-hidden', 'true');
     drawer.setAttribute('inert', '');
 
-    document.querySelectorAll('[data-drawer-toggle="drawer-cart"]').forEach(function (btn) {
+    document.querySelectorAll(cartToggles).forEach(function (btn) {
       btn.setAttribute('aria-expanded', 'false');
     });
 
@@ -325,6 +322,7 @@
 
   window.tpRefreshCartDrawer = function (options) {
     options = options || {};
+    var refresh = ++latestRefresh;
 
     var cartPromise;
     if (options.cart) {
@@ -335,12 +333,13 @@
 
     return cartPromise
       .then(function (cart) {
-        syncCart(cart);
-        if (options.open !== false) {
-          openDrawer();
-        }
-        clearAllButtonLoaders();
-        return cart;
+        if (refresh !== latestRefresh) return cart;
+
+        return syncCart(cart).then(function () {
+          if (refresh === latestRefresh && options.open !== false) openDrawer();
+          clearAllButtonLoaders();
+          return cart;
+        });
       })
       .catch(function (error) {
         console.error('tpRefreshCartDrawer error:', error);
@@ -548,6 +547,16 @@
         body.classList.remove('is-open');
       }
     }
+  });
+
+  document.addEventListener('click', function (event) {
+    var trigger = event.target.closest('[data-mobile-cart-trigger]');
+    if (!trigger || event.defaultPrevented || event.button !== 0 ||
+      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (isCartPage() || !document.getElementById('drawer-cart')) return;
+
+    event.preventDefault();
+    openDrawer();
   });
 
   /* ── CLOSE / UNDERLAY CLICK DELEGATION ── */

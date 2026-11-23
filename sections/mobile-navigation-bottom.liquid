@@ -1,42 +1,3 @@
-{% # Kwikpass changes - [Starts] %}
-<script>
-  (function () {
-    function autoLogin() {
-      var accountText = document.getElementById('kwik-pass-text');
-      if (accountText) {
-        accountText.textContent = 'Account';
-      }
-    }
-
-    window.addEventListener('user-loggedin', function (event) {
-      var token = event && event.detail ? event.detail.token : '';
-      if (token) {
-        autoLogin();
-      }
-    });
-
-    function syncLoginState() {
-      var userToken = localStorage.getItem('KWIKSESSIONTOKEN');
-      if (userToken) {
-        autoLogin();
-      }
-    }
-
-    if (document.readyState === 'complete') {
-      syncLoginState();
-    } else {
-      window.addEventListener('load', syncLoginState, { once: true });
-    }
-  }());
-</script>
-{% # Kwikpass changes - [Ends] %}
-
-
-
-
-
-
-
 <div class="page-width desktop-hide">
   <div class="mobile-navigation-bottom is-deferred" data-mobile-sticky-nav>
     <div class="mobile-navigation-menu">
@@ -59,11 +20,19 @@
 
       <!-- Center Cart Icon -->
       <div class="mobile-center-cart">
-        <a class="header__mobile__button" data-drawer-toggle="drawer-cart" href="{{ routes.cart_url }}" aria-label="Cart">
-          <div class="cart-circle">
-            {% render 'icon-set-mod-cart' %}
-          
-          </div>
+        <a
+          class="mobile-cart-link cart-circle"
+          data-mobile-cart-trigger
+          href="{{ routes.cart_url }}"
+          aria-label="Cart"
+          {% if request.page_type != 'cart' %}
+            {% if settings.cart_style == 'drawer' or settings.cart_style == 'pop' %}
+              aria-controls="drawer-cart"
+              aria-expanded="false"
+            {% endif %}
+          {% endif %}
+        >
+          {% render 'icon-set-mod-cart' %}
         </a>
       </div>
 
@@ -75,14 +44,10 @@
         </a>
       </p>
 
-      <!-- Account Link -->
       <p>
-        <a href="{{ routes.account_url }}" class="mobile-menu__link" onclick="if(window.kpHandleLogin){kpHandleLogin('/account');}" aria-label="Account">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span class="mobile-menu__title" id="kwik-pass-text">Account</span>
+        <a href="https://timepads.in/collections/new-products-launch" class="mobile-menu__link">
+          {% render 'icon-art-star-rating' %}
+          <span class="mobile-menu__title">New In</span>
         </a>
       </p>
 
@@ -172,9 +137,9 @@
   flex-shrink: 0;
 }
 
-.mobile-center-cart .header__mobile__button {
+.mobile-center-cart .mobile-cart-link {
   position: absolute;
-  top: -18px;
+  top: -25px;
   left: 50%;
   transform: translateX(-50%);
   text-decoration: none;

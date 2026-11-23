@@ -2426,6 +2426,9 @@ pointer-events: auto !important;
 }
 /* Filter Drawer on Mobile: keep out of document flow */
 @media (max-width: 767px) {
+.template-collection .collection__content > .collection__filters__wrapper {
+position: absolute;
+}
 .collection__filters__outer {
 position: fixed !important;
 z-index: 20050 !important;

@@ -3063,7 +3063,7 @@
       underlay: '[data-drawer-underlay]',
       stagger: '[data-stagger-animation]',
       drawerToggle: 'data-drawer-toggle',
-      firstFocus: 'data-first-focus',
+      firstFocus: '[data-first-focus]',
       children: ':scope > * > [data-animates]',
       focusable: 'button, [href], select, textarea, [tabindex]:not([tabindex="-1"])'
   };
@@ -3119,8 +3119,11 @@
           this.underlay.addEventListener('click', (function() {
               this.hideDrawer();
           }).bind(this));
+          const closeButton = this.drawer.querySelector(`[data-drawer-close="${this.key}"]`);
+          if (closeButton) closeButton.addEventListener('click', this.hideDrawer.bind(this));
       }
       setFocus() {
+          if (!this.drawer.classList.contains(classes$A.isVisible)) return;
           const closeButton = this.drawer.querySelector(selectors$U.firstFocus);
           trapFocus(this.drawer, {
               elementToFocus: closeButton
@@ -3139,12 +3142,16 @@
                   bubbles: true,
                   detail: this.drawerScrolls
               }));
-              this.drawer.addEventListener('transitionend', this.setFocus.bind(this), {
-                  once: true
-              });
-              this.drawer.addEventListener('transitioncancel', this.setFocus.bind(this), {
-                  once: true
-              });
+              if (this.drawer.querySelector(selectors$U.firstFocus)) {
+                  this.setFocus();
+              } else {
+                  this.drawer.addEventListener('transitionend', this.setFocus.bind(this), {
+                      once: true
+                  });
+                  this.drawer.addEventListener('transitioncancel', this.setFocus.bind(this), {
+                      once: true
+                  });
+              }
           }, 1);
       }
       hideDrawer() {
@@ -11069,26 +11076,21 @@
           document.addEventListener('theme:cart:init', (function() {
               this.init();
           }).bind(this));
-          document.addEventListener('theme:cart:reload', (function() {
+          document.addEventListener('theme:cart:reload', (event)=>{
               this.stale = true;
-              if (this.cart) {
-                  this.loadHTML();
+              const update = this.refreshHTML();
+              if (this.drawer && event.detail?.waitUntil) {
+                  event.detail.waitUntil(update);
               } else {
-                  this.init().then(()=>this.loadHTML()
-                  );
+                  update?.catch(console.error);
               }
-          }).bind(this));
+          });
           if (this.drawer) {
-              this.drawer.addEventListener('theme:drawer:open', (function() {
-                  if (this.cart) {
-                      this.loadHTML();
-                  } else {
-                      this.init().then(()=>this.loadHTML()
-                      );
-                  }
+              this.drawer.addEventListener('theme:drawer:open', ()=>{
+                  this.refreshHTML()?.catch(console.error);
                   // tell the add to cart whether to open a popdown
                   window.theme.state.cartOpen = true;
-              }).bind(this));
+              });
               this.drawer.addEventListener('theme:drawer:close', function() {
                   window.theme.state.cartOpen = false;
               });
@@ -11097,28 +11099,36 @@
           new CartShippingMessage(this.container);
       }
       init() {
-          return window.fetch(`${window.theme.routes.cart}.js`).then(this.handleErrors).then((response)=>{
+          const previousCart = this.cart;
+          return window.fetch(`${window.theme.routes.cart}.js`, { cache: 'no-store' }).then(this.handleErrors).then((response)=>{
               return response.json();
           }).then((response)=>{
-              this.cart = response;
-              this.fireChange(response);
-              return response;
+              // An add can supply a newer cart while this initial read is in flight.
+              if (this.cart === previousCart) {
+                  this.cart = response;
+                  this.fireChange(response);
+              }
+              return this.cart;
           }).catch((e)=>{
               console.error(e);
           });
       }
+      refreshHTML() {
+          return this.cart ? this.loadHTML() : this.init().then(() => this.loadHTML());
+      }
       loadHTML(plain = false) {
-          if (this.stale) {
-              if (this.cart && this.cart.item_count > 0) {
-                  this.loadForm(plain);
-              } else {
-                  this.showEmpty();
-                  this.cartMessages.forEach((message)=>{
-                      new CartShippingMessage(message);
-                  });
-              }
-          }
+          if (!this.stale) return this.formRequest;
           this.stale = false;
+
+          if (this.cart && this.cart.item_count > 0) {
+              return this.loadForm(plain);
+          }
+
+          this.formRequest = null;
+          this.showEmpty();
+          this.cartMessages.forEach((message)=>{
+              new CartShippingMessage(message);
+          });
       }
       initInputs() {
           this.inputs = this.container.querySelectorAll(`[${selectors$7.key}]`);
@@ -11165,7 +11175,7 @@
               slideUp(this.errors);
               this.fireChange(response);
               this.stale = true;
-              this.loadHTML();
+              return this.loadHTML();
           }).catch((e)=>{
               if (e instanceof FetchError) {
                   var ref, ref1;
@@ -11175,9 +11185,9 @@
                   // Low stock erros have the same text content for heading and description
                   let contentToShow = messageText === descriptionText ? `<p>${messageText}</p>` : `<p>${messageText}</p> <p>${descriptionText}</p>`;
                   this.showError(contentToShow);
-                  this.loadForm(); // Reset form for cases like "stockout"
+                  this.loadForm()?.catch(console.error); // Reset the form after a stock error.
               } else {
-                  let error = `<p>${e.message || defaultMessage}</p>`;
+                  let error = `<p>${e.message || 'Could not update cart, please reload'}</p>`;
                   this.showError(error);
                   throw e;
               }
@@ -11226,17 +11236,39 @@
               this.updateTotal();
               return;
           }
-          window.fetch(`${window.theme.routes.root_url}?section_id=api-cart-items`).then(this.handleErrors).then((response)=>{
-              return response.text();
-          }).then((response)=>{
-              const fresh = document.createElement('div');
-              fresh.innerHTML = response;
-              this.items.innerHTML = fresh.querySelector(selectors$7.apiContent).innerHTML;
+          const url = `${window.theme.routes.root_url}?section_id=api-cart-items`;
+          const fetchItems = () => window.fetch(url, { cache: 'no-store' })
+              .then(this.handleErrors)
+              .then((response) => response.text())
+              .then((html) => {
+                  const fresh = document.createElement('div');
+                  fresh.innerHTML = html;
+                  const content = fresh.querySelector(selectors$7.apiContent);
+                  if (!content || (this.cart?.item_count > 0 && !content.querySelector(selectors$7.item))) {
+                      throw new Error('Could not load cart items');
+                  }
+                  return content;
+              });
+
+          const request = fetchItems().catch((error) => {
+              if (this.drawer && this.formRequest === request) return fetchItems();
+              throw error;
+          }).then((content) => {
+              if (this.formRequest !== request) return;
+              this.items.innerHTML = content.innerHTML;
               this.showForm();
               this.initQuantity();
               this.initQuickview();
               this.updateTotal();
+          }).catch((error) => {
+              if (this.formRequest !== request) return;
+              this.stale = true;
+              this.formRequest = null;
+              this.loader.classList.remove(classes$5.loading);
+              throw error;
           });
+          this.formRequest = request;
+          return request;
       }
       initQuickview() {
           const pageUpsellWrapper = this.items.querySelector(selectors$7.pageUpsellWrapper);

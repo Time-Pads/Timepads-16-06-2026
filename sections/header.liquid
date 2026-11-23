@@ -1096,7 +1096,7 @@
             </div>
           {% endif %}
         </div>
-        <button type="button" class="tp-drawer-close-btn" data-drawer-close="hamburger" aria-label="Close menu">
+        <button type="button" class="tp-drawer-close-btn" data-drawer-close="hamburger" data-first-focus aria-label="Close menu">
           <svg
             width="18"
             height="18"
@@ -1575,96 +1575,6 @@
   </nav>
 </div>
 <!-- end .tp-header-master-wrapper -->
-
-<script>
-  (function () {
-    function setupHamburgerDrawer() {
-      var drawer = document.querySelector('[data-drawer="hamburger"]');
-      if (!drawer) return;
-
-      var openBtns = document.querySelectorAll('.header__mobile__button, [data-drawer-toggle="hamburger"]');
-      var closeBtns = document.querySelectorAll('.tp-drawer-close-btn, [data-drawer-close="hamburger"]');
-
-      function openMenu() {
-        drawer.classList.remove('display-none');
-        drawer.removeAttribute('inert');
-        drawer.setAttribute('aria-hidden', 'false');
-        setTimeout(function () {
-          drawer.classList.add('drawer--visible');
-          drawer.classList.add('is-open');
-          document.body.classList.add('drawer--is-open');
-        }, 10);
-        openBtns.forEach(function (btn) {
-          btn.setAttribute('aria-expanded', 'true');
-        });
-      }
-
-      function closeMenu() {
-        drawer.classList.remove('drawer--visible');
-        drawer.classList.remove('is-open');
-        drawer.setAttribute('aria-hidden', 'true');
-        drawer.setAttribute('inert', '');
-        document.body.classList.remove('drawer--is-open');
-        setTimeout(function () {
-          if (!drawer.classList.contains('drawer--visible') && !drawer.classList.contains('is-open')) {
-            drawer.classList.add('display-none');
-          }
-        }, 300);
-        openBtns.forEach(function (btn) {
-          btn.setAttribute('aria-expanded', 'false');
-        });
-      }
-
-      openBtns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          var isOpen =
-            (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open')) &&
-            !drawer.classList.contains('display-none');
-          if (isOpen) {
-            closeMenu();
-          } else {
-            openMenu();
-          }
-        });
-      });
-
-      closeBtns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          closeMenu();
-        });
-      });
-
-      var underlay = drawer.querySelector('[data-drawer-underlay]');
-      if (underlay) {
-        underlay.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          closeMenu();
-        });
-      }
-
-      document.addEventListener('keyup', function (e) {
-        if (
-          e.key === 'Escape' &&
-          (drawer.classList.contains('drawer--visible') || drawer.classList.contains('is-open'))
-        ) {
-          closeMenu();
-        }
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setupHamburgerDrawer);
-    } else {
-      setupHamburgerDrawer();
-    }
-  })();
-</script>
 
 <style>
   .tp-drawer-header {
