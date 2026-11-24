@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 {%- comment -%} â”€â”€ RTL detection â”€â”€ {%- endcomment -%}
 {%- capture rtl_codes %},ar,arc,ckb,dv,fa,ha,he,khw,ks,ps,sd,ur,uz_AF,yi,{%- endcapture -%}
 {%- assign is_code_separator = request.locale.iso_code | append: ',' | prepend: ',' -%}
@@ -3242,6 +3242,11 @@ padding: 0;
 {%- render 'tiny-script-control' -%}
 {%- endif -%}
 <meta name="msvalidate.01" content="4B78D65C8E6C112F952CD628ABC3E87B" />
+<script>
+  if (window.location.pathname === '/collections') {
+    window.location.replace('/collections/all');
+  }
+</script>
 </head>
 <body
 id="{{ page_title | handle }}"
