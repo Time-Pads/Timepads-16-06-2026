@@ -1,4 +1,4 @@
-﻿<!-- /sections/product.liquid -->
+<!-- /sections/product.liquid -->
 {%- comment -%} â”€â”€ JSON-LD structured data â€” ONE clean block, no duplicates â”€â”€ {%- endcomment -%}
 {%- if request.page_type == 'product' -%}
 {%- liquid
@@ -2142,8 +2142,8 @@ var existingExtras = prevBadge.querySelector('.tp-pdp-review-extras');
 if (!existingExtras) {
 var extras = document.createElement('span');
 extras.className = 'tp-pdp-review-extras';
-extras.innerHTML = '<span class="tp-pdp-divider" aria-hidden="true">|</span>' +
-'<span class="tp-pdp-trusted-count">Trusted By 50,000+ Customers</span>';
+extras.innerHTML = '<span class="tp-pdp-divider" aria-hidden="true"></span>' +
+'<span class="tp-pdp-trusted-count"></span>';
 if (textEl && textEl.nextSibling) {
 prevBadge.insertBefore(extras, textEl.nextSibling);
 } else {
