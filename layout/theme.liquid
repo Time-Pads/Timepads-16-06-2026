@@ -384,7 +384,15 @@ href="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/32x32-Logo.png?v=17
           render 'optimized-meta-description', product: product, collection: collection, article: article, blog: blog, page: page
         endcapture
       -%}
-      <title>{{ seo_title | strip | escape_once }}</title>
+      <title>{{ seo_title | replace: 'TIMEPADS', 'TIME' | replace: 'Timepads', 'TIME' | replace: 'Time Pads', 'TIME' | strip | escape_once }}</title>
+      {%- if request.page_type == 'collection' or request.page_type == 'list-collections' -%}
+        <script>
+          // SearchPie sets the title during page parsing.
+          document.addEventListener('DOMContentLoaded', () => {
+            document.title = document.title.replace(/\btime\s*pads\b/gi, 'TIME');
+          }, { once: true });
+        </script>
+      {%- endif -%}
       <meta name="description" content="{{ seo_description | strip | escape_once }}">
       {%- render 'social-meta-tags', seo_title: seo_title, seo_description: seo_description -%}
       {%- if request.page_type == 'product' -%}
