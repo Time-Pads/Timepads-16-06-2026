@@ -14,6 +14,12 @@ dir="rtl"
 {%- assign title_override = false -%}
 {%- assign default_description = false -%}
 <head>
+{%- if request.path == '/collections' or request.path == '/collections/' -%}
+  <script>
+    window.location.replace('/collections/all' + window.location.search + window.location.hash);
+  </script>
+  <noscript><meta http-equiv="refresh" content="0;url=/collections/all"></noscript>
+{%- endif -%}
 <script>
 // https://codebeautify.org/jsviewer
 function _debounce(fn, wait = 300) {
@@ -3250,11 +3256,6 @@ padding: 0;
 {%- render 'tiny-script-control' -%}
 {%- endif -%}
 <meta name="msvalidate.01" content="4B78D65C8E6C112F952CD628ABC3E87B" />
-<script>
-  if (window.location.pathname === '/collections') {
-    window.location.replace('/collections/all');
-  }
-</script>
 </head>
 <body
 id="{{ page_title | handle }}"
