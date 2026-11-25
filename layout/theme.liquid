@@ -273,8 +273,6 @@ if (node.className === 'analytics') node.type = 'text/lazyload';
 var scriptSrc = node.src || '';
 var scriptContent = node.innerHTML || '';
 if (
-scriptSrc.includes('clarity') ||
-scriptContent.includes('clarity') ||
 scriptSrc.includes('translate.google') ||
 scriptContent.includes('translate.google') ||
 scriptSrc.includes('trackingmore') ||
@@ -320,6 +318,7 @@ node.removeAttribute('src');
 } else if (node.tagName === 'IMG' && ++imgCount > imgLimit) {
 node.setAttribute('loading', 'lazy');
 } else if (node.tagName === 'SCRIPT') {
+if (node.src.startsWith('https://www.clarity.ms/') || node.textContent.includes('https://www.clarity.ms/tag/')) return;
 node.setAttribute('data-src', node.src);
 node.removeAttribute('src');
 node.type = 'text/lazyload';
