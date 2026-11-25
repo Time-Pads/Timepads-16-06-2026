@@ -1,6 +1,15 @@
 {%- liquid
   # Input can be product or product.title. If product is passed, use product.title
-  assign title_to_clean = clean_product_title | default: product.title
+  assign title_to_clean = clean_product_title | default: product.title | strip
+  assign title_parts = title_to_clean | split: '|'
+  assign last_part = title_parts | last | strip | upcase
+  if title_parts.size > 1
+    if last_part == 'TIME' or last_part == 'TIMEPADS' or last_part == 'TIME PADS'
+      assign suffix_length = title_parts | last | size | plus: 1
+      assign title_length = title_to_clean.size | minus: suffix_length
+      assign title_to_clean = title_to_clean | slice: 0, title_length | strip
+    endif
+  endif
 
   # Strip out target promotional phrases case-sensitively to handle variations
   assign promo_phrases = "Buy 1 Get 1 Free,buy 1 get 1 free,BUY 1 GET 1 FREE,Buy 1 Get 1,buy 1 get 1,BUY 1 GET 1,Limited Offer,limited offer,LIMITED OFFER,Ultra Comfort,ultra comfort,ULTRA COMFORT,Extra Soft,extra soft,EXTRA SOFT,Rash Free,rash free,RASH FREE,Rash-Free,rash-free,RASH-FREE,Leak Proof,leak proof,LEAK PROOF,Leak-Proof,leak-proof,LEAK-PROOF,No Leak,no leak,NO LEAK,Premium,premium,PREMIUM,Best,best,BEST,Offer,offer,OFFER,Free,free,FREE,Super,super,SUPER,Sale,sale,SALE" | split: ','
@@ -15,7 +24,8 @@
   assign clean_words = ''
   for word in raw_words
     assign w = word | strip
-    if w != '' and w != '|' and w != '-' and w != '•'
+    assign word_uppercase = w | upcase
+    if w != '' and w != '|' and w != '-' and w != '•' and word_uppercase != 'TIMEPADS'
       assign clean_words = clean_words | append: w | append: ' '
     endif
   endfor
@@ -105,9 +115,6 @@
     assign product_name = title_to_clean
   endif
 
-  # Set default Brand to TIMEPADS if not already present or if requested
-  assign brand_suffix = 'TIMEPADS'
-  
   # Format target output: [Product Name] [Size] | [Quantity] | [Brand]
   assign final_name = product_name
   if size != ''
@@ -122,11 +129,7 @@
     assign seo_title = seo_title | append: ' | ' | append: quantity
   endif
   
-  # Append Brand if it's not already in the name
-  assign name_up = final_name | upcase
-  unless name_up contains 'TIMEPADS'
-    assign seo_title = seo_title | append: ' | ' | append: brand_suffix
-  endunless
+  assign seo_title = seo_title | append: ' | TIME'
 
   # Clean double pipes or trailing separators if any
   assign seo_title = seo_title | replace: '||', '|' | replace: '|  |', '|' | strip

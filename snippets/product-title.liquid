@@ -8,7 +8,7 @@
   <div class="product__headline">
     <div class="product__title__wrapper">
       {%- if title_override != blank -%}
-        {%- assign cleaned_title = title_override | escape -%}
+        {%- assign cleaned_title = title_override | strip | append: ' | TIME' | escape -%}
       {%- else -%}
         {%- capture cleaned_title -%}{%- render 'clean-product-title', product: product -%}{%- endcapture -%}
       {%- endif -%}

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 {%- comment -%} â”€â”€ RTL detection â”€â”€ {%- endcomment -%}
 {%- capture rtl_codes %},ar,arc,ckb,dv,fa,ha,he,khw,ks,ps,sd,ur,uz_AF,yi,{%- endcapture -%}
 {%- assign is_code_separator = request.locale.iso_code | append: ',' | prepend: ',' -%}
@@ -14,6 +14,12 @@ dir="rtl"
 {%- assign title_override = false -%}
 {%- assign default_description = false -%}
 <head>
+{%- if request.path == '/collections' or request.path == '/collections/' -%}
+  <script>
+    window.location.replace('/collections/all' + window.location.search + window.location.hash);
+  </script>
+  <noscript><meta http-equiv="refresh" content="0;url=/collections/all"></noscript>
+{%- endif -%}
 <script>
 // https://codebeautify.org/jsviewer
 function _debounce(fn, wait = 300) {
@@ -267,8 +273,6 @@ if (node.className === 'analytics') node.type = 'text/lazyload';
 var scriptSrc = node.src || '';
 var scriptContent = node.innerHTML || '';
 if (
-scriptSrc.includes('clarity') ||
-scriptContent.includes('clarity') ||
 scriptSrc.includes('translate.google') ||
 scriptContent.includes('translate.google') ||
 scriptSrc.includes('trackingmore') ||
@@ -314,6 +318,7 @@ node.removeAttribute('src');
 } else if (node.tagName === 'IMG' && ++imgCount > imgLimit) {
 node.setAttribute('loading', 'lazy');
 } else if (node.tagName === 'SCRIPT') {
+if (node.src.startsWith('https://www.clarity.ms/') || node.textContent.includes('https://www.clarity.ms/tag/')) return;
 node.setAttribute('data-src', node.src);
 node.removeAttribute('src');
 node.type = 'text/lazyload';
@@ -368,15 +373,15 @@ href="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/32x32-Logo.png?v=17
           echo title_content
           if current_tags
             assign meta_tags = current_tags | join: ', '
-            echo ' â€“ '
+            echo ' – '
             echo 'general.meta.tags' | t: tags: meta_tags
           endif
           if current_page != 1
-            echo ' â€“ '
+            echo ' – '
             echo 'general.meta.page' | t: page: current_page
           endif
-          unless title_key contains brand_key or title_key contains 'timepads'
-            echo ' â€“ '
+          unless request.page_type == 'collection' or template.name == 'collection' or title_key contains brand_key or title_key contains 'timepads'
+            echo ' – '
             echo shop.name
           endunless
         endcapture
@@ -384,7 +389,15 @@ href="https://cdn.shopify.com/s/files/1/0845/7886/1371/files/32x32-Logo.png?v=17
           render 'optimized-meta-description', product: product, collection: collection, article: article, blog: blog, page: page
         endcapture
       -%}
-      <title>{{ seo_title | strip | escape_once }}</title>
+      <title>{{ seo_title | replace: 'TIMEPADS', 'TIME' | replace: 'Timepads', 'TIME' | replace: 'Time Pads', 'TIME' | strip | escape_once }}</title>
+      {%- if request.page_type == 'collection' or request.page_type == 'list-collections' -%}
+        <script>
+          // SearchPie sets the title during page parsing.
+          document.addEventListener('DOMContentLoaded', () => {
+            document.title = document.title.replace(/\btime\s*pads\b/gi, 'TIME');
+          }, { once: true });
+        </script>
+      {%- endif -%}
       <meta name="description" content="{{ seo_description | strip | escape_once }}">
       {%- render 'social-meta-tags', seo_title: seo_title, seo_description: seo_description -%}
       {%- if request.page_type == 'product' -%}
