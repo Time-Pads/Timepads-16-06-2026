@@ -284,6 +284,17 @@
       "type": "product-comparison",
       "settings": {}
     },
+    "tp_recommended_products": {
+      "type": "tp-recommended-products",
+      "settings": {
+        "eyebrow": "PAIRS WELL WITH THIS",
+        "heading": "Recommended For You",
+        "subtitle": "Thoughtful period care essentials curated for your comfort.",
+        "products_limit": 4,
+        "fallback_collection": "",
+        "bg_color": "#ffffff"
+      }
+    },
     "counting_number_arqh6C": {
       "type": "counting-number",
       "disabled": true,
@@ -388,17 +399,6 @@
         "padding_bottom": 36
       }
     },
-    "tp_recommended_products": {
-      "type": "tp-recommended-products",
-      "settings": {
-        "eyebrow": "PAIRS WELL WITH THIS",
-        "heading": "Recommended For You",
-        "subtitle": "Thoughtful period care essentials curated for your comfort.",
-        "products_limit": 4,
-        "fallback_collection": "",
-        "bg_color": "#ffffff"
-      }
-    },
     "section_liquid_r9y3aC": {
       "type": "section-liquid",
       "name": "Custom Liquid",
@@ -411,12 +411,12 @@
     "main",
     "gif_images_gb6mrC",
     "product_comparison_table",
+    "tp_recommended_products",
     "counting_number_arqh6C",
     "1734695772f9935df8",
     "product_a_pluse_content_kKtNqB",
     "related",
     "section_faq_brbRd3",
-    "tp_recommended_products",
     "section_liquid_r9y3aC"
   ]
 }

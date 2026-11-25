@@ -255,6 +255,17 @@
         "padding_bottom": 0
       }
     },
+    "tp_recommended_products": {
+      "type": "tp-recommended-products",
+      "settings": {
+        "eyebrow": "PAIRS WELL WITH THIS",
+        "heading": "Recommended For You",
+        "subtitle": "Thoughtful period care essentials curated for your comfort.",
+        "products_limit": 4,
+        "fallback_collection": "",
+        "bg_color": "#ffffff"
+      }
+    },
     "menstrual_cup_sizes_mEYnVW": {
       "type": "menstrual-cup-sizes",
       "blocks": {
@@ -430,42 +441,42 @@
           "type": "faq",
           "settings": {
             "question": "1. Why should I switch to the TIME Menstrual Cup?",
-            "answer": "TIME Menstrual Cup saves money, prevents rashes, and is eco-friendly. One cup lasts 5\nyears, It\u2019s comfortable for work, travel, and sleep."
+            "answer": "TIME Menstrual Cup saves money, prevents rashes, and is eco-friendly. One cup lasts 5\nyears, It’s comfortable for work, travel, and sleep."
           }
         },
         "faq_pQiNBt": {
           "type": "faq",
           "settings": {
             "question": "2. Is TIME Menstrual Cup safe for sensitive skin?",
-            "answer": "Yes \ud83d\udc4d It is made from 100% medical-grade silicone, BPA-free, toxin-free, and dermatologically safe. No smell, no itching, no rashes."
+            "answer": "Yes 👍 It is made from 100% medical-grade silicone, BPA-free, toxin-free, and dermatologically safe. No smell, no itching, no rashes."
           }
         },
         "faq_DkLWcq": {
           "type": "faq",
           "settings": {
             "question": "3. Can I use it during heavy flow or overnight?",
-            "answer": "Yes. TIME Menstrual cups hold 3\u00d7 more fluid than pads and can be worn safely for 6\u20138 hours, even overnight. Just empty earlier on very heavy days."
+            "answer": "Yes. TIME Menstrual cups hold 3× more fluid than pads and can be worn safely for 6–8 hours, even overnight. Just empty earlier on very heavy days."
           }
         },
         "faq_NWCQgK": {
           "type": "faq",
           "settings": {
             "question": "4. How do I clean and maintain the cup?",
-            "answer": "During periods \u2192 Wash with clean water or mild soap\nAfter periods \u2192 Boil in water for 5 minutes\n\nDry and store in the breathable pouch provided."
+            "answer": "During periods → Wash with clean water or mild soap\nAfter periods → Boil in water for 5 minutes\n\nDry and store in the breathable pouch provided."
           }
         },
         "faq_Y8UPKf": {
           "type": "faq",
           "settings": {
-            "question": "5. What if the cup doesn\u2019t fit or I\u2019m not comfortable?",
-            "answer": "Don\u2019t worry \ud83d\ude0a Most users need 1\u20132 cycles to adjust.\nIf you still feel uncomfortable, try a different fold or size."
+            "question": "5. What if the cup doesn’t fit or I’m not comfortable?",
+            "answer": "Don’t worry 😊 Most users need 1–2 cycles to adjust.\nIf you still feel uncomfortable, try a different fold or size."
           }
         },
         "faq_E7EjGz": {
           "type": "faq",
           "settings": {
             "question": "6. What if cup gets stuck?",
-            "answer": "Don\u2019t worry \ud83d\ude0a A menstrual cup cannot get lost inside your body.\n\nStay calm and try these steps:\n\nRelax your muscles and take slow breaths.\n\nGently pinch the base of the cup to break the suction seal.\n\nIf needed, slide one finger along the side of the cup and press the rim inward to release the seal.\n\nSlowly wiggle and pull the cup downward.\n\nIf it still feels difficult, squat or sit on the toilet to make removal easier.\n\n\ud83d\udc49 Most users need a few cycles to get comfortable."
+            "answer": "Don’t worry 😊 A menstrual cup cannot get lost inside your body.\n\nStay calm and try these steps:\n\nRelax your muscles and take slow breaths.\n\nGently pinch the base of the cup to break the suction seal.\n\nIf needed, slide one finger along the side of the cup and press the rim inward to release the seal.\n\nSlowly wiggle and pull the cup downward.\n\nIf it still feels difficult, squat or sit on the toilet to make removal easier.\n\n👉 Most users need a few cycles to get comfortable."
           }
         }
       },
@@ -534,20 +545,11 @@
       "settings": {
         "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
       }
-    },
-    "tp_recommended_products": {
-      "type": "tp-recommended-products",
-      "settings": {
-        "eyebrow": "PAIRS WELL WITH THIS",
-        "heading": "Recommended For You",
-        "subtitle": "Thoughtful period care essentials curated for your comfort.",
-        "products_limit": 4,
-        "bg_color": "#FFFFFF"
-      }
     }
   },
   "order": [
     "main",
+    "tp_recommended_products",
     "menstrual_cup_sizes_mEYnVW",
     "period_benefits_KyAMJE",
     "gif_images_gb6mrC",
@@ -558,7 +560,6 @@
     "related",
     "faq_menstrual_cup_zCE8ct",
     "section_faq_brbRd3",
-    "tp_recommended_products",
     "section_liquid_ei7fXL"
   ]
 }

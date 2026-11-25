@@ -344,6 +344,17 @@
         "text_color": ""
       }
     },
+    "tp_recommended_products": {
+      "type": "tp-recommended-products",
+      "settings": {
+        "eyebrow": "PAIRS WELL WITH THIS",
+        "heading": "Recommended For You",
+        "subtitle": "Thoughtful period care essentials curated for your comfort.",
+        "products_limit": 4,
+        "fallback_collection": "",
+        "bg_color": "#ffffff"
+      }
+    },
     "product_comparison_table": {
       "type": "product-comparison",
       "settings": {}
@@ -394,28 +405,28 @@
           "type": "faq",
           "settings": {
             "question": "How quickly does TIME Period Pain Relief Cream work?",
-            "answer": "Most users feel soothing relief within 10\u201315 minutes after applying. TIME Period Pain Relief Cream Results may vary depending on pain intensity."
+            "answer": "Most users feel soothing relief within 10–15 minutes after applying. TIME Period Pain Relief Cream Results may vary depending on pain intensity."
           }
         },
         "faq_6adYYG": {
           "type": "faq",
           "settings": {
             "question": "Is TIME Period Pain Relief Cream safe for daily use?",
-            "answer": "Yes \ud83d\udc4d  TIME Period Pain Relief Cream is made with natural ingredients like Satva Pudina, Eucalyptus Oil, and Coconut Milk, making it safe for regular use during periods."
+            "answer": "Yes 👍  TIME Period Pain Relief Cream is made with natural ingredients like Satva Pudina, Eucalyptus Oil, and Coconut Milk, making it safe for regular use during periods."
           }
         },
         "faq_TBjH4z": {
           "type": "faq",
           "settings": {
             "question": "How do I use TIME Period Pain Relief Cream for best results?",
-            "answer": "Apply a small amount of  TIME Period Pain Relief Cream on the lower abdomen or back, gently massage in circular motion, and let it absorb. Use 2\u20133 times a day as needed."
+            "answer": "Apply a small amount of  TIME Period Pain Relief Cream on the lower abdomen or back, gently massage in circular motion, and let it absorb. Use 2–3 times a day as needed."
           }
         },
         "faq_LKkbUr": {
           "type": "faq",
           "settings": {
             "question": "Does TIME Period Pain Relief Cream cause stains or stickiness?",
-            "answer": "No \ud83d\ude0a  TIME Period Pain Relief Cream is non-sticky and non-staining, so you can use it anytime even before going out."
+            "answer": "No 😊  TIME Period Pain Relief Cream is non-sticky and non-staining, so you can use it anytime even before going out."
           }
         },
         "faq_8Cg7dN": {
@@ -517,21 +528,12 @@
       "settings": {
         "custom_liquid": "<p class=\"product-disclaimer\" style=\"margin-bottom: 1rem !important; width: 90%; margin: auto;\">\n  <strong>Disclaimer:</strong> Please note All images shown on the cover are for representation purposes only and may vary slightly from the actual product.\n</p>"
       }
-    },
-    "tp_recommended_products": {
-      "type": "tp-recommended-products",
-      "settings": {
-        "eyebrow": "PAIRS WELL WITH THIS",
-        "heading": "Recommended For You",
-        "subtitle": "Thoughtful period care essentials curated for your comfort.",
-        "products_limit": 4,
-        "bg_color": "#FFFFFF"
-      }
     }
   },
   "order": [
     "main",
     "gif_images_gb6mrC",
+    "tp_recommended_products",
     "product_comparison_table",
     "counting_number_arqh6C",
     "1734695772f9935df8",
@@ -539,7 +541,6 @@
     "faq_menstrual_cup_R4nb3A",
     "related",
     "section_faq_brbRd3",
-    "tp_recommended_products",
     "section_liquid_FJ3qmy"
   ]
 }
