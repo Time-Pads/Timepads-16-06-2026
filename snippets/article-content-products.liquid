@@ -1,0 +1,105 @@
+{%- style -%}
+  .article-products {
+    --article-products-gap: 1rem;
+    display: grid;
+    gap: var(--article-products-gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    margin-block: 1.5rem;
+    padding: 0.25rem;
+  }
+
+  .article-products--single {
+    max-width: 21rem;
+  }
+
+  .article-products--carousel {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: max(12rem, calc((100% - 2 * var(--article-products-gap)) / 3));
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 0.25rem;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.75rem;
+  }
+
+  .article-products--carousel:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .article-products__item {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  @media (max-width: 600px) {
+    .article-products--carousel {
+      grid-auto-columns: min(82%, 18rem);
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign marker_start = '<!-- BLOG_PRODUCT:'
+  assign marker_end = '-->'
+  assign parts = content | replace: '<!-- BLOG_PRODUCTS -->', '<!-- BLOG_PRODUCT:all -->' | split: marker_start
+  assign cards = ''
+  assign card_count = 0
+-%}
+
+{%- for part in parts -%}
+  {%- if forloop.first -%}
+    {{- part -}}
+    {%- continue -%}
+  {%- endif -%}
+
+  {%- liquid
+    assign remaining_content = marker_start | append: part
+    if part contains marker_end
+      assign marker_value = part | split: marker_end | first
+      assign marker = marker_value | strip
+      assign marker_length = marker_value.size | plus: marker_end.size
+      assign product_index = marker | plus: 0
+      assign index_text = product_index | append: ''
+      assign product_limit = 0
+
+      if marker == 'all'
+        assign product_index = 0
+        assign product_limit = products.count
+      elsif marker == index_text and product_index >= 0
+        assign product_limit = 1
+      endif
+
+      if product_limit > 0
+        assign remaining_content = part | slice: marker_length, part.size
+        for product in products offset: product_index limit: product_limit
+          if product != blank and product.id != blank
+            unless product.tags contains 'hide'
+              capture card
+                echo '<div class="article-products__item">'
+                render 'product-grid-item', product: product
+                echo '</div>'
+              endcapture
+              assign cards = cards | append: card
+              assign card_count = card_count | plus: 1
+            endunless
+          endif
+        endfor
+      endif
+    endif
+    assign between_markers = remaining_content | strip
+  -%}
+
+  {%- if forloop.last or between_markers != blank -%}
+    {%- if card_count > 0 -%}
+      <div class="article-products{% if card_count == 1 %} article-products--single{% elsif card_count > 3 %} article-products--carousel{% endif %}"
+        {% if card_count > 3 %}role="region" aria-label="Products in this article" tabindex="0"{% endif %}>
+        {{- cards -}}
+      </div>
+      {%- assign cards = '' -%}
+      {%- assign card_count = 0 -%}
+    {%- endif -%}
+    {{- remaining_content -}}
+  {%- endif -%}
+{%- endfor -%}

@@ -571,7 +571,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
           <!-- Article Content -->
           <div class="blog__article__content rte" style="font-size: 16px; line-height: 1.8; color: #2d2d2d; max-width: 100%;">
-            {{ article.content }}
+            {%- assign blog_products = article.metafields.custom.blog_products.value -%}
+            {%- if blog_products.count > 0 and article.content contains '<!-- BLOG_PRODUCT' -%}
+              {%- render 'article-content-products', content: article.content, products: blog_products -%}
+            {%- else -%}
+              {{ article.content }}
+            {%- endif -%}
           </div>
 
           <!-- Key Takeaways -->
