@@ -13,6 +13,8 @@
 {%- liquid
 
   assign current_variant = product.selected_or_first_available_variant
+  assign card_key = card_id | default: product.id
+  assign card_form_id = 'product_form_' | append: card_key
 
   assign featured_img = current_variant.featured_media.preview_image | default: product.featured_media.preview_image | default: product.featured_image
 
@@ -530,11 +532,11 @@
 
             type="radio"
 
-            name="variant-select-{{ product.id }}"
+            name="variant-select-{{ card_key }}"
 
             value="{{ variant.id }}"
 
-            id="variant-{{ product.id }}-{{ variant.id }}"
+            id="variant-{{ card_key }}-{{ variant.id }}"
 
             data-variant-id="{{ variant.id }}"
 
@@ -552,7 +554,7 @@
 
           <label
 
-            for="variant-{{ product.id }}-{{ variant.id }}"
+            for="variant-{{ card_key }}-{{ variant.id }}"
 
             class="tp-variant-card"
 
@@ -712,7 +714,7 @@
 
         <div class="tp-split-atc" style="flex:1" x-data="productAddButtonForm()">
 
-          {%- form 'product', product, class: 'tp-perf-card__form', data-product-form: '' -%}
+          {%- form 'product', product, id: card_form_id, class: 'tp-perf-card__form', data-product-form: '' -%}
 
             <input type="hidden" name="id" value="{{ current_variant.id }}" class="tp-perf-card__hidden-id">
 

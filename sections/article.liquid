@@ -570,10 +570,20 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <!-- Article Content -->
+          {%- liquid
+            assign blog_products = article.metafields.custom.blog_products.value
+            assign related_products = article.metafields.custom.related_products.value
+            assign show_blog_products = false
+            if blog_products.count > 0 and article.content contains '<!-- BLOG_PRODUCT'
+              assign show_blog_products = true
+            endif
+          -%}
+          {%- if show_blog_products or related_products.count > 0 -%}
+            {{- 'article-product-cards.css' | asset_url | stylesheet_tag -}}
+          {%- endif -%}
           <div class="blog__article__content rte" style="font-size: 16px; line-height: 1.8; color: #2d2d2d; max-width: 100%;">
-            {%- assign blog_products = article.metafields.custom.blog_products.value -%}
-            {%- if blog_products.count > 0 and article.content contains '<!-- BLOG_PRODUCT' -%}
-              {%- render 'article-content-products', content: article.content, products: blog_products -%}
+            {%- if show_blog_products -%}
+              {%- render 'article-content-products', content: article.content, products: blog_products, card_scope: 'article-inline' -%}
             {%- else -%}
               {{ article.content }}
             {%- endif -%}
@@ -596,17 +606,10 @@ document.addEventListener("DOMContentLoaded", () => {
           {%- endif -%}
 
           <!-- Relevant CTA / Related Products (Middle Section) -->
-          {%- assign related_products = article.metafields.custom.related_products.value -%}
           {%- if related_products != blank and related_products.count > 0 -%}
             <div class="tp-related-products" style="margin: 40px 0; padding-top: 30px; border-top: 1px solid #ece7e0;">
               <h4 style="margin: 0 0 24px; font-weight: 700; color: #1f1f1f; text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px;">Products related to this article</h4>
-              <div class="grid grid--uniform" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; width: 100%;">
-                {%- for product in related_products -%}
-                  <div class="grid__item" style="padding-left: 0;">
-                    {% render 'product-grid-item', product: product %}
-                  </div>
-                {%- endfor -%}
-              </div>
+              {%- render 'article-content-products', content: '<!-- BLOG_PRODUCTS -->', products: related_products, card_scope: 'article-related' -%}
             </div>
           {%- endif -%}
 
@@ -698,7 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
               if (sib.tagName.toLowerCase() === 'h3') {
                 subheadings.push(sib);
               } else {
-                const innerH3s = sib.querySelectorAll("h3");
+                const innerH3s = sib.querySelectorAll("h3:not(.tp-perf-card__title)");
                 innerH3s.forEach(inner => subheadings.push(inner));
               }
               sib = sib.nextElementSibling;

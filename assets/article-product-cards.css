@@ -1,0 +1,40 @@
+.article-products,
+.rte > .article-products {
+  --article-products-gap: 1rem;
+  display: grid;
+  gap: var(--article-products-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  margin-block: 1.5rem;
+  padding: 0.25rem;
+}
+
+.article-products--single {
+  max-width: 21rem;
+}
+
+.article-products.article-products--carousel {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: max(13rem, calc((100% - 2 * var(--article-products-gap)) / 3));
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 0.25rem;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.75rem;
+}
+
+.article-products--carousel:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.article-products__item {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 600px) {
+  .article-products.article-products--carousel {
+    grid-auto-columns: min(82%, 18rem);
+  }
+}

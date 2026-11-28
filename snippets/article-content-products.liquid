@@ -1,45 +1,3 @@
-{%- style -%}
-  .article-products {
-    --article-products-gap: 1rem;
-    display: grid;
-    gap: var(--article-products-gap);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
-    margin-block: 1.5rem;
-    padding: 0.25rem;
-  }
-
-  .article-products--single {
-    max-width: 21rem;
-  }
-
-  .article-products--carousel {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: max(12rem, calc((100% - 2 * var(--article-products-gap)) / 3));
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-padding-inline: 0.25rem;
-    scroll-snap-type: x proximity;
-    padding-bottom: 0.75rem;
-  }
-
-  .article-products--carousel:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-  }
-
-  .article-products__item {
-    min-width: 0;
-    scroll-snap-align: start;
-  }
-
-  @media (max-width: 600px) {
-    .article-products--carousel {
-      grid-auto-columns: min(82%, 18rem);
-    }
-  }
-{%- endstyle -%}
-
 {%- liquid
   assign marker_start = '<!-- BLOG_PRODUCT:'
   assign marker_end = '-->'
@@ -73,12 +31,14 @@
 
       if product_limit > 0
         assign remaining_content = part | slice: marker_length, part.size
+        assign marker_position = forloop.index0
         for product in products offset: product_index limit: product_limit
           if product != blank and product.id != blank
             unless product.tags contains 'hide'
+              assign card_id = card_scope | append: '-' | append: marker_position | append: '-' | append: forloop.index0 | append: '-' | append: product.id
               capture card
                 echo '<div class="article-products__item">'
-                render 'product-grid-item', product: product
+                render 'product-card-performance', product: product, placeholder: 'product', card_id: card_id
                 echo '</div>'
               endcapture
               assign cards = cards | append: card
